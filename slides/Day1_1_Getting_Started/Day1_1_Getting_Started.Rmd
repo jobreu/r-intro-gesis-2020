@@ -1,0 +1,390 @@
+---
+title: "Introduction to R for Data Analysis"
+subtitle: "Getting Started with R and RStudio"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-03"
+location: "GESIS Summer School in Survey Methodology"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "../workshop.css"]
+    nature:
+      highlightStyle: "github"
+      highlightLines: true
+      countIncrementalSlides: false
+---
+layout: true
+
+```{r setup, include = F}
+if (!require(easypackages)) install.packages("easypackages")
+library(easypackages)
+
+packages("rmarkdown", "knitr", "gadenbuie/xaringanExtra", "gadenbuie/tweetrmd", "huxtable", prompt = F)
+
+options(htmltools.dir.version = FALSE)
+
+opts_chunk$set(echo = FALSE, fig.align = "center")
+
+xaringanExtra::use_tile_view()
+```
+
+<div class="my-footer">
+  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+
+<style type="text/css">
+
+pre {
+  font-size: 10px
+}
+</style>
+
+---
+
+# About this course
+
+In this course, we will provide an introduction to the basic concepts and functionalities of `R` and go through a prototypical data analysis workflow: import, wrangling, exploration, (basic) analysis, and reporting. 
+
+By the end of this course you should...
+
+- be comfortable with using *R* and *RStudio*
+- be able to import, wrangle, and explore your data with *R*
+- be able to conduct basic visualizations and analyses of your data with *R*
+
+**Note**: This is not a statistics workshop. Our focus will be on learning how to use *R*.
+
+---
+
+# What we want to avoid
+
+.center[<img src="./pics/owl.jpg" width="75%">]
+<small><small>Source: https://bit.ly/2Xhz81a</small></small>
+
+---
+
+# Learning by coding
+
+```{r hadley tweet}
+tweet_embed("https://twitter.com/hadleywickham/status/589068687669243905",
+            theme = "dark")
+```
+
+---
+
+# Prerequisites for this course
+
+.large[
+- Working versions of `R` and *RStudio* on your computer 
+
+- prior experience with data analysis, basic statistics, and regression 
+
+- ideally, experience with using other statistical packages (e.g., *SPSS* or *Stata*)
+]  
+
+---
+
+# About us
+
+### Johannes Breuer
+
+- senior researcher in the team Data Linking & Data Security at the GESIS Data Archive
+    - main areas: data linking & digital trace data  
+    
+- Ph.D. in psychology, University of Cologne  
+
+- previously worked in several research projects investigating the use and effects of digital media (Cologne, Hohenheim, Münster, Tübingen)  
+
+- other research interests:
+    - methods of media (effects) research
+    - computational methods
+    - data management
+    - open science
+
+[johannes.breuer@gesis.org](mailto:johannes.breuer@gesis.org), [@MattEagle09](https://twitter.com/MattEagle09), [personal website](https://www.johannesbreuer.com/)
+
+---
+
+# About us
+
+### Stefan Jünger
+
+- postdoctoal researcher in the team Data Linking & Data Security at the GESIS Data Archive
+    - main area: geospatial data/georeferencing  
+    
+- Ph.D. in social sciences, University of Cologne
+
+- previously worked in the area of data ingest and as a curator of the data repository *datorium* and two DFG research projects on geospatial data
+
+- other research interests:
+    - quantitative methods
+    - social inequalities & attitudes towards minorities
+    - data management & data privacy
+
+[stefan.juenger@gesis.org](mailto:stefan.juenger@gesis.org),
+[@StefanJuenger](https://twitter.com/StefanJuenger)
+
+---
+
+# Our jou`R`neys
+
+Johannes
+
+- was socialized with *SPSS*
+- was annoyed with *AMOS* when learning structural equation modeling (around 2010)
+- decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
+- only used `R` for SEM for some time, while still doing everything else (esp. data wrangling) with *SPSS*
+- finally made the full transition to `R` when joining *GESIS* in 2017
+
+Stefan
+
+- a
+- b
+- c
+
+---
+
+# About you
+
+.large[
+- What's your name?  
+
+- Where do you work/study? What are you working on/studying?
+
+- What is your experience with `R` or other programming languages?
+
+- What statistical software package(s) do typically use?
+
+- What do you want to use `R` for?
+]
+
+---
+
+# Preliminaries
+
+.large[
+- Feel free to ask questions at any time  
+
+- We want to make this workshop as interactive as possible
+
+- The workshop consists of a combination of lectures and hands-on exercises
+
+- Slides and other materials are available at
+]
+.center[`https://github.com/jobreu/r-intro-gesis-2020`]
+
+---
+
+# Course schedule
+
+```{r full schedule}
+schedule <- data.frame(
+  " " = c("10:00 - 12:30", "12:30 - 14:00", "14:00 - 16:30"),
+  "Monday" = c("Getting started with R and RStudio", "<i>Lunch break</i>", "Programming with R"),
+  "Tuesday" = c("Data import & export", "<i>Lunch break</i>", "Data wrangling: Base R vs. the Tidyverse"),
+  "Wednesday" = c("Data visualization Part 1", "<i>Lunch break</i>", "Data visualization Part 2"),
+  "Thursday" = c("Exploratory data analysis", "<i>Lunch break</i>", "Confirmatory data analysis"),
+  "Friday" = c("Reporting with RMarkdown", "<i>Lunch break</i>", "Application example <i>Geospatial data analysis with R</i> or Extended Q&A session "),
+  check.names = FALSE
+)
+
+ht <- as_hux(schedule)
+bold(ht)[1,] <- TRUE
+align(ht)[3,] <- "center"
+align(ht)[,1] <- "center"
+valign(ht)[3,] <-  "middle"
+ht <- set_all_borders(ht, 1) 
+ht <- merge_across(ht, 3, 2:6)
+ht
+```
+
+---
+
+# What is `R`?
+
+>R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS ([`R` Project website](https://www.r-project.org/)).
+
+`R` is [free and open-source software (FOSS)](https://en.wikipedia.org/wiki/Free_and_open-source_software) and also a programming language. More specifically, it is a free, non-commercial implementation of the [`S` programming language](https://en.wikipedia.org/wiki/S_(programming_language) (developed by Bell Laboratories).
+
+---
+
+# Why use `R`?
+
+- it is free an open-source
+
+--
+
+- it is modular through the use of packages
+  - You want to do X with `R`? There's ~~an app~~ a package for that!
+  - The universe of packages for `R` keeps on expanding
+  
+--
+  
+- it can be used for almost all steps in the research process: data collection, processing, exploration, analysis, and reporting/publishing
+
+--
+
+- it offers extremely powerful and versatile options for data visualization
+
+--
+
+- it has a great community with groups like [*R-Ladies*](https://rladies.org/), the [*R Consortium*](https://www.r-consortium.org/), or [*rOpenSci*](https://ropensci.org/)
+  - also check out the [*#rstats* hashtag on Twitter](https://twitter.com/search?q=%23rstats&src=typed_query)
+  
+--
+
+- it is becoming increasingly popular in [academic publications](http://r4stats.com/articles/popularity/), [programming communities like Stack Overflow](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), and also in [job advertisements](http://r4stats.com/articles/popularity/)
+
+--
+
+- it is fun!
+
+---
+
+# Fun with `R`
+
+You can use `R` to...
+
+- read [Chuck norris jokes](https://cran.r-project.org/web/packages/norris/index.html)
+
+--
+
+- [create memes](https://github.com/sctyner/memer)
+  - there's also a whole [genre of `R` memes](https://github.com/favstats/rstatsmemes)
+
+--
+
+- [create 3D LEGO mosaics from images](http://www.ryantimpe.com/post/lego-mosaic3/)
+  - ... and even find out [which LEGO bricks you need to build them for real](https://github.com/ryantimpe/brickr)
+
+--
+
+- [play](https://github.com/gsimchoni/CastleOfR) or [create text adventures](https://lucidmanager.org/text-adventure/)
+
+--
+
+- [create objects in *Minecraft*](https://ropenscilabs.github.io/miner_book/)
+
+--
+
+- make all sorts of [dice rolls for your pen & paper/tabletop role-playing games](https://github.com/Felixmil/rollR)
+
+---
+
+# (My take on) `R` vs. `Python`
+
+- both are great
+
+- `Python` is more powerful for data collection and offer more options for machine learning
+
+- `R` is more powerful for data visualization and statistics
+
+- you can use both together, e.g., via the [`reticulate` package](https://rstudio.github.io/reticulate/)
+  - however, I would not recommend learning them in parallel (to avoid language confusion)
+
+---
+
+# (My take on) `R` vs. `Python`
+  
+- in terms of setting up and maintaining your installation, `R` is quite a bit easier to handle
+
+```{r python tweet}
+tweet_embed("https://twitter.com/johncassil/status/1281277159642972160",
+            theme = "dark")
+```
+
+---
+
+# Installing `R`
+
+You can download `R` via the [`R` Project website](https://www.r-project.org/). The exact installation process depends on your operating system (OS). The *R Cookbook* provides a [detailed explanation of the installation process for Windows, macOS, and Linux/Unix](https://rc2e.com/gettingstarted#recipe-id001).
+
+If you want or need to update your version of `R`, you can do this the same way as for the first-time installation. If you use *Windows*, you can also use the [`installr` package](https://github.com/talgalili/installr) to update `R` (we will talk about packages in a bit).
+
+---
+
+# Graphical user interfaces (GUI) for `R`
+
+`R` comes with a basic GUI (on *Windows* you can access it by opening the `Rgui.exe` file). However, it is quite limited in terms of its functions.
+
+```{r, basic R GUI, out.width = "95%"}
+include_graphics("./pics/base_R_gui.png")
+```
+
+---
+
+# Graphical user interfaces (GUI) for `R`
+
+A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/web/packages/Rcmdr/index.html) which essentially is a package for `R` that can be used via the basic GUI that comes with `R` or the `R` command line tool (`R.exe` on Windows).
+
+```{r, R commander, out.width = "45%"}
+include_graphics("./pics/r_commander.png")
+```
+
+---
+
+# Text editors and intergrated development interfaces (IDE) for `R`
+
+Using powerful text editors or an IDE provides several advantages:
+  - syntax highlighting
+  - auto-completion
+  - better overview of files, libraries, created objects/output
+
+`R` can be used, e.g., with
+  - [`gedit`](http://rgedit.sourceforge.net/)
+  - `Emacs` via [ESS (Emacs speaks statistics)](https://ess.r-project.org/)
+  - [`vim`](https://www.vim.org/scripts/script.php?script_id=2628)
+
+The most easy-to-use IDE that is specifically tailored to `R` is [`RStudio`](https://rstudio.com/products/rstudio/) which is also what we will use for this workshop.
+
+---
+
+# Installing `RStudio`
+
+You can download the installer for your OS from the [`RStudio` website](https://rstudio.com/products/rstudio/download/).
+
+---
+
+# Resources: Introductory books
+
+[R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham
+
+[R Cookbook: Proven recipes for data analysis, statistics, and graphics](https://rc2e.com/) by JD Long & Paul Teetor
+
+[Hands-On Programming with R](https://rstudio-education.github.io/hopr/) by Garrett Grolemund
+
+[Quantitative Social Science Data with R](https://uk.sagepub.com/en-gb/eur/quantitative-social-science-data-with-r/book257236) by Brian J. Fogarty
+
+[Discovering Statistics Using R](https://uk.sagepub.com/en-gb/eur/discovering-statistics-using-r/book236067) by Andy Field, Jeremy Miles, & Zoe Field
+---
+
+# Resources: Online courses & tutorials
+
+[Overview of resources *learnR4free* by Mine Dogucu](https://www.learnr4free.com/)
+
+[Overview of resources by the *easystats* `R` package suite](https://easystats.github.io/blog/resources/)
+
+[Collection of *YouTube* channels by Flavio Azevado](http://flavioazevedo.com/stats-and-r-blog/2016/9/13/learning-r-on-youtube)
+
+[*swirl* - Learn `R` in `R`](https://swirlstats.com/)
+
+Learning `R` (and statistics) with a cute story and beautiful illustrations: [Teacups, Giraffes, & Statistics by Hasse Wallum & Desirée de Leon](https://tinystats.github.io/teacups-giraffes-and-statistics/)
+
+---
+
+# Resources: Cheatsheets
+
+*RStudio* offers a good collection of [cheatsheets for R](https://www.rstudio.com/resources/cheatsheets/).
+
+The following ones are of particular interest for this workshop:
+
+- [RStudio IDE Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf)
+
+- [Data Import Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf)
+
+- [Data Transformation Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
+
+- [Data Visualization Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
+
+- [RMarkdown Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)

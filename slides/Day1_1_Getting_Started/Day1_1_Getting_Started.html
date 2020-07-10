@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R for Data Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Johannes Breuer Stefan Jünger" />
+    <meta name="date" content="2020-08-03" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <script src="libs/twitter-widget/widgets.js"></script>
+    <link rel="stylesheet" href="..\workshop.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R for Data Analysis
+## Getting Started with R and RStudio
+### Johannes Breuer<br />Stefan Jünger
+### 2020-08-03
+
+---
+
+layout: true
+
+
+
+&lt;div class="my-footer"&gt;
+  &lt;div style="float: left;"&gt;&lt;span&gt;Johannes Breuer, Stefan Jünger&lt;/span&gt;&lt;/div&gt;
+  &lt;div style="float: right;"&gt;&lt;span&gt;GESIS Summer School in Survey Methodology, 2020-08-03&lt;/span&gt;&lt;/div&gt;
+  &lt;div style="text-align: center;"&gt;&lt;span&gt;Getting Started with R and RStudio&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style type="text/css"&gt;
+
+pre {
+  font-size: 10px
+}
+&lt;/style&gt;
+
+---
+
+# About this course
+
+In this course, we will provide an introduction to the basic concepts and functionalities of `R` and go through a prototypical data analysis workflow: import, wrangling, exploration, (basic) analysis, and reporting. 
+
+By the end of this course you should...
+
+- be comfortable with using *R* and *RStudio*
+- be able to import, wrangle, and explore your data with *R*
+- be able to conduct basic visualizations and analyses of your data with *R*
+
+**Note**: This is not a statistics workshop. Our focus will be on learning how to use *R*.
+
+---
+
+# What we want to avoid
+
+.center[&lt;img src="./pics/owl.jpg" width="75%"&gt;]
+&lt;small&gt;&lt;small&gt;Source: https://bit.ly/2Xhz81a&lt;/small&gt;&lt;/small&gt;
+
+---
+
+# Learning by coding
+
+<blockquote class="twitter-tweet" data-width="550" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">The only way to write good code is to write tons of shitty code first. Feeling shame about bad code stops you from getting to good code</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/589068687669243905?ref_src=twsrc%5Etfw">April 17, 2015</a></blockquote>
+
+
+---
+
+# Prerequisites for this course
+
+.large[
+- Working versions of `R` and *RStudio* on your computer 
+
+- prior experience with data analysis, basic statistics, and regression 
+
+- ideally, experience with using other statistical packages (e.g., *SPSS* or *Stata*)
+]  
+
+---
+
+# About us
+
+### Johannes Breuer
+
+- senior researcher in the team Data Linking &amp; Data Security at the GESIS Data Archive
+    - main areas: data linking &amp; digital trace data  
+    
+- Ph.D. in psychology, University of Cologne  
+
+- previously worked in several research projects investigating the use and effects of digital media (Cologne, Hohenheim, Münster, Tübingen)  
+
+- other research interests:
+    - methods of media (effects) research
+    - computational methods
+    - data management
+    - open science
+
+[johannes.breuer@gesis.org](mailto:johannes.breuer@gesis.org), [@MattEagle09](https://twitter.com/MattEagle09), [personal website](https://www.johannesbreuer.com/)
+
+---
+
+# About us
+
+### Stefan Jünger
+
+- postdoctoal researcher in the team Data Linking &amp; Data Security at the GESIS Data Archive
+    - main area: geospatial data/georeferencing  
+    
+- Ph.D. in social sciences, University of Cologne
+
+- previously worked in the area of data ingest and as a curator of the data repository *datorium* and two DFG research projects on geospatial data
+
+- other research interests:
+    - quantitative methods
+    - social inequalities &amp; attitudes towards minorities
+    - data management &amp; data privacy
+
+[stefan.juenger@gesis.org](mailto:stefan.juenger@gesis.org),
+[@StefanJuenger](https://twitter.com/StefanJuenger)
+
+---
+
+# Our jou`R`neys
+
+Johannes
+
+- was socialized with *SPSS*
+- was annoyed with *AMOS* when learning structural equation modeling (around 2010)
+- decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
+- only used `R` for SEM for some time, while still doing everything else (esp. data wrangling) with *SPSS*
+- finally made the full transition to `R` when joining *GESIS* in 2017
+
+Stefan
+
+- a
+- b
+- c
+
+---
+
+# About you
+
+.large[
+- What's your name?  
+
+- Where do you work/study? What are you working on/studying?
+
+- What is your experience with `R` or other programming languages?
+
+- What statistical software package(s) do typically use?
+
+- What do you want to use `R` for?
+]
+
+---
+
+# Preliminaries
+
+.large[
+- Feel free to ask questions at any time  
+
+- We want to make this workshop as interactive as possible
+
+- The workshop consists of a combination of lectures and hands-on exercises
+
+- Slides and other materials are available at
+]
+.center[`https://github.com/jobreu/r-intro-gesis-2020`]
+
+---
+
+# Course schedule
+
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:full schedule">
+<col><col><col><col><col><col><tr>
+<th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;"> </th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Monday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Tuesday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Wednesday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Thursday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Friday</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">10:00 - 12:30</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Getting started with R and RStudio</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Data import &amp; export</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Data visualization Part 1</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Exploratory data analysis</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Reporting with RMarkdown</td></tr>
+<tr>
+<td style="vertical-align: middle; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">12:30 - 14:00</td><td colspan="5" style="vertical-align: middle; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">&lt;i&gt;Lunch break&lt;/i&gt;</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">14:00 - 16:30</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Programming with R</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Data wrangling: Base R vs. the Tidyverse</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Data visualization Part 2</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Confirmatory data analysis</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Application example &lt;i&gt;Geospatial data analysis with R&lt;/i&gt; or Extended Q&amp;A session </td></tr>
+</table>
+
+
+---
+
+# What is `R`?
+
+&gt;R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS ([`R` Project website](https://www.r-project.org/)).
+
+`R` is [free and open-source software (FOSS)](https://en.wikipedia.org/wiki/Free_and_open-source_software) and also a programming language. More specifically, it is a free, non-commercial implementation of the [`S` programming language](https://en.wikipedia.org/wiki/S_(programming_language) (developed by Bell Laboratories).
+
+---
+
+# Why use `R`?
+
+- it is free an open-source
+
+--
+
+- it is modular through the use of packages
+  - You want to do X with `R`? There's ~~an app~~ a package for that!
+  - The universe of packages for `R` keeps on expanding
+  
+--
+  
+- it can be used for almost all steps in the research process: data collection, processing, exploration, analysis, and reporting/publishing
+
+--
+
+- it offers extremely powerful and versatile options for data visualization
+
+--
+
+- it has a great community with groups like [*R-Ladies*](https://rladies.org/), the [*R Consortium*](https://www.r-consortium.org/), or [*rOpenSci*](https://ropensci.org/)
+  - also check out the [*#rstats* hashtag on Twitter](https://twitter.com/search?q=%23rstats&amp;src=typed_query)
+  
+--
+
+- it is becoming increasingly popular in [academic publications](http://r4stats.com/articles/popularity/), [programming communities like Stack Overflow](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), and also in [job advertisements](http://r4stats.com/articles/popularity/)
+
+--
+
+- it is fun!
+
+---
+
+# Fun with `R`
+
+You can use `R` to...
+
+- read [Chuck norris jokes](https://cran.r-project.org/web/packages/norris/index.html)
+
+--
+
+- [create memes](https://github.com/sctyner/memer)
+  - there's also a whole [genre of `R` memes](https://github.com/favstats/rstatsmemes)
+
+--
+
+- [create 3D LEGO mosaics from images](http://www.ryantimpe.com/post/lego-mosaic3/)
+  - ... and even find out [which LEGO bricks you need to build them for real](https://github.com/ryantimpe/brickr)
+
+--
+
+- [play](https://github.com/gsimchoni/CastleOfR) or [create text adventures](https://lucidmanager.org/text-adventure/)
+
+--
+
+- [create objects in *Minecraft*](https://ropenscilabs.github.io/miner_book/)
+
+--
+
+- make all sorts of [dice rolls for your pen &amp; paper/tabletop role-playing games](https://github.com/Felixmil/rollR)
+
+---
+
+# (My take on) `R` vs. `Python`
+
+- both are great
+
+- `Python` is more powerful for data collection and offer more options for machine learning
+
+- `R` is more powerful for data visualization and statistics
+
+- you can use both together, e.g., via the [`reticulate` package](https://rstudio.github.io/reticulate/)
+  - however, I would not recommend learning them in parallel (to avoid language confusion)
+
+---
+
+# (My take on) `R` vs. `Python`
+  
+- in terms of setting up and maintaining your installation, `R` is quite a bit easier to handle
+
+<blockquote class="twitter-tweet" data-width="550" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">Newbies setting up R: <br>✔️install R<br>✔️install Rstudio<br>✔️install.packages()<br>✔️get typing<br><br>Newbies setting up Python:  <br>✔️install anaconda<br>✔️stand in a pentagram <br>✔️call out the name of a demon overlord on a full moon with the blood of a newborn calf<br>❌ModuleNotFoundError</p>&mdash; John Cassil (@johncassil) <a href="https://twitter.com/johncassil/status/1281277159642972160?ref_src=twsrc%5Etfw">July 9, 2020</a></blockquote>
+
+
+---
+
+# Installing `R`
+
+You can download `R` via the [`R` Project website](https://www.r-project.org/). The exact installation process depends on your operating system (OS). The *R Cookbook* provides a [detailed explanation of the installation process for Windows, macOS, and Linux/Unix](https://rc2e.com/gettingstarted#recipe-id001).
+
+If you want or need to update your version of `R`, you can do this the same way as for the first-time installation. If you use *Windows*, you can also use the [`installr` package](https://github.com/talgalili/installr) to update `R` (we will talk about packages in a bit).
+
+---
+
+# Graphical user interfaces (GUI) for `R`
+
+`R` comes with a basic GUI (on *Windows* you can access it by opening the `Rgui.exe` file). However, it is quite limited in terms of its functions.
+
+&lt;img src="./pics/base_R_gui.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Graphical user interfaces (GUI) for `R`
+
+A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/web/packages/Rcmdr/index.html) which essentially is a package for `R` that can be used via the basic GUI that comes with `R` or the `R` command line tool (`R.exe` on Windows).
+
+&lt;img src="./pics/r_commander.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Text editors and intergrated development interfaces (IDE) for `R`
+
+Using powerful text editors or an IDE provides several advantages:
+  - syntax highlighting
+  - auto-completion
+  - better overview of files, libraries, created objects/output
+
+`R` can be used, e.g., with
+  - [`gedit`](http://rgedit.sourceforge.net/)
+  - `Emacs` via [ESS (Emacs speaks statistics)](https://ess.r-project.org/)
+  - [`vim`](https://www.vim.org/scripts/script.php?script_id=2628)
+
+The most easy-to-use IDE that is specifically tailored to `R` is [`RStudio`](https://rstudio.com/products/rstudio/) which is also what we will use for this workshop.
+
+---
+
+# Installing `RStudio`
+
+You can download the installer for your OS from the [`RStudio` website](https://rstudio.com/products/rstudio/download/).
+
+---
+
+# Resources: Introductory books
+
+[R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham
+
+[R Cookbook: Proven recipes for data analysis, statistics, and graphics](https://rc2e.com/) by JD Long &amp; Paul Teetor
+
+[Hands-On Programming with R](https://rstudio-education.github.io/hopr/) by Garrett Grolemund
+
+[Quantitative Social Science Data with R](https://uk.sagepub.com/en-gb/eur/quantitative-social-science-data-with-r/book257236) by Brian J. Fogarty
+
+[Discovering Statistics Using R](https://uk.sagepub.com/en-gb/eur/discovering-statistics-using-r/book236067) by Andy Field, Jeremy Miles, &amp; Zoe Field
+---
+
+# Resources: Online courses &amp; tutorials
+
+[Overview of resources *learnR4free* by Mine Dogucu](https://www.learnr4free.com/)
+
+[Overview of resources by the *easystats* `R` package suite](https://easystats.github.io/blog/resources/)
+
+[Collection of *YouTube* channels by Flavio Azevado](http://flavioazevedo.com/stats-and-r-blog/2016/9/13/learning-r-on-youtube)
+
+[*swirl* - Learn `R` in `R`](https://swirlstats.com/)
+
+Learning `R` (and statistics) with a cute story and beautiful illustrations: [Teacups, Giraffes, &amp; Statistics by Hasse Wallum &amp; Desirée de Leon](https://tinystats.github.io/teacups-giraffes-and-statistics/)
+
+---
+
+# Resources: Cheatsheets
+
+*RStudio* offers a good collection of [cheatsheets for R](https://www.rstudio.com/resources/cheatsheets/).
+
+The following ones are of particular interest for this workshop:
+
+- [RStudio IDE Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf)
+
+- [Data Import Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf)
+
+- [Data Transformation Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
+
+- [Data Visualization Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
+
+- [RMarkdown Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
