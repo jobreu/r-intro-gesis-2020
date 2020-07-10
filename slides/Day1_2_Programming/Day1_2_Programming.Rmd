@@ -1,0 +1,432 @@
+---
+title: "Introduction to R for Data Analysis"
+subtitle: "Programming in R"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-03"
+location: "GESIS, Cologne, Germany"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "../workshop.css"]
+    nature:
+      highlightStyle: "github"
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+layout: true
+
+```{r setup, include = FALSE}
+source("../xaringan_r_setup.R")
+```
+
+<div class="my-footer">
+  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+
+
+```{css, echo = FALSE}
+# .remark-slide-content {
+#   font-size: 28px;
+#   padding: 20px 80px 20px 80px;
+# }
+# .remark-code, .remark-inline-code {
+#   background: #f0f0f0;
+# }
+# .remark-code {
+#   font-size: 24px;
+# }
+# .huge .remark-code { /*Change made here*/
+#   font-size: 200% !important;
+# }
+.tinyish .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+```
+
+---
+
+## Content of this programming session 
+.pull-left[
+**What you will learn**
+- How to write loops
+- How to write functions
+- Casual comparison of Base R vs. Tidyverse programming
+]
+
+.pull-right[
+**What you won't learn**
+- Full-blown programming introduction
+- Lengthy comparison to other languages
+- Exhausting review of data types, methods, and classes
+- Debugging
+]
+
+---
+
+## What is programming?
+So, the all-knowing Wikipedia says programming involves:
+- analysis
+- generating algorithms
+- profiling algorithms accuracy and resource consumption
+- **implementation of algorithms in a chosen programming language**
+
+.footnote[https://en.wikipedia.org/wiki/Computer_programming]
+
+---
+
+## R is/as a programming language
+Originally, R was created for statistical analysis
+- R package designers are no computer scientists
+- Because of that, R is known as not being as efficient as other languages
+  - Judge by yourself
+  - It also depends on the **programming**
+
+
+Many ways to interact with the language is similar to mathematical notation
+- Don't get scared of that, yet this is why we deal with vectors, matrices, and so forth.
+
+---
+
+## It boils down to...
+.pull-left[
+**Where your data are stored**
+- Vectors
+- Matrices
+- Data frames / Tibbles
+- Lists
+]
+
+.pull-right[
+**How your data are stored**
+- 'Numbers' (Integers & Doubles)
+- Character Strings
+- Logical
+- Factors
+- ...
+- There's more, e.g., expressions, but let's leave it that way
+]
+
+.footnote[https://www.stat.berkeley.edu/~nolan/stat133/Fall05/lectures/DataTypes4.pdf]
+
+---
+
+## Vectors
+Vectors are built by enclosing your content with `c()` ("c" for "combine")
+
+```{r}
+numeric_vector   <- c(1, 2, 3, 4)
+character_vector <- c("a", "b", "c", "d")
+
+numeric_vector
+character_vector
+```
+
+---
+
+## Matrices
+Matrices are the basic rectangular data format in R.
+
+```{r}
+fancy_matrix <- matrix(1:16, nrow = 4)
+
+fancy_matrix
+```
+
+You cannot store multiple data types, such as strings or numeric types. Otherwise your data is getting coerced in a common type.
+- In fact, this is something that happens already in vectors
+
+---
+
+## Matrices and subscripts (as in mathematical annotation)
+Identify rows, columns or elements using subscripts. 
+
+```{r eval = FALSE}
+fancy_matrix[,4] # 4th column of matrix
+fancy_matrix[3,] # 3rd row of matrix
+fancy_matrix[2:4,1:3] # rows 2,3,4 of columns 1,2,3 
+```
+
+---
+
+## Data frames
+While matrices are used, e.g.,--\*drumroll\*-- for matrix operations, data frames
+resembles more what we know of data we usually use. We can build data.frames by 
+hand as here:
+
+```{r}
+library(randomNames) # a name generator package
+
+fancy_data <-
+  data.frame(
+    who = randomNames(n = 10, which.names = "first"),
+    age = sample(14:49, 10, replace = TRUE),
+    was_milk_available = sample(c(TRUE, FALSE), 10, replace = TRUE)
+  )
+```
+
+---
+
+```{r}
+fancy_data
+```
+
+---
+
+## tibbles
+data.frames tend to be pretty large, and printing them on your screen can get
+difficult. As part of the Tidyverse, tibbles faciliate printing (and adding
+more metadata to the columns of a data.frame). Instead of using `data.frame()`
+for our data creation we could have been using `tibble`. It looks like that:
+
+```{r}
+library(tibble)
+as_tibble(fancy_data)
+```
+
+---
+
+## Object orientation in R
+R is an object orientated language
+- That's more than just assigning, e.g., a number to an object and working on it like 
+
+```{r}
+object <- 2
+object + 3
+```
+
+Object orientation also includes, e.g., emphasis on attributes of data. They 
+have a structure and belong to a class:
+
+```{r}
+str(character_vector)
+class(character_vector)
+```
+  
+But we'll leave it at that for now
+
+---
+
+## Functional Programming: In R, everything's a function (more or less)
+So you might already be familiar with using functions in R. Functions are 
+applied as shown here:
+
+```{r eval = FALSE}
+fancy_function(data)
+```
+
+They can be nested, for example:
+
+```{r}
+log(sum(c(1, 2, 3)))
+```
+
+Later on, we will learn about pipes `%>%` which help to navigate some issues 
+with too many levels of nesting
+
+---
+
+# Defining your own function is straightforward
+First, let's create a simple function which is pasting together some strings
+and numbers.
+
+```{r}
+milk_bought <- function (n_bottles) {
+  
+  # define our string
+  our_string <- 
+    paste0("I have bought ",  n_bottles, " bottles of milk")
+  
+  # we need to print it
+  print(our_string)
+}
+```
+
+Now, we can simply apply it to some dataa s in any other R function
+
+```{r}
+milk_bought(n_bottles = 20)
+```
+
+---
+
+## Loops
+We can use loops to iterate through data, applying a function
+
+- if else
+- for
+- while
+- apply family
+- tidyverse implementation: `purrr::`
+
+---
+
+# Let's start with a joke
+There's this silly programmer joke:
+
+.large[
+> A room mate asked his friend who is a programmer to go shopping: "hey, can you buy a bottle of milk? Oh and if they have eggs, buy 12". So the programmer went shopping. When he got back, he bought 12 bottles of milk and his room mate asked "why the heck did you bought 12 bottle of milk?!" The programmer responded: "they have eggs"
+]
+
+.footnote[https://www.reddit.com/r/Jokes/comments/5qyxar/a_programmer_goes_shopping/]
+
+---
+
+## Translating this joke into R
+
+```{r}
+eggs_available <- TRUE
+
+if (isTRUE(eggs_available)) {
+  milk_bought(n_bottles = 12)
+} else {
+  milk_bought(n_bottles = 1)
+}
+```
+
+```{r}
+eggs_available <- FALSE
+
+if (isTRUE(eggs_available)) {
+  milk_bought(n_bottles = 12)
+} else {
+  milk_bought(n_bottles = 1)
+}
+```
+
+---
+
+# Extending our function
+
+```{r}
+milk_bought_2 <- function (n_bottles) {
+  if (n_bottles < 2) {
+    our_string <-
+      paste0("I have bought ", n_bottles, " bottle of milk")
+  } else {
+    our_string <-
+      paste0("I have bought ", n_bottles, " bottles of milk")
+  }
+  
+  print(our_string)
+}
+```
+
+---
+
+## Now, that's better, right?
+
+```{r}
+eggs_available <- FALSE
+
+if (isTRUE(eggs_available)) {
+  milk_bought_2(n_bottles = 12)
+} else {
+  milk_bought_2(n_bottles = 1)
+}
+```
+
+---
+
+## ifelse() shortcut
+
+```{r}
+ifelse(
+  isTRUE(eggs_available),         # condition
+  milk_bought_2(n_bottles = 12),  # if condition is true
+  milk_bought_2(n_bottles = 1)    # else if condition is false
+)
+```
+
+
+---
+
+## And now blend it all together: function in a function
+
+.tinyish[
+```{r}
+milk_bought_super <- function (who, n_bottles, eggs_available) {
+
+  if (who == "I") {
+    buyer <- "I have bought "
+  } else {
+    buyer <- paste0(who, " has bought ")
+  }
+  
+  milk_bought_2 <- function (n_bottles) {
+    if (n_bottles < 2) {
+      our_string <-
+        paste0(buyer, n_bottles, " bottle of milk")
+    } else {
+      our_string <-
+        paste0(buyer, n_bottles, " bottles of milk")
+    }
+    
+    print(our_string)
+  }
+  
+  if (isTRUE(eggs_available)) {
+    milk_bought_2(n_bottles = 12)
+  } else {
+    milk_bought_2(n_bottles = 1)
+  }
+}
+```
+]
+
+---
+
+## The result
+
+```{r}
+milk_bought_super(who = "I", n_bottles = 12, eggs_available = TRUE)
+milk_bought_super(who = "Johannes", n_bottles = 12, eggs_available = FALSE)
+```
+
+---
+
+## for () loops
+In my opinion, for loops are some of the most useful tools in functional programming.
+
+They enable iterating through input data and applying functions to each element of the data
+- it depends on specific purpose what defines this element
+- thus, it is important to think about the iterator of the for call
+
+---
+
+## Architecture of for loops
+
+```{r eval = FALSE}
+for (iterator_name in data) {
+  do_some_stuff(iterator_name)
+}
+```
+
+---
+
+## Building some data
+
+```{r}
+library(randomNames)
+
+our_data <-
+  data.frame(
+    who = randomNames(n = 10, which.names = "first"),
+    milk_available = sample(c("TRUE", "FALSE"), 10, replace = TRUE)
+  )
+
+our_data
+```
+
+---
+
+```{r}
+# for (1:nrow(our_data) in our_data) {
+#   
+# }
+```
+
+

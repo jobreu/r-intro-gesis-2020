@@ -1,0 +1,173 @@
+---
+title: "Data Visualization Part 1"
+subtitle: "Programming in R"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-05"
+location: "GESIS, Cologne, Germany"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "../workshop.css"]
+    nature:
+      highlightStyle: "github"
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+layout: true
+
+```{r setup, include = FALSE}
+if (!require(easypackages)) install.packages("easypackages")
+library(easypackages)
+
+easypackages::packages(
+  "knitr", "rmarkdown", "tidyverse", "readr", "readxl", "haven",# "hadley/emo",
+  prompt = FALSE
+)
+
+options(htmltools.dir.version = FALSE)
+
+opts_chunk$set(echo = TRUE, fig.align = "center")
+```
+
+<div class="my-footer">
+  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+
+```{css, echo = FALSE}
+# .remark-slide-content {
+#   font-size: 28px;
+#   padding: 20px 80px 20px 80px;
+# }
+# .remark-code, .remark-inline-code {
+#   background: #f0f0f0;
+# }
+# .remark-code {
+#   font-size: 24px;
+# }
+# .huge .remark-code { /*Change made here*/
+#   font-size: 200% !important;
+# }
+.tinyish .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+```
+
+---
+
+## Content of the visualization sessions
+.pull-left[
+**Base R visualization**
+- Standard plotting procedures in R
+- scatterplots, lineplots, histograms and the like
+]
+
+.pull-right[
+**Tidyverse/ggplot2 visualization**
+- Modern interface to graphics
+- grammar of graphics
+]
+
+There's more:
+- lattice plots, for example
+
+---
+
+## Graphics in R
+Since the early days, graphics are a first class citizen in R
+
+A standard `R` installation doesn't require any additional packages to create graphics.
+
+
+```{r load_gp_covid, include = FALSE}
+gp_covid <- 
+  haven::read_sav(
+    # "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+    "./data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+  ) %>% 
+  sjlabelled::set_na(na = c(-1:-99, 97))
+
+```
+
+.pull-left[
+```{r graphics_hist, eval = FALSE, echo = TRUE}
+hist(gp_covid$hzcy001a)
+```
+]
+
+.pull-right[
+```{r ref.label = "graphics_hist"}
+```
+]
+
+---
+
+## Ok, but let's start from the beginning
+The most basic function to plot in R is `plot()`.
+
+```{r}
+plot(gp_covid$hzcy001a)
+```
+
+---
+
+## We can turn this into a bivariate scatterplot
+```{r}
+plot(gp_covid$age_cat, gp_covid$hzcy001a)
+```
+
+---
+
+## Adding stuff to the plot: axis labels
+```{r}
+# par(mar = c(rep(10, 4)))
+plot(
+  gp_covid$age_cat, gp_covid$hzcy001a,
+  main = "Relationship between Age and Likelihood of Covid-19 Infection",
+  xlab = "Age of Respondents",
+  ylab = "Likelihood of Being Infected"
+)
+axis(
+  side = 2, 
+  at = 1:7,
+  labels = c(
+    "Überhaupt\nnicht",
+    "Sehr\nunwahrscheinlich", 
+    "Eher\nunwahrscheinlich",
+    "Mittelmäßig\nwahrscheinlich",
+    "Eher\nwahrscheinlich", 
+    "Sehr\nwahrscheinlich",
+    "Absolut\nwahrscheinlich"
+  ),
+  las = 0
+)
+```
+
+---
+
+## Adding stuff to the plot: titles & labels
+```{r}
+plot(
+  gp_covid$age_cat, gp_covid$hzcy001a,
+  main = "Relationship between Age and Likelihood of Covid-19 Infection",
+  xlab = "Age of Respondents",
+  ylab = "Likelihood of Being Infected"
+)
+```
+
+---
+
+
+## Adding a regression line
+```{r}
+plot(
+  gp_covid$age_cat, gp_covid$hzcy001a,
+  main = "Relationship between Age and Likelihood of Covid-19 Infection",
+  xlab = "Age of Respondents",
+  ylab = "Likelihood of Being Infected"
+)
+abline(lm(hzcy001a ~ age_cat, data = gp_covid))
+```
