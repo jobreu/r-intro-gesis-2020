@@ -115,7 +115,7 @@ Many ways to interact with the language is similar to mathematical notation
 ---
 
 ## Vectors
-Vectors are built by enclosing your content with `c()` ("c" for "combine")
+Vectors are built by enclosing your content with `c()` ("c" for "concatenate")
 
 ```{r}
 numeric_vector   <- c(1, 2, 3, 4)
@@ -150,6 +150,12 @@ fancy_matrix[3,] # 3rd row of matrix
 fancy_matrix[2:4,1:3] # rows 2,3,4 of columns 1,2,3 
 ```
 
+If you plan to participate at the mathematical tools workshop in this summer school, you will learn how to do some calculations, such as matrix multiplications:
+
+```{r}
+fancy_matrix[2:4, 1:3] %*% fancy_matrix[1:3, 2:4]
+```
+
 ---
 
 ## Data frames
@@ -163,8 +169,8 @@ library(randomNames) # a name generator package
 fancy_data <-
   data.frame(
     who = randomNames(n = 10, which.names = "first"),
-    age = sample(14:49, 10, replace = TRUE),
-    was_milk_available = sample(c(TRUE, FALSE), 10, replace = TRUE)
+    age = sample(14:49, 10, replace = TRUE), # you see what we are doing here?                
+    was_milk_available = sample(c(TRUE, FALSE), 10, replace = TRUE) # and here?
   )
 ```
 
@@ -178,9 +184,10 @@ fancy_data
 
 ## tibbles
 data.frames tend to be pretty large, and printing them on your screen can get
-difficult. As part of the Tidyverse, tibbles faciliate printing (and adding
+difficult. As part of the Tidyverse, tibbles facilitate printing (and adding
 more metadata to the columns of a data.frame). Instead of using `data.frame()`
-for our data creation we could have been using `tibble`. It looks like that:
+for our data creation we could have been using `tibble()`. Or we convert an 
+existing data.frame, which looks like that:
 
 ```{r}
 library(tibble)
@@ -211,8 +218,8 @@ But we'll leave it at that for now
 ---
 
 ## Functional Programming: In R, everything's a function (more or less)
-So you might already be familiar with using functions in R. Functions are 
-applied as shown here:
+So you might already be familiar with using functions in R (at least we have used
+them heavily in the preceding slides). Functions are applied as shown here:
 
 ```{r eval = FALSE}
 fancy_function(data)
@@ -229,7 +236,7 @@ with too many levels of nesting
 
 ---
 
-# Defining your own function is straightforward
+## Defining your own function is straightforward
 First, let's create a simple function which is pasting together some strings
 and numbers.
 
@@ -241,7 +248,7 @@ milk_bought <- function (n_bottles) {
     paste0("I have bought ",  n_bottles, " bottles of milk")
   
   # we need to print it
-  print(our_string)
+  our_string
 }
 ```
 
@@ -262,20 +269,95 @@ We can use loops to iterate through data, applying a function
 - apply family
 - tidyverse implementation: `purrr::`
 
----
 
-# Let's start with a joke
+---
+class: middle
+background-image: url("`r xaringan:::karl`")
+
 There's this silly programmer joke:
 
 .large[
-> A room mate asked his friend who is a programmer to go shopping: "hey, can you buy a bottle of milk? Oh and if they have eggs, buy 12". So the programmer went shopping. When he got back, he bought 12 bottles of milk and his room mate asked "why the heck did you bought 12 bottle of milk?!" The programmer responded: "they have eggs"
+> A room mate asked his friend who is a programmer to go shopping: "hey, can you buy a bottle of milk? Oh and if they have eggs, buy 12". So the programmer went shopping. When he got back, he bought 12 bottles of milk and his room mate asked "why the heck did you bought 12 bottle of milk?!" The programmer responded: "they have eggs" (formatting done by me)
 ]
 
 .footnote[https://www.reddit.com/r/Jokes/comments/5qyxar/a_programmer_goes_shopping/]
 
 ---
 
-## Translating this joke into R
+## Architecture of the joke
+
+```{r echo = FALSE}
+library(DiagrammeR)
+grViz("digraph flowchart {
+      # node definitions with substituted label text
+      node [fontname = Helvetica, shape = rectangle]        
+      tab1 [label = '@@1']
+      tab2 [label = '@@2']
+      tab3 [label = '@@3', shape = diamond]
+      tab4 [label = '@@4', shape = diamond]
+      tab5 [label = '@@5']
+      tab6 [label = '@@6']
+
+      # edge definitions with the node IDs
+      tab1 -> tab2;
+      tab2 -> tab3;
+      tab2 -> tab4;
+      tab3 -> tab5;
+      tab4 -> tab6;
+      }
+
+      [1]: 'Room mate is asked to buy a bottle of milk'
+      [2]: 'Do they have eggs?'
+      [3]: 'Yes'
+      [4]: 'No'
+      [5]: 'Room mate is buying 12 bottles of milk'
+      [6]: 'Room mate is buying 1 bottle of milk'
+      ")
+```
+
+---
+
+## if else architecture in R
+Using if else statements in R requires at least 3 steps:
+1. Starting the loop with `if()`
+2. Add the condition to be tested in the brackets of `if(condition)`
+3. Write a function or procedure on data in the curly brackets of `if(condition){ ... }`
+
+For example:
+
+```{r}
+if (1 < 2) {
+  1 + 2
+}
+```
+
+---
+
+## Adding else statements
+In a fourth step, we can add a `else { ... }`
+
+```{r}
+if (1 > 2) {
+  1 + 2
+} else {
+  2 + 5
+}
+```
+
+So, the general architecture is like that:
+```{r eval = FALSE}
+if (condition) {
+  function_to_apply(data)
+} else {
+  other_function_to_apply(data)
+}
+```
+
+(we could also test for another condition in the else statements with `else if()`)
+
+---
+
+## Translation of joke into R
 
 ```{r}
 eggs_available <- TRUE
@@ -299,7 +381,7 @@ if (isTRUE(eggs_available)) {
 
 ---
 
-# Extending our function
+## Extending our function to be able to speak proper english
 
 ```{r}
 milk_bought_2 <- function (n_bottles) {
@@ -311,14 +393,13 @@ milk_bought_2 <- function (n_bottles) {
       paste0("I have bought ", n_bottles, " bottles of milk")
   }
   
-  print(our_string)
+  our_string
 }
 ```
 
 ---
 
 ## Now, that's better, right?
-
 ```{r}
 eggs_available <- FALSE
 
@@ -332,6 +413,9 @@ if (isTRUE(eggs_available)) {
 ---
 
 ## ifelse() shortcut
+There's also a shorcut using the function `ifelse` when the operations applied to the data
+are not too complex (or at least embedded in another function as in our case):
+
 
 ```{r}
 ifelse(
@@ -341,38 +425,42 @@ ifelse(
 )
 ```
 
+But be aware that `if()` and `ifelse()` were designed for different purposes and the latter is not always a shortcut
 
 ---
 
 ## And now blend it all together: function in a function
-
 .tinyish[
 ```{r}
-milk_bought_super <- function (who, n_bottles, eggs_available) {
-
-  if (who == "I") {
-    buyer <- "I have bought "
-  } else {
-    buyer <- paste0(who, " has bought ")
+milk_bought<- function (who, n_bottles, eggs_available) {
+  
+  # get the right grammar for the right person
+  buyer <-
+    ifelse(
+      who == "I",
+      "I have ",
+      paste0(who, " has ")
+    )
+  
+  # basic milk buying function
+  buy_milk <- function (n_bottles) {
+      ifelse(
+        n_bottles < 2,
+        paste0(buyer, "bought ", n_bottles, " bottle of milk"),
+        paste0(buyer, "bought ", n_bottles, " bottles of milk")
+      )
   }
   
-  milk_bought_2 <- function (n_bottles) {
-    if (n_bottles < 2) {
-      our_string <-
-        paste0(buyer, n_bottles, " bottle of milk")
-    } else {
-      our_string <-
-        paste0(buyer, n_bottles, " bottles of milk")
-    }
-    
-    print(our_string)
-  }
+  # apply the basic milk buying function
+  our_string <-
+    ifelse(
+      isTRUE(eggs_available),
+      buy_milk(n_bottles = 12),
+      buy_milk(n_bottles = 1)
+    )
   
-  if (isTRUE(eggs_available)) {
-    milk_bought_2(n_bottles = 12)
-  } else {
-    milk_bought_2(n_bottles = 1)
-  }
+  # get the results
+  our_string
 }
 ```
 ]
@@ -382,8 +470,8 @@ milk_bought_super <- function (who, n_bottles, eggs_available) {
 ## The result
 
 ```{r}
-milk_bought_super(who = "I", n_bottles = 12, eggs_available = TRUE)
-milk_bought_super(who = "Johannes", n_bottles = 12, eggs_available = FALSE)
+milk_bought(who = "I", n_bottles = 12, eggs_available = TRUE)
+milk_bought(who = "Johannes", n_bottles = 12, eggs_available = FALSE)
 ```
 
 ---
@@ -400,10 +488,12 @@ They enable iterating through input data and applying functions to each element 
 ## Architecture of for loops
 
 ```{r eval = FALSE}
-for (iterator_name in data) {
-  do_some_stuff(iterator_name)
+for (iterators in data) {
+  function_to_apply(iterator_name)
 }
 ```
+
+So if we had data about a whole programmer gang buying milk but who experience varying availibity of eggs, we could apply our function to each one of them
 
 ---
 
@@ -413,9 +503,9 @@ for (iterator_name in data) {
 library(randomNames)
 
 our_data <-
-  data.frame(
+  tibble(
     who = randomNames(n = 10, which.names = "first"),
-    milk_available = sample(c("TRUE", "FALSE"), 10, replace = TRUE)
+    eggs_available = sample(c(TRUE, FALSE), 10, replace = TRUE)
   )
 
 our_data
@@ -424,9 +514,71 @@ our_data
 ---
 
 ```{r}
-# for (1:nrow(our_data) in our_data) {
-#   
-# }
+for (row_number in 1:nrow(our_data)) {
+  for_output <- 
+    milk_bought(
+      who = our_data$who[row_number], 
+      n_bottles = 12, 
+      eggs_available = our_data$eggs_available[row_number]
+    )
+  
+  print(for_output) # output must be printed
+}
 ```
+
+---
+
+> The next day, the same programmer's roommate calls him to ask where he is. "I'm back at the grocery," says the programmer. "While you're there, pick up some bread. Thanks!" says the roommate. The programmer never comes home.
+
+---
+
+## Don't try this at home
+
+```{r eval = FALSE}
+there <- "Still there"
+while (there == "Still there") {
+  print("Yeah, there's some bread to pick up right here in the grocery store")
+}
+```
+
+This runs into an infinite loop, which is the joke is all about. 
+
+---
+
+## Better try this one
+Yet, this infinite loop would also require that bread is infinitive
+- This is unrealistic
+- So we may want to add a bread counter that can reach a minimum
+
+```{r eval = FALSE}
+still_there <- TRUE
+bread_counter <- 10
+while (still_there) {
+  print("Yeah, there's some bread to pick up right here in the grocery store.")
+  
+  bread_counter <- bread_counter - 1
+  
+  if (bread_counter < 1) { stop("Bread is empty, going home.")}
+}
+```
+
+---
+
+
+## Ok, let's take a breath for a while
+
+**First of all: We're not finished yet (sorry!), but are there any intermediate
+questions?**
+
+What have we learned so far?
+- R a is a proper programming language supporting a lot of data types and a multitude of functions
+- You can build your own functions and even nest them
+- If-else-statements enable creating algorithms
+- for-loops can be used to iterate through data
+- while-loops are also useful for algorithms that should stop after a certain point is reached
+
+What's left?
+- Some vecotrizations that make life easier: the apply family
+- Tidverse looping with purrr
 
 
