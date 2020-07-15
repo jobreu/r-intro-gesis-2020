@@ -131,6 +131,7 @@ Johannes
 - was socialized with *SPSS*
 - was annoyed with *AMOS* when learning structural equation modeling (around 2010)
 - decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
+- attended an *Introduction to `R` course* at *GESIS* in 2010
 - only used `R` for SEM for some time, while still doing everything else (esp. data wrangling) with *SPSS*
 - finally made the full transition to `R` when joining *GESIS* in 2017
 
@@ -207,7 +208,7 @@ Stefan
 
 - today we are at version `4.0.2`
 
-If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science* by Roger D.Peng](https://bookdown.org/rdpeng/rprogdatascience/) provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html).
+If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science*](https://bookdown.org/rdpeng/rprogdatascience/) by Roger D.Peng provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html).
 
 ---
 
@@ -326,9 +327,9 @@ A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/w
 
 ---
 
-# Text editors and intergrated development interfaces (IDE) for `R`
+# Intergrated development interfaces (IDE) for `R`
 
-Using powerful text editors or an IDE provides several advantages:
+Using an IDE provides several advantages:
   - syntax highlighting
   - auto-completion
   - better overview of files, libraries, created objects/output
@@ -344,7 +345,7 @@ The most easy-to-use IDE that is specifically tailored to `R` is [*RStudio*](htt
 
 # Installing *RStudio*
 
-You can download the installer for your OS from the [*RStudio* website](https://rstudio.com/products/rstudio/download/). The *R Cookbook* also provides some more [details on how to install and start *RStudio*](https://rc2e.com/gettingstarted#recipe-id002b).
+You can download the installer for your OS from the [*RStudio* website](https://rstudio.com/products/rstudio/download/). The [*R Cookbook*](https://rc2e.com/) also provides some more [details on how to install and start *RStudio*](https://rc2e.com/gettingstarted#recipe-id002b).
 
 When you open *RStudio* for the first time it should look like this (only in white instead of black and maybe not with `R` startup messages in German):
 
@@ -358,6 +359,271 @@ When you open *RStudio* for the first time it should look like this (only in whi
 
 ---
 
+# The `R` console in *RStudio*
+
+The console is the interactive input-output window of *RStudio*. You can enter commands here and press &lt;kbd&gt;Enter&lt;/kbd&gt; to execute them. Typically, the output the the commands you enter into the console will also be displayed here.
+
+If you see the **`&gt;`** in the console, it means that it is ready to receive commands.
+
+If you see a **`+`** at the beginning of the console input line, this means that the command is incomplete. A common reason for this is a missing `)` or `"`. If you see the `+` at the beginning of the console input line, you can either complete the command (and then run it by pressing &lt;kbd&gt;Enter&lt;/kbd&gt;/&lt;kbd&gt;Return&lt;/kbd&gt;) or abort entering the command by pressing &lt;kbd&gt;Esc&lt;/kbd&gt;.
+
+Once you have executed at least one command in the console you can cycle through previous using ↑ and ↓ on your keyboard.
+
+---
+
+# `R` as a calculator
+
+The simplest thing you can do with the `R` console is to use it as a calculator. 
+
+
+```r
+3+2
+```
+
+```
+## [1] 5
+```
+
+```r
+2^3
+```
+
+```
+## [1] 8
+```
+
+```r
+1/3
+```
+
+```
+## [1] 0.3333333
+```
+
+*Note:* In the console, you won't see the `##` in the output.
+The `[1]` before the result indicates that this is the first output value of the command (more complex commands can have more than one output value).
+
+---
+
+# `R` as a calculator
+
+The simplest thing you can do with the `R` console is to use it as a calculator. 
+
+
+```r
+100^3
+```
+
+```
+## [1] 1e+06
+```
+
+```r
+1/2500
+```
+
+```
+## [1] 4e-04
+```
+
+For printing very small and very large numbers, `R` uses [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation). If you want to avoid this, you can use the command `options(scipen=999)`. **NB**: This setting will only be active for the current session.
+
+
+```r
+options(scipen=999)
+100^3
+```
+
+```
+## [1] 1000000
+```
+
+```r
+1/2500
+```
+
+```
+## [1] 0.0004
+```
+
+---
+
+# Objects in `R`
+
+`R` is an object-oriented programming language.
+The simplest example of assignment in `R` is the assignment of a single value to an object. This value can, e.g., be an single number or a character string. 
+
+
+```r
+x &lt;- 10
+y &lt;- "This is a character string"
+
+x
+```
+
+```
+## [1] 10
+```
+
+```r
+y
+```
+
+```
+## [1] "This is a character string"
+```
+
+What is important to know and keep in mind is that all of your workspace (including all objects you loaded or created) in `R` is stored in your computer's working memory (RAM). This can become problematic if you work with "big data". However, there are solutions for working with larger-than-RAM data in `R`.
+
+---
+
+# `R` objects in *RStudio*
+
+Once one or more objects have been assigned values they also appear in the `Environment` tab in *RStudio*.
+
+&lt;img src="./pics/rstudio_environment_objects.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Functions
+
+---
+
+# `R` packages
+
+---
+
+# Installing and loading packages in `R`
+
+---
+
+# Packages about packages
+
+---
+
+# Other sources for `R` packages
+
+---
+
+# Managing packages
+
+---
+
+# `R` scripts
+
+While the console is useful for trying things out, you should not use it for your actual data analysis. For this you should use `R` scripts that allow you to store and document your code. `R` scripts are similar to syntax files for *SPSS* or do-files for *Stata*. `R` scripts have the file extension `.R`.
+
+In *RStudio*, you can create a new script via the menu (`File` -&gt; `New File` -&gt; `R Script`), by clicking the small white sheet icon with the green `+` symbol and choosing `R Script`, or through the keyboard shortcut &lt;kbd&gt;Ctrl + Shift + N&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Shift + N&lt;/kbd&gt; (*Mac*). You can open an existing script by clicking on it in the files tab, by clicking the open folder icon, via `File` -&gt; `Open File`, or using the keyboard shortcut &lt;kbd&gt;Ctrl + O&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + O&lt;/kbd&gt; (*Mac*).
+
+---
+
+# *RStudio* interface: Scripts
+
+When you open or create a script in *RStudio* this will be displayed in a fourth pane (which will have multiple tabs if you open/create more than one `R` script).
+
+&lt;img src="./pics/r_studio_script.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Working with `R` scripts
+
+You can write your code in an `R` script just like you do in the console. 
+
+If you want to execute a single line of code from your script in *RStudio*, you can do so by placing your cursor somewhere in that line and clicking the `Run` button in the menu or by using the keyboard shortcut &lt;kbd&gt;Ctrl + Return&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Enter&lt;/kbd&gt; (*Mac*). This also works if you select multiple lines. **NB**: The number of lines in your script may differ from the number of lines you see in the *RStudio* pane (depending on the size of the pane and the length of the lines). The numbers on the left side of the script pane show the actual line numbers.
+
+You can also run all commands in your script by selecting `Run all` from the dropdown menu next to the `Run` button or via the keyboard shortcut &lt;kbd&gt;Ctrl + Alt + R&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Alt + R&lt;/kbd&gt; (*Mac*).   
+
+You can save your script in *RStudio* via `File` -&gt; `Save` or``Save As...`, by clicking the small blue floppy disk icon, or through the keyboard shortcut &lt;kbd&gt;Ctrl + S&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + S&lt;/kbd&gt; (*Mac*).   
+
+---
+
+# Commenting `R` scripts
+
+To properly document your code (for your future self as well as other people who may use your code) it is good practice to use comments. In `R` scripts, you can create a comment by starting a line with a `#`.
+
+In *RStudio*, to comment or uncomment one or more lines in a script you can also select them and use the keyboard shortcut &lt;kbd&gt;Ctrl + Shift + C&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Shift + C&lt;/kbd&gt; (*Mac*).
+
+A neat trick in *RStudio* is that if you end a comment preceding a block of code with `####` (or more `#`), you create a section in your script that can be collapsed and expanded in the *RStudio* script pane. This also creates a small interactive table of contents for the script at the bottom of the script pane.
+
+---
+
+# Commenting `R` scripts
+
+&lt;img src="./pics/script_sections_expanded_highlighted.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Commenting `R` scripts
+
+&lt;img src="./pics/script_sections_collapsed_highlighted.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Keyboard shortcuts in *RStudio*
+
+*RStudio* offers a wide range of useful [keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts). You can access a *Keyboard Shortcut Quick Reference* in *RStudio* via `Help`-&gt; `Keyboard Shortcuts Help`. There even is a keyboard shortcut for accessing the keyboard shortcuts help (very meta): &lt;kbd&gt;Alt + Shift + K&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Option + Shift + K&lt;/kbd&gt; (*Mac*).
+
+One *RStudio* keyboard shortcut that is particularly helpful for writing `R` code is the one for the assignment operator: &lt;kbd&gt;Alt + -&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Option + -&lt;/kbd&gt; (*Mac*). 
+
+---
+
+# *RStudio* pane layout
+
+You can adjust the size of the different panes in *RStudio* and you can minimize or maximize panes.
+You can also customize the pane layout for *RStudio* by selecting `Tools` -&gt; `Global Options` -&gt; `Pane Layout` via the *RStudio* menu.
+
+&lt;img src="./pics/rstudio_pane_layout.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+However, (for this workshop) we would advise that you keep the standard settings here.
+
+---
+
+# *RStudio* appearance
+
+Via `Tools` -&gt; `Global Options` -&gt; `Appearance` you can change the looks of *RStudio* by choosing a theme and font (+ font size).
+
+&lt;img src="./pics/rstudio_appearance.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+*RStudio* also offers many other [customization options](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio).
+
+---
+
+# Themes and fonts
+
+Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection.
+
+I also like monospaced programming fonts with ligatures. I currently use [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/) but am also fond of the [`Fira Code`](https://github.com/tonsky/FiraCode) font (pun intended).
+
+---
+
+# Other useful settings &amp; customizations for `R` and `RStudio`
+
+---
+
+# `R` workspace
+
+---
+
+# Working directory
+
+---
+
+# `R` projects
+
+---
+
+# `.Renviron`
+
+---
+
+# `.Rprofile`
+
+---
+
+# How to find help?
+
+---
+
 # Resources: Introductory books
 
 [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham
@@ -365,6 +631,8 @@ When you open *RStudio* for the first time it should look like this (only in whi
 [R Cookbook: Proven recipes for data analysis, statistics, and graphics](https://rc2e.com/) by JD Long &amp; Paul Teetor
 
 [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) by Garrett Grolemund
+
+[R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/) by Roger D. Peng
 
 [Quantitative Social Science Data with R](https://uk.sagepub.com/en-gb/eur/quantitative-social-science-data-with-r/book257236) by Brian J. Fogarty
 
