@@ -197,13 +197,27 @@ Stefan
 
 ---
 
+# A very brief history of `R`
+
+- `R` was created by Ross Ihaka and Robert Gentleman at the Department of Statistics at the University of Auckland (NZ) in 1991
+
+- The `R` *Core Group* that has been responsible for the development of `R` since then was created in 1997
+
+- version `1.0.0` of `R` was released in 2000
+
+- today we are at version `4.0.2`
+
+If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science* by Roger D.Peng](https://bookdown.org/rdpeng/rprogdatascience/) provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html).
+
+---
+
 # Why use `R`?
 
-- it is free an open-source
+- it is **free** an **open-source**
 
 --
 
-- it is modular through the use of packages
+- it is **modular** through the use of packages
   - You want to do X with `R`? There's ~~an app~~ a package for that!
   - The universe of packages for `R` keeps on expanding
   
@@ -213,20 +227,20 @@ Stefan
 
 --
 
-- it offers extremely powerful and versatile options for data visualization
+- it offers extremely powerful and versatile options for **data visualization**
 
 --
 
-- it has a great community with groups like [*R-Ladies*](https://rladies.org/), the [*R Consortium*](https://www.r-consortium.org/), or [*rOpenSci*](https://ropensci.org/)
+- it has a **great community** with groups like [*R-Ladies*](https://rladies.org/), the [*R Consortium*](https://www.r-consortium.org/), or [*rOpenSci*](https://ropensci.org/)
   - also check out the [*#rstats* hashtag on Twitter](https://twitter.com/search?q=%23rstats&amp;src=typed_query)
   
 --
 
-- it is becoming increasingly popular in [academic publications](http://r4stats.com/articles/popularity/), [programming communities like Stack Overflow](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), and also in [job advertisements](http://r4stats.com/articles/popularity/)
+- it is becoming **increasingly popular** in [academic publications](http://r4stats.com/articles/popularity/), [programming communities like Stack Overflow](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), and also in [job advertisements](http://r4stats.com/articles/popularity/)
 
 --
 
-- it is fun!
+- it is **FUN**!
 
 ---
 
@@ -264,12 +278,18 @@ You can use `R` to...
 
 - both are great
 
-- `Python` is more powerful for data collection and offer more options for machine learning
+- `Python` is more powerful for data collection and offer more (advanced) options for machine learning
 
 - `R` is more powerful for data visualization and statistics
 
-- you can use both together, e.g., via the [`reticulate` package](https://rstudio.github.io/reticulate/)
+- both languages influence and sometimes directly build on each other
+  - some popular `Python` libraries like `pandas` or `seaborn` have been inspired by `R` (packages)
+  - some `R` packages are essentially wrappers for `Python` libraries (e.g., [`spacyr`](https://spacyr.quanteda.io/))
+
+- you can use both together, e.g., via the [`reticulate` package for `R`](https://rstudio.github.io/reticulate/)
   - however, I would not recommend learning them in parallel (to avoid language confusion)
+  
+- there's a [blog post by Dominique Markowski](https://dominiquemakowski.github.io/post/r_or_python/) that provides some good guidance on choosing between `R` and `Python`
 
 ---
 
@@ -284,7 +304,7 @@ You can use `R` to...
 
 # Installing `R`
 
-You can download `R` via the [`R` Project website](https://www.r-project.org/). The exact installation process depends on your operating system (OS). The *R Cookbook* provides a [detailed explanation of the installation process for Windows, macOS, and Linux/Unix](https://rc2e.com/gettingstarted#recipe-id001).
+You can download `R` via the [`R` Project website](https://www.r-project.org/). The exact installation process depends on your operating system (OS). The *R Cookbook* provides a [detailed explanation of the installation process for *Windows*, *macOS*, and *Linux/Unix*](https://rc2e.com/gettingstarted#recipe-id001).
 
 If you want or need to update your version of `R`, you can do this the same way as for the first-time installation. If you use *Windows*, you can also use the [`installr` package](https://github.com/talgalili/installr) to update `R` (we will talk about packages in a bit).
 
@@ -300,7 +320,7 @@ If you want or need to update your version of `R`, you can do this the same way 
 
 # Graphical user interfaces (GUI) for `R`
 
-A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/web/packages/Rcmdr/index.html) which essentially is a package for `R` that can be used via the basic GUI that comes with `R` or the `R` command line tool (`R.exe` on Windows).
+A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/web/packages/Rcmdr/index.html) which essentially is a package for `R` that can be used via the basic GUI that comes with `R` or the `R` command line tool (`R.exe` on *Windows*).
 
 &lt;img src="./pics/r_commander.png" width="45%" style="display: block; margin: auto;" /&gt;
 
@@ -315,16 +335,26 @@ Using powerful text editors or an IDE provides several advantages:
 
 `R` can be used, e.g., with
   - [`gedit`](http://rgedit.sourceforge.net/)
-  - `Emacs` via [ESS (Emacs speaks statistics)](https://ess.r-project.org/)
+  - `Emacs` via [ESS (Emacs Speaks Statistics)](https://ess.r-project.org/)
   - [`vim`](https://www.vim.org/scripts/script.php?script_id=2628)
 
-The most easy-to-use IDE that is specifically tailored to `R` is [`RStudio`](https://rstudio.com/products/rstudio/) which is also what we will use for this workshop.
+The most easy-to-use IDE that is specifically tailored to `R` is [*RStudio*](https://rstudio.com/products/rstudio/) which is also what we will use for this workshop.
 
 ---
 
-# Installing `RStudio`
+# Installing *RStudio*
 
-You can download the installer for your OS from the [`RStudio` website](https://rstudio.com/products/rstudio/download/).
+You can download the installer for your OS from the [*RStudio* website](https://rstudio.com/products/rstudio/download/). The *R Cookbook* also provides some more [details on how to install and start *RStudio*](https://rc2e.com/gettingstarted#recipe-id002b).
+
+When you open *RStudio* for the first time it should look like this (only in white instead of black and maybe not with `R` startup messages in German):
+
+&lt;img src="./pics/r_studio_noscript.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# *RStudio* interface
+
+&lt;img src="./pics/rstudio_1st_explained.png" width="120%" style="display: block; margin: auto;" /&gt;
 
 ---
 
