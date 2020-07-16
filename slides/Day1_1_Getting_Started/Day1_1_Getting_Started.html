@@ -487,6 +487,107 @@ Once one or more objects have been assigned values they also appear in the `Envi
 
 # Functions
 
+Put simply, a function takes an input, does something with it, and produces some sort of output. Functions have arguments. In the simplest case, a function only requires an input (a value or object) as a single argument. 
+
+
+```r
+sqrt(9)
+```
+
+```
+## [1] 3
+```
+
+```r
+x &lt;- 9
+sqrt(x)
+```
+
+```
+## [1] 3
+```
+
+The output of a function can, of course, also be assigned to an object.
+
+
+```r
+x &lt;- sqrt(9)
+x
+```
+
+```
+## [1] 3
+```
+
+---
+
+# Functions
+
+Most functions in `R` have more than one argument.
+
+
+```r
+y &lt;- "This is a character string"
+
+# replace i's in the character string with X's
+gsub(pattern = "i", replacement = "X", y)
+```
+
+```
+## [1] "ThXs Xs a character strXng"
+```
+
+---
+
+# Functions
+
+If you want to access the help file for a function, you can use the following command:
+
+
+```r
+?gsub
+```
+
+This will open a file in the `Help` tab in *RStudio*.
+
+&lt;img src="./pics/help_example.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Functions
+
+Arguments can have required and optional arguments. Required arguments need to be specified for a function to run, whereas optional arguments have defaults and, hence, do not have to be provided in a function call.
+You can easily identify required and optional arguments in the `Usage` section of the help file for a function: If the argument is in the format `argument = value` it is optional. If only the argument name is provided `function(argument_1)`, this means that this argument is required. 
+
+&lt;img src="./pics/help_example.png" width="55%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Functions
+
+Function arguments can be provided in the specified order or by referencing them by name (in which case the order can change). For example, the following two versions of the `gsub` function call are both valid.
+
+
+```r
+y &lt;- "This is a character string"
+
+gsub("i", "X", y)
+```
+
+```
+## [1] "ThXs Xs a character strXng"
+```
+
+```r
+gsub(y, replacement = "X", pattern = "i")
+```
+
+```
+## [1] "ThXs Xs a character strXng"
+```
+
+Typing the argument names is more work but it increases the comprehensibility of your code for human readers.
+
 ---
 
 # `R` packages
