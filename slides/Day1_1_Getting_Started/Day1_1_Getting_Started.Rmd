@@ -788,7 +788,7 @@ To properly document your code (for your future self as well as other people who
 
 In *RStudio*, to comment or uncomment one or more lines in a script you can also select them and use the keyboard shortcut <kbd>Ctrl + Shift + C</kbd> (*Windows* & *Linux*)/<kbd>Cmd + Shift + C</kbd> (*Mac*).
 
-A neat trick in *RStudio* is that if you end a comment preceding a block of code with `####` (or more `#`), you create a section in your script that can be collapsed and expanded in the *RStudio* script pane. This also creates a small interactive table of contents for the script at the bottom of the script pane.
+A neat trick in *RStudio* is that if you end a comment preceding a block of code with `####` (or more `#` or `----` or more dashes), you create a section in your script that can be collapsed and expanded in the *RStudio* script pane. This also creates a small interactive table of contents for the script at the bottom of the script pane. You can also use the keyboard shortcut <kbd>Ctrl + Shift + R</kbd> (*Windows* & *Linux*)/<kbd>Cmd + Shift + R</kbd> (*Mac*) to insert code sections.
 
 ---
 
@@ -804,6 +804,20 @@ include_graphics("./pics/script_sections_expanded_highlighted.png")
 
 ```{r, rstudio_scripts_collapsed, out.width = "100%"}
 include_graphics("./pics/script_sections_collapsed_highlighted.png")
+```
+
+---
+
+# Coding in style `r ji("sunglasses")`
+
+- [Google's R Style Guide](https://google.github.io/styleguide/Rguide.html)
+
+- [The `tidyverse` style guide](https://style.tidyverse.org/) by Hadley Wickham  
+  
+- [`styler`](http://styler.r-lib.org/) package (incl. RStudio add-in) that can be used to "automagically" style single files or even all files in a directory according to the tidyverse style guide
+
+```{r, out.width = "50%"}
+include_graphics("./pics/styler_addin.png")
 ```
 
 ---

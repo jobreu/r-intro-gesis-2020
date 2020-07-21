@@ -1,0 +1,285 @@
+---
+title: "Introduction to R for Data Analysis"
+subtitle: "Data Wrangling"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-04"
+location: "GESIS Summer School in Survey Methodology"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "../workshop.css"]
+    nature:
+      highlightStyle: "github"
+      highlightLines: true
+      countIncrementalSlides: false
+---
+layout: true
+
+```{r setup, include = F}
+if (!require(easypackages)) install.packages("easypackages")
+library(easypackages)
+
+packages("rmarkdown", "knitr", "gadenbuie/xaringanExtra", "hadley/emo", "readr", "magrittr", prompt = F)
+
+options(htmltools.dir.version = FALSE)
+
+opts_chunk$set(echo = TRUE, fig.align = "center")
+
+xaringanExtra::use_tile_view()
+```
+
+<div class="my-footer">
+  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+
+<style type="text/css">
+
+pre {
+  font-size: 10px
+}
+</style>
+
+---
+
+# Data wrangling `r ji("cowboy_hat_face")`
+
+Data wrangling is the process of "getting the data into shape", so that you can then explore and analyze them.
+
+Common data wrangling steps when working with tabular data in the social & behavioral sciences include:
+- renaming variables
+- identifying and (re-)coding missing values
+- recoding variables/values
+- computing new variables
+- reducing a dataset by selecting a subset of variables and/or cases
+
+---
+
+# Data wrangling `r ji("cowboy_hat_face")`
+
+.large[The (in)famous **80/20-rule**: 80% wrangling, 20% analysis]<sup>1</sup>  
+  
+> Given almost every data task, you’ll almost certainly need to .highlight[clean your data, visualize it, and do some exploratory data analysis] Moreover, .highlight[they are also important as you move into more advanced topics.] Do you want to start doing machine learning, artificial intelligence, and deep learning? You had better know how to clean and explore a dataset. If you can’t, you’ll basically be lost ([Sharp Sight Labs, 2017](https://www.sharpsightlabs.com/blog/first-step-data-science-top-performer/)).
+
+.footnote[
+[1] Of course, this ratio relates to the time the working time of the analyst, not computing time.
+]  
+
+---
+
+# `Base R` vs. `tidyverse`
+
+While data wrangling can be done with `base R`, packages from the [`tidyverse`](https://www.tidyverse.org/) can facilitate this process, especially for `R` novices.
+
+Similar to other fierce academic debates over, e.g., `R` vs. `Python` or Frequentism vs. Bayesianism, people have argued [for](http://varianceexplained.org/r/teach-tidyverse/) and [against](https://blog.ephorie.de/why-i-dont-use-the-tidyverse) using/teaching the `tidyverse`.
+
+Our personal experience with teaching the `tidyverse` is something like this...
+
+.center[<img src="./pics/tidyverse_meme.png" width="50%">]
+<small><small>Source: https://s.unhb.de/ReoyN</small></small>
+
+---
+
+# `data.table`
+
+Another option for data wrangling with `R` is the [`data.table` package](https://rdatatable.gitlab.io/data.table/index.html). The reason we do not discuss `data.table` in this course is that neither of us has extensive experience with it and comparing all three options (`base R`, `tidyverse`, and `data.table`) side-by-side would be enough for a separate workshop/course.
+
+There is, however, a very detailed [blog post by Jason Mercer](https://wetlandscapes.com/blog/a-comparison-of-r-dialects/) that compares the functionalities of `base R`, `tidyverse`, and `data.table` for data wrangling and [another one by Atreba](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/) that focuses on a comparison between `data.table` and [`dplyr`](https://dplyr.tidyverse.org/) which is a key package for data manipulation from the `tidyverse`. 
+
+---
+
+# Structure & focus of this session
+
+For most of the data wrangling tasks we discuss in this section, we will show how do do them with `base R` and the `tidyverse`, so that you can get a sense of the differences.
+
+Our main focus, however, will be on the use of packages (and functions) from the `tidyverse` and how they can be used to clean and transform your data.
+
+---
+
+# What is the `tidyverse`?
+
+> The `tidyverse` is an .highlight[opinionated collection of R packages designed for data science]. All packages share an .highlight[underlying design philosophy, grammar, and data structures] ([Tidyverse website](https://www.tidyverse.org/)).
+
+> The `tidyverse` is a .highlight[coherent system of packages for data manipulation, exploration and visualization] that share a .highlight[common design philosophy] ([Rickert, 2017](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)).
+
+```{r, out.width = "25%"}
+include_graphics("./pics/hex-tidyverse.png")
+```
+
+---
+
+# Benefits of the `tidyverse`
+
+As stated before, data wrangling can also be done with `base R`. However, the syntax for this is typically (more) verbose and not intuitive and, hence, difficult to learn, remember, and read (plus many `tidyverse` operations are faster than their `base R` equivalents).  
+  
+`Tidyverse` syntax is designed to increase **human-readability**. This makes it especially **attractive for R novices** as it can facilitate the experience of **self-efficacy** (see [Robinson, 2017](http://varianceexplained.org/r/teach-tidyverse/)). The `tidyverse` also aims for **consistency** (e.g., data frame as first argument and output) and uses **smarter defaults** (e.g., no partial matching of data frame and column names).]
+
+---
+
+# `tidyverse` vocabulary 101
+
+While there is much more to the `tidyverse` than this, three important concepts that you need to be familiar with, if you want to use it, are:
+
+1. pipes
+
+2. tibbles
+
+3. tidy data
+
+---
+
+# What is a pipe?
+
+```{r pipe_johannes, echo = F, out.width = "40%"}
+include_graphics("./pics/pipe_office_decoration.jpg")
+```
+.center[<small><small>Source: Johannes' office </small></small>]
+
+--
+
+You might know pipes from other scripting utilities 
+- e.g., `bash` where a `|` operator is used
+
+---
+
+# What is a pipe?
+
+Put briefly, the pipe operator `%>%` takes an object (which can be the outcome of a previous function) and pipes it (by default as the first argument) into the next function. 
+
+We'll show how to use the pipes and how it compares to `base R` code in the following, but what may already be interesting to know is that *RStudio* has a keyboard shortcut for the the pipe operator `%>%`: <kbd>Ctrl + Shift + M</kbd> (*Windows* & *Linux*)/<kbd>Cmd + Shift + M</kbd> (*Mac*)
+
+---
+
+# Nested code in `base R`
+
+If, for example, we wanted to calculate the mean of the mileage per gallon (`mpg`) of the cars in the `mtcars` dataset included as an example in the `readr` package, the `base R` code could look like this:
+
+```{r base R nested code, message = FALSE}
+mean(read_csv(readr_example("mtcars.csv"))$mpg)
+```
+
+Essentially, the code has to be read from the inside out. Of course, you can also always create new/intermediary objects as in the following example. However, this quickly fills up your workspace and can, eventually, slow down your computer (remember that the objects in the workspace are stored in your computer's working memory.)
+
+```{r intermediate objects, message = FALSE}
+example_file        <- readr_example("mtcars.csv")
+example_file_loaded <- read_csv(example_file)
+mean(example_file_loaded$mpg)
+```
+
+---
+
+# Pipes to the rescue!
+
+Pipes disentangle the whole process with an alternative approach by applying any involved function step by step:
+
+```{r read_mtcars_mpg_pipe, echo = TRUE, message = FALSE}
+"mtcars.csv" %>% 
+  readr_example() %>% 
+  read_csv() %>% 
+  .$mpg %>% 
+  mean()
+```
+
+Here the code can be read from top to bottom and you can think of the pipe operator `%>%` as meaning "and then...".
+
+*Note*: The `.` before `$mpg` in the above code example is a placeholder for the output of the previous step. This is useful if this output is not the first argument of a following function. The example is also somewhat unusual in another regard as it starts with a text string. More commonly, pipes start with dataframes.
+
+---
+
+# Types of pipes
+
+While `%>%` is the most widely used pipe operator in the `tidyverse`, there are other types of pipes. These are included in the [`magrittr` package](https://magrittr.tidyverse.org/).
+
+A useful one is the assignment pipe `%<>%` which assigns the outcome of a pipe to the object that serves as input at the beginning of the pipe.
+
+However, for the sake of readability, and because it allows to give the output object a different name, it is usually better to use the regular `R` assignment operator `<-`, even though this means a little more typing (as you have to type the name of the input and the resulting output object, which may be the same.
+
+---
+
+# tibbles
+
+Tibbles are the data format used in the `tidyverse`.
+
+--
+
+They are basically standard `R data.frame()`s, enriched with some more features and metadata:
+
+--
+
+- information about dimensions (rows x columns) of dataframes
+
+--
+
+- information about variable types
+
+--
+
+- better readability
+  - they are printed in a way that fits the screen/window
+
+--
+
+Tibbles come with the [`tibbles` package](https://tibble.tidyverse.org/) and it is easy to convert a `data.frame` to a `tibble` (with `as_tibble(data.frame)`) and vice versa (using `as.data.frame(tibble)`.
+
+---
+
+# Tidy data
+
+The 3 rules of tidy data:
+
+1. Each **variable** is in a separate **column**.
+
+2. Each **observation** is in a separate **row**.
+
+3. Each **value** is in a separate **cell**.
+
+<img src="pics/tidy_data.png" width="100%">
+Source: https://r4ds.had.co.nz/tidy-data.html
+
+*NB*: In the `tidyverse` terminology 'tidy data' often also means data in long format - where applicable. 
+
+---
+
+# Wide vs. long format
+
+<img src="pics/wide-long.png" width="90%">
+Source: https://github.com/gadenbuie/tidyexplain#tidy-data
+
+---
+
+# Dataset
+
+In the examples and exercises for this session and the following session, we will use the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You can [download the dataset in different formats as well as the codebook and the questionnaire (in German) from the *GESIS* Data Archive](https://search.gesis.org/research_data/ZA5667) (note: you need to have/create a user account).
+
+In order to code along and to be able to do the exercises, you should store the files in a folder called `data` that is in the same folder as the other materials for this course.
+
+You can find more information about the *GESIS Panel* and its methodology on the [*GESIS Panel* website](https://www.gesis.org/en/gesis-panel/gesis-panel-home).
+
+---
+
+# Codebook
+
+It is always advisable to consult the codebook (if there is one) before starting to work with a(n existing) dataset. The *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* comes with a very [detailed codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
+
+Side note: If you want to generate a codebook for your own dataset, there are several options in `R`:
+
+- The [`codebook` package](https://github.com/rubenarslan/codebook) which includes an *RStudio*-Addin and also offers a [web app](https://rubenarslan.ocpu.io/codebook/www/)
+
+- the `makeCodebook()` function from the [`dataMaid` package](https://github.com/ekstroem/dataMaid) (see this [blog post](http://sandsynligvis.dk/articles/18/codebook.html) for a short tutorial)
+
+- the `codebook()` function from the [`memisc` package](https://github.com/melff/memisc)
+
+---
+
+# Load the data
+
+The first step, of course, is loading the data into `R`. The *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is available in different formats. We will work with the `.csv` file.
+
+```{r load gesis panel data display, eval = F}
+gesis_panel_corona <- read_csv2("./data/ZA5667_v1-1-0.csv")
+```
+
+```{r load gesis panel data, echo = F}
+gesis_panel_corona <- read_csv2("../../../../data/ZA5667_v1-1-0.csv")
+```

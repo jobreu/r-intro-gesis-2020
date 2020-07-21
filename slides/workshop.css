@@ -20,6 +20,11 @@
 
 .highlight {background-color: yellow;}
 
+.title-slide {
+  background-color: #445A6F;  
+  color: #FFFFFF;           
+}
+
 .title-slide .remark-slide-number {
   display: none;
 }
