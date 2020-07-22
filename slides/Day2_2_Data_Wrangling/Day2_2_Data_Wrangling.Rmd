@@ -19,7 +19,7 @@ layout: true
 if (!require(easypackages)) install.packages("easypackages")
 library(easypackages)
 
-packages("rmarkdown", "knitr", "gadenbuie/xaringanExtra", "hadley/emo", "readr", "magrittr", prompt = F)
+packages("rmarkdown", "knitr", "gadenbuie/xaringanExtra", "hadley/emo", prompt = F)
 
 options(htmltools.dir.version = FALSE)
 
@@ -114,6 +114,20 @@ include_graphics("./pics/hex-tidyverse.png")
 As stated before, data wrangling can also be done with `base R`. However, the syntax for this is typically (more) verbose and not intuitive and, hence, difficult to learn, remember, and read (plus many `tidyverse` operations are faster than their `base R` equivalents).  
   
 `Tidyverse` syntax is designed to increase **human-readability**. This makes it especially **attractive for R novices** as it can facilitate the experience of **self-efficacy** (see [Robinson, 2017](http://varianceexplained.org/r/teach-tidyverse/)). The `tidyverse` also aims for **consistency** (e.g., data frame as first argument and output) and uses **smarter defaults** (e.g., no partial matching of data frame and column names).]
+
+---
+
+# Lift-off into the `tidyverse` `r ji("rocket")`
+**install all `tidyverse` packages** (for the full list of `tidyverse` packages see [https://www.tidyverse.org/packages/](https://www.tidyverse.org/packages/))
+```{r install tidyverse, eval = F, echo = T}
+install.packages("tidyverse")
+
+```
+**load core `tidyverse` packages** (NB: To save time and reduce namespace conflicts it can make sense to load the `tidyverse` packages individually)
+```{r load tidyverse, eval = T, echo = T, message = T}
+library("tidyverse")
+
+```
 
 ---
 
@@ -250,7 +264,7 @@ Source: https://github.com/gadenbuie/tidyexplain#tidy-data
 
 # Dataset
 
-In the examples and exercises for this session and the following session, we will use the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You can [download the dataset in different formats as well as the codebook and the questionnaire (in German) from the *GESIS* Data Archive](https://search.gesis.org/research_data/ZA5667) (note: you need to have/create a user account).
+For most of the examples and exercises in this session (and the following sessions), we will use the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You can [download the dataset in different formats as well as the codebook and the questionnaire (in German) from the *GESIS* Data Archive](https://search.gesis.org/research_data/ZA5667) (note: you need to have/create a user account).
 
 In order to code along and to be able to do the exercises, you should store the files in a folder called `data` that is in the same folder as the other materials for this course.
 
@@ -283,3 +297,397 @@ gesis_panel_corona <- read_csv2("./data/ZA5667_v1-1-0.csv")
 ```{r load gesis panel data, echo = F}
 gesis_panel_corona <- read_csv2("../../../../data/ZA5667_v1-1-0.csv")
 ```
+
+---
+
+# Note: Tidy vs. untidy data
+
+As a lot of work (by many people) has already gone into this dataset, the *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is already tidy. Notably, if you collect data yourself, this may not be the case (at least at the beginning). For example, cells may hold more than one value or a variable that should be in one column is spread across multiple columns (e.g., parts of a date or name).
+
+If you need to make your data tidy or change it from wide to long format or vice versa (which may, e.g., be necessary if you work with longitudinal survey data from multiple waves), the [`tidyr` package](https://tidyr.tidyverse.org/) from the `tidyverse` is a good option. There are many introductions and tutorials for tidying data available online and we also covered this in our section on *Tidy Data*  in the workshop on [*Data Wrangling & Exploration with the Tidyverse in R*](https://github.com/jobreu/tidyverse-workshop-gesis-2019) that we gave in 2019.
+
+---
+
+# Dataframe check 1, 2, 1, 2!
+
+Even before checking the codebook for a dataset (if there is one) it always helps to have a quick look at the data. The most high-level information you can get is about the object type and its dimensions.
+
+```{r class dim}
+# object type
+class(gesis_panel_corona)
+
+# number of rows and columns
+dim(gesis_panel_corona)
+
+```
+
+---
+
+# Dataframe check 1, 2, 1, 2!
+
+You can also print the first 6 lines of the dataframe with `head()`. You can easily change the number of lines by providing the number as the second argument to the `head()` function.
+
+```{r head}
+head(gesis_panel_corona, 10)
+```
+
+---
+
+# Dataframe check 1, 2, 1, 2!
+
+If we want some more (detailed) information about the dataset, we can use the `base R` function `str()`.
+
+```{r str}
+str(gesis_panel_corona)
+```
+
+---
+
+# Dataframe check 1, 2, 1, 2!
+
+As you saw on the previous slide, the output of `str()` can be a bit hard to read (especially for larger datasets). A good alternative that creates a more clearly laid output is the `glimpse()` function from the `dplyr` package.
+
+```{r glimpse}
+glimpse(gesis_panel_corona)
+```
+
+---
+
+# What's in a name?
+
+One thing that we need to know - and might want to change - are the names of the variables in the dataset.
+
+```{r names gpc}
+names(gesis_panel_corona)
+```
+
+---
+
+# What's in a name?
+
+As you can see, only a few of the variable names in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset are descriptive. The names have meaning as they are composed of codes representing the study wave, study name, variable number and whether they are original or derived variables, but they are not intuitive to understand. Hence, for analyzing them, especially if you want to create tables and/or plots, it can make sense to rename them. This is also a common step if you work with your own data. Depending on what method or tool(s) you used to collect the data, the variable names may also not be what you want or need them to be.
+
+---
+
+# Renaming variables/columns
+
+It good practice to use consistent naming conventions. Since `R` is case-sensitive, we might, e.g., want to only use lowercase letters. As spaces in variable names can cause problems, we could, e.g., decide to use `r ji("snake")` snake_case (`r ji("camel")` camelCase is a common alternative; for a good brief discussion of options for avoiding spaces in variable names, see this [Medium post by Patrick Divine](https://medium.com/@pddivine/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841)).
+
+*Note*: The [`janitor` package](https://github.com/sfirke/janitor) (which is `tidyverse`-oriented) can be used to facilitate several common data cleaning tasks. Among other things, it contains the function `clean_names()` that takes a dataframe and creates column "names are unique and consist only of the _ character, numbers, and letters" (from the help file for this function), with the default being `r ji("snake")` snake_case (but support for many other types of cases).  
+
+---
+
+# `dplyr`
+
+The `tidyverse` example in the following will make use of functions from the [`dplyr` package](https://dplyr.tidyverse.org/).
+
+- `dplyr` functions are verbs that signal an action  
+
+- the first argument is a dataframe (or tibble)  
+
+- the output normally also are dataframes (tibbles) 
+
+- columns (= variables in a tidy dataframe) can be referenced without quotation marks (non-standard evaluation)
+
+---
+
+# Renaming variables/columns
+
+To choose meaningful variable names, we need to look at the codebook. Say, for example, we want to rename the variables representing the responses to the questions asking whether people use *Facebook* or other social media to get information about the Coronavirus.
+
+```{r rename vars, eval = F}
+# Base R
+colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy090a"] <- "corona_inf_facebook"
+colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy091a"] <- "corona_inf_other_sm"
+
+# tidyverse (dplyr)
+gesis_panel_corona <- gesis_panel_corona %>% 
+  rename(corona_inf_facebook = hzcy090a, 
+         corona_inf_other_sm = hzcy091a)
+```
+
+---
+
+# Selecting columns/variables
+
+In many cases, we do not need all the variables in a dataset for our analyses. In the following example, we use two options from `base R` to select the variables from the *GESIS Panel* dataset relating to the self-assessed risk of becoming infected with the Coronavirus.
+
+There are two options for doing this with `base R`:
+
+Option 1
+```{r select vars base}
+corona_risk <- gesis_panel_corona[, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
+# When subsetting with [], the first value refers to rows, the second to columns
+# [, c("var1", "var2", ...)] means we want to select all rows but only some specific columns.
+```
+
+Option 2
+```{r subset}
+corona_risk  <- subset(gesis_panel_corona, TRUE, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
+# Again, here the 2nd argument refers to the rows.
+# Setting it to TRUE means that we want to include all rows in the subset.
+```
+
+---
+
+# Selecting columns/variables
+
+In the `tidyverse`, we can create a subset of variables with the `dplyr` verb `select()`.
+
+```{r select}
+corona_risk <- gesis_panel_corona %>% 
+  select(hzcy001a,
+         hzcy002a,
+         hzcy003a,
+         hzcy004a,
+         hzcy005a)
+
+head(corona_risk)
+```
+
+---
+
+# Selecting a range of columns/variables
+
+There also is a shorthand notation for selecting a set of consecutive columns with `select()`.
+
+```{r select range}
+corona_risk <- gesis_panel_corona %>% 
+  select(hzcy001a:hzcy005a)
+
+head(corona_risk)
+```
+
+---
+
+# Re~~wind~~name selecta
+
+A nice thing about the `dplyr` verb `select` is that you can use it to select and rename variables in one step.
+
+
+```{r select & rename}
+corona_risk <- gesis_panel_corona %>% 
+  select(risk_self = hzcy001a,
+         risk_surroundings = hzcy002a,
+         risk_hospital = hzcy003a,
+         risk_quarantine = hzcy004a,
+         risk_infect_others = hzcy005a)
+
+head(corona_risk)
+```
+
+---
+
+# Unselecting columns/variables
+
+If you just want to exclude one or a few columns/variables, it is easier to unselect those than to select all others. Again, there's two ways to do this with `base R`.
+
+Option 1
+```{r unselect base}
+gesis_panel_corona_cut <- gesis_panel_corona[!(names(gesis_panel_corona) %in% c("za_number", "version", "doi"))]
+# The %in% operator means "is included in" (in this case the following character vector)
+```
+
+Option 2
+```{r subset unselect}
+gesis_panel_corona_cut <- subset(gesis_panel_corona, TRUE, select = -c(za_number, version, doi))
+```
+
+---
+
+# Unselecting columns/variables
+
+`select()` from `dplyr` also allows you to easily exclude one or more columns/variables.
+
+```{r select unselect}
+gesis_panel_corona_cut <- gesis_panel_corona %>% 
+  select(-(za_number:doi))
+
+glimpse(gesis_panel_corona_cut)
+```
+
+---
+
+# Advanced ways of selecting columns/variables
+
+Sometimes the ways of selecting columns/variables shown on the previous slides might be difficult or tedious to use, especially if you have datasets with a large number of variables in them.  
+
+Fortunately, there are many so-called helper functions and scoped variants for the `dplyr` `select()` function. We will explore two of those options in the following. For a more exhaustive overview you can have a look at the [tutorial by Suzan Baert](https://suzan.rbind.io/2018/01/dplyr-tutorial-1/).
+
+---
+
+# Select columns/variables based on parts their names
+
+```{r select name parts}
+gesis_panel_corona_cy <- gesis_panel_corona %>% 
+  select(starts_with("hzcy"))
+
+gesis_panel_corona_cat <- gesis_panel_corona %>% 
+  select(ends_with("_cat"))
+
+```
+
+---
+
+# Select columns/variables based on their type
+
+```{r select type}
+# Only keep numeric variables from the dataset
+gesis_panel_corona_num <- gesis_panel_corona %>% 
+  select_if(is.numeric)
+```
+
+---
+
+# Filtering rows/observations
+
+In `R`, you can filter rows/observations dependent on one or more conditions.
+
+To filter rows/observations you can use... 
+- **comparison operators**:
+    - **<** (smaller than)
+    - **<=** (smaller than or equal to)
+    - **==** (equal to)
+    - **!=** (not equal to)
+    - **>=** (larger than or equal to)
+    - **>** (larger than)
+    - **%in%** (included in)
+
+... and combine them with
+- **logical operators**:
+    - **&** (and)
+    - **|** (or)
+    - **!** (not)
+    - **xor** (either or, not both)
+
+---
+
+# Filtering rows/observations
+
+Similar to selecting columns/variables, there are two parallel options for filtering rows/observations with `base R`.
+
+Option 1
+```{r filter base}
+gesis_panel_corona_male <- gesis_panel_corona[gesis_panel_corona$sex == 1, ]
+```
+
+```{r filter subset}
+gesis_panel_corona_male <- subset(gesis_panel_corona, sex == 1)
+```
+
+---
+
+# Filtering rows/observations
+
+The `tidyverse` solution for filtering rows/observations is the `dplyr` verb `filter()`.
+
+```{r dplyr filter 1}
+gesis_panel_corona_male <- gesis_panel_corona %>% 
+  filter(sex == 1)
+```
+
+---
+
+# Selecting columns + filtering rows
+
+Of course, you can also combine the selection of columns and filtering or rows.
+
+```{r colsrows base}
+corona_risk_male <- gesis_panel_corona[gesis_panel_corona$sex == 1, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
+```
+
+```{r colsrows subset}
+corona_risk_male  <- subset(gesis_panel_corona, sex == 1, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
+```
+
+---
+
+# Selecting columns + filtering rows
+
+The `tidyverse` approach to combining the selection of columns and the filtering of rows is to chain these steps together in a pipe (in this case, the order of the pipe steps does not matter).
+
+```{r dplyr select + filter}
+corona_risk_male <- gesis_panel_corona %>% 
+  filter(sex == 1) %>% 
+  select(hzcy001a:hzcy005a)
+```
+
+
+---
+
+# `dplyr::filter` - multiple conditions
+
+Of yourse, you can also filter rows/observations based on more than one condition.
+
+```{r filter 2 cond}
+gesis_panel_corona_old_men <- gesis_panel_corona %>% 
+  filter(sex == 1, age_cat > 7)
+```
+
+---
+
+# `dplyr::filter` - multiple conditions
+
+By default, multiple conditions in `filter()` are added as & (and). You can, however, also specify multiple conditions differently.
+
+**or** (cases for which at least one of the conditions is true)
+
+```{r filter or}
+gesis_panel_corona_old_andor_male <- gesis_panel_corona %>% 
+  filter(sex == 1 |
+           age_cat > 7)
+```
+
+**xor** (cases for which only one of the two conditions is true)
+
+```{r filter xor}
+gesis_panel_corona_old_or_male <- gesis_panel_corona %>%
+  filter(xor(sex == 1, 
+             age_cat > 7))
+```
+
+---
+
+# Advanced ways of filtering observations
+
+Similar to the basic options for `select()`, the basic variants of `filter()` might not meet your needs when it comes to more specific or complicated ways of data wrangling.  
+
+Again, there are several helper functions and scoped variants of the `filter()` function that can help you (and there also is a detailed [tutorial by Suzan Baert](https://suzan.rbind.io/2018/02/dplyr-tutorial-3/) on this). We will show two of those in the following.
+
+---
+
+# Filter rows based on a range in a numeric variable
+
+```{r filter between}
+gesis_panel_corona_rightwing <- gesis_panel_corona %>% 
+  filter(between(political_orientation, 8, 10))
+```
+
+Note that the range specified in `between()` is inclusive.
+
+---
+
+# Filter based on a selection of variables
+
+```{r filter at}
+# Select all cases where at least one of the specified variables is > 0
+gesis_panel_corona_measures_taken <- gesis_panel_corona %>% 
+    filter_at(vars(hzcy006a:hzcy016a),
+    any_vars(. > 0)) 
+```
+
+---
+
+# Changing columns/variables: Simple transformations
+
+---
+
+# Changing columns/variables: Recoding values
+
+---
+
+# Creating new columns/variables
+
+---
+
+# Relational data
