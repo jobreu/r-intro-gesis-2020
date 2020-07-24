@@ -149,7 +149,6 @@ Stefan
 
 # About you
 
-.large[
 - What's your name?  
 
 - Where do you work/study? What are you working on/studying?
@@ -159,21 +158,28 @@ Stefan
 - What statistical software package(s) do typically use?
 
 - What do you want to use `R` for?
-]
+
+Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 ---
 
 # Preliminaries
 
-.large[
-- Feel free to ask questions at any time 
+- The workshop consists of a combination of lectures and hands-on exercises
 
 - We want to make this workshop as interactive as possible
 
-- The workshop consists of a combination of lectures and hands-on exercises
+- Feel free to ask questions at any time
+  - if it is a question that everybody can/should hear, use "raise hand" function in *Zoom* and then ask via audio/video
+  - you can also use the text chat to ask questions
+    - you can send text messages only to us, if others should not be able to read them
+
+- Please mute your microphones unless you are asking a question
+
+- We will try to provide (one-on-one) "tech support" during the exercises (please contact us via the text chat if you have any technical issues/questions that we can solve)
 
 - Slides and other materials are available at
-]
+
 .center[`https://github.com/jobreu/r-intro-gesis-2020`]
 
 ---
@@ -279,6 +285,26 @@ You can use `R` to...
 
 ---
 
+# Fun with `R`
+
+The first (clumsy and silly) `R` function Johannes ever wrote...
+
+
+```r
+batman &lt;- function() {
+  suppressWarnings (
+    if (!require("cowsay")) {
+      install.packages("cowsay")
+      library(cowsay)}
+    )
+  x &lt;- rep(NA, 8)
+  toString(x)
+  say(paste(x, collapse = ", "), by = "bat2")
+}
+```
+
+---
+
 # (My take on) `R` vs. `Python`
 
 - both are great
@@ -350,7 +376,7 @@ The most easy-to-use IDE that is specifically tailored to `R` is [*RStudio*](htt
 
 # *RStudio*
 
-*RStudio* is the most widely used IDE for `R`. In addition to the general advantages of IDE, it has some specific ones:
+*RStudio* is the most widely used IDE for `R`. In addition to the general advantages of an IDE, it has some specific ones:
 
 - easy integration with version control via `Git` (for a good tutorial on this, see [*Happy Git and GitHub for the useR*](https://happygitwithr.com/))
 
@@ -504,7 +530,7 @@ Once one or more objects have been assigned values they also appear in the `Envi
 
 # Functions
 
-Put simply, a function takes an input, does something with it, and produces some sort of output. Functions have arguments. In the simplest case, a function only requires an input (a value or object) as a single argument. 
+Put simply, a function takes an input, does something with it, and produces some sort of output. Functions typically have arguments. In the simplest case, a function only requires an input (a value or object) as a single argument. 
 
 
 ```r
@@ -644,7 +670,7 @@ In addition, a new installation also includes the following "recommended" packag
 
 Two helpful resources for finding `R` packages are:
 
-  - [CRAN Task Views](https://cran.r-project.org/) provides curated lists of recommended packages for specific tasks/areas/topics
+  - [CRAN Task Views](https://cran.r-project.org/) provide curated lists of recommended packages for specific tasks/areas/topics
   
   - [METACRAN](https://www.r-pkg.org/) allows you to search and browse all packages on *CRAN*
 
@@ -852,7 +878,7 @@ If you want to execute a single line of code from your script in *RStudio*, you 
 
 You can also run all commands in your script by selecting `Run all` from the dropdown menu next to the `Run` button or via the keyboard shortcut &lt;kbd&gt;Ctrl + Alt + R&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Alt + R&lt;/kbd&gt; (*Mac*).   
 
-You can save your script in *RStudio* via `File` -&gt; `Save` or``Save As...`, by clicking the small blue floppy disk icon, or through the keyboard shortcut &lt;kbd&gt;Ctrl + S&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + S&lt;/kbd&gt; (*Mac*).   
+You can save your script in *RStudio* via `File` -&gt; `Save` or `Save As...`, by clicking the small blue floppy disk icon, or through the keyboard shortcut &lt;kbd&gt;Ctrl + S&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + S&lt;/kbd&gt; (*Mac*).   
 
 ---
 
@@ -978,6 +1004,8 @@ There are absolute (example: "C:/Users/user/Documents/example.R") and relative f
 
 To facilitate the reuse of your code on other systems (by you or others), it is generally preferable to use relative file paths.
 
+*Note*: `R` uses `Unix`-style file paths with `/`, while *Windows* uses `\` in file paths. However `\\` also works in `R`.
+
 ---
 
 # Working directory
@@ -1002,7 +1030,7 @@ There are two ways in which you can set/change your working directory:
 
 # Setting the working directory via the *RStudio* GUI
 
-The *RStudio* menu `Session`-&gt; `Set Working Directory` which provides different options:
+The *RStudio* menu `Session` -&gt; `Set Working Directory` which provides different options:
 
 - "To Project Directory": can be used if you have an `.Rproj` file (more on that later)
 
@@ -1090,7 +1118,7 @@ Similar to the workspace, the command history should not be the main/default way
 
 *RStudio* projects are very useful for keeping all files associated with a specific project (data, scripts, output, etc.) organized together.
 
-You can create a project via the *RStudio* menu: `File`-&gt; `New Project`. *RStudio* projects are associated with `.Rproj` files that contain some specific settings for the project. If you double-click on a `.Rproj` file, this opens a new instance of *RStudio* with the working directory and file browser set to the location of that file (the repository/folder for this workshop contains an `.Rproj` file, if you want to try this out).
+You can create a project via the *RStudio* menu: `File` -&gt; `New Project`. *RStudio* projects are associated with `.Rproj` files that contain some specific settings for the project. If you double-click on a `.Rproj` file, this opens a new instance of *RStudio* with the working directory and file browser set to the location of that file (the repository/folder for this workshop contains an `.Rproj` file, if you want to try this out).
 
 Explaining *RStudio* projects in detail is beyond the scope of this course, but there are good tutorials available, e.g., on the [*RStudio* support site](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). There also is a [chapter on project-oriented workflows in *What They Forgot to Teach You About R*](https://rstats.wtf/project-oriented-workflow.html).
 
@@ -1142,9 +1170,9 @@ If you want to know more: The [chapter on the `R` startup process in *What They 
 
 # Troubleshooting 101
 
-- abort `R` process: `Session`-&gt; `Terminate R` in the *RStudio* menu or by clicking the stop shield icon in the upper right corner of the console
+- abort `R` process: `Session` -&gt; `Terminate R` in the *RStudio* menu or by clicking the stop shield icon in the upper right corner of the console
 
-- Restart `R` (*RStudio*  menu: `Session`-&gt; `Restart R`) or *RStudio*
+- Restart `R` (*RStudio*  menu: `Session` -&gt; `Restart R`) or *RStudio*
 
 - re-install packages
 
@@ -1160,6 +1188,8 @@ If you want to know more: The [chapter on the `R` startup process in *What They 
 - typos (e.g., capitalization in package names)
 
 - missing or unmatched `(`, `'`, or `"` (often at the end of a command)
+
+- `\` instead of `/` in file paths (e.g., when copied from the *Windows* explorer)
 
 - namespace conflicts (solution: `package::function()`)
 
