@@ -313,6 +313,79 @@ The *GESIS Panel* website provides [detailed documentation](https://www.gesis.or
 
 ---
 
+# Interlude: Citing data
+
+If you (re-)use existing datasets, please cite them in your publications, theses, teaching materials, etc. Data repositories normally provide information on how to cite the data. For example, the APA-style citation for *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is:
+
+GESIS Panel Team (2020). GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany. *GESIS Datenarchiv, Köln. ZA5667 Datenfile Version 1.1.0*, https://doi.org/10.4232/1.13520.
+
+---
+
+# Interlude: Citing FOSS
+
+You should also make sure to cite the free and open-source software that you use, such as `R` packages and `R` itself. There is a function in `R` that tells you how to cite it or any of the packages you have installed.
+
+.small[
+
+```r
+citation()
+```
+
+```
+## 
+## To cite R in publications use:
+## 
+##   R Core Team (2020). R: A language and environment for statistical
+##   computing. R Foundation for Statistical Computing, Vienna, Austria.
+##   URL https://www.R-project.org/.
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Manual{,
+##     title = {R: A Language and Environment for Statistical Computing},
+##     author = {{R Core Team}},
+##     organization = {R Foundation for Statistical Computing},
+##     address = {Vienna, Austria},
+##     year = {2020},
+##     url = {https://www.R-project.org/},
+##   }
+## 
+## We have invested a lot of time and effort in creating R, please cite it
+## when using it for data analysis. See also 'citation("pkgname")' for
+## citing R packages.
+```
+]
+---
+
+# Interlude: Citing FOSS
+
+.small[
+
+```r
+citation("tidyverse")
+```
+
+```
+## 
+##   Wickham et al., (2019). Welcome to the tidyverse. Journal of Open
+##   Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {Welcome to the {tidyverse}},
+##     author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
+##     year = {2019},
+##     journal = {Journal of Open Source Software},
+##     volume = {4},
+##     number = {43},
+##     pages = {1686},
+##     doi = {10.21105/joss.01686},
+##   }
+```
+]
+---
+
 # Codebook
 
 It is always advisable to consult the codebook (if there is one) before starting to work with a(n existing) dataset. The *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* comes with a very [detailed codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
@@ -394,6 +467,7 @@ dim(gesis_panel_corona)
 
 You can also print the first 6 lines of the dataframe with `head()`. You can easily change the number of lines by providing the number as the second argument to the `head()` function.
 
+.small[
 
 ```r
 head(gesis_panel_corona, 10)
@@ -440,13 +514,14 @@ head(gesis_panel_corona, 10)
 ## #   hzcy091a &lt;dbl&gt;, hzcy092a &lt;dbl&gt;, hzcy093a &lt;dbl&gt;, hzcy095a &lt;dbl&gt;,
 ## #   hzcy096a &lt;dbl&gt;, hzcy097a &lt;dbl&gt;, hzcy098a &lt;dbl&gt;, ...
 ```
-
+]
 ---
 
 # Dataframe check 1, 2, 1, 2!
 
 If we want some more (detailed) information about the dataset, we can use the `base R` function `str()`.
 
+.small[
 
 ```r
 str(gesis_panel_corona)
@@ -695,13 +770,14 @@ str(gesis_panel_corona)
 ##   ..   hzzr019a = col_double()
 ##   .. )
 ```
-
+]
 ---
 
 # Dataframe check 1, 2, 1, 2!
 
 As you saw on the previous slide, the output of `str()` can be a bit hard to read (especially for larger datasets). A good alternative that creates a more clearly laid output is the `glimpse()` function from the `dplyr` package.
 
+.small[
 
 ```r
 glimpse(gesis_panel_corona)
@@ -848,13 +924,14 @@ glimpse(gesis_panel_corona)
 ## $ hzzr018a              &lt;dbl&gt; -33, 138, 307, 206, -33, 360, 416, 293, -33, ...
 ## $ hzzr019a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
 ```
-
+]
 ---
 
 # What's in a name?
 
 One thing that we need to know - and might want to change - are the names of the variables in the dataset.
 
+.small[
 
 ```r
 names(gesis_panel_corona)
@@ -908,6 +985,7 @@ names(gesis_panel_corona)
 ## [133] "hzzr015a"              "hzzr016a"              "hzzr017a"             
 ## [136] "hzzr018a"              "hzzr019a"
 ```
+]
 
 ---
 
@@ -1077,12 +1155,24 @@ Option 1
 ```r
 gesis_panel_corona_cut &lt;- gesis_panel_corona[!(names(gesis_panel_corona) %in% c("za_number", "version", "doi"))]
 # The %in% operator means "is included in" (in this case the following character vector)
+
+dim(gesis_panel_corona_cut)
+```
+
+```
+## [1] 3765  134
 ```
 
 Option 2
 
 ```r
 gesis_panel_corona_cut &lt;- subset(gesis_panel_corona, TRUE, select = -c(za_number, version, doi))
+
+dim(gesis_panel_corona_cut)
+```
+
+```
+## [1] 3765  134
 ```
 
 ---
@@ -1091,6 +1181,7 @@ gesis_panel_corona_cut &lt;- subset(gesis_panel_corona, TRUE, select = -c(za_num
 
 `select()` from `dplyr` also allows you to easily exclude one or more columns/variables.
 
+.small[
 
 ```r
 gesis_panel_corona_cut &lt;- gesis_panel_corona %&gt;% 
@@ -1237,6 +1328,7 @@ glimpse(gesis_panel_corona_cut)
 ## $ hzzr018a              &lt;dbl&gt; -33, 138, 307, 206, -33, 360, 416, 293, -33, ...
 ## $ hzzr019a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
 ```
+]
 
 ---
 
@@ -1257,6 +1349,15 @@ gesis_panel_corona_cy &lt;- gesis_panel_corona %&gt;%
 
 gesis_panel_corona_cat &lt;- gesis_panel_corona %&gt;% 
   select(ends_with("_cat"))
+
+glimpse(gesis_panel_corona_cat)
+```
+
+```
+## Rows: 3,765
+## Columns: 2
+## $ age_cat       &lt;dbl&gt; 7, 7, 8, 4, 1, 10, 4, 7, 8, 1, 6, 8, 2, 6, 2, 2, 2, 7...
+## $ education_cat &lt;dbl&gt; 3, 2, 2, 3, 3, 2, 2, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3,...
 ```
 
 ---
@@ -1268,6 +1369,147 @@ gesis_panel_corona_cat &lt;- gesis_panel_corona %&gt;%
 # Only keep numeric variables from the dataset
 gesis_panel_corona_num &lt;- gesis_panel_corona %&gt;% 
   select_if(is.numeric)
+
+glimpse(gesis_panel_corona_num)
+```
+
+```
+## Rows: 3,765
+## Columns: 134
+## $ id                    &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14...
+## $ cohort                &lt;dbl&gt; 3, 1, 3, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, ...
+## $ sex                   &lt;dbl&gt; 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 2, 1, 2, ...
+## $ age_cat               &lt;dbl&gt; 7, 7, 8, 4, 1, 10, 4, 7, 8, 1, 6, 8, 2, 6, 2,...
+## $ education_cat         &lt;dbl&gt; 3, 2, 2, 3, 3, 2, 2, 3, 1, 3, 3, 3, 3, 3, 3, ...
+## $ intention_to_vote     &lt;dbl&gt; 2, 2, 2, 2, -33, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2...
+## $ choice_of_party       &lt;dbl&gt; 1, 5, 1, 1, -33, 6, 6, 5, 1, 2, 1, 6, 98, 1, ...
+## $ political_orientation &lt;dbl&gt; 6, 5, 5, 7, 4, 10, 5, 6, 6, 7, 6, 7, 5, 6, 6,...
+## $ marstat               &lt;dbl&gt; 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, ...
+## $ household             &lt;dbl&gt; 1, 2, 2, 3, 3, 2, 3, 3, 2, 3, 2, 2, 3, 3, 1, ...
+## $ hzcy001a              &lt;dbl&gt; -33, 5, 5, 4, -33, 3, 4, 4, -33, 7, 4, 5, -33...
+## $ hzcy002a              &lt;dbl&gt; -33, 5, 6, 4, -33, 3, 3, 4, -33, 5, 6, 6, -33...
+## $ hzcy003a              &lt;dbl&gt; -33, 2, 3, 2, -33, -99, 3, 3, -33, 3, 3, 7, -...
+## $ hzcy004a              &lt;dbl&gt; -33, 5, 6, 4, -33, 3, 3, 3, -33, 4, 5, 6, -33...
+## $ hzcy005a              &lt;dbl&gt; -33, 5, 6, 3, -33, 3, 4, 4, -33, 2, 4, 6, -33...
+## $ hzcy006a              &lt;dbl&gt; -33, 1, 1, 0, -33, 1, 1, 1, -33, 1, 1, 1, -33...
+## $ hzcy007a              &lt;dbl&gt; -33, 0, 1, 0, -33, 0, 1, 1, -33, 1, 1, 1, -33...
+## $ hzcy008a              &lt;dbl&gt; -33, 0, 0, 1, -33, 0, 0, 0, -33, 1, 1, 0, -33...
+## $ hzcy009a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy010a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy011a              &lt;dbl&gt; -33, 1, 1, 1, -33, 0, 1, 1, -33, 1, 1, 1, -33...
+## $ hzcy012a              &lt;dbl&gt; -33, 1, 0, 1, -33, 1, 0, 1, -33, 1, 1, 0, -33...
+## $ hzcy013a              &lt;dbl&gt; -33, 1, 0, 0, -33, 0, 0, 0, -33, 1, 1, 1, -33...
+## $ hzcy014a              &lt;dbl&gt; -33, 0, 1, 1, -33, 0, 1, 1, -33, 0, 1, 1, -33...
+## $ hzcy015a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy016a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy018a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy019a              &lt;dbl&gt; -33, 5, 5, 3, -33, 4, 5, 5, -33, 4, 3, 5, -33...
+## $ hzcy020a              &lt;dbl&gt; -33, 5, 5, 4, -33, 4, 5, 5, -33, 5, 4, 5, -33...
+## $ hzcy021a              &lt;dbl&gt; -33, 5, 5, 4, -33, 4, 5, 5, -33, 4, 4, 5, -33...
+## $ hzcy022a              &lt;dbl&gt; -33, 5, 4, 3, -33, 4, 5, 5, -33, 5, 4, 4, -33...
+## $ hzcy023a              &lt;dbl&gt; -33, 5, 5, 4, -33, 4, 5, 3, -33, 5, 3, 5, -33...
+## $ hzcy024a              &lt;dbl&gt; -33, 5, 5, 2, -33, 2, 5, 3, -33, 5, 3, 2, -33...
+## $ hzcy025a              &lt;dbl&gt; -33, 5, 4, 2, -33, 3, 3, 3, -33, 3, 3, 2, -33...
+## $ hzcy026a              &lt;dbl&gt; -33, 4, 1, 1, -33, 1, 1, 1, -33, 1, 1, 1, -33...
+## $ hzcy027a              &lt;dbl&gt; -33, -88, 5, 4, -33, 5, 5, 5, -33, 4, 3, 1, -...
+## $ hzcy028a              &lt;dbl&gt; -33, -88, 1, 2, -33, 2, 3, 1, -33, 2, 3, 2, -...
+## $ hzcy029a              &lt;dbl&gt; -33, -88, 4, 3, -33, 4, 5, 5, -33, 4, 4, 5, -...
+## $ hzcy030a              &lt;dbl&gt; -33, -88, 5, 3, -33, 4, 5, 5, -33, 5, 4, 5, -...
+## $ hzcy031a              &lt;dbl&gt; -33, -88, 5, 3, -33, 4, 5, 5, -33, 4, 4, 5, -...
+## $ hzcy032a              &lt;dbl&gt; -33, -88, 5, 3, -33, 4, 5, 5, -33, 4, 4, 4, -...
+## $ hzcy033a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy034a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy035a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy036a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy037a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy038a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy039a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy040a              &lt;dbl&gt; -33, 3, 2, 3, -33, 2, 3, 3, -33, 1, 3, 1, -33...
+## $ hzcy041a              &lt;dbl&gt; -33, 3, 3, 4, -33, 3, 3, 3, -33, 3, 3, 1, -33...
+## $ hzcy042a              &lt;dbl&gt; -33, 3, 3, 3, -33, 3, 3, 3, -33, 2, 2, 2, -33...
+## $ hzcy043a              &lt;dbl&gt; -33, 3, 3, 3, -33, 2, 3, 3, -33, 2, 2, 1, -33...
+## $ hzcy044a              &lt;dbl&gt; -33, 5, 4, 4, -33, 4, 4, 4, -33, 5, 3, 5, -33...
+## $ hzcy045a              &lt;dbl&gt; -33, 4, 4, 4, -33, 5, 4, 4, -33, 4, 4, 3, -33...
+## $ hzcy046a              &lt;dbl&gt; -33, 4, 5, 4, -33, 4, 4, 4, -33, 3, 2, 2, -33...
+## $ hzcy047a              &lt;dbl&gt; -33, 5, 5, 4, -33, 5, 4, 5, -33, 4, 4, 5, -33...
+## $ hzcy048a              &lt;dbl&gt; -33, 4, 4, 4, -33, 4, 3, 4, -33, 3, 2, 1, -33...
+## $ hzcy049a              &lt;dbl&gt; -33, 4, 3, 4, -33, 2, 3, 4, -33, 2, 1, 2, -33...
+## $ hzcy050a              &lt;dbl&gt; -33, 4, 4, 4, -33, 4, 3, 4, -33, 2, 2, 1, -33...
+## $ hzcy051a              &lt;dbl&gt; -33, 4, 2, 4, -33, 3, 2, 5, -33, 5, 4, 3, -33...
+## $ hzcy052a              &lt;dbl&gt; -33, 4, 5, 4, -33, 5, 4, 5, -33, 5, 4, 4, -33...
+## $ hzcy053a              &lt;dbl&gt; -33, 1, 5, 1, -33, 5, 1, 1, -33, 6, 1, 5, -33...
+## $ hzcy054a              &lt;dbl&gt; -33, 0, -88, 0, -33, -88, 0, 0, -33, -88, 0, ...
+## $ hzcy055a              &lt;dbl&gt; -33, 1, -88, 0, -33, -88, 0, 0, -33, -88, 0, ...
+## $ hzcy056a              &lt;dbl&gt; -33, 0, -88, 0, -33, -88, 0, 0, -33, -88, 1, ...
+## $ hzcy057a              &lt;dbl&gt; -33, 0, -88, 0, -33, -88, 0, 0, -33, -88, 0, ...
+## $ hzcy058a              &lt;dbl&gt; -33, 0, -88, 0, -33, -88, 0, 0, -33, -88, 0, ...
+## $ hzcy059a              &lt;dbl&gt; -33, 0, -88, 0, -33, -88, 0, 0, -33, -88, 0, ...
+## $ hzcy060a              &lt;dbl&gt; -33, 0, -88, 1, -33, -88, 1, 1, -33, -88, 0, ...
+## $ hzcy061a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy062a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy063a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy064a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy065a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy066a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy067a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy068a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy069a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy070a              &lt;dbl&gt; -33, -88, -88, -88, -33, -88, -88, -88, -33, ...
+## $ hzcy071a              &lt;dbl&gt; -33, 2, 2, 1, -33, 2, 1, 2, -33, 2, 2, 2, -33...
+## $ hzcy072a              &lt;dbl&gt; -33, -88, -88, 1, -33, -88, 1, -88, -33, -88,...
+## $ hzcy073a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 1, -88, -33, -88,...
+## $ hzcy074a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy075a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy076a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy077a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy078a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy079a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy080a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 1, -88, -33, -88,...
+## $ hzcy081a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy083a              &lt;dbl&gt; -33, -88, -88, 0, -33, -88, 0, -88, -33, -88,...
+## $ hzcy084a              &lt;dbl&gt; -33, 1, 1, 1, -33, 1, 0, 1, -33, 1, 1, 1, -33...
+## $ hzcy085a              &lt;dbl&gt; -33, 1, 1, 0, -33, 0, 1, 0, -33, 0, 0, 0, -33...
+## $ hzcy086a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 1, -33, 1, 1, 1, -33...
+## $ hzcy087a              &lt;dbl&gt; -33, 0, 1, 0, -33, 0, 0, 1, -33, 1, 0, 1, -33...
+## $ hzcy088a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy089a              &lt;dbl&gt; -33, 1, 1, 0, -33, 1, 0, 1, -33, 0, 0, 1, -33...
+## $ hzcy090a              &lt;dbl&gt; -33, 1, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy091a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy092a              &lt;dbl&gt; -33, 0, 1, 0, -33, 0, 0, 1, -33, 0, 0, 1, -33...
+## $ hzcy093a              &lt;dbl&gt; -33, 1, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy095a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzcy096a              &lt;dbl&gt; -33, 4, -88, -88, -33, -88, -88, -88, -33, -8...
+## $ hzcy097a              &lt;dbl&gt; -33, 0, -88, -88, -33, -88, -88, -88, -33, -8...
+## $ hzcy098a              &lt;dbl&gt; -33, 0, -88, -88, -33, -88, -88, -88, -33, -8...
+## $ hzcy099a              &lt;dbl&gt; -33, 1, -88, -88, -33, -88, -88, -88, -33, -8...
+## $ hzza001a              &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+## $ hzza002a              &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, ...
+## $ hzza003a              &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, ...
+## $ hzzq009a              &lt;dbl&gt; -33, 4, 5, 4, -33, 4, 3, 5, -33, 4, 4, 5, -33...
+## $ hzzq016b              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 1, -33...
+## $ hzzq023a              &lt;dbl&gt; -33, 5, 5, 4, -33, 4, 4, 5, -33, 5, 4, 5, -33...
+## $ hzzp201a              &lt;dbl&gt; -33, 31, 31, 31, -33, 31, 31, 31, -33, 31, 31...
+## $ hzzp204a              &lt;dbl&gt; -33, 210, 377, 309, -33, 429, 586, 366, -33, ...
+## $ hzzp207a              &lt;dbl&gt; -33, 1584549879, 1584469614, 1584525461, -33,...
+## $ hzzr001a              &lt;dbl&gt; -33, 3, 34, 4, -33, 3, 7, 2, -33, 2, 2, 3, -3...
+## $ hzzr002a              &lt;dbl&gt; -33, 24, 83, 35, -33, 41, 67, 39, -33, 40, 33...
+## $ hzzr003a              &lt;dbl&gt; -33, 48, 117, 67, -33, 90, 121, 140, -33, 75,...
+## $ hzzr004a              &lt;dbl&gt; -33, 71, 161, 101, -33, 143, 212, 176, -33, 1...
+## $ hzzr005a              &lt;dbl&gt; -33, 82, 175, 110, -33, 159, 230, 188, -33, 1...
+## $ hzzr006a              &lt;dbl&gt; -33, 0, 206, 140, -33, 209, 264, 222, -33, 15...
+## $ hzzr007a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
+## $ hzzr008a              &lt;dbl&gt; -33, 101, 245, 166, -33, 288, 319, 238, -33, ...
+## $ hzzr009a              &lt;dbl&gt; -33, 130, 293, 190, -33, 340, 388, 278, -33, ...
+## $ hzzr010a              &lt;dbl&gt; -33, 145, 0, 216, -33, 0, 438, 310, -33, 0, 2...
+## $ hzzr011a              &lt;dbl&gt; -33, 150, 312, 222, -33, 366, 446, 315, -33, ...
+## $ hzzr012a              &lt;dbl&gt; -33, 0, 0, 246, -33, 0, 509, 0, -33, 0, 0, 0,...
+## $ hzzr013a              &lt;dbl&gt; -33, 189, 345, 266, -33, 412, 558, 355, -33, ...
+## $ hzzr014a              &lt;dbl&gt; -33, 193, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -...
+## $ hzzr015a              &lt;dbl&gt; -33, 200, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -...
+## $ hzzr016a              &lt;dbl&gt; -33, 209, 360, 307, -33, 424, 576, 363, -33, ...
+## $ hzzr017a              &lt;dbl&gt; -33, 210, 377, 309, -33, 429, 586, 366, -33, ...
+## $ hzzr018a              &lt;dbl&gt; -33, 138, 307, 206, -33, 360, 416, 293, -33, ...
+## $ hzzr019a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
 ```
 
 ---
@@ -1317,11 +1559,24 @@ Option 1
 
 ```r
 gesis_panel_corona_male &lt;- gesis_panel_corona[gesis_panel_corona$sex == 1, ]
+
+dim(gesis_panel_corona_male)
 ```
 
+```
+## [1] 1933  137
+```
+
+Option 2
 
 ```r
 gesis_panel_corona_male &lt;- subset(gesis_panel_corona, sex == 1)
+
+dim(gesis_panel_corona_male)
+```
+
+```
+## [1] 1933  137
 ```
 
 ---
@@ -1334,6 +1589,12 @@ The `tidyverse` solution for filtering rows/observations is the `dplyr` verb `fi
 ```r
 gesis_panel_corona_male &lt;- gesis_panel_corona %&gt;% 
   filter(sex == 1)
+
+dim(gesis_panel_corona_male)
+```
+
+```
+## [1] 1933  137
 ```
 
 ---
@@ -1342,14 +1603,29 @@ gesis_panel_corona_male &lt;- gesis_panel_corona %&gt;%
 
 Of course, you can also combine the selection of columns and filtering or rows.
 
+`Base R` option 1
 
 ```r
 corona_risk_male &lt;- gesis_panel_corona[gesis_panel_corona$sex == 1, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
+
+dim(corona_risk_male)
+```
+
+```
+## [1] 1933    5
 ```
 
 
+`Base R` option 2
+
 ```r
 corona_risk_male  &lt;- subset(gesis_panel_corona, sex == 1, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
+
+dim(corona_risk_male)
+```
+
+```
+## [1] 1933    5
 ```
 
 ---
@@ -1363,6 +1639,12 @@ The `tidyverse` approach to combining the selection of columns and the filtering
 corona_risk_male &lt;- gesis_panel_corona %&gt;% 
   filter(sex == 1) %&gt;% 
   select(hzcy001a:hzcy005a)
+
+dim(corona_risk_male)
+```
+
+```
+## [1] 1933    5
 ```
 
 ---
@@ -1375,6 +1657,12 @@ Of yourse, you can also filter rows/observations based on more than one conditio
 ```r
 gesis_panel_corona_old_men &lt;- gesis_panel_corona %&gt;% 
   filter(sex == 1, age_cat &gt; 7)
+
+dim(gesis_panel_corona_old_men)
+```
+
+```
+## [1] 626 137
 ```
 
 ---
@@ -1417,6 +1705,12 @@ Again, there are several helper functions and scoped variants of the `filter()` 
 ```r
 gesis_panel_corona_rightwing &lt;- gesis_panel_corona %&gt;% 
   filter(between(political_orientation, 8, 10))
+
+dim(gesis_panel_corona_rightwing)
+```
+
+```
+## [1] 206 137
 ```
 
 Note that the range specified in `between()` is inclusive.
@@ -1430,7 +1724,13 @@ Note that the range specified in `between()` is inclusive.
 # Select all cases where at least one of the specified variables is &gt; 0
 gesis_panel_corona_measures_taken &lt;- gesis_panel_corona %&gt;% 
     filter_at(vars(hzcy006a:hzcy016a),
-    any_vars(. &gt; 0)) 
+    any_vars(. &gt; 0))
+
+dim(gesis_panel_corona_measures_taken)
+```
+
+```
+## [1] 3148  137
 ```
 
 ---
@@ -1524,6 +1824,14 @@ With `base R` you can set values to `NA` for specific variables as follows:
 
 
 ```r
+sum(is.na(gesis_panel_corona_measures$hzcy006a))
+```
+
+```
+## [1] 0
+```
+
+```r
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -99] &lt;- NA
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -77] &lt;- NA
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -33] &lt;- NA
@@ -1532,6 +1840,12 @@ gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -99
 gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -77] &lt;- NA
 gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -33] &lt;- NA
 gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -22] &lt;- NA
+
+sum(is.na(gesis_panel_corona_measures$hzcy006a))
+```
+
+```
+## [1] 579
 ```
 
 ---
@@ -1563,11 +1877,25 @@ If the missing values are the same for the whole dataframe, a quick solution is 
 
 
 ```r
+sum(is.na(gesis_panel_corona_measures$hzcy008a))
+```
+
+```
+## [1] 0
+```
+
+```r
 gesis_panel_corona_measures &lt;- gesis_panel_corona_measures %&gt;%
   mutate_all(list(~na_if(., -99))) %&gt;% 
   mutate_all(list(~na_if(., -77))) %&gt;% 
   mutate_all(list(~na_if(., -33))) %&gt;% 
   mutate_all(list(~na_if(., -22)))
+
+sum(is.na(gesis_panel_corona_measures$hzcy008a))
+```
+
+```
+## [1] 579
 ```
 
 ---
@@ -1602,9 +1930,15 @@ corona_measures_complete &lt;- na.omit(gesis_panel_corona_measures)
 # tidyverse
 corona_measures_complete &lt;- gesis_panel_corona_measures %&gt;% 
   drop_na()
+
+dim(corona_measures_complete)
 ```
 
-A nice thing about `drop_na()` is that you can also provide variable names as arguments to only filter out cases that have missing values for one or more specific variables (check `?dropn_na` for details).
+```
+## [1] 3186   11
+```
+
+A nice thing about `drop_na()` is that you can also provide variable names as arguments to only filter out cases that have missing values for one or more specific variables (check `?drop_na` for details).
 
 ---
 
@@ -1692,6 +2026,148 @@ gesis_panel_corona &lt;- gesis_panel_corona %&gt;%
 
 ---
 
+# Aggregate variables
+
+Something we might want to do for our analyses is to create aggregate variables, such as sum or mean scores for a set of items (that form a scale). If, for example, we want to compute the mean score from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* items that ask how much people trust specific people or institutions in dealing with the Coronavirus, we might try the following:
+
+.small[
+
+```r
+corona_trust &lt;- gesis_panel_corona %&gt;% 
+  select(hzcy044a:hzcy052a) %&gt;% 
+  mutate_all(list(~na_if(., -99))) %&gt;% 
+  mutate_all(list(~na_if(., -77))) %&gt;% 
+  mutate_all(list(~na_if(., -33))) %&gt;% 
+  mutate_all(list(~na_if(., -22))) %&gt;% 
+  mutate_all(list(~na_if(., 98))) %&gt;% 
+* mutate(mean_trust = mean(c(hzcy044a,
+*                          hzcy045a,
+*                          hzcy046a,
+*                          hzcy047a,
+*                          hzcy048a,
+*                          hzcy049a,
+*                          hzcy050a,
+*                          hzcy051a,
+*                          hzcy052a),
+*                          na.rm = TRUE))
+# If we don't provide the argument na.rm = TRUE, the new value will be NA, if any value in the variables it is based on is missing.
+```
+]
+
+---
+
+# Aggregate variables
+
+What went wrong here?
+
+
+```r
+glimpse(corona_trust)
+```
+
+```
+## Rows: 3,765
+## Columns: 10
+## $ hzcy044a   &lt;dbl&gt; NA, 5, 4, 4, NA, 4, 4, 4, NA, 5, 3, 5, NA, 4, 3, NA, NA,...
+## $ hzcy045a   &lt;dbl&gt; NA, 4, 4, 4, NA, 5, 4, 4, NA, 4, 4, 3, NA, 3, 3, NA, NA,...
+## $ hzcy046a   &lt;dbl&gt; NA, 4, 5, 4, NA, 4, 4, 4, NA, 3, 2, 2, NA, 3, 3, NA, NA,...
+## $ hzcy047a   &lt;dbl&gt; NA, 5, 5, 4, NA, 5, 4, 5, NA, 4, 4, 5, NA, 4, 4, NA, NA,...
+## $ hzcy048a   &lt;dbl&gt; NA, 4, 4, 4, NA, 4, 3, 4, NA, 3, 2, 1, NA, 4, 2, NA, NA,...
+## $ hzcy049a   &lt;dbl&gt; NA, 4, 3, 4, NA, 2, 3, 4, NA, 2, 1, 2, NA, 4, 2, NA, NA,...
+## $ hzcy050a   &lt;dbl&gt; NA, 4, 4, 4, NA, 4, 3, 4, NA, 2, 2, 1, NA, 4, 4, NA, NA,...
+## $ hzcy051a   &lt;dbl&gt; NA, 4, 2, 4, NA, 3, 2, 5, NA, 5, 4, 3, NA, 4, 5, NA, NA,...
+## $ hzcy052a   &lt;dbl&gt; NA, 4, 5, 4, NA, 5, 4, 5, NA, 5, 4, 4, NA, 5, 5, NA, NA,...
+## $ mean_trust &lt;dbl&gt; 3.901606, 3.901606, 3.901606, 3.901606, 3.901606, 3.9016...
+```
+
+---
+
+# Aggregate variables
+
+The reason the code on the previous slide did not achieve what we (might have) expected is that aggregate functions like `mean()` or `sum()` operate on columns. One solution can be to calculate the mean manually:
+
+.small[
+
+```r
+corona_trust &lt;- corona_trust %&gt;% 
+  mutate(mean_trust = (hzcy044a + hzcy045a + hzcy046a + hzcy047a + hzcy048a + hzcy049a + hzcy050a + hzcy051a + hzcy052a)/9)
+
+glimpse(corona_trust)
+```
+
+```
+## Rows: 3,765
+## Columns: 10
+## $ hzcy044a   &lt;dbl&gt; NA, 5, 4, 4, NA, 4, 4, 4, NA, 5, 3, 5, NA, 4, 3, NA, NA,...
+## $ hzcy045a   &lt;dbl&gt; NA, 4, 4, 4, NA, 5, 4, 4, NA, 4, 4, 3, NA, 3, 3, NA, NA,...
+## $ hzcy046a   &lt;dbl&gt; NA, 4, 5, 4, NA, 4, 4, 4, NA, 3, 2, 2, NA, 3, 3, NA, NA,...
+## $ hzcy047a   &lt;dbl&gt; NA, 5, 5, 4, NA, 5, 4, 5, NA, 4, 4, 5, NA, 4, 4, NA, NA,...
+## $ hzcy048a   &lt;dbl&gt; NA, 4, 4, 4, NA, 4, 3, 4, NA, 3, 2, 1, NA, 4, 2, NA, NA,...
+## $ hzcy049a   &lt;dbl&gt; NA, 4, 3, 4, NA, 2, 3, 4, NA, 2, 1, 2, NA, 4, 2, NA, NA,...
+## $ hzcy050a   &lt;dbl&gt; NA, 4, 4, 4, NA, 4, 3, 4, NA, 2, 2, 1, NA, 4, 4, NA, NA,...
+## $ hzcy051a   &lt;dbl&gt; NA, 4, 2, 4, NA, 3, 2, 5, NA, 5, 4, 3, NA, 4, 5, NA, NA,...
+## $ hzcy052a   &lt;dbl&gt; NA, 4, 5, 4, NA, 5, 4, 5, NA, 5, 4, 4, NA, 5, 5, NA, NA,...
+## $ mean_trust &lt;dbl&gt; NA, 4.222222, 4.000000, 4.000000, NA, 4.000000, 3.444444...
+```
+
+However, the problem here is that some rows have missing values for one or more of the variables, in which case dividing by 9 is not appropriate. Fortunately, `dplyr` offers a better option for row-wise operations: the `rowwise()` function.
+]
+
+---
+
+# `dplyr::rowwise`
+
+A better option is the `rowwise()`function which changes how `dplyr` verbs operate on the dataset. If we want a row-wise aggregate for our example dataset, we can use the following code:
+
+.small[
+
+```r
+corona_trust &lt;- corona_trust %&gt;%  
+  rowwise() %&gt;% 
+  mutate(mean_trust = mean(c(hzcy044a,
+                           hzcy045a,
+                           hzcy046a,
+                           hzcy047a,
+                           hzcy048a,
+                           hzcy049a,
+                           hzcy050a,
+                           hzcy051a,
+                           hzcy052a), 
+                           na.rm = TRUE)) %&gt;% 
+  ungroup()
+```
+]
+
+**Note**: We use the `ungroup()` function at the end of this pipe to remove the additional class `rowwise_df` from the dataframe object to ensure that `dplyr` verbs will operate the default way when we further work with the object. We will talk more about grouping and ungrouping in the session on exploratory data analysis.
+
+---
+
+# `dplyr::rowwise`
+
+
+```r
+glimpse(corona_trust)
+```
+
+```
+## Rows: 3,765
+## Columns: 10
+## $ hzcy044a   &lt;dbl&gt; NA, 5, 4, 4, NA, 4, 4, 4, NA, 5, 3, 5, NA, 4, 3, NA, NA,...
+## $ hzcy045a   &lt;dbl&gt; NA, 4, 4, 4, NA, 5, 4, 4, NA, 4, 4, 3, NA, 3, 3, NA, NA,...
+## $ hzcy046a   &lt;dbl&gt; NA, 4, 5, 4, NA, 4, 4, 4, NA, 3, 2, 2, NA, 3, 3, NA, NA,...
+## $ hzcy047a   &lt;dbl&gt; NA, 5, 5, 4, NA, 5, 4, 5, NA, 4, 4, 5, NA, 4, 4, NA, NA,...
+## $ hzcy048a   &lt;dbl&gt; NA, 4, 4, 4, NA, 4, 3, 4, NA, 3, 2, 1, NA, 4, 2, NA, NA,...
+## $ hzcy049a   &lt;dbl&gt; NA, 4, 3, 4, NA, 2, 3, 4, NA, 2, 1, 2, NA, 4, 2, NA, NA,...
+## $ hzcy050a   &lt;dbl&gt; NA, 4, 4, 4, NA, 4, 3, 4, NA, 2, 2, 1, NA, 4, 4, NA, NA,...
+## $ hzcy051a   &lt;dbl&gt; NA, 4, 2, 4, NA, 3, 2, 5, NA, 5, 4, 3, NA, 4, 5, NA, NA,...
+## $ hzcy052a   &lt;dbl&gt; NA, 4, 5, 4, NA, 5, 4, 5, NA, 5, 4, 4, NA, 5, 5, NA, NA,...
+## $ mean_trust &lt;dbl&gt; NaN, 4.222222, 4.000000, 4.000000, NaN, 4.000000, 3.4444...
+```
+
+*Note*: `NaN` means "not a number" which is [not the same as `NA`](http://onetipperday.sterding.com/2012/08/difference-between-na-and-nan-in-r.html). If you want to change `NaN` to `NA` for this variable, you can, e.g., do so with the `base R` command `corona_trust$mean_trust[is.nan(corona_trust$mean_trust)] &lt;- NA` or with `corona_trust &lt;- corona_trust %&gt;% mutate(mean_trust = na_if(mean_trust, "NaN"))`.
+
+---
+
 # Create a new variable conditional on values of another one
 
 If you want create to create a new variable (or recode an existing one) and the values depend on the values of another variable in your data, the `case_when()` function from `dplyr` can come in handy.
@@ -1774,7 +2250,9 @@ You can combine the `mutate()` function with a simple `ifelse()` statement to cr
 
 ```r
 gesis_panel_corona &lt;- gesis_panel_corona %&gt;% 
-  mutate(married = ifelse(marstat == 1, 0, 1))
+  mutate(married = ifelse(marstat == 1, 1, 0))
+# read: if marstat equals 1, set the married to 1;
+# otherwise set married to 0.
 ```
 
 ---
@@ -1787,7 +2265,7 @@ Working with strings in R is a topic that would require its own workshop. The `t
 
 As we cannot cover everything, we decided not to discuss working with strings and text in `R` in this course. However,`stringr` provides a good [introduction vignette](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html), the book *R for Data Science* has a whole section on [strings with `stringr`](https://r4ds.had.co.nz/strings.html), and there also is an [*RStudio* Cheat Sheet for `stringr`](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf).
 
-If you want (or have) to work with regular expressions, you should also check out the [`rebus` package](https://github.com/richierocks/rebus) which allows you to create regular expressions in R in a human-readable way. Another helpful tool is the *RStudio* addin [`RegExplain`](https://www.garrickadenbuie.com/project/regexplain/).  
+If you want (or have) to work with [regular expressions](https://en.wikipedia.org/wiki/Regular_expression), you should also check out the [`rebus` package](https://github.com/richierocks/rebus) which allows you to create regular expressions in R in a human-readable way. Another helpful tool is the *RStudio* addin [`RegExplain`](https://www.garrickadenbuie.com/project/regexplain/).  
 
 ---
 

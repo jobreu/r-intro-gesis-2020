@@ -280,6 +280,34 @@ The *GESIS Panel* website provides [detailed documentation](https://www.gesis.or
 
 ---
 
+# Interlude: Citing data
+
+If you (re-)use existing datasets, please cite them in your publications, theses, teaching materials, etc. Data repositories normally provide information on how to cite the data. For example, the APA-style citation for *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is:
+
+GESIS Panel Team (2020). GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany. *GESIS Datenarchiv, Köln. ZA5667 Datenfile Version 1.1.0*, https://doi.org/10.4232/1.13520.
+
+---
+
+# Interlude: Citing FOSS
+
+You should also make sure to cite the free and open-source software that you use, such as `R` packages and `R` itself. There is a function in `R` that tells you how to cite it or any of the packages you have installed.
+
+.small[
+```{r citation}
+citation()
+```
+]
+---
+
+# Interlude: Citing FOSS
+
+.small[
+```{r pkg citation}
+citation("tidyverse")
+```
+]
+---
+
 # Codebook
 
 It is always advisable to consult the codebook (if there is one) before starting to work with a(n existing) dataset. The *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* comes with a very [detailed codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
@@ -335,39 +363,44 @@ dim(gesis_panel_corona)
 
 You can also print the first 6 lines of the dataframe with `head()`. You can easily change the number of lines by providing the number as the second argument to the `head()` function.
 
+.small[
 ```{r head}
 head(gesis_panel_corona, 10)
 ```
-
+]
 ---
 
 # Dataframe check 1, 2, 1, 2!
 
 If we want some more (detailed) information about the dataset, we can use the `base R` function `str()`.
 
+.small[
 ```{r str}
 str(gesis_panel_corona)
 ```
-
+]
 ---
 
 # Dataframe check 1, 2, 1, 2!
 
 As you saw on the previous slide, the output of `str()` can be a bit hard to read (especially for larger datasets). A good alternative that creates a more clearly laid output is the `glimpse()` function from the `dplyr` package.
 
+.small[
 ```{r glimpse}
 glimpse(gesis_panel_corona)
 ```
-
+]
 ---
 
 # What's in a name?
 
 One thing that we need to know - and might want to change - are the names of the variables in the dataset.
 
+.small[
 ```{r names gpc}
 names(gesis_panel_corona)
 ```
+]
 
 ---
 
@@ -495,11 +528,15 @@ Option 1
 ```{r unselect base}
 gesis_panel_corona_cut <- gesis_panel_corona[!(names(gesis_panel_corona) %in% c("za_number", "version", "doi"))]
 # The %in% operator means "is included in" (in this case the following character vector)
+
+dim(gesis_panel_corona_cut)
 ```
 
 Option 2
 ```{r subset unselect}
 gesis_panel_corona_cut <- subset(gesis_panel_corona, TRUE, select = -c(za_number, version, doi))
+
+dim(gesis_panel_corona_cut)
 ```
 
 ---
@@ -508,12 +545,14 @@ gesis_panel_corona_cut <- subset(gesis_panel_corona, TRUE, select = -c(za_number
 
 `select()` from `dplyr` also allows you to easily exclude one or more columns/variables.
 
+.small[
 ```{r select unselect}
 gesis_panel_corona_cut <- gesis_panel_corona %>% 
   select(-(za_number:doi))
 
 glimpse(gesis_panel_corona_cut)
 ```
+]
 
 ---
 
@@ -534,6 +573,7 @@ gesis_panel_corona_cy <- gesis_panel_corona %>%
 gesis_panel_corona_cat <- gesis_panel_corona %>% 
   select(ends_with("_cat"))
 
+glimpse(gesis_panel_corona_cat)
 ```
 
 ---
@@ -544,6 +584,8 @@ gesis_panel_corona_cat <- gesis_panel_corona %>%
 # Only keep numeric variables from the dataset
 gesis_panel_corona_num <- gesis_panel_corona %>% 
   select_if(is.numeric)
+
+glimpse(gesis_panel_corona_num)
 ```
 
 ---
@@ -591,10 +633,15 @@ Similar to selecting columns/variables, there are two parallel options for filte
 Option 1
 ```{r filter base}
 gesis_panel_corona_male <- gesis_panel_corona[gesis_panel_corona$sex == 1, ]
+
+dim(gesis_panel_corona_male)
 ```
 
+Option 2
 ```{r filter subset}
 gesis_panel_corona_male <- subset(gesis_panel_corona, sex == 1)
+
+dim(gesis_panel_corona_male)
 ```
 
 ---
@@ -606,6 +653,8 @@ The `tidyverse` solution for filtering rows/observations is the `dplyr` verb `fi
 ```{r dplyr filter 1}
 gesis_panel_corona_male <- gesis_panel_corona %>% 
   filter(sex == 1)
+
+dim(gesis_panel_corona_male)
 ```
 
 ---
@@ -614,12 +663,19 @@ gesis_panel_corona_male <- gesis_panel_corona %>%
 
 Of course, you can also combine the selection of columns and filtering or rows.
 
+`Base R` option 1
 ```{r colsrows base}
 corona_risk_male <- gesis_panel_corona[gesis_panel_corona$sex == 1, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
+
+dim(corona_risk_male)
 ```
 
+
+`Base R` option 2
 ```{r colsrows subset}
 corona_risk_male  <- subset(gesis_panel_corona, sex == 1, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
+
+dim(corona_risk_male)
 ```
 
 ---
@@ -632,6 +688,8 @@ The `tidyverse` approach to combining the selection of columns and the filtering
 corona_risk_male <- gesis_panel_corona %>% 
   filter(sex == 1) %>% 
   select(hzcy001a:hzcy005a)
+
+dim(corona_risk_male)
 ```
 
 ---
@@ -643,6 +701,8 @@ Of yourse, you can also filter rows/observations based on more than one conditio
 ```{r filter 2 cond}
 gesis_panel_corona_old_men <- gesis_panel_corona %>% 
   filter(sex == 1, age_cat > 7)
+
+dim(gesis_panel_corona_old_men)
 ```
 
 ---
@@ -682,6 +742,8 @@ Again, there are several helper functions and scoped variants of the `filter()` 
 ```{r filter between}
 gesis_panel_corona_rightwing <- gesis_panel_corona %>% 
   filter(between(political_orientation, 8, 10))
+
+dim(gesis_panel_corona_rightwing)
 ```
 
 Note that the range specified in `between()` is inclusive.
@@ -694,7 +756,9 @@ Note that the range specified in `between()` is inclusive.
 # Select all cases where at least one of the specified variables is > 0
 gesis_panel_corona_measures_taken <- gesis_panel_corona %>% 
     filter_at(vars(hzcy006a:hzcy016a),
-    any_vars(. > 0)) 
+    any_vars(. > 0))
+
+dim(gesis_panel_corona_measures_taken)
 ```
 
 ---
@@ -782,7 +846,9 @@ gesis_panel_corona_measures <- gesis_panel_corona %>%
 
 With `base R` you can set values to `NA` for specific variables as follows:
 
-```{r set NA var base, eval = F}
+```{r set NA var base}
+sum(is.na(gesis_panel_corona_measures$hzcy006a))
+
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -99] <- NA
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -77] <- NA
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -33] <- NA
@@ -792,6 +858,7 @@ gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -77
 gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -33] <- NA
 gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -22] <- NA
 
+sum(is.na(gesis_panel_corona_measures$hzcy006a))
 ```
 
 ---
@@ -800,7 +867,7 @@ gesis_panel_corona_measures$hzcy007a[gesis_panel_corona_measures$hzcy007a == -22
 
 The `tidyverse` option for setting values of individual variables to `NA` is the `na_if()` function combined with the `mutate()`function (which we will discuss in more detail when we talk about transforming variables and creating new ones), both from the `dplyr` package.
 
-```{r na_if, eval = F}
+```{r na_if}
 gesis_panel_corona_measures <- gesis_panel_corona_measures %>% 
   mutate(hzcy006a = na_if(hzcy006a, -99)) %>% 
   mutate(hzcy006a = na_if(hzcy006a, -77)) %>% 
@@ -810,7 +877,6 @@ gesis_panel_corona_measures <- gesis_panel_corona_measures %>%
   mutate(hzcy007a = na_if(hzcy007a, -77)) %>% 
   mutate(hzcy007a = na_if(hzcy007a, -33)) %>% 
   mutate(hzcy007a = na_if(hzcy007a, -22)) 
-
 ```
 
 ---
@@ -822,12 +888,15 @@ Of course, setting values to `NA` for individual variables can become quite tedi
 If the missing values are the same for the whole dataframe, a quick solution is to use `mutate_all()` which is a scoped variant of `mutate()` from the `dplyr` package (again, we will talk about these functions in more depth later):
 
 ```{r mutate_all na_if}
+sum(is.na(gesis_panel_corona_measures$hzcy008a))
+
 gesis_panel_corona_measures <- gesis_panel_corona_measures %>%
   mutate_all(list(~na_if(., -99))) %>% 
   mutate_all(list(~na_if(., -77))) %>% 
   mutate_all(list(~na_if(., -33))) %>% 
   mutate_all(list(~na_if(., -22)))
 
+sum(is.na(gesis_panel_corona_measures$hzcy008a))
 ```
 
 ---
@@ -860,9 +929,11 @@ corona_measures_complete <- na.omit(gesis_panel_corona_measures)
 # tidyverse
 corona_measures_complete <- gesis_panel_corona_measures %>% 
   drop_na()
+
+dim(corona_measures_complete)
 ```
 
-A nice thing about `drop_na()` is that you can also provide variable names as arguments to only filter out cases that have missing values for one or more specific variables (check `?dropn_na` for details).
+A nice thing about `drop_na()` is that you can also provide variable names as arguments to only filter out cases that have missing values for one or more specific variables (check `?drop_na` for details).
 
 ---
 
@@ -946,6 +1017,98 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
+# Aggregate variables
+
+Something we might want to do for our analyses is to create aggregate variables, such as sum or mean scores for a set of items (that form a scale). If, for example, we want to compute the mean score from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* items that ask how much people trust specific people or institutions in dealing with the Coronavirus, we might try the following:
+
+.small[
+```{r scale mean wrong}
+corona_trust <- gesis_panel_corona %>% 
+  select(hzcy044a:hzcy052a) %>% 
+  mutate_all(list(~na_if(., -99))) %>% 
+  mutate_all(list(~na_if(., -77))) %>% 
+  mutate_all(list(~na_if(., -33))) %>% 
+  mutate_all(list(~na_if(., -22))) %>% 
+  mutate_all(list(~na_if(., 98))) %>% 
+  mutate(mean_trust = mean(c(hzcy044a, #<<
+                           hzcy045a, #<<
+                           hzcy046a, #<<
+                           hzcy047a, #<<
+                           hzcy048a, #<<
+                           hzcy049a, #<<
+                           hzcy050a, #<<
+                           hzcy051a, #<<
+                           hzcy052a), #<< 
+                           na.rm = TRUE)) #<<
+# If we don't provide the argument na.rm = TRUE, the new value will be NA, if any value in the variables it is based on is missing.
+```
+]
+
+---
+
+# Aggregate variables
+
+What went wrong here?
+
+```{r scale mean wrong result}
+glimpse(corona_trust)
+```
+
+---
+
+# Aggregate variables
+
+The reason the code on the previous slide did not achieve what we (might have) expected is that aggregate functions like `mean()` or `sum()` operate on columns. One solution can be to calculate the mean manually:
+
+.small[
+```{r mean calc}
+corona_trust <- corona_trust %>% 
+  mutate(mean_trust = (hzcy044a + hzcy045a + hzcy046a + hzcy047a + hzcy048a + hzcy049a + hzcy050a + hzcy051a + hzcy052a)/9)
+
+glimpse(corona_trust)
+```
+
+However, the problem here is that some rows have missing values for one or more of the variables, in which case dividing by 9 is not appropriate. Fortunately, `dplyr` offers a better option for row-wise operations: the `rowwise()` function.
+]
+
+---
+
+# `dplyr::rowwise`
+
+A better option is the `rowwise()`function which changes how `dplyr` verbs operate on the dataset. If we want a row-wise aggregate for our example dataset, we can use the following code:
+
+.small[
+```{r rowwise}
+corona_trust <- corona_trust %>%  
+  rowwise() %>% 
+  mutate(mean_trust = mean(c(hzcy044a,
+                           hzcy045a,
+                           hzcy046a,
+                           hzcy047a,
+                           hzcy048a,
+                           hzcy049a,
+                           hzcy050a,
+                           hzcy051a,
+                           hzcy052a), 
+                           na.rm = TRUE)) %>% 
+  ungroup()
+```
+]
+
+**Note**: We use the `ungroup()` function at the end of this pipe to remove the additional class `rowwise_df` from the dataframe object to ensure that `dplyr` verbs will operate the default way when we further work with the object. We will talk more about grouping and ungrouping in the session on exploratory data analysis.
+
+---
+
+# `dplyr::rowwise`
+
+```{r rowwise result}
+glimpse(corona_trust)
+```
+
+*Note*: `NaN` means "not a number" which is [not the same as `NA`](http://onetipperday.sterding.com/2012/08/difference-between-na-and-nan-in-r.html). If you want to change `NaN` to `NA` for this variable, you can, e.g., do so with the `base R` command `corona_trust$mean_trust[is.nan(corona_trust$mean_trust)] <- NA` or with `corona_trust <- corona_trust %>% mutate(mean_trust = na_if(mean_trust, "NaN"))`.
+
+---
+
 # Create a new variable conditional on values of another one
 
 If you want create to create a new variable (or recode an existing one) and the values depend on the values of another variable in your data, the `case_when()` function from `dplyr` can come in handy.
@@ -1026,7 +1189,9 @@ You can combine the `mutate()` function with a simple `ifelse()` statement to cr
 
 ```{r dummy, eval = F}
 gesis_panel_corona <- gesis_panel_corona %>% 
-  mutate(married = ifelse(marstat == 1, 0, 1))
+  mutate(married = ifelse(marstat == 1, 1, 0))
+# read: if marstat equals 1, set the married to 1;
+# otherwise set married to 0.
 ```
 
 ---
@@ -1041,7 +1206,7 @@ include_graphics("./pics/hex-stringr.png")
 
 As we cannot cover everything, we decided not to discuss working with strings and text in `R` in this course. However,`stringr` provides a good [introduction vignette](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html), the book *R for Data Science* has a whole section on [strings with `stringr`](https://r4ds.had.co.nz/strings.html), and there also is an [*RStudio* Cheat Sheet for `stringr`](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf).
 
-If you want (or have) to work with regular expressions, you should also check out the [`rebus` package](https://github.com/richierocks/rebus) which allows you to create regular expressions in R in a human-readable way. Another helpful tool is the *RStudio* addin [`RegExplain`](https://www.garrickadenbuie.com/project/regexplain/).  
+If you want (or have) to work with [regular expressions](https://en.wikipedia.org/wiki/Regular_expression), you should also check out the [`rebus` package](https://github.com/richierocks/rebus) which allows you to create regular expressions in R in a human-readable way. Another helpful tool is the *RStudio* addin [`RegExplain`](https://www.garrickadenbuie.com/project/regexplain/).  
 
 ---
 

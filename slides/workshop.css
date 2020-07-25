@@ -64,3 +64,7 @@ div.my-footer span {
   margin-bottom: 625px;
   margin-right: 10px;
 }
+
+.small .remark-code {
+  font-size: 10pt;
+}

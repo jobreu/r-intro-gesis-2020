@@ -1,0 +1,62 @@
+---
+title: "Introduction to R for Data Analysis"
+subtitle: "Exploratory Data Analysis"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-06"
+location: "GESIS Summer School in Survey Methodology"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "../workshop.css"]
+    nature:
+      highlightStyle: "github"
+      highlightLines: true
+      countIncrementalSlides: false
+---
+layout: true
+
+```{r setup, include = F}
+if (!require(easypackages)) install.packages("easypackages")
+library(easypackages)
+
+packages("rmarkdown", "knitr", "kableExtra", "gadenbuie/xaringanExtra", "hadley/emo", prompt = F)
+
+options(htmltools.dir.version = FALSE)
+
+opts_chunk$set(echo = TRUE, fig.align = "center")
+
+xaringanExtra::use_tile_view()
+```
+
+<div class="my-footer">
+  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+
+<style type="text/css">
+
+pre {
+  font-size: 10px
+}
+</style>
+
+---
+
+# Exploratory Data Analysis (EDA)
+
+After wrangling our data, the next thing we should do is exploring them. In practice, of course, these steps are often done iteratively. Exploratory data analysis can take many shapes in forms. In this session, we will look at the following:
+
+- summary statistics
+- checking (joint) distributions of variables
+- checking missing values and outliers
+
+A key tool for EDA is the use of visualizations which is why we will use some of the visualization techniques discussed in the previous sessions to explore our data.
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
