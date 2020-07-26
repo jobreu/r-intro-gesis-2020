@@ -50,8 +50,24 @@ After wrangling our data, the next thing we should do is exploring them. In prac
 - summary statistics
 - checking (joint) distributions of variables
 - checking missing values and outliers
+- exploring correlations
 
 A key tool for EDA is the use of visualizations which is why we will use some of the visualization techniques discussed in the previous sessions to explore our data.
+
+---
+
+# Data
+
+As using the full dataset can become somewhat unwieldy for the examples in this section, we will create/use a subset of the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* data. We will select the variables on the following:
+- demographics
+- political orientation
+- risk perceptions
+- personal measures taken
+- adherence to potential curfew (only main item)
+- trust in people and institutions
+- use of media to get Corona-related information
+
+As a repetition and reminder, we will quickly go through a wrangling pipeline for these data in the following.
 
 ---
 
