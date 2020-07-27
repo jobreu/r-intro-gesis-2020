@@ -9,6 +9,10 @@
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view/tile-view.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
     <script src="libs/kePrint/kePrint.js"></script>
     <link rel="stylesheet" href="..\workshop.css" type="text/css" />
   </head>
@@ -925,6 +929,20 @@ glimpse(gesis_panel_corona)
 ## $ hzzr019a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
 ```
 ]
+
+---
+
+# Dataframe check 1, 2, 1, 2!
+
+If you want to have a look at your full dataset, you can use the `View()` function. In *RStudio*, this will open a new tab in the source pane through which you can explore the dataset (including a search function). You can also click on the small spreadsheet symbol on the right side of the object in the environment tab to open this view. 
+
+
+```r
+View(gesis_panel_corona)
+```
+
+&lt;img src="./pics/rstudio_view.png" width="70%" style="display: block; margin: auto;" /&gt;
+
 ---
 
 # What's in a name?

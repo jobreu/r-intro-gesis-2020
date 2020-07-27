@@ -25,7 +25,7 @@ options(htmltools.dir.version = FALSE)
 
 opts_chunk$set(echo = TRUE, fig.align = "center")
 
-xaringanExtra::use_tile_view()
+xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
 ```
 
 <div class="my-footer">
@@ -390,6 +390,21 @@ As you saw on the previous slide, the output of `str()` can be a bit hard to rea
 glimpse(gesis_panel_corona)
 ```
 ]
+
+---
+
+# Dataframe check 1, 2, 1, 2!
+
+If you want to have a look at your full dataset, you can use the `View()` function. In *RStudio*, this will open a new tab in the source pane through which you can explore the dataset (including a search function). You can also click on the small spreadsheet symbol on the right side of the object in the environment tab to open this view. 
+
+```{r view, eval = F}
+View(gesis_panel_corona)
+```
+
+```{r, view pic, out.width = "70%", echo = F}
+include_graphics("./pics/rstudio_view.png")
+```
+
 ---
 
 # What's in a name?

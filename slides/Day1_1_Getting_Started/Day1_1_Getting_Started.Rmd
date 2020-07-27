@@ -25,7 +25,7 @@ options(htmltools.dir.version = FALSE)
 
 opts_chunk$set(echo = FALSE, fig.align = "center")
 
-xaringanExtra::use_tile_view()
+xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
 ```
 
 <div class="my-footer">

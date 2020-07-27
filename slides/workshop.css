@@ -68,3 +68,7 @@ div.my-footer span {
 .small .remark-code {
   font-size: 10pt;
 }
+
+.smaller .remark-code {
+  font-size: 8pt;
+}
