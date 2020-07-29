@@ -1,9 +1,9 @@
 ---
-title: "Data Wrangling & Exploration with the Tidyverse in R"
-subtitle: "Importing Data"
-author: "Johannes Breuer<br />Stefan Jünger<br />Thomas Ebel"
-date: "2019-05-15"
-location: "GESIS, Mannheim, Germany"
+title: "Introduction to R for Data Analysis"
+subtitle: "Data import and export"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-03"
+location: "GESIS, Cologne, Germany"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -18,17 +18,12 @@ editor_options:
 layout: true
 
 ```{r setup, include = FALSE}
-if (!require(easypackages)) install.packages("easypackages")
-library(easypackages)
-
-packages(
-  "knitr", "rmarkdown", "tidyverse", "readr", "readxl", "haven", "hadley/emo",
-  prompt = FALSE
+source("../xaringan_r_setup.R") 
+xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
 )
-
-options(htmltools.dir.version = FALSE)
-
-opts_chunk$set(echo = FALSE, fig.align = "center")
 ```
 
 <div class="my-footer">
@@ -40,52 +35,130 @@ opts_chunk$set(echo = FALSE, fig.align = "center")
 ---
 
 # Getting data into `R`
-
-.large[
-Thus far, we've already learned that data can be untidy.
-
-This course is also about making them tidy (as well as 'wrangling' and exploring them).
-
-There's one important prerequisite:
+Thus far, we've already learned what R and RStudio are, and also how you can even start your own programming project in R. Still, this course is about starting to use R and feeling prepared to use it for your analysis. There's one important prerequisite:
 
 .center[**We need data!**]
-]
 
-```{r, out.width = "50%"}
+```{r, out.width = "50%", echo = FALSE}
 include_graphics("./pics/import_data.png")
 ```
 
 ---
 
-# Getting data into the `tidyverse`
+## Data we use in this course
+During the course, we use several different datasets. Mainly in this session, where we apply different importing functions, we use a large variety ranging from the classic titanic datasets to the one about unicorns.
 
-Whether we want to use our own data or data from others, we need to get data into R.
+For most of the examples and exercises in this course, however, we will use the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You can [download the dataset in different formats as well as the codebook and the questionnaire (in German) from the *GESIS* Data Archive](https://search.gesis.org/research_data/ZA5667) (note: you need to have/create a user account).
 
-The `tidyverse` provides some nice tools to do exactly that:
 
-- `readr`  (for 'flat' files, such as CSV)
-- `haven`  (for statistical software files, such as SPSS, Stata, and SAS; can also handle labelled data)
-- `readxl` (for Excel spreadsheets)
+The *GESIS Panel* website provides [detailed documentation](https://www.gesis.org/gesis-panel/documentation), including a [cheatsheet](https://www.gesis.org/fileadmin/upload/forschung/programme_projekte/Drittmittelprojekte/GESIS_Panel/gesis_panel_cheatsheet.pdf).
 
-```{r, out.width = "50%"}
-include_graphics("./pics/hex_all_in_one.png")
-```
+Another often uses dataset is the [Gapminder Data](https://www.gapminder.org/data/), which you can also install it directly in R for using it with the command `install.packages("gapminder")`.
 
-A key difference between these packages and others is that `tidyverse` import functions already prepare the data for being 'tidied': they are a `tibbles`
+In order to code along and to be able to do the exercises, you should store the files (at leat from the GESIS Panel) in a folder called `data` that is in the same folder as the other materials for this course.
 
 ---
 
-# A readr example: `read_csv()`
+## What's great about R is that it's data-agnostic
+```{r, echo = FALSE}
+include_graphics("./pics/Datenimport.PNG")
+```
+
+---
+
+## What's intimidating: the choice of packages
+.pull-left[
+**What you will learn**
+- Getting the most common data formats into R
+  - e.g., CSV, Stata, SPSS, or Excel spreadsheets
+- Using the most recent methods of doing that
+- We will rely a lot on the procedures of the **tidyverse** instead of Base R
+]
+
+.pull-right[
+**What you won't learn**
+- Getting old & obscure binary data formats in R
+  - it's possible: https://cran.r-project.org/doc/manuals/r-release/R-data.html
+]
+
+---
+
+## Before writing any code: Rstudio functionality to import data
+
+Environment - Import Dataset - choose file type
+
+```{r, echo = FALSE}
+include_graphics("./pics/rstudio_import.PNG")
+```
+
+---
+
+## Where to find data
+
+### Browse Button in RStudio
+```{r, echo = FALSE}
+include_graphics("./pics/importBrowse.PNG")
+```
+
+### Code preview in Rstudio
+```{r, echo = FALSE}
+include_graphics("./pics/codepreview.PNG")
+```
+
+---
+
+## Honestly, after some time you will write the code directly
+.center[
+![](./pics/coding_cat.gif)
+]
+
+.footnote[https://media.giphy.com/media/LmNwrBhejkK9EFP504/source.gif]
+
+---
+
+## Simple vs. not so simple file formats
+Basic file formats, such as CSV (comma separated value file), can directly be imported into R
+- they are 'flat'
+- few metadata
+- basically text files
+
+Other file formats, particilarly the propietary ones, require the use of additional packages
+- they are complex
+- a lot of metadata (think of all the labels in a SPSS file)
+- they are binary (1110101)
+
+---
+
+## Why tidyverse for importing?
+As mentioned, for simple files Base R provides proper tools for importing.
+
+Yet, for importing other files, we have to rely on additional packages anyway.
+- **tidyverse** helps getting order in all the different tools
+- the tidy data format also facilitates adding metadata to imported data
+  - they are tibbles
+- provides some sane defaults, e.g., by automatic data type detection
+
+---
+
+## Ok now, for starters: Importing a CSV file in Base R / utils::
+```{r}
+titanic <- utils::read.csv("../../data/titanic/titanic.csv")
+
+titanic
+```
+
+---
+
+## A tidyverse / readr:: example
 ```{r readr_example, echo = TRUE}
-titanic <- read_csv("../../data/titanic/titanic.csv")
+titanic <- readr::read_csv("../../data/titanic/titanic.csv")
 ```
 
 Note the column specifications. `readr` 'guesses' them based on the first 1000 observations (we will come back to this later).
 
 ---
 
-# A readr example: `read_csv()`
-```{r readr_example:output, echo = TRUE}
+```{r readr_example_output, echo = TRUE}
 titanic
 ```
 
@@ -93,7 +166,7 @@ It's that easy!
 
 ---
 
-# A readxl example: `read_excel()`
+## A readxl example: `read_excel()`
 ```{r readxl_example, echo = TRUE}
 unicorns <- read_xlsx("../../data/unicorns/observations.xlsx")
 ```
@@ -102,32 +175,29 @@ No output `r ji("frowning_face")`
 
 ---
 
-# A readxl example: `read_excel()`
 ```{r readxl_example_output, echo = TRUE}
 unicorns
 ```
 
 ---
 
-# A haven example: `read_stata()` 
+## A haven example: `read_stata()` 
 ```{r read_stata_example, echo = TRUE}
-gesis_panel <- 
-  read_stata("../../data/gesis_panel_campusfile/ZA5666_v1-0-0_Stata14.dta")
+gp_covid <- 
+  read_stata("../../data/gesis_panel_covid19/ZA5667_v1-1-0_Stata14.dta")
 ```
 
 Note: The [`gesis` package](https://github.com/expersso/gesis) allows direct access to the *GESIS* Data Catalogue (DBK) in `R`, given that you have a DBK account.
 
 ---
 
-# A haven example: `read_stata()` 
 ```{r read_stata_example_output, echo = TRUE}
-gesis_panel
+gp_covid
 ```
 
 ---
 
-# `read_stata()`'s sister: `read_spss()`
-
+## `read_stata()`'s sister: `read_spss()`
 Indeed, there's also the function `read_spss()` to import SPSS files.
 
 It also provides capabilities to handle SPSS-defined missing values by setting the option `user_na = TRUE` (default is `FALSE`).
@@ -136,8 +206,7 @@ The [`sjlabelled` package](https://cran.r-project.org/web/packages/sjlabelled/in
 
 ---
 
-# There's more
-
+## There's more
 These were just some very first examples of applying functions from each package. They comprise even more functions for different data types.
 
 - readr
@@ -158,7 +227,7 @@ Not to mention all the helper functions and options. For example, we can define 
 
 ---
 
-# Data specification
+## Data specification
 
 - characters
   - indicated by `<chr>`
@@ -180,8 +249,7 @@ Not to mention all the helper functions and options. For example, we can define 
 
 ---
 
-# Changing variable types
-
+## Changing variable types
 As mentioned before, `read_csv` 'guesses' the variable types by scanning the first 1000 observations. NB: **This can go wrong!**
 
 Luckily, we can change the variable type...
@@ -192,8 +260,7 @@ Luckily, we can change the variable type...
 
 ---
 
-# While loading the data in `read_csv`
-
+## While loading the data in `read_csv`
 ```{r readr_example_col_change, echo = TRUE}
 titanic <-
   read_csv(
@@ -217,16 +284,14 @@ titanic <-
 
 ---
 
-# While loading the data in `read_csv`
-
+## While loading the data in `read_csv`
 ```{r readr_example_col_change_display, echo = TRUE}
 titanic
 ```
 
 ---
 
-# While loading the data in `read_csv`
-
+## While loading the data in `read_csv`
 ```{r readr_example_col_changeD, echo = TRUE}
 titanic <-
   read_csv(
@@ -250,23 +315,21 @@ titanic <-
 
 ---
 
-# While loading the data in `read_csv`
-
+## While loading the data in `read_csv`
 ```{r readr_example_col_changeD_display, echo = TRUE}
 titanic
 ```
 
 ---
 
-# After loading the data
-
+## After loading the data
 ```{r readr_example_col_change_after, echo = TRUE}
 titanic <- read_csv("../../data/titanic/titanic.csv")
 ```
 
 ---
 
-# After loading the data
+## After loading the data
 
 ```{r readr_example_col_changeD_after, echo = TRUE}
 titanic <-
@@ -291,10 +354,8 @@ titanic <-
 
 ---
 
-# Exporting data
-
-Sometimes our data have to leave the `tidyverse` (or even `R`), for example, if we....
-
+## Exporting data
+Sometimes our data have to leave `R`, for example, if we....
 - share data with colleagues who do not use `R`
 - want to continue where we left off
   - particularly, if data wrangling took a long time
@@ -303,14 +364,13 @@ For such purposes we also need a way to export our data.
 
 All of the packages we have discussed in this session also have designated functions for that.
 
-```{r, out.width = "50%"}
+```{r, out.width = "50%", echo = FALSE}
 include_graphics("./pics/export_data.png")
 ```
 
 ---
 
-# Examples: CSV and Stata files
-
+## Examples: CSV and Stata files
 ```{r export_csv, echo = TRUE}
 write_csv(titanic, "titanic_own.csv")
 ```
@@ -326,8 +386,44 @@ list.files()
 
 ---
 
-# Additional packages
+## `R`'s native file formats
+If you plan to continue to work with R (something we would always recommend `r emo::ji("stuck_out_tongue_winking_eye")`), there are at least two native 'file formats' to choose from. The advantage of using them is that they are compressed files so that they don't occupy unnecessary large  disk space. Moreover, they are already prepared as you left them and they take less time to be loaded (not a big deal in a small data world).
 
+`.Rdata` files saving and loading:
+
+```{r, eval = FALSE}
+save(mydata, file = "mydata.RData")
+load("mydata.RData")
+```
+
+`.rds` files saving and loading.
+
+```{r, eval = FALSE}
+saveRDS(mydata, "mydata.rds")
+mydata <- readRDS("mydata.rds")
+```
+
+
+`saveRDS()` just saves a representation of the object, which means you can name as ever you want when loading. That's great!
+
+---
+
+## Saving just everything
+You may already have noticed that: When closing Rstudio by default the programs asks you whether you want to save the workspace image. 
+
+```{r, out.width = "50%", echo = FALSE}
+include_graphics("./pics/save_image.png")
+```
+
+You can do that by your own using the `save.image()` function:
+
+```{r, eval = FALSE}
+save.image(file = "my_fancy_workspace.RData")
+```
+
+---
+
+## Additional packages
 The great benefit of `tidyverse` import functions is the import of the data as tibbles: the data are potentially tidier.
 
 Several other non-tidyverse packages provide similar benefits as they make use of this universal data format:
@@ -337,17 +433,45 @@ Several other non-tidyverse packages provide similar benefits as they make use o
 
 ---
 
-# Other packages for data import
+## Other packages for data import
 
 - `base` R
-
 - the [`foreign` package](https://cran.r-project.org/web/packages/foreign/index.html) for SPSS and Stata files
-
 - [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) or [`fst`](https://www.fstpackage.org/) for large datasets
-
 - [`jsonlite`](https://cran.r-project.org/web/packages/jsonlite/index.html) for json files
-
 - [`datapasta`](https://github.com/MilesMcBain/datapasta) for copying and pasting data into tribbles (e.g., from websites, Excel or Word files)
+
+
+---
+
+## Final note on file paths
+There is this simple rule of never ever using absolute file paths in order to maintain your code reproducible and future-proof. We already had this in the introduction, it's just to remind you as this is particularly important for data importing and exporting.
+
+```{r eval = FALSE}
+# Windows
+load("C:/Users/cool_user/data/fancy_data.Rdata")
+
+# Mac
+load("/Users/cool_user/data/fancy_data.Rdata")
+
+# GNU/Linux
+load("/home/cool_user/data/fancy_data.Rdata")
+```
+
+---
+
+## Use relative paths
+Instead of using absolute paths it is recommended to use relative file paths. The idea is from starting where your current script currently exist and navigate to your target location. Say we are in the "C:/Users/cool_user/" location on a Windows machine. To load your data we would use:
+
+```{r eval = FALSE}
+load("./data/fancy_data.Rdata")
+```
+
+If we were in a different folder, e.g., "C:/Users/cool_user/cat_pics/mauzi/", we would use:
+
+```{r eval = FALSE}
+load("../../data/fancy_data.Rdata")
+```
 
 ---
 
