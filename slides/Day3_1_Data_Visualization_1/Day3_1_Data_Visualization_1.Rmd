@@ -19,6 +19,11 @@ layout: true
 
 ```{r setup, include = FALSE}
 source("../xaringan_r_setup.R") 
+xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
 ```
 
 <div class="my-footer">
@@ -73,7 +78,7 @@ source("../xaringan_r_setup.R")
 - grammar of graphics
 ]
 
-There's more:
+There's more that we won't cover:
 - lattice plots, for example
 
 ---
@@ -81,7 +86,7 @@ There's more:
 ## Graphics in R
 Since the early days, graphics are a first class citizen in R
 
-A standard `R` installation doesn't require any additional packages to create graphics.
+A standard `R` installation doesn't require any additional packages to create graphics. It's part of the `graphics` package.
 
 
 ```{r load_gp_covid, include = FALSE}
@@ -145,7 +150,7 @@ plot(
 plot(
   gp_covid$age_cat, 
   gp_covid$hzcy001a,
-  main = "Relationship between Age and Likelihood of Covid-19 Infection",
+  main = "Relationship between Age and Subjective Likelihood of a COVID-19 Infection",
   xlab = "Age of Respondents",
   ylab = "Likelihood of Being Infected"
 )
@@ -236,21 +241,153 @@ abline(
 
 ---
 
-## ...
+## More options and more plots
+We will again turn to this example later in this week during the confirmatory analysis session. What you may have learned so far is that already with a few options you can dramatically change the output of the default plotting function in `R`.
+
+We could now also adjust some more parameters, such as colors, axis limits etc., but this may create an example that is somewhat far-fetched. Instead, we will learn from other standard plotting functions in `R`, and will apply more options there.
 
 ---
 
-## More plot types
-Histograms
-- `hist(x)`
+## Histograms
+Although we will turn to exploratory data analysis tomorrow, histograms and similar plots are really handy if you want to have a glimpse on the distribution of a variable. See, the distribution of the categorized age variable in the GESIS Panel:
 
-Barplots
-- `barplot(table(x))`
+```{r}
+hist(gp_covid$age_cat)
+```
 
+---
+
+## Introduce axis limits
+You can then pose axis limits using the option `xlim`, if you are only interested in the range of data.
+
+```{r}
+hist(gp_covid$age_cat, xlim = c(1, 5))
+```
+
+---
+## Adding breaks
+The `breaks` option is great to limit or expand the number of bins and their width in the data.
+
+```{r}
+hist(gp_covid$age_cat, breaks = 10)
+```
+
+However, age in our data are categorical data and, therefore, we may want to use a plotting technque that is more approriate: barplots.
+
+---
+
+## Tabulate and `barplot`
+The command `barplot()` generates a barplot from a frequency table. So we need to build it first. Fortunately, that's really easy and something you will need all the time. For example, to create a frequency table for the categorized age variable in the GESIS Panel use:
+
+```{r}
+table_age <- table(gp_covid$age_cat)
+```
+
+We can then create our barplot from that
+
+```{r}
+barplot(table_age)
+```
+
+---
+
+## Make it colorful: adding blue colors
+Everything's so far was more or less grayish, so we use the example of barplots to first create blue bars for our barplot. For this purpose, we use the `rgb()` function. You could also add hex codes as character strings (see below).
+
+```{r}
+barplot(table_age, col = rgb(0,0,1))
+```
+
+---
+
+## Green colour 
+Here's a green version...
+
+```{r}
+barplot(table_age, col = rgb(0,1,0))
+```
+
+---
+
+## Red colour
+...and a red one.
+
+```{r}
+barplot(table_age, col = rgb(1,0,0))
+```
+
+---
+
+## Transparency (alpha value)
+Granted, this looks a little bit oldschool. What boosts the appearance a little bit are alpha-values. They make the colors transparent to a certain degree.
+
+```{r}
+barplot(table_age, col = rgb(1, 0, 0, .3))
+```
+
+---
+
+## Rstudio addin `colourpicker`
+Choosing colors is not always an easy task. The `colourpicker` adding for `Rstudio` helps you choosing colors.
+
+```{r, eval = FALSE}
+install.packages("colourpicker")
+```
+
+![](figure/colourpicker.PNG){height=80%}
+
+---
+
+## Set various colors
+
+```{r}
+barplot(table_age, col = c(20, "#62D6C8", "darkorange"))
+```
+
+---
+
+## A two dimensional table
+
+```{r}
+table_age_likelihood <- table(gp_covid$age_cat, gp_covid$hzcy001a)
+
+table_age_likelihood
+```
+
+If the passed table object is two-dimensional, a conditional barplot is created.
+
+---
+
+## Conditional `barplot`
+The barplot for a two-dimensional table object can either be stackend (default).
+
+```{r}
+barplot(table_age_likelihood)
+```
+
+Or it can be plotted side by side.
+
+```{r}
+barplot(table_age_likelihood, beside = TRUE)
+```
+
+---
+
+## More plot types you can choose from
 Boxplots
 - `boxplot(y ~ x)`
 
-There's more, e.g., pie charts (`pie(x)`)
+Pie charts (still possible in 2020)
+- `pie(x)`
+
+Scatterplot matrices
+- `pairs(x)`
+
+Mosaic Plots
+- `mosaicplot(table)`
+
+Densities
+- `plot(density(x))`
 
 ---
 
@@ -415,6 +552,7 @@ fancy_pants_margins_plot <- function (my_models) {
 ```
 
 ---
+
 ## Run our function
 .pull-left[
 ```{r fancy_pants_margins_plotted, eval = FALSE}
@@ -428,12 +566,9 @@ fancy_pants_margins_plot(linear_models)
 ]
 
 ---
+
 ## Outlook on the next session
-In the next session, we will work with the **tidyverse** and its plotting
-techniques using `ggplot2`. We will learn an alternative  and easier way of 
-plotting data or results from different models exploiting so-called facets. 
-However, the trade-off is that the input data for the plots require more 
-attention and simply more preparation.
+In the next session, we will work with the **tidyverse** and its plotting techniques using `ggplot2`. We will learn an alternative  and easier way of plotting data or results from different models exploiting so-called facets.  However, the trade-off is that the input data for the plots require more attention and simply more preparation.
 
 ---
 
@@ -479,15 +614,11 @@ dev.off()
 ---
 
 ## My personal note on R base plotting
-Hopefully, you may have gotten the feeling that already R's base techniques for
-plotting are well-suited for daily data exploration. On some days, `hist()` is
-my most often used command.
+Hopefully, you may have gotten the feeling that already R's base techniques for plotting are well-suited for daily data exploration. On some days, `hist()` is my most often used command.
 
-But to be honest: I use all the other functions not that often, particularly from all the added-value packages for plotting. The syntax is sometimes cumbersome with all the `par()` 
-or `dev.off()` calls, and manipulating parameters simply feels 'old'.
+But to be honest: I use all the other functions not that often, particularly from all the added-value packages for plotting. The syntax is sometimes cumbersome with all the `par()`  or `dev.off()` calls, and manipulating parameters simply feels 'old'.
 
-In the next session, we will learn more modern techniques using 
-**tidyverse**/`ggplot2`. Yet, we still believe that it is worthwhile to get comfortable with base R plotting since `ggplot2` sometimes can simply too much for simple data exploration.
+In the next session, we will learn more modern techniques using **tidyverse**/`ggplot2`. Yet, we still believe that it is worthwhile to get comfortable with base R plotting since `ggplot2` sometimes can simply too much for simple data exploration.
 
 
 ---
