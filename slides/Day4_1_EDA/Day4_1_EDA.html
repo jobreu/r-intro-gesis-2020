@@ -51,7 +51,7 @@ After wrangling our data, the next thing we should do is exploring them. In prac
 
 - summary statistics &amp; frequencies
 - correlations &amp; cross-tabulations
-- checking (joint) distributions of variables
+- checking (joint &amp; grouped) distributions of variables
 - checking for missing values and outliers
 
 A key tool for EDA is the use of visualizations which is why we will use some of the visualization techniques discussed in the previous sessions to explore our data.
@@ -87,7 +87,8 @@ gesis_panel_corona &lt;- read_csv2("./data/ZA5667_v1-1-0.csv")
 
 ```r
 corona_survey &lt;- gesis_panel_corona %&gt;% 
-  select(sex:education_cat,
+  select(id,
+         sex:education_cat,
          choice_of_party,
          left_right = political_orientation,
          risk_self =  hzcy001a,
@@ -117,15 +118,25 @@ corona_survey &lt;- gesis_panel_corona %&gt;%
 
 If you look at the [codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378) for the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany*, you will see that some of the variables we have selected have specific values that we should either code as missing values or exclude before we do any analyses (exploratory or otherwise).
 
+.small[
 
 ```r
 library(naniar)
 
-missings &lt;- c(-111, -99, -77, -33, -22, 97, 98)
+missings &lt;- c(-111, -99, -77, -33, -22)
 
 corona_survey &lt;- corona_survey %&gt;%
-  replace_with_na_all(condition = ~.x %in% missings)
+  replace_with_na_all(condition = ~.x %in% missings) %&gt;% 
+    replace_with_na(replace = list(choice_of_party = c(97,98),
+                                   risk_self = c(97),
+                                   risk_surround = c(97),
+                                   trust_rki = c(98),
+                                   trust_government = c(98),
+                                   trust_chancellor = c(98),
+                                   trust_who = c(98),
+                                   trust_scientists = c(98)))
 ```
+]
 
 ---
 
@@ -244,7 +255,7 @@ summary(corona_survey$left_right)
 ```
 
 ```r
-summary(corona_survey)
+summary(corona_survey[, -1])
 ```
 
 ```
@@ -409,6 +420,7 @@ library(psych)
 
 corona_survey %&gt;% 
   select_if(is.numeric) %&gt;% 
+  select(-id) %&gt;% 
   describe()
 ```
 
@@ -475,6 +487,7 @@ library(summarytools)
 
 corona_survey %&gt;% 
   select_if(is.numeric) %&gt;%
+  select(-id) %&gt;% 
   descr(stats = "common")
 ```
 
@@ -607,7 +620,7 @@ The `dplyr` function `group_by()` creates dataframes (tibbles) that are grouped 
 ```r
 corona_survey %&gt;% 
   filter(!is.na(choice_of_party)) %&gt;% 
-  group_by(choice_of_party) %&gt;% 
+* group_by(choice_of_party) %&gt;%
    summarize(
     mean_trust_gov = mean(trust_government, na.rm = TRUE),
     sd_trust_gov = sd(trust_government, na.rm = TRUE),
@@ -650,10 +663,10 @@ corona_survey %&gt;%
          starts_with("trust")) %&gt;% 
   drop_na() %&gt;% 
   group_by(choice_of_party) %&gt;%
-  summarize(across(starts_with("trust"),
-                   list(mean = mean,
-                        sd = sd),
-                   .names = "{col}_{fn}"))
+* summarize(across(starts_with("trust"),
+*                  list(mean = mean,
+*                       sd = sd),
+*                  .names = "{col}_{fn}"))
 ```
 
 ```
@@ -722,7 +735,7 @@ Instead of using `group_by` and `summarize()` to get frequency counts, we can al
 ```r
 corona_survey %&gt;% 
   filter(!is.na(choice_of_party)) %&gt;% 
-  count(choice_of_party) %&gt;% 
+* count(choice_of_party) %&gt;%
   mutate(proportion = n/sum(n)) %&gt;% 
   ungroup()
 ```
@@ -1142,27 +1155,19 @@ trust %&gt;%
 
 # The `corrr` package
 
+.pull-left[
 The package also provides different options for visualizing correlation coefficients.
 
-.small[
 
 ```r
 trust %&gt;% 
   correlate() %&gt;%
-  rplot()
+* rplot()
 ```
+]
 
-```
-## 
-## Correlation method: 'pearson'
-## Missing treated using: 'pairwise.complete.obs'
-```
-
-```
-## Don't know how to automatically pick scale for object of type noquote. Defaulting to continuous.
-```
-
-&lt;img src="Day4_1_EDA_files/figure-html/rplot-1.png" width="35%" style="display: block; margin: auto;" /&gt;
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1238,7 +1243,7 @@ Among other things, the `correlation` package, e.g., also provides options for b
 ```r
 corona_survey %&gt;% 
   select(sex, starts_with("trust")) %&gt;% 
-  group_by(sex) %&gt;% 
+* group_by(sex) %&gt;%
   correlation() %&gt;% 
   head(14)
 ```
@@ -1351,23 +1356,1426 @@ The message from the `datasaurus_dozen` examples should be clear. Relying only o
 
 - univariate distributions
 
+- grouped univariate distributions (if you have and want to compare groups)
+
 - bivariate distributions
+
+There are many good resources for plotting with `R`. A very exhaustive and approachable one is [*From Data to Viz*](https://www.data-to-viz.com/) which provides a collection of recipes for a lot of different plot types (for both `R` and `Python`). Many of the following examples are based on those. 
+
+---
+
+# EDA vs. publication-ready plots
+
+When you get more familiar with plotting in `R` you will notice that there are seemingly unlimited plotting options that allow for comprehensive customization. This means that you can spend a lot of time on tweaking and optimizing plot. While this makes sense for producing figures for publications, in the context of EDA, the figures you produce are meant for yourself (plus maybe a few collaborators). Hence, we will mostly make use of (rather) basic examples in the following. However, although `base R` provides quite a few plotting options, we will focus using `ggplot2` (and extensions thereof) as it is generally more versatile.
 
 ---
 
 # Plotting univariate distributions
 
+In the following, we will discuss some examples of plotting univariate distributions of
+
+1) categorical variables
+
+2) numeric variables
+
+These plots can be created for a whole dataset or to compare specific subsets (groups) within the data.
+
+Of course, there are more options than the ones we will show for plotting univariate distributions. Which to choose depends on the specific kind of data you have, the question you want to answer with the data, and also - to some degree - personal preferences or what is customary in your field.
+
 ---
 
-# Plotting bivariate distributions
+# Bar chart
+
+.pull-left[
+The most common way of displaying the distribution of one categorical variable is a bar chart. The simplest way of creating a bar chart that shows counts per category with `ggplot2` is:
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party)) +
+  geom_bar()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Bar chart: Add colors
+
+.pull-left[
+We can also have different colors for the categories in our bar chart:
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+*            fill = choice_of_party)) +
+  geom_bar()
+```
+]
+
+*Note*: There are many ways of choosing and customizing the colors in a bar chart. However, as our focus is on plots for EDA, we will not cover these options here.
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Row chart
+
+.pull-left[
+While we are quite used to seeing bar charts, flipping its coordinates, so that it becomes a row chart, can make it easier to read (at least for people from countries in which the reading direction is left to right, top to bottom).
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             fill = choice_of_party)) + 
+  geom_bar() +
+* coord_flip()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Change the order of categories
+
+.pull-left[
+There are [several ways of changing the order of categorical variable values for a plot](https://www.r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html). In the previous example, we might want to change the order of parties from top to bottom based on their counts. To do this we can, e.g., use the `fct_rev()` and `fct_infreq()` functions from the `forcats` package.
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+* ggplot(aes(x = fct_rev(fct_infreq(choice_of_party)),
+             fill = choice_of_party)) + 
+  geom_bar() +
+  xlab("Count") +
+  coord_flip()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Bar or row chart with percentages
+
+.pull-left[
+We might want to display relative frequencies (proportions) instead of absolute frequencies (counts) for our categorical variable.
+
+.small[
+
+```r
+library(scales)
+
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             fill = choice_of_party)) + 
+* geom_bar(aes(y = (..count..)/sum(..count..))) +
+* scale_y_continuous(labels=scales::percent) +
+  ylab("Relative Frequencies")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Pretty bar plot
+
+.pull-left[
+Although we don't want to (and can't) discuss all plot customization option in detail, we want to show one example of a heavily tweaked bar chart to illustrate what is possible.
+
+.smaller[
+
+```r
+colors &lt;- c("#000000", "#E30013", "#FFEE00", "#BE3075", "#19A329", "#009FE1", "#808080")
+
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             fill = choice_of_party)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = (..count..)/sum(..count..), 
+              label = paste0(round(prop.table(..count..) * 100, 2), '%')),
+            stat = 'count',
+            size = 3,
+            vjust = -.5) +
+  scale_y_continuous(labels=scales::percent,
+                     expand=expand_scale(mult=c(0,0.1))) +
+  scale_fill_manual(values = colors) +
+  labs(title = "Which party would you vote for if federal elections were held next Sunday?",
+       x = "",
+       y = "",
+       caption = "Note: N = 2783 \nSource: GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany.\nGESIS Datenarchiv, Köln. ZA5667 Datenfile Version 1.1.0, https://doi.org/10.4232/1.13520.") +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        axis.ticks.x = element_blank())
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Alternatives to bar charts
+
+There are [several alternatives to bar charts](https://towardsdatascience.com/anything-but-bars-the-10-best-alternatives-to-bar-graphs-fecb2aaee53a) for plotting categorical variables. An interesting one is the so-called [donut chart](https://www.r-graph-gallery.com/128-ring-or-donut-plot.html) which can, e.g., be created with the `ggdonutchart()` function from the [`ggpubr` package](https://rpkgs.datanovia.com/ggpubr/index.html).
+
+---
+
+# Discrete numeric variables
+
+.pull-left[
+For plotting the univariate distribution of discrete numeric variables (such as those based on Likert scales) it is, of course, possible to also use bar charts.
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(trust_scientists)) %&gt;% 
+  ggplot(aes(x = trust_scientists)) +
+  geom_bar()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Discrete numeric variables
+
+.pull-left[
+Bar plots can become a bit unwieldy for visualizing the distribution of discrete numeric variables, if the number of individual values is high. In cases where there is a very high number of different values in a discrete numeric variable it may be better to use histograms instead of bar plots.
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(left_right)) %&gt;% 
+  ggplot(aes(x = left_right)) +
+  geom_bar()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Special case: Likert-plots
+
+For plotting the shares of responses to Likert-type items, the `plot_likert()` function from the [`sjPlot` package](https://strengejacke.github.io/sjPlot/) is an interesting option. However, this requires labelled data. Another option is the [`likert` package](https://github.com/jbryer/likert).
+
+---
+
+# Continuous numeric variables
+
+The univariate distribution of a continuous numeric variable can be plotted as a histogram. As there are no continuous variables in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset, we will use data from [*Gapminder*](https://www.gapminder.org/) on worldwide life expectancy and GDP per capita in 2018. As always, we first need to load and wrangle the data.
+
+.smaller[
+
+```r
+life_exp_2018 &lt;- read_csv("./data/life_expectancy_years.csv") %&gt;%
+  pivot_longer(-country,
+               names_to = "year",
+               values_to = "life_exp") %&gt;% 
+  filter(year == "2018") %&gt;% 
+  select(-year)
+
+gdp_pc_2018 &lt;- read_csv("./data/gdppercapita_us_inflation_adjusted.csv") %&gt;%
+  pivot_longer(-country,
+               names_to = "year",
+               values_to = "gdp_percap") %&gt;% 
+  filter(year == "2018") %&gt;% 
+  select(-year)
+
+gapminder_2018 &lt;- life_exp_2018 %&gt;% 
+  left_join(gdp_pc_2018, by = "country")
+```
+
+
+]
+
+---
+
+# Histogram
+
+.pull-left[
+Now we can use the *Gapminder* data on global life expectancy in 2018 to create a histogram.
+
+.small[
+
+```r
+gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp)) %&gt;% 
+  ggplot(aes(x = life_exp)) +
+  geom_histogram()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Histogram
+
+.pull-left[
+One thing to keep in mind about histograms is that they can look quite different for the same data, depending on the number and size of the bins they use. We can easily adapt this with `ggplot2` by specifying the `binwidth` or the `bins` argument.
+
+
+```r
+gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp)) %&gt;% 
+  ggplot(aes(x = life_exp)) +
+  geom_histogram(binwidth = 5)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Density plot
+
+.pull-left[
+To avoid the issue of picking the "right" number or size of bins, a density plot can be a good alternative to a histogram for continuous numeric variables.
+
+*Note*: If you want combine multiple density plots (e.g., for different groups), you can create ridgeline plots, e.g., with the [`ggridges` package](https://github.com/wilkelab/ggridges).
+
+.small[
+
+```r
+gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp)) %&gt;% 
+  ggplot(aes(x = life_exp)) +
+  geom_density(fill="#69b3a2",
+               color="#e9ecef")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Testing the normality assumption
+
+Some statistical tests require that the data (roughly) follow a normal distribution. Histograms and density plots can already help us get a good first impression if our data are (approximately) normally distributed. Two other options for visually testing the normal distribution of our data are [QQ-plots and PP-plots](https://homepage.divms.uiowa.edu/~luke/classes/STAT4580/qqpp.html#pp-plots). While [`ggplot` offers geoms for QQ-plots](https://ggplot2.tidyverse.org/reference/geom_qq.html), the [`qqplotr` package](https://github.com/aloy/qqplotr) offers a lot of convenient functions and options for creating and customizing QQ- and PP-plots.
+
+---
+
+# QQ-Plot
+
+.pull-left[
+The QQ-plot plots data quantiles against theoretical quantiles (e.g., of the normal distribution). If our data are (approximately) normally distributed, they should follow the diagonal line in the QQ-plot, or at least be within its confidence band. Let's create a QQ-plot for the political orientation variable from the *GESIS Panel* dataset.
+
+.small[
+
+```r
+library(qqplotr)
+
+corona_survey %&gt;% 
+  filter(!is.na(left_right)) %&gt;% 
+  ggplot(mapping = aes(sample = left_right)) +
+  stat_qq_band() +
+  stat_qq_line() +
+  stat_qq_point() +
+  labs(x = "Theoretical Quantiles",
+       y = "Sample Quantiles") 
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# QQ-Plot
+
+.pull-left[
+The reason the QQ-plot for the political orientation variable looks the way it does is that the values of the variable are discrete. The ~~picture~~ plot looks different, if we use a continuous variable.
+
+.small[
+
+```r
+gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp)) %&gt;% 
+  ggplot(mapping = aes(sample = life_exp)) +
+  stat_qq_band() +
+  stat_qq_line() +
+  stat_qq_point() +
+  labs(x = "Theoretical Quantiles",
+       y = "Sample Quantiles") 
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# PP-Plot
+
+.pull-left[
+The PP-plot compares the proportion of values between the actual and a theoretical (in this case normal) distribution.
+
+.small[
+
+```r
+gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp)) %&gt;% 
+  ggplot(mapping = aes(sample = life_exp)) +
+  stat_pp_band() +
+  stat_pp_line() +
+  stat_pp_point() +
+  labs(x = "Probability Points",
+       y = "Cumulative Probability") 
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Normality test
+
+`Base R` also provides functions for statistical tests of normality. The most common ones are *Shapiro-Wilk's test* and the *Kolmogorov-Smirnov* test, both of which test the H0 that the data follow a normal distribution against the H1 that they do not follow a normal distribution. It should be noted, however, that, especially for larger sample sizes, these tests tend to be quite conservative.
+
+.small[
+
+```r
+shapiro.test(gapminder_2018$life_exp)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  gapminder_2018$life_exp
+## W = 0.96852, p-value = 0.0003655
+```
+
+```r
+ks.test(gapminder_2018$life_exp, 
+        "pnorm",
+        mean = mean(gapminder_2018$life_exp, na.rm = TRUE),
+        sd = sd(gapminder_2018$life_exp, na.rm = TRUE))
+```
+
+```
+## 
+## 	One-sample Kolmogorov-Smirnov test
+## 
+## data:  gapminder_2018$life_exp
+## D = 0.070116, p-value = 0.3261
+## alternative hypothesis: two-sided
+```
+]
+
+---
+
+# Visual group comparisons
+
+If we want to visually compare distributions (or summary statistics) across groups or, more generally speaking, across different values of categorical variables in our dataset, there are plenty of options in `R`. There are grouped versions of all of the plots we discussed before: bar plots, histograms, and density plots. However, there also are other plot types that are especially suited for comparing subsets/groups in our data. 
+
+*Note*: The [`ggpubr` package](https://rpkgs.datanovia.com/ggpubr/index.html) and the [`ggstatsplot` package](https://github.com/IndrajeetPatil/ggstatsplot) include some good options for visualizations of group comparisons. 
+
+---
+
+# Grouped &amp; stacked barplots
+
+.pull-left[
+If we want to compare the distribution of categorical variables across groups, we can use grouped or stacked barplots. If, e.g., we want to compare the party preferences across education categories in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset, we could do so with a grouped barplot.
+
+.small[
+
+```r
+corona_survey %&gt;%
+  filter(!is.na(choice_of_party)) %&gt;%
+  ggplot(aes(x = education_cat, 
+             fill = choice_of_party)) +
+  geom_bar(position="dodge")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Grouped &amp; stacked barplots
+
+.pull-left[
+If we want to compare the share of female and male voters for each party, we can use a stacked barplot.
+
+.small[
+
+```r
+corona_survey %&gt;%
+  filter(!is.na(choice_of_party)) %&gt;%
+  ggplot(aes(x = choice_of_party, 
+             fill = sex)) +
+  geom_bar(position="fill")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Barplot with error bars
+
+.pull-left[
+One way to compare, e.g., mean values across groups is a barplot with error bars, sometimes also called a dynamite plot.
+
+.small[
+
+```r
+corona_survey %&gt;% 
+  filter(!is.na(trust_government),
+         !is.na(choice_of_party)) %&gt;% 
+  group_by(choice_of_party) %&gt;% 
+  summarize(trust_in_government = mean(trust_government),
+            sd = sd(trust_government)) %&gt;% 
+  ggplot() +
+    geom_bar(aes(x = choice_of_party,
+                 y = trust_in_government),
+             stat="identity", 
+             fill="skyblue") +
+    geom_errorbar(aes(x = choice_of_party,
+                      ymin = trust_in_government - sd,
+                      ymax = trust_in_government + sd), 
+                  width=0.4,
+                  colour="orange",
+                  size=1)
+```
+]
+]
+
+.pull-right[
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Boxplot
+
+.pull-left[
+A plot type that, despite having [received quite some criticism in recent years](https://www.data-to-viz.com/caveat/boxplot.html), is still widely used to visually summarize numeric data is the boxplot. `ggplot2` provides its own geom for this type of plot.
+
+.small[
+
+```r
+corona_survey %&gt;%
+  filter(!is.na(trust_government),
+         !is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             y = trust_government)) +
+    geom_boxplot()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Boxplot with individual data points
+
+.pull-left[
+One key point of criticism regarding the use of boxplots as well as dynamite plots (barplots with error bars) is that they do not provide any information about the distribution of the data. This has even led some scientists to start an initiative to [#barbarplots](https://barbarplots.github.io/index.html). However, with `ggplot2` information about the distribution of variables can easily be added to a boxplot (or other types of plots), e.g., with the `geom_jitter`.
+
+.small[
+
+```r
+corona_survey %&gt;%
+  filter(!is.na(trust_government),
+         !is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             y = trust_government)) +
+    geom_boxplot() +
+    geom_jitter()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Violin plots
+
+.pull-left[
+The previous version of adding individual data points to the boxplot was not really visually appealing. A good alternative to boxplots are violin plots which show the distribution of the variable (within groups) and can be combined with boxplots.
+
+.small[
+
+```r
+corona_survey %&gt;%
+  filter(!is.na(trust_government),
+         !is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             y = trust_government)) +
+    geom_violin(aes(fill = choice_of_party,
+                    color = choice_of_party),
+                width=1) +
+    geom_boxplot(width=0.1) +
+    theme(legend.position="none") +
+    xlab("")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Half-violin plots
+
+.pull-left[
+Violin plots include a mirrored density plot. An alterntive to this are half-violin plot that can, e.g., be created with the [`gghalves` package](https://github.com/erocoar/gghalves).
+
+*Note*: An extension of these half-violin plots are [raincloud plots](https://github.com/RainCloudPlots/RainCloudPlots) that combine density, dot, and boxplots.
+
+.small[
+
+```r
+library(gghalves)
+
+corona_survey %&gt;%
+  filter(!is.na(trust_government),
+         !is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             y = trust_government)) +
+    geom_half_violin(aes(fill = choice_of_party,
+                         color = choice_of_party)) +
+    geom_half_point(aes(color = choice_of_party),
+                        transformation = position_jitter()) +
+    theme(legend.position="none") +
+    xlab("")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Plotting bivariate distributions of numeric variables
+
+Similar to univariate statistics and distributions, there are multiple options for plotting bivariate distributions in `R`. Again, [*From Data to Viz*](https://www.data-to-viz.com/) is a good resource to consult here. We will explore some of the options for plotting bivariate distributions of numeric variables in the following.
+
+---
+
+# Scatter plot
+
+.pull-left[
+A very common option for plotting bivariate distributions to explore relationships between numeric variables is the scatter plot.
+
+.small[
+
+```r
+gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp),
+         !is.na(gdp_percap)) %&gt;% 
+  ggplot(aes(x = gdp_percap,
+             y = life_exp)) +
+  geom_point()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Scatter plot + marginal distributions
+
+.pull-left[
+The `ggMarginal()` function from the [`ggExtra` package](https://github.com/daattali/ggExtra) allows us to add information about the distribution of variables to the margins of a scatter plot. We can add histograms, density plots or boxplots.
+
+.small[
+
+```r
+library(ggExtra)
+
+p &lt;- gapminder_2018 %&gt;% 
+  filter(!is.na(life_exp),
+         !is.na(gdp_percap)) %&gt;% 
+  ggplot(aes(x = gdp_percap,
+             y = life_exp)) +
+  geom_point()
+
+  ggMarginal(p, type = "histogram")
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+]
+---
+
+# Extensions
+
+Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). There are also several extension packages for `ggplot2` that provide additional plot types or (convenient) plotting options. For example, the following packages provide some interesting (additional) options for EDA: [`ggExtra`](https://github.com/daattali/ggExtra), [`GGAlly`](https://ggobi.github.io/ggally/), [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/index.html) 
 
 ---
 
 # Missings &amp; outliers
 
+Two things that can influence summary statistics as well as univariate and bivariate distributions are missings and outliers. Hence, before we can analyze our data, we should check whether we have clear patterns of missingness or extreme outliers in our data.
+
+---
+
+# Missing data
+
+In the *Data Wrangling* session we have already discussed how we can define specific values as missings (`NA`) and how we can recode `NA` into something else. As we have seen in that session, the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset contains quite a few codes for different types of missing data. However, when we collect data ourselves or if we (re-)use datasets that are not as well-documented as the *GESIS Panel* data, we may need to explore potential patterns of missingness to see, if there may have been identifiable reasons why data for certain variables and/or observations are missing. There is a [vignette for the `naniar` package](https://cran.r-project.org/web/packages/naniar/vignettes/naniar-visualisation.html) that provides a good overview of different missing data visualizations. We will explore some of those in the following.
+
+---
+
+# `visdat::vis_dat()`
+
+.pull-left[
+The [`visdat` package](http://visdat.njtierney.com/) provides several functions for visualizing missind data.
+
+
+```r
+library(visdat)
+
+vis_dat(corona_survey)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# `visdat::vis_dat()`
+
+.pull-left[
+The `vis_miss()` function from the `visdat` package provides some further details on missing values in a dataset.
+
+
+```r
+vis_miss(corona_survey)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# `UpSetR::gg_miss_upset()`
+
+.pull-left[
+The [`UpSetR` package](https://github.com/hms-dbmi/UpSetR) includes the `gg_miss_upset()` function which allows some in-depth exploration of missingness patters in a dataset.
+
+
+```r
+library(UpSetR)
+
+gg_miss_upset(trust)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# `naniar::gg_miss_var()`
+
+.pull-left[
+The [`naniar` package](http://naniar.njtierney.com/index.html) that we have used to replace specific values with `NA` in our data also provides a set of functions for visualizing missing data. The first one we want to look at is `gg_miss_var()` which shows the number or percentage of missing values for each variable in a dataset.
+
+
+```r
+library(naniar)
+
+gg_miss_var(corona_survey,
+            show_pct = TRUE)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# `naniar::gg_miss_case()`
+
+.pull-left[
+The complement to `gg_miss_var()` is `gg_miss_case()` which shows the number or percentage of missing values for each case/observation in a dataset.
+
+
+```r
+library(naniar)
+
+gg_miss_case(corona_survey,
+            show_pct = TRUE)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# `naniar::gg_miss_fct()`
+
+.pull-left[
+The `gg_miss_fct()` function creates a plot that shows the percentage of missing values for all (other) variables for different values of a categorical.
+
+
+```r
+library(naniar)
+
+gg_miss_fct(corona_survey,
+            fct = choice_of_party)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Outliers
+
+There are many ways of identifying and dealing with outliers. In the following, we will look at three of them: box/violin plots, interquartile range (IQR), and Mahalanobis distance.
+
+*Note*: An alternative method for detecting outliers based on the Minimum Covariance Determinant is described in a [blog post by Will Hipson](https://willhipson.netlify.app/post/outliers/outliers/).
+
+---
+
+# Detecting outliers: Box/violin plots
+
+.pull-left[
+The [`ggstatsplot` package](https://github.com/IndrajeetPatil/ggstatsplot) includes the `ggbetweenstats()` function for creating a combined violin and boxplot that tags outliers.
+
+*Note*: Installing the `ggstatsplot` package will also install a lot of additional packages (which may take some time).
+
+.small[
+
+```r
+library(ggstatsplot)
+
+ggbetweenstats(data = corona_survey, 
+               x = sex,
+               y = left_right,
+               outlier.tagging = TRUE,
+               outlier.label = id,
+               results.subtitle = FALSE)
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Detecting outliers: IQR
+
+For identifying univariate outliers we can specify lower and upper cutoffs using the formula 25th percentile - 1.5 * interquartile range (IQR) for the lower and 75 percentile + 1.5 * IQR for the upper limit. In `R` this can be done as follows:
+
+.small[
+
+```r
+q2575 &lt;- quantile(gapminder_2018$gdp_percap, 
+                  probs=c(.25, .75), 
+                  na.rm = TRUE)
+
+iqr &lt;- IQR(gapminder_2018$gdp_percap,
+           na.rm = TRUE)
+
+ul &lt;-  q2575[2]+1.5*iqr  
+ll &lt;- q2575[1]-1.5*iqr
+
+gapminder_2018_cut &lt;- gapminder_2018 %&gt;%
+  filter(gdp_percap &lt;= ul)
+```
+]
+
+**NB**: The value of 1.5 * IQR is a rule of thumb. You should always check whether this makes sense for your data. In the above example with the *Gapminder* date, e.g., it most likely does not. An alternative approach is using mean + 2 * SD (or 3 * SD), but, again, this is nothing more than a rule of thumb.
+
+---
+
+# Detecting outliers: Mahalanobis distance
+
+.pull-left[
+A common method for identifying multivariate outliers is Mahalanobis distance. The `outlier()` function from the `psych` package calculates and plots Mahalanobis distance.
+.small[
+
+```r
+library(psych)
+
+out &lt;- outlier(gapminder_2018[, -1])
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+]
+
 ---
 
 # EDA packages
+
+There are quite a few packages that are made for easy EDA or include functions that facilitate EDA. For example: [`inspectdf`](https://alastairrushworth.github.io/inspectdf/), [`skimr`](https://docs.ropensci.org/skimr/), [`summarytools`](https://github.com/dcomtois/summarytools), [`dataMaid`](https://github.com/ekstroem/dataMaid), [`DataExplorer`](https://boxuancui.github.io/DataExplorer/), [`descriptr`](https://descriptr.rsquaredacademy.com/index.html), [`GGAlly`](https://ggobi.github.io/ggally/index.html)
+
+Going through all of them would be too much. However, we will highlight a few exemplary functions from these packages for automated/simplified EDA that combine several of the different steps and options we covered in this session in the following.
+
+---
+
+# `skimr::skim()`
+
+.smaller[
+
+```r
+library(skimr)
+
+skim(corona_survey[, -1])
+```
+
+
+&lt;table style='width: auto;'
+        class='table table-condensed'&gt;
+&lt;caption&gt;Data summary&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Name &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; corona_survey[, -1] &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Number of rows &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3765 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Number of columns &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; _______________________ &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Column type frequency: &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; factor &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; numeric &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ________________________ &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Group variables &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; None &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+**Variable type: factor**
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; skim_variable &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n_missing &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; complete_rate &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; ordered &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n_unique &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; top_counts &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sex &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mal: 1933, Fem: 1832 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age_cat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 51 : 978, 61 : 386, &amp;gt;= : 382, 46 : 367 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; education_cat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Hig: 2188, Med: 1154, Low: 423 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; choice_of_party &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.74 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gru: 756, CDU: 753, SPD: 369, Lin: 287 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+**Variable type: numeric**
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; skim_variable &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; n_missing &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; complete_rate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mean &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p0 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p25 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p50 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p75 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p100 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; hist &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; left_right &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▅▇▃▁ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; risk_self &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 613 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▅▇▅▃ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; risk_surround &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 661 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▃▇▇▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avoid_places &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▁▁▁▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; keep_distance &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▁▁▁▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; wash_hands &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▁▁▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; stockup_supplies &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▇▁▁▁▃ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; reduce_contacts &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▁▁▁▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; wear_mask &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▇▁▁▁▁ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; trust_rki &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 670 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▁▅▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; trust_government &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 631 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▂▃▇▃ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; trust_chancellor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 635 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▂▂▃▇▅ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; trust_who &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 662 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▂▇▅ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; trust_scientists &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 658 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▂▇▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; info_national_public_tv &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▁▁▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; info_national_newspaper &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▇▁▁▁▅ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; info_local_newspaper &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▇▁▁▁▇ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; info_facebook &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▇▁▁▁▂ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; info_other_social_media &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▇▁▁▁▂ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sum_measures &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 579 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▃▇▅ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sum_sources &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▅▇▃▁▁ &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; mean_trust &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 608 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ▁▁▃▇▇ &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+# `GGAlly::ggpairs()`
+
+.pull-left[
+.small[
+
+```r
+library(GGally)
+
+corona_survey %&gt;% 
+  select(sex,
+         education_cat,
+         risk_self,
+         risk_surround,
+         trust_government,
+         trust_rki,
+         trust_scientists,
+         sum_measures) %&gt;% 
+  ggpairs()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# `inspectdf::inspect_cat()`
+
+.pull-left[
+.small[
+
+```r
+library(inspectdf)
+
+cat &lt;- inspect_cat(corona_survey)
+
+show_plot(cat)
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 
