@@ -1,6 +1,6 @@
 ---
-title: "Data Visualization Part 1"
-subtitle: "Programming in R"
+title: "Introduction to R for Data Analysis"
+subtitle: "Data Visualization Part 1"
 author: "Johannes Breuer<br />Stefan Jünger"
 date: "2020-08-05"
 location: "GESIS, Cologne, Germany"
@@ -18,23 +18,13 @@ editor_options:
 layout: true
 
 ```{r setup, include = FALSE}
-if (!require(easypackages)) install.packages("easypackages")
-library(easypackages)
-
-easypackages::packages(
-  "knitr", "rmarkdown", "tidyverse", "readr", "readxl", "haven",# "hadley/emo",
-  prompt = FALSE
-)
-
-options(htmltools.dir.version = FALSE)
-
-opts_chunk$set(echo = TRUE, fig.align = "center")
+source("../xaringan_r_setup.R") 
 ```
 
 <div class="my-footer">
-  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
-  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
-  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+<div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+<div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+<div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
 </div>
 
 ```{css, echo = FALSE}
@@ -52,9 +42,21 @@ opts_chunk$set(echo = TRUE, fig.align = "center")
 #   font-size: 200% !important;
 # }
 .tinyish .remark-code { /*Change made here*/
-  font-size: 70% !important;
+    font-size: 70% !important;
 }
 ```
+
+---
+
+## Generally, ...
+- Graphical data analysis is great
+- Good plots can contribute to a better understanding
+- Generating a plot is easy
+- Making a good plot can take very long
+- Generating plots with R is fun
+- Plots created with R have high quality
+- Almost every plot type is supported by R
+- A large number of export formats are available in R
 
 ---
 
@@ -85,21 +87,19 @@ A standard `R` installation doesn't require any additional packages to create gr
 ```{r load_gp_covid, include = FALSE}
 gp_covid <- 
   haven::read_sav(
-    # "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
-    "./data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+    "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
   ) %>% 
   sjlabelled::set_na(na = c(-1:-99, 97))
-
 ```
 
 .pull-left[
-```{r graphics_hist, eval = FALSE, echo = TRUE}
+```{r graphics_hist, eval = FALSE}
 hist(gp_covid$hzcy001a)
 ```
 ]
 
 .pull-right[
-```{r ref.label = "graphics_hist"}
+```{r ref.label = "graphics_hist", echo = FALSE}
 ```
 ]
 
@@ -108,22 +108,97 @@ hist(gp_covid$hzcy001a)
 ## Ok, but let's start from the beginning
 The most basic function to plot in R is `plot()`.
 
-```{r}
+.pull-left[
+```{r basic_plot, eval = FALSE}
 plot(gp_covid$hzcy001a)
 ```
+]
+
+.pull-right[
+```{r ref.label = "basic_plot", echo = FALSE}
+```
+]
 
 ---
 
 ## We can turn this into a bivariate scatterplot
-```{r}
-plot(gp_covid$age_cat, gp_covid$hzcy001a)
+.pull-left[
+```{r basic_scatter, eval = FALSE}
+plot(
+  gp_covid$age_cat, 
+  gp_covid$hzcy001a
+)
 ```
+]
+
+.pull-right[
+```{r ref.label = "basic_scatter", echo = FALSE}
+```
+]
+
+
+---
+
+## Adding stuff to the plot: titles & labels
+.pull-left[
+```{r titles_labels, eval = FALSE}
+plot(
+  gp_covid$age_cat, 
+  gp_covid$hzcy001a,
+  main = "Relationship between Age and Likelihood of Covid-19 Infection",
+  xlab = "Age of Respondents",
+  ylab = "Likelihood of Being Infected"
+)
+```
+]
+
+.pull-right[
+```{r ref.label = "titles_labels", echo = FALSE}
+```
+]
 
 ---
 
 ## Adding stuff to the plot: axis labels
-```{r}
-# par(mar = c(rep(10, 4)))
+.tinyish[
+.pull-left[
+```{r axis_labels, eval = FALSE}
+plot(
+  gp_covid$age_cat, 
+  gp_covid$hzcy001a,
+  main = "Relationship between Age and Likelihood of Covid-19 Infection",
+  xlab = "Age of Respondents",
+  ylab = "Likelihood of Being Infected"
+)
+axis(
+  side = 2, 
+  at = 1:7,
+  labels = c(
+    "Not at all",
+    "Very\nunlikely", 
+    "Rather\nunlikely",
+    "Moderately",
+    "Rather", 
+    "Very",
+    "Absolutely"
+  ),
+  las = 0
+)
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "axis_labels", echo = FALSE}
+```
+]
+
+---
+
+## Annotating the plot: Adding a regression line
+.tinyish[
+.pull-left[
+```{r regression_line, eval = FALSE}
 plot(
   gp_covid$age_cat, gp_covid$hzcy001a,
   main = "Relationship between Age and Likelihood of Covid-19 Infection",
@@ -134,40 +209,287 @@ axis(
   side = 2, 
   at = 1:7,
   labels = c(
-    "Überhaupt\nnicht",
-    "Sehr\nunwahrscheinlich", 
-    "Eher\nunwahrscheinlich",
-    "Mittelmäßig\nwahrscheinlich",
-    "Eher\nwahrscheinlich", 
-    "Sehr\nwahrscheinlich",
-    "Absolut\nwahrscheinlich"
+    "Not at all",
+    "Very\nunlikely", 
+    "Rather\nunlikely",
+    "Moderately",
+    "Rather", 
+    "Very",
+    "Absolutely"
   ),
   las = 0
 )
+abline(
+  lm(
+    hzcy001a ~ age_cat, 
+    data = gp_covid
+  )
+)
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "regression_line", echo = FALSE}
+```
+]
+
+---
+
+## ...
+
+---
+
+## More plot types
+Histograms
+- `hist(x)`
+
+Barplots
+- `barplot(table(x))`
+
+Boxplots
+- `boxplot(y ~ x)`
+
+There's more, e.g., pie charts (`pie(x)`)
+
+---
+
+## Integrating plots in functions/packages
+Creating plots in R is not complicated. Since the real advantage of R is the
+community with additional packages and routines, it's clear that the real benefit
+is this accessible interface to plotting techniques.
+
+This is why `plot()` often is a generic function not only to plot data directly. Some statistical models have their own plotting method, which is called when you use the `plot()` command.
+
+---
+
+## Example: OLS model
+.pull-left[
+```{r lm_summary_plot, eval = FALSE}
+linear_model <- 
+  lm(
+    hzcy001a ~ age_cat, 
+    data = gp_covid
+  )
+
+par(mfrow = c(2, 2))
+plot(linear_model)
+```
+]
+
+.pull-right[
+```{r ref.label = "lm_summary_plot", echo = FALSE}
+```
+]
+
+---
+
+## Added-value plotting methods in other packages
+What is more is than other package developer provide new R functions that, in the background, make use of R's plotting techniques. These packages rescue you from writing lengthy R-scipts just to get a specific layout of a plot.
+
+---
+
+## A correlation plot
+.pull-left[
+```{r corr_plot, eval = FALSE}
+library(corrplot, quietly = TRUE)
+
+correlations <-
+  gp_covid %>% 
+  dplyr::select(
+    age_cat, 
+    hzcy001a, 
+    political_orientation, 
+    education_cat
+  ) %>% 
+  cor(use = "complete.obs", method = "spearman")
+
+corrplot(correlations, method = "color")
+```
+]
+
+.pull-right[
+```{r ref.label = "corr_plot", echo = FALSE}
+```
+]
+
+---
+
+## Fancy panels
+.pull-left[
+```{r panels_plot, eval = FALSE}
+library(psych, quietly = TRUE)
+
+gp_covid %>% 
+  dplyr::select(
+    age_cat, 
+    hzcy001a, 
+    political_orientation, 
+    education_cat
+  ) %>% 
+  pairs.panels()
+```
+]
+
+.pull-right[
+```{r ref.label = "panels_plot", echo = FALSE}
+```
+]
+
+---
+
+## But sometimes that's not enough
+In a way, read-made functions for nice plots requires again to learn new commands,
+options, and the like. And sometimes you may have requirements that cannot even 
+fulfilled with these functions anyway.
+
+While these functions are helpful to combine information from different variables
+in a dataset, sometimes you also want to re-create the same old boring graph
+over and over again, e.g., for plotting results from similar but different 
+statistical models.
+
+So may want to exploit your skills on looping.
+
+---
+
+## Let's create some analysis results
+
+```{r}
+dependent_variables <-
+  c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")
+
+linear_models <-
+  lapply(dependent_variables, function (dv) {
+    lm(gp_covid[[dv]] ~ age_cat, data = gp_covid)
+  }) %>% 
+  magrittr::set_names(dependent_variables)
 ```
 
 ---
 
-## Adding stuff to the plot: titles & labels
-```{r}
-plot(
-  gp_covid$age_cat, gp_covid$hzcy001a,
-  main = "Relationship between Age and Likelihood of Covid-19 Infection",
-  xlab = "Age of Respondents",
-  ylab = "Likelihood of Being Infected"
+## The plot that we want to re-create multiple times
+.pull-left[
+```{r base_predictions_plot, eval = FALSE}
+library(margins)
+invisible(
+  capture.output(
+    cplot(
+      linear_models[["hzcy001a"]], 
+      main = "hzcy001a"
+    )
+  )
 )
+```
+]
+
+.pull-right[
+```{r ref.label = "base_predictions_plot", echo = FALSE}
+```
+]
+
+---
+
+## Let's write a function
+```{r}
+fancy_pants_margins_plot <- function (my_models) {
+  
+  # define layout
+  par(mfrow = c(ceiling(length(my_models)/2), 2))
+  
+  # plot all models
+  for (model in names(my_models)) {
+    invisible(
+      capture.output(
+        cplot(
+          my_models[[model]],
+          main = model
+          
+          # add plot parameter(s) whichever you want
+          # ...
+          
+        )
+      )
+    )
+  }
+}
+```
+
+---
+## Run our function
+.pull-left[
+```{r fancy_pants_margins_plotted, eval = FALSE}
+fancy_pants_margins_plot(linear_models)
+```
+]
+
+.pull-right[
+```{r ref.label = "fancy_pants_margins_plotted", echo = FALSE}
+```
+]
+
+---
+## Outlook on the next session
+In the next session, we will work with the **tidyverse** and its plotting
+techniques using `ggplot2`. We will learn an alternative  and easier way of 
+plotting data or results from different models exploiting so-called facets. 
+However, the trade-off is that the input data for the plots require more 
+attention and simply more preparation.
+
+---
+
+## Exporting graphics
+It's nice that R provides such nice plotting opportunities.
+
+However, to include them in our papers, we need to export them.
+
+As said in the beginning, numerous exports formats are baked-in into R.
+
+---
+
+## Export with Rstudio
+
+```{r echo = FALSE}
+include_graphics("./pics/saveGraphic.PNG")
 ```
 
 ---
 
+## Command to save graphic
 
-## Adding a regression line
-```{r}
-plot(
-  gp_covid$age_cat, gp_covid$hzcy001a,
-  main = "Relationship between Age and Likelihood of Covid-19 Infection",
-  xlab = "Age of Respondents",
-  ylab = "Likelihood of Being Infected"
-)
-abline(lm(hzcy001a ~ age_cat, data = gp_covid))
+- Alternatively also with the commands `png`, `pdf` or `jpeg` for example
+
+```{r,eval=F}
+png("Histogramm.png")
+hist(dat$duration)
+dev.off()
 ```
+
+```{r,eval=F}
+pdf("Histogramm.pdf")
+hist(dat$duration)
+dev.off()
+```
+
+```{r,eval=F}
+jpeg("Histogramm.jpeg")
+hist(dat$duration)
+dev.off()
+```
+
+---
+
+## My personal note on R base plotting
+Hopefully, you may have gotten the feeling that already R's base techniques for
+plotting are well-suited for daily data exploration. On some days, `hist()` is
+my most often used command.
+
+But to be honest: I use all the other functions not that often, particularly from all the added-value packages for plotting. The syntax is sometimes cumbersome with all the `par()` 
+or `dev.off()` calls, and manipulating parameters simply feels 'old'.
+
+In the next session, we will learn more modern techniques using 
+**tidyverse**/`ggplot2`. Yet, we still believe that it is worthwhile to get comfortable with base R plotting since `ggplot2` sometimes can simply too much for simple data exploration.
+
+
+---
+
+
