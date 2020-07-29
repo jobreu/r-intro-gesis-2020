@@ -22,7 +22,7 @@ source("../xaringan_r_setup.R")
 xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
 xaringanExtra::use_extra_styles(
   hover_code_line = TRUE,         #<<
-  mute_unhighlighted_code = TRUE  #<<
+  mute_unhighlighted_code = FALSE  #<<
 )
 ```
 
@@ -36,6 +36,10 @@ xaringanExtra::use_extra_styles(
 ```{css, echo = FALSE}
 .tinyish .remark-code { /*Change made here*/
   font-size: 70% !important;
+}
+
+.tinyisher .remark-code { /*Change made here*/
+  font-size: 50% !important;
 }
 ```
 
@@ -114,6 +118,7 @@ Admittedly, data types and data formats are not an exciting topic. They seem to 
 ---
 
 ## Numeric data
+.small[
 *Integers* are values without a decimal value. To be explicit in R in using them you have to place a `L` behind the actual value, just like that:
 ```{r}
 1L
@@ -129,6 +134,7 @@ We can check data types by using the `typeof()` function
 typeof(1L)
 typeof(1.1)
 ```
+]
 
 ---
 
@@ -253,6 +259,7 @@ c(1, 2, "evil string")
 ## Data frames
 While matrices are used, e.g.,--\*drumroll\*-- for matrix operations, data frames resembles more what we know of data we usually use. We can build data.frames by hand as here:
 
+.tinyish[
 ```{r data_frames, eval = FALSE}
 library(randomNames) # a name generator package
 
@@ -261,17 +268,23 @@ fancy_data <-
     who = 
       randomNames(n = 10, which.names = "first"),
     age = 
-      sample(14:49, 10, replace = TRUE), # you see what we are doing here?                
+      sample(14:49, 10, replace = TRUE), # you see what we are doing here?   
+    salary_2018 = 
+      sample(15:100, 10, replace = TRUE),  
+    salary_2019 = 
+      sample(15:100, 10, replace = TRUE),
     was_milk_available = 
-      sample(c(TRUE, FALSE), 10, replace = TRUE) # and here?
+      sample(c(TRUE, FALSE), 10, replace = TRUE)
   )
 
 fancy_data
 ```
+]
 
 .right[`r emo::ji("left_arrow_curving_right")`]
 
 ---
+class: middle
 ```{r ref.label = "data_frames", echo = FALSE}
 ```
 
@@ -288,6 +301,7 @@ as_tibble(fancy_data)
 .right[`r emo::ji("left_arrow_curving_right")`]
 
 ---
+class: middle
 ```{r ref.label = "as_tibbles", echo = FALSE}
 ```
 
@@ -311,6 +325,7 @@ fancy_list
 .right[`r emo::ji("left_arrow_curving_right")`]
 
 ---
+class: middle
 .tinyish[
 ```{r ref.label = "fancy_list", echo = FALSE}
 ```
@@ -332,6 +347,7 @@ fancy_nested_list
 .right[`r emo::ji("left_arrow_curving_right")`]
 
 ---
+class: middle
 .tinyish[
 ```{r ref.label = "fancy_nested_list", echo = FALSE}
 ```
@@ -483,11 +499,21 @@ milk_bought(n_bottles = 20)
 ---
 
 ## Loops
+.pull-left[
 We can use loops to iterate through data, applying a function. The loop types we'll use here are:
-- if else
-- for
-- while
-- apply family
+- if else statements/requests
+- iteration with
+  - `for()` 
+  - `while()`
+  - and the apply family
+]
+
+.pull-right[
+```{r echo = FALSE}
+knitr::include_graphics("./pics/forloops.png")
+```
+
+]
 
 ---
 
@@ -531,7 +557,8 @@ grViz("digraph flowchart {
       [4]: 'No'
       [5]: 'Room mate is buying 12 bottles of milk'
       [6]: 'Room mate is buying 1 bottle of milk'
-      ")
+      ",
+      height = 400)
 ```
 
 ---
@@ -576,12 +603,15 @@ if (condition) {
 
 ---
 
-## Translation of joke into R
+## Translation of our fabalous joke into `R`
+We create a vector for our two scenarios (eggs available or not).
 
 ```{r}
-eggs_available <- TRUE
+eggs_available <- c(TRUE, FALSE)
+```
 
-if (isTRUE(eggs_available)) {
+```{r}
+if (eggs_available[1]) {
   milk_bought(n_bottles = 12)
 } else {
   milk_bought(n_bottles = 1)
@@ -589,9 +619,7 @@ if (isTRUE(eggs_available)) {
 ```
 
 ```{r}
-eggs_available <- FALSE
-
-if (isTRUE(eggs_available)) {
+if (eggs_available[2]) {
   milk_bought(n_bottles = 12)
 } else {
   milk_bought(n_bottles = 1)
@@ -606,10 +634,18 @@ if (isTRUE(eggs_available)) {
 milk_bought_2 <- function (n_bottles) {
   if (n_bottles < 2) {
     our_string <-
-      paste0("I have bought ", n_bottles, " bottle of milk")
+      paste0(
+        "I have bought ", 
+        n_bottles, 
+        " bottle of milk"
+      )
   } else {
     our_string <-
-      paste0("I have bought ", n_bottles, " bottles of milk")
+      paste0(
+        "I have bought ",
+        n_bottles, 
+        " bottles of milk"
+      )
   }
   
   our_string
@@ -620,9 +656,7 @@ milk_bought_2 <- function (n_bottles) {
 
 ## Now, that's better, right?
 ```{r}
-eggs_available <- FALSE
-
-if (isTRUE(eggs_available)) {
+if (eggs_available[2]) {
   milk_bought_2(n_bottles = 12)
 } else {
   milk_bought_2(n_bottles = 1)
@@ -632,26 +666,24 @@ if (isTRUE(eggs_available)) {
 ---
 
 ## ifelse() shortcut
-There's also a shorcut using the function `ifelse` when the operations applied to the data
-are not too complex (or at least embedded in another function as in our case):
-
+There's also a shorcut using the function `ifelse()` when the operations applied to the data are not too complex (or at least embedded in another function as in our case):
 
 ```{r}
 ifelse(
-  isTRUE(eggs_available),         # condition
+  eggs_available[2],              # condition
   milk_bought_2(n_bottles = 12),  # if condition is true
   milk_bought_2(n_bottles = 1)    # else if condition is false
 )
 ```
 
-But be aware that `if()` and `ifelse()` were designed for different purposes and the latter is not always a shortcut
+But be aware that `if()` and `ifelse()` were designed for different purposes and the latter is not always a shortcut rather than data type specific. It is handy when you aim to assign the result, e.g, to an object or a variable in a data frame. Ordinary if else statements are more general and should always be your choice when you are not sure.
 
 ---
 
 ## And now blend it all together: function in a function
-.tinyish[
+.tinyisher[
 ```{r}
-milk_bought<- function (who, n_bottles, eggs_available) {
+milk_bought <- function (who, n_bottles, eggs_available) {
   
   # get the right grammar for the right person
   buyer <-
@@ -662,18 +694,18 @@ milk_bought<- function (who, n_bottles, eggs_available) {
     )
   
   # basic milk buying function
-  buy_milk <- function (n_bottles) { #<<
-      ifelse( #<<
-        n_bottles < 2, #<<
-        paste0(buyer, "bought ", n_bottles, " bottle of milk"), #<<
-        paste0(buyer, "bought ", n_bottles, " bottles of milk") #<<
-      ) #<<
-  } #<<
+  buy_milk <- function (n_bottles) {
+      ifelse(
+        n_bottles < 2,
+        paste0(buyer, "bought ", n_bottles, " bottle of milk"),
+        paste0(buyer, "bought ", n_bottles, " bottles of milk")
+      )
+  }
   
   # apply the basic milk buying function
   our_string <-
     ifelse(
-      isTRUE(eggs_available),
+      eggs_available,
       buy_milk(n_bottles = 12),
       buy_milk(n_bottles = 1)
     )
@@ -695,51 +727,39 @@ milk_bought(who = "Johannes", n_bottles = 12, eggs_available = FALSE)
 
 ---
 
+## EXERCISE TIME
+
+---
+
 ## `for()` loops
-In my opinion, for loops are some of the most useful tools in functional programming.
+In my opinion, loops using the `for()` function are some of the most useful tools in functional programming.
 
 They enable iterating through input data and applying functions to each element of the data
 - it depends on specific purpose what defines this element
-- thus, it is important to think about the iterator of the for call
+  - they can be rows, column, list elements etc.
+- thus, it is important to think about the iterator of the specific call
 
 ---
 
 ## Architecture of for loops
 
 ```{r eval = FALSE}
-for (iterators in data) {
+for (iterator_name in data) {
   function_to_apply(iterator_name)
 }
 ```
 
-So if we had data about a whole programmer gang buying milk but who experience varying availibity of eggs, we could apply our function to each one of them
-
----
-
-## Building some data
-
-```{r}
-library(randomNames)
-
-our_data <-
-  tibble(
-    who = randomNames(n = 10, which.names = "first"),
-    age = sample(20:40, 10, replace = TRUE),
-    eggs_available = sample(c(TRUE, FALSE), 10, replace = TRUE)
-  )
-
-our_data
-```
+So if we had data about a whole programmer gang buying milk but who experience varying availability of eggs, we could apply our function to each one of them. Let's try that out!
 
 ---
 
 ```{r}
-for (row_number in 1:nrow(our_data)) {
+for (row_number in 1:nrow(fancy_data)) {
   for_output <- 
     milk_bought(
-      who = our_data$who[row_number], 
+      who = fancy_data$who[row_number], 
       n_bottles = 12, 
-      eggs_available = our_data$eggs_available[row_number]
+      eggs_available = fancy_data$eggs_available[row_number]
     )
   
   print(for_output) # output must be printed
@@ -778,24 +798,25 @@ bread_counter <- 10
 ---
 
 ## Voilà
+.tinyish[
 ```{r}
 while (still_there) {
   message("Yeah, there's some bread to pick up right here in the grocery store.")
 
-  bread_counter <- bread_counter - 1 #<<
+  bread_counter <- bread_counter - 1
 
   if (bread_counter < 1) {
     return(message("Bread is empty, going home."))
   }
 }
 ```
+]
 
 ---
 
 ## Ok, let's take a breath for a while
 
-**First of all: We're not finished yet (sorry!), but are there any intermediate
-questions?**
+**First of all: We're not finished yet (sorry!), but are there any intermediate questions?**
 
 --
 
@@ -808,15 +829,13 @@ What have we learned so far?
 
 What's left?
 - Some vecotrizations that make life easier: the apply family
-- Tidverse looping with purrr
 - Using the pipe operator `%>%`
 - Some notes on style
 
 ---
 
 ## The apply family
-The apply family is aimed to make your life easier, saves you a lot of typing 
-time and prevents you from writing explicit loops
+The apply family is aimed to make your life easier, saves you a lot of typing  time and prevents you from writing explicit loops
 - provides a nice interface to enter your data
 - data come out in a standard format
 - it may be faster than, e.g., writing a `for()` loop
@@ -832,15 +851,14 @@ However, we won't cover all functions of this precious family
 ---
 
 ## apply()
-The apply() command is useful when you want to fire up a short command across
-either all columns (option `MARGIN = 2`) _or_ rows (option `MARGIN = 2`).
+The apply() command is useful when you want to fire up a short command across either all columns (option `MARGIN = 2`) _or_ rows (option `MARGIN = 2`).
 
 ```{r}
 # means across columns/variables
-apply(our_data[,2], 2, mean)
+apply(fancy_data[,3:4], 2, mean)
 
 # means across rows/observations
-apply(our_data, 1, mean)
+apply(fancy_data[,3:4], 1, mean)
 ```
 
 While there are packages for building descriptive table already out there (XXX), this becomes handy when you want to create them yourself.
@@ -848,85 +866,117 @@ While there are packages for building descriptive table already out there (XXX),
 ---
 
 ## lapply()
-lapply() is for more elaborated operations. However, there are no `MARGIN` 
-options, so let's see what happens when we use it similarly as before:
+lapply() is for more elaborated operations. However, there are no `MARGIN`  options, so let's see what happens when we use it similarly as before:
 
-```{r}
-lapply(mtcars, mean)
+```{r lapply_error, eval = FALSE}
+lapply(fancy_data, mean)
 ```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+class: middle
+.tinyish[
+```{r ref.label = "lapply_error", echo = FALSE}
+```
+]
 
 ---
 
 ## lapply() returns lists
-It might be a little bit uncomfortable, but lapply() outputs returns each results
-of an iterated operation as a list element. Thus, the output of applying the function
-is a list. 
+It might be a little bit uncomfortable, but `lapply()` outputs returns each results of an iterated operation as a list element. Thus, the output of applying the function is a list. 
 
 Some people don't like lists as they separate information from each other.
 
 I like lists.
 
-----
+---
 
 ## The real merit lies in the iterators
 
 ```{r}
-lapply(1:nrow(mtcars), function (i) {
-  
-  ifelse(mtcars$mpg[i] > mean(mtcars$mpg), 1, 0)
+lapply(1:nrow(fancy_data), function (i) {
+  ifelse(fancy_data$salary_2019[i] > mean(fancy_data$salary_2019), 1, 0)
 })
 ```
 
 ---
 ## sapply()
+`sapply()` is similar to `lapply()`. The minor but significant difference is that it returns vectors instead of lists. This comes handy, when you want to add the results of this function as a new column to your existing data.
+
+```{r sapply, eval = FALSE}
+fancy_data$poverty_indicator <- 
+  sapply(1:nrow(fancy_data), function (i) {
+    ifelse(
+      fancy_data$salary_2019[i] > mean(fancy_data$salary_2019), 
+      1, 
+      0
+    )
+  })
+
+fancy_data
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
 
 ---
+class: middle
+.tinyish[
+```{r ref.label = "sapply", echo = FALSE}
+```
+]
+
+---
+
 ## tapply()
+Finally, `tapply()` is useful when you want to perform an action across different groups in your data.
+
+```{r}
+tapply(fancy_data$salary_2019,fancy_data$was_milk_available, mean)
+```
+
 
 ---
 
-# What is a pipe?
+## Let's end this loop
+At this point, we stop with adding more looping functions to our inventory. In `R`, there are definitely more functions that at least implicitly use loops and apply-like functions (for a nice overview, please refer to http://uc-r.github.io/apply_family). 
+
+What we also have left out are some newer `tidyverse` functions, e.g., from the `purrr::`-package. If you have any more questions on that please let us know. But for now we will turn to another feature of modern programming in `R` that will be way more supportive for your daily actions in `R` after you have converted to a full-time R-user after this course:
+
+.center[**pipes**]
+
+---
+
+## What is a pipe?
 ```{r pipe_johannes, out.width = "40%", echo = FALSE}
 include_graphics("./pics/pipe_office_decoration.jpg")
 ```
 .center[<small><small>Source: Johannes' office </small></small>]
-
---
 
 You might know them from other scripting utilities 
 - e.g., `bash` where a `|` operator is used
 
 ---
 
-# Nested functions in base `R`
-First, let's load some data:
-
---
+## Nested functions in base `R`
+First, let's load some data (we will learn more about that tomorrow):
 
 ```{r read_mtcars, echo = TRUE, message = FALSE}
 mtcars <- read_csv(readr_example("mtcars.csv"))
 ```
 
---
-
 Say, if we wanted to calculate the mean value of the variable `mpg`, we could use this command:
-
---
 
 ```{r read_mtcars_mpg, echo = TRUE, message = FALSE}
 mean(read_csv(readr_example("mtcars.csv"))$mpg)
 ```
 
---
-
 Pretty, isn't it? Well...
 
 ---
 
-# Make it prettier with base `R`
+## Make it prettier with base `R`
 We can use indentation to alleviate issues with readability:
-
---
 
 ```{r read_mtcars_mpg_intend, echo = TRUE, message = FALSE}
 mean(
@@ -936,33 +986,17 @@ mean(
   )
 ```
 
---
-
 This works. But it also has some flaws:
-
---
 - Don't you dare to forget closing a bracket
-
---
-
 - It's not easy to grasp which operation is the most important one
-
---
   - Is it loading the data?
-  
---
   - Is it choosing the proper variable?
-  
---
   - Or the calculation of the mean value?
 
 ---
 
-# Disentangling commands
-
+## Disentangling commands
 An easy way would be:
-
---
 
 ```{r read_mtcars_mpg_disentangled_1, echo = TRUE, message = FALSE}
 
@@ -972,11 +1006,7 @@ example_file_loaded <- read_csv(example_file)
 mean(example_file_loaded$mpg)
 ```
 
---
-
 Or, to prevent the creation of too many separate objects:
-
---
 
 ```{r read_mtcars_mpg_disentangled_2, echo = TRUE, message = FALSE}
 
@@ -986,17 +1016,12 @@ example_file_loaded <- read_csv(tmp_object)
 mean(example_file_loaded$mpg)
 ```
 
---
-
 Of course, you can mix these approaches to your liking...
 
 ---
 
-# Pipes as a solution?
-
+## Pipes as a solution?
 Pipes disentangle the whole process with an alternative approach by applying any involved function step by step:
-
---
 
 ```{r read_mtcars_mpg_pipe, echo = TRUE, message = FALSE}
 "mtcars.csv" %>% 
@@ -1006,21 +1031,16 @@ Pipes disentangle the whole process with an alternative approach by applying any
   mean()
 ```
 
---
-
 Most importantly, the central dataset is now on top and the starting point of everything.
 
 ---
 
-# Formal definition of pipes: basic logic
-
+## Formal definition of pipes: basic logic
 Usually, in `R` we apply functions as follows:
 
 ```{r function_r, echo = TRUE, eval = FALSE}
 f(x)
 ```
-
---
 
 In the logic of pipes this function is written as:
 
@@ -1028,25 +1048,18 @@ In the logic of pipes this function is written as:
 x %>% f()
 ```
 
---
-
 Thus, the inner argument/object is placed before the actual function call.
 
 ---
 
-# Formal definition of pipes: first argument
-
+## Formal definition of pipes: first argument
 In cases of multiple arguments, `x` is always the first argument of the function.
-
---
 
 Base R:
 
 ```{r function_r_arguments, echo = TRUE, eval = FALSE}
 f(x, y)
 ```
-
---
 
 .center[vs.]
 
@@ -1058,21 +1071,14 @@ x %>% f(y)
 
 ---
 
-# Formal definition of pipes: `.` as placeholder
-
+## Formal definition of pipes: `.` as placeholder
 Previously, we have learned that `x` always refers to the first argument. We can also make this explicit:
-
---
 
 ```{r formal_pipe, echo = TRUE, eval = FALSE}
 x %>% f(., y)
 ```
 
---
-
 This is useful in cases in which `x` does not refer to the first argument:
-
---
 
 ```{r formal_pipe_argument, echo = TRUE, eval = FALSE}
 x %>% f(y, z = .)
@@ -1080,21 +1086,14 @@ x %>% f(y, z = .)
 
 ---
 
-# Notes on the styling of pipes: indentation
-
+## Notes on the styling of pipes: indentation
 We can write pipes in one line:
-
---
 
 ```{r pipe_row, echo = TRUE, eval = FALSE}
 u %>% v %>% w %>% x %>% y %>% z
 ```
 
---
-
 Yet, this destroys the readability. At least for pipes with more than one `%>%` using multiple lines is easier to read:
-
---
 
 ```{r pipe_line, echo = TRUE, eval = FALSE}
 u %>% 
@@ -1107,11 +1106,8 @@ u %>%
 
 ---
 
-# Notes on the styling of pipes: nesting
-
+## Notes on the styling of pipes: nesting
 As pipes are so convenient you may be tempted to nest operations within pipes and to merge separate processes. For example:
-
---
 
 ```{r pipe_nested, echo = TRUE, eval = FALSE}
 obj_1 <- 
@@ -1127,7 +1123,6 @@ z %>%
 ---
 
 # Notes on the styling of pipes: nesting
-
 To:
 
 ```{r pipe_nested_2, echo = TRUE, eval = FALSE}
@@ -1141,35 +1136,18 @@ z %>%
   y
 ```
 
---
-
 While this is cool, it can get cumbersome to read.
-
---
 - It may be better to keep the processes split up in pipes with more than one `%>%` operator 
-
---
-
 - Hadley Wickham recommends to never use more than ten `%>%` anyway: https://r4ds.had.co.nz/pipes.html#when-not-to-use-the-pipe
-
 
 ---
 
 # Don't overthink pipes
-
 .column-left-half[
-Pipes are so nice, you may be tempted to use them all the time.
-
-Some of you may even spend hours to create one single data preparation workflow in one single pipe.
-
-This is awesome. However, it's not very efficient and also misses the whole purpose of applying pipes which are:
-
+Pipes are so nice, you may be tempted to use them all the time. Some of you may even spend hours to create one single data preparation workflow in one single pipe. This is awesome. However, it's not very efficient and also misses the whole purpose of applying pipes which are:
 - readability
-
 - reproducibility
 ]
-
---
 
 .column-right-half[
 ```{r crazy_pipes, out.width = "100%", echo = FALSE}
@@ -1222,7 +1200,7 @@ It really doesn't matter what style you use as long as you are consice (at least
 
 ---
 
-# Coding in style `r ji("sunglasses")`
+## Coding in style `r ji("sunglasses")`
 
 [The `tidyverse` style guide](https://style.tidyverse.org/) by Hadley Wickham  
   
@@ -1238,8 +1216,10 @@ From the package documentation:
 - `style_file()` styles .R and/or .Rmd files.
 - `style_dir()` styles all .R and/or .Rmd files in a directory.
 
-```{r, out.width = "50%"}
+```{r, out.width = "50%", echo = FALSE}
 include_graphics("./pics/styler_addin.png")
 ```
 
 ---
+
+## EXERCISE TIME
