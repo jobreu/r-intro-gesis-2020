@@ -26,6 +26,8 @@ options(htmltools.dir.version = FALSE)
 opts_chunk$set(echo = FALSE, fig.align = "center")
 
 xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
+xaringanExtra::use_extra_styles(hover_code_line = TRUE,
+                                mute_unhighlighted_code = FALSE)
 ```
 
 <div class="my-footer">
@@ -136,9 +138,9 @@ tweet_embed("https://twitter.com/hadleywickham/status/589068687669243905",
 Johannes
 
 - was socialized with *SPSS*
-- was annoyed with *AMOS* when learning structural equation modeling (around 2010)
+- was annoyed with *AMOS* when learning structural equation modeling (around 2011)
 - decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
-- attended an *Introduction to `R` course* at *GESIS* in 2010
+- attended an introductory *Data analysis with `R`* course at *GESIS* in 2012
 - only used `R` for SEM for some time, while still doing everything else (esp. data wrangling) with *SPSS*
 - finally made the full transition to `R` when joining *GESIS* in 2017
 
@@ -147,6 +149,15 @@ Stefan
 - a
 - b
 - c
+
+---
+
+# Keep calm and carry on learning `R`
+
+```{r, learn_r_cartoon, out.width = "50%", echo = F}
+include_graphics("./pics/r_first_then.png")
+```
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
@@ -925,7 +936,7 @@ include_graphics("./pics/rstudio_appearance.png")
 
 # Themes and fonts
 
-Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection.
+Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection. There also is a [colorblind-safe *RStudio* theme with code highlighting](https://github.com/DesiQuintans/Pebble-safe).
 
 I also like monospaced programming fonts with ligatures. I currently use [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/) but am also fond of the [`Fira Code`](https://github.com/tonsky/FiraCode) font (pun intended).
 
@@ -1092,7 +1103,7 @@ The easiest way to edit the user-wide `.Renviron` file is to use the `edit_r_env
 
 # `.Rprofile`
 
-The `.Rprofile` file contains `R` code that is run when `R` starts. The `.Rprofile` can, e.g., be used to display a personalized welcome message or set a default *CRAN* mirror.
+The `.Rprofile` file contains `R` code that is run when `R` starts. The `.Rprofile` can, e.g., be used to display a personalized welcome message or set a default *CRAN* mirror, but there are many other [customization options](https://www.jumpingrivers.com/blog/customising-your-rprofile/) as well.
 
 The easiest option for editing the `.Rprofile` file is to the `edit_r_profile()` function from the [`usethis` package](https://usethis.r-lib.org/index.html).
 

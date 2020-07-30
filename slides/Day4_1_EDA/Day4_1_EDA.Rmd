@@ -19,13 +19,15 @@ layout: true
 if (!require(easypackages)) install.packages("easypackages")
 library(easypackages)
 
-packages("rmarkdown", "knitr", "kableExtra", "gadenbuie/xaringanExtra", "hadley/emo", "tidyverse", prompt = F)
+packages("rmarkdown", "knitr", "kableExtra", "gadenbuie/xaringanExtra", "hadley/emo", "tidyverse", "magrittr", prompt = F)
 
 options(htmltools.dir.version = FALSE)
 
 opts_chunk$set(echo = TRUE, fig.align = "center")
 
 xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
+xaringanExtra::use_extra_styles(hover_code_line = TRUE,
+                                mute_unhighlighted_code = FALSE)
 ```
 
 <div class="my-footer">
@@ -238,11 +240,19 @@ As such, we can use summarizing functions of
 
 A quick and easy way to check some summary statistics for your dataset is the `base R` function `summary()` which can be applied to individual variables as well as whole dataframes:
 
-.smaller[
-```{r summary}
+```{r summary, eval = F}
 summary(corona_survey$left_right)
 
-summary(corona_survey[, -1])
+summary(corona_survey[, 2:19])
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+
+.smaller[
+```{r ref.label = "summary", echo = F}
+
 ```
 ]
 
@@ -282,12 +292,14 @@ prop.table(table(corona_survey$choice_of_party, useNA = "always"))
 
 If you want fewer decimals places in the output, you can wrap the the `prop.table()` function in a `round()` call.
 
+.small[
 ```{r round}
 round(prop.table(table(corona_survey$choice_of_party, useNA = "always")), 3) # rounded to 3 decimal places
 
 # if you want percentages
 round((prop.table(table(corona_survey$choice_of_party, useNA = "always")) * 100), 2)
 ```
+]
 
 ---
 
@@ -295,14 +307,22 @@ round((prop.table(table(corona_survey$choice_of_party, useNA = "always")) * 100)
 
 For more detailed summary statistics for the numeric variables you can use the `describe()` function from the [`psych` package](https://cran.r-project.org/web/packages/psych/index.html).
 
-.smaller[
-```{r describe, message = F}
+```{r describe, eval = F}
 library(psych)
 
 corona_survey %>% 
   select_if(is.numeric) %>% 
   select(-id) %>% 
-  describe()
+  describe() #<<
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+
+.smaller[
+```{r ref.label = "describe", echo = F, message = F}
+
 ```
 ]
 
@@ -312,14 +332,27 @@ corona_survey %>%
 
 The [`summarytools` package](https://github.com/dcomtois/summarytools) provides a lot of functionalities for EDA, including the `descr()` function for summary statistics for numerical variables.
 
-.small[
-```{r descr, message = F, warning = F}
+```{r descr, eval = F}
 library(summarytools)
 
 corona_survey %>% 
-  select_if(is.numeric) %>%
-  select(-id) %>% 
-  descr(stats = "common")
+  select(left_right,
+         starts_with("trust"),
+         sum_measures,
+         sum_sources,
+         mean_trust) %>%
+  descr(stats = "common") #<<
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+
+class: center, middle
+
+.smaller[
+```{r ref.label = "descr", echo = F, message = F, warning = F}
+
 ```
 ]
 
@@ -403,6 +436,15 @@ corona_survey %>%
 ]
 
 Note that we only use cases without missing data for any of the variables here.
+
+---
+
+# `dplyr::across()`
+
+```{r, across_cartoon, out.width = "95%", echo = F}
+include_graphics("./pics/dplyr_across.png")
+```
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
@@ -701,13 +743,22 @@ correlation(trust)
 
 Among other things, the `correlation` package, e.g., also provides options for biserial and tetrachoric correlations for factors, and it also to calculate grouped/stratified correlations.
 
-.small[
-```{r correlation grouped}
+```{r correlation_grouped, eval = F}
 corona_survey %>% 
   select(sex, starts_with("trust")) %>% 
   group_by(sex) %>% #<<
-  correlation() %>% 
-  head(14)
+  correlation()
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+
+class: center, middle
+
+.smaller[
+```{r ref.label = "correlation_grouped", echo = F}
+
 ```
 ]
 
@@ -747,7 +798,7 @@ datasaurus_dozen %>%
 
 ---
 
-# Guilty by ~~association~~ correlation
+# Guilty by ~~association~~ correlation `r emo::ji("T-Rex")`
 
 So does this one...
 
@@ -773,6 +824,55 @@ ggplot(aes(x = x, y = y, colour = dataset)) +
   theme(legend.position = "none") +
   facet_wrap(~dataset, ncol=3)
 ```
+
+---
+
+# Dinosaur `r emo::ji("T-Rex")` vs. Shark `r emo::ji("shark")`
+
+```{r load shark, echo = F, message= F}
+shark <- read_csv("../../data/shark_raw.csv")
+```
+
+.pull-left[
+```{r t-rex, echo = F, out.width="75%"}
+datasaurus_dozen %>% 
+  filter(dataset == "dino") %>% 
+  ggplot(aes(x = x, y = y)) + 
+  geom_point() + 
+  theme_classic()
+```
+
+.small[
+```{r t-rex corr}
+datasaurus_dozen %>% 
+  filter(dataset == "dino") %$% 
+  cor(x, y)
+```
+]
+]
+
+.pull-right[
+```{r shark, echo = F, out.width="75%"}
+shark %>% 
+  ggplot(aes(x = x, y = y)) + 
+  geom_point() + 
+  theme_classic()
+```
+<small><small>Data shark by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
+
+.small[
+```{r shark corr}
+shark %$% 
+  cor(x, y)
+```
+]
+]
+
+.center[
+***Sharks are more ~~coral-hated~~ correlated!***
+]
+
+.smaller[PS: You can make your own data art with [drawdata](https://drawdata.xyz/).]
 
 ---
 
@@ -840,7 +940,7 @@ The most common way of displaying the distribution of one categorical variable i
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   ggplot(aes(x = choice_of_party)) +
-  geom_bar()
+  geom_bar() #<<
 ```
 ]
 ]
@@ -1105,7 +1205,7 @@ Now we can use the *Gapminder* data on global life expectancy in 2018 to create 
 gapminder_2018 %>% 
   filter(!is.na(life_exp)) %>% 
   ggplot(aes(x = life_exp)) +
-  geom_histogram()
+  geom_histogram() #<<
 ```
 ]
 ]
@@ -1126,7 +1226,7 @@ One thing to keep in mind about histograms is that they can look quite different
 gapminder_2018 %>% 
   filter(!is.na(life_exp)) %>% 
   ggplot(aes(x = life_exp)) +
-  geom_histogram(binwidth = 5)
+  geom_histogram(binwidth = 5) #<<
 ```
 ]
 
@@ -1149,8 +1249,8 @@ To avoid the issue of picking the "right" number or size of bins, a density plot
 gapminder_2018 %>% 
   filter(!is.na(life_exp)) %>% 
   ggplot(aes(x = life_exp)) +
-  geom_density(fill="#69b3a2",
-               color="#e9ecef")
+  geom_density(fill="#69b3a2", #<<
+               color="#e9ecef") #<<
 ```
 ]
 ]
@@ -1284,7 +1384,7 @@ corona_survey %>%
   filter(!is.na(choice_of_party)) %>%
   ggplot(aes(x = education_cat, 
              fill = choice_of_party)) +
-  geom_bar(position="dodge")
+  geom_bar(position="dodge") #<<
 ```
 ]
 ]
@@ -1307,7 +1407,7 @@ corona_survey %>%
   filter(!is.na(choice_of_party)) %>%
   ggplot(aes(x = choice_of_party, 
              fill = sex)) +
-  geom_bar(position="fill")
+  geom_bar(position="fill") #<<
 ```
 ]
 ]
@@ -1348,7 +1448,7 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "barplot_error", echo = F}
+```{r ref.label = "barplot_error", echo = F, message = F}
 ```
 ]
 
@@ -1366,7 +1466,7 @@ corona_survey %>%
          !is.na(choice_of_party)) %>% 
   ggplot(aes(x = choice_of_party, 
              y = trust_government)) +
-    geom_boxplot()
+    geom_boxplot() #<<
 ```
 ]
 ]
@@ -1375,6 +1475,15 @@ corona_survey %>%
 ```{r ref.label = "boxplot_basic", echo = F, message = F}
 ```
 ]
+
+---
+
+# Show me your data points!
+
+```{r, summary_cartoon, out.width = "95%", echo = F}
+include_graphics("./pics/summary_statistics.png")
+```
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
@@ -1391,7 +1500,7 @@ corona_survey %>%
   ggplot(aes(x = choice_of_party, 
              y = trust_government)) +
     geom_boxplot() +
-    geom_jitter()
+    geom_jitter() #<<
 ```
 ]
 ]
@@ -1524,7 +1633,9 @@ p <- gapminder_2018 %>%
 
 # Extensions
 
-Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). There are also several extension packages for `ggplot2` that provide additional plot types or (convenient) plotting options. For example, the following packages provide some interesting (additional) options for EDA: [`ggExtra`](https://github.com/daattali/ggExtra), [`GGAlly`](https://ggobi.github.io/ggally/), [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/index.html) 
+Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). If you want to (visually) explore time series data, [*From Data to Viz*](https://www.data-to-viz.com/) has a section on this or you could, e.g. have a look at the [`timetk` package](https://business-science.github.io/timetk/index.html).
+
+There are also several extension packages for `ggplot2` that provide additional plot types or (convenient) plotting options. For example, the following packages provide some interesting (additional) options for EDA: [`ggExtra`](https://github.com/daattali/ggExtra), [`GGAlly`](https://ggobi.github.io/ggally/), [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/index.html) 
 
 ---
 
@@ -1640,12 +1751,14 @@ gg_miss_case(corona_survey,
 .pull-left[
 The `gg_miss_fct()` function creates a plot that shows the percentage of missing values for all (other) variables for different values of a categorical.
 
+.small[
 ```{r gg_miss_fct, eval = F}
 library(naniar)
 
 gg_miss_fct(corona_survey,
             fct = choice_of_party)
 ```
+]
 ]
 
 .pull-right[
@@ -1721,6 +1834,9 @@ gapminder_2018_cut <- gapminder_2018 %>%
 
 .pull-left[
 A common method for identifying multivariate outliers is Mahalanobis distance. The `outlier()` function from the `psych` package calculates and plots Mahalanobis distance.
+
+*Note*: You can also [calculate Mahalanobis distance to identify and filter outliers](https://willhipson.netlify.app/post/outliers/outliers/) using the `base R` function `mahalanobis()`.
+
 .small[
 ```{r md, eval = F}
 library(psych)
@@ -1747,11 +1863,19 @@ Going through all of them would be too much. However, we will highlight a few ex
 
 # `skimr::skim()`
 
-.smaller[
-```{r skim, message = F}
+```{r skim, eval = F}
 library(skimr)
 
 skim(corona_survey[, -1])
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+
+.smaller[
+```{r ref.label = "skim", echo = F, message = F}
+
 ```
 ]
 

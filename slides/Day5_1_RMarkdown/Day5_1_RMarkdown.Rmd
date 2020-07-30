@@ -1,0 +1,272 @@
+---
+title: "Introduction to R for Data Analysis"
+subtitle: "Reporting with RMarkdown"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-07"
+location: "GESIS Summer School in Survey Methodology"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "../workshop.css"]
+    nature:
+      highlightStyle: "github"
+      highlightLines: true
+      countIncrementalSlides: false
+---
+layout: true
+
+```{r setup, include = F}
+if (!require(easypackages)) install.packages("easypackages")
+library(easypackages)
+
+packages("rmarkdown", "knitr", "kableExtra", "gadenbuie/xaringanExtra", "hadley/emo", "flextable", "ftExtra", prompt = F)
+
+options(htmltools.dir.version = FALSE)
+
+opts_chunk$set(echo = TRUE, fig.align = "center")
+
+xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
+xaringanExtra::use_extra_styles(hover_code_line = TRUE,
+                                mute_unhighlighted_code = FALSE)
+```
+
+<div class="my-footer">
+  <div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+  <div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+  <div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+
+<style type="text/css">
+
+pre {
+  font-size: 10px
+}
+</style>
+
+---
+
+# `RMarkdown`
+
+In the previous sessions, we have seen that `R` offers plenty of options (and there are plenty of packages) for importing and exporting, wrangling, exploring, visualizing, and analyzing data. Normally, once we are (finally) done with all of these steps, we want to share and publish the results of our hard work. While the normal workflow is to somehow export (or copy) the results of our analyses into the desired output format (e.g., a *Word* document or a *Keynote* presentation), we can use an authoring tool for `R` that allows us to create a variety of outputs in different formats: `RMarkdown`
+
+.center[
+<img src="./pics/data-science.png" width="60%">
+]
+<small><small>Source: http://r4ds.had.co.nz/</small></small>
+
+---
+
+# What is `RMarkdown`?
+
+>R Markdown provides an unified authoring framework for data science, .highlight[combining your code, its results, and your prose commentary]. R Markdown documents are .highlight[fully reproducible] and .highlight[support dozens of output formats], like PDFs, Word files, slideshows, and more ([R for Data Science](https://r4ds.had.co.nz/r-markdown.html)).
+
+--
+
+`RMarkdown` is...
+
+- an authoring framework
+
+--
+
+- a [literate programming](https://en.wikipedia.org/wiki/Literate_programming) tool
+
+--
+
+- a document format (`.Rmd`)
+
+--
+
+- an `R` package
+
+---
+
+# What is `RMarkdown`?
+
+.center[
+.huge[
+[Markdown](https://en.wikipedia.org/wiki/Markdown) + `R`
+]
+]
+
+---
+
+# What does `RMarkdown` do?
+
+```{r, rmarkdown_rocks_cartoon, out.width = "75%", echo = F}
+include_graphics("./pics/rmarkdown_rockstar.png")
+```
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
+
+---
+
+# How `RMarkdown` works
+
+Behind the scenes, `RMarkdown` uses [`knitr`](https://yihui.org/knitr/) to create a `Markdown` (`.md`) document and [`pandoc`](https://pandoc.org/) to convert to a range of different output formats. Again, both of them are included when you install *RStudio*.
+
+.center[<img src="./pics/rmarkdown_process.png" width="80%">]
+<small><small>Figure by [Andrew Collier](https://github.com/datawookie)</small></small>
+
+---
+
+# Reproducibility
+
+```{r, rmarkdown_repro_cartoon, out.width = "85%", echo = F}
+include_graphics("./pics/reproducibility_court.png")
+```
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
+
+---
+
+# Disclaimer
+
+Covering everything you can do with `RMarkdown` or even exploring all options for specific kinds of outputs, such as presentations or scientific publications, in-depth would be enough for separate workshops. Hence, this session only serves as a teaser and outlook to provide an overview and give a few examples of the many things you can do and create with `RMarkdown`.
+
+---
+
+# How `RMarkdown` works
+
+```{r, rmarkdown_wizards_cartoon, out.width = "85%", echo = F}
+include_graphics("./pics/rmarkdown_wizards.png")
+```
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
+
+---
+
+# `(R)Markdown` formatting
+
+While it is not necessary to know `Markdown` to use `RMarkdown` (though if you want to know more, you can, e.g., check out the [Markdown Guide](https://www.markdownguide.org/) or this nice [interactive tutorial](https://commonmark.org/help/tutorial/)), it helps to know some of the basics of `Markdown` text formatting as they are the same for `RMarkdown`.
+
+Some basics:
+
+```{r markdown format table, echo = F}
+data.frame(
+  Syntax = factor(c("**bold**", "*italics*", "***bold&italics***", "superscript^2^", "subscript~2~")),
+  Output = c("**bold**", "*italics*", "***bold&italics***", "superscript^2^", "subscript~2~")
+) %>%
+  as_flextable() %>% 
+  colformat_md()
+```
+
+---
+
+# Headers
+
+**Syntax**
+
+```
+# Header 1
+
+## Header 2
+
+### Header 3
+```
+
+**Output**
+
+# Header 1
+
+## Header 2
+
+### Header 3
+
+---
+
+# Lists
+
+**Syntax**
+
+```
+- unordered list
+  - sub-item
+
+1. ordered list
+2. ordered list
+  + sub-item
+  + sub-item
+```
+**Output**
+
+- unordered list
+  - sub-item
+
+1. ordered list
+2. ordered list
+  + sub-item
+  + sub-item
+
+---
+
+# Code & formulas
+
+**Syntax**
+
+```
+`library(tidyverse)`
+
+$\bar{x} = \frac{1}{n} \sum_{i=1}^{n}x_{i}$
+
+$$\sigma^{2} = \frac{\sum_{i=1}^{n} 
+  \left(x_{i} - \bar{x}\right)^{2}}
+  {n-1}$$
+
+```
+**Output**
+
+`library(tidyverse)`
+
+$\bar{x} = \frac{1}{n} \sum_{i=1}^{n}x_{i}$
+
+$$\sigma^{2} = \frac{\sum_{i=1}^{n} 
+  \left(x_{i} - \bar{x}\right)^{2}}
+  {n-1}$$
+
+.small[
+*Note*: For generating formulas you can, e.g., use the [Online LaTeX Equation Editor](https://www.codecogs.com/latex/eqneditor.php) or the [Visual Math Editor](http://visualmatheditor.equatheque.net/VisualMathEditor.html).
+]
+
+---
+
+# Other formatting stuff
+
+**Syntax**
+
+```
+[link](https://www.gesis.org)
+
+> block quote
+
+![R Logo](./pics/Rlogo.png)
+```
+**Output**
+
+[link](https://www.gesis.org)
+
+> block quote
+
+![R Logo](./pics/Rlogo.png)
+
+For more formatting options check out the [RMarkdown Reference Guide](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) which is also available in *RStudio* via `Help` -> `Cheatsheets` -> `R Markdown Reference Guide`.
+
+---
+
+# YAML header
+
+```{r yaml 101, eval = F}
+---
+output: html_document
+---
+```
+
+---
+
+# PDF output
+
+You need LaTeX
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)

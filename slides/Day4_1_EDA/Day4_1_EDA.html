@@ -13,6 +13,7 @@
     <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="..\workshop.css" type="text/css" />
   </head>
   <body>
@@ -243,19 +244,22 @@ As such, we can use summarizing functions of
 
 A quick and easy way to check some summary statistics for your dataset is the `base R` function `summary()` which can be applied to individual variables as well as whole dataframes:
 
-.smaller[
 
 ```r
 summary(corona_survey$left_right)
+
+summary(corona_survey[, 2:19])
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
 ##    0.00    3.00    5.00    4.66    6.00   10.00      87
-```
-
-```r
-summary(corona_survey[, -1])
 ```
 
 ```
@@ -291,30 +295,14 @@ summary(corona_survey[, -1])
 ##  3rd Qu.:0.0000   3rd Qu.:5.000   3rd Qu.:4.000    3rd Qu.:4.000   
 ##  Max.   :1.0000   Max.   :5.000   Max.   :5.000    Max.   :5.000   
 ##  NA's   :579      NA's   :670     NA's   :631      NA's   :635     
-##    trust_who     trust_scientists info_national_public_tv
-##  Min.   :1.000   Min.   :1.000    Min.   :0.0000         
-##  1st Qu.:4.000   1st Qu.:4.000    1st Qu.:1.0000         
-##  Median :4.000   Median :4.000    Median :1.0000         
-##  Mean   :3.968   Mean   :4.239    Mean   :0.8997         
-##  3rd Qu.:5.000   3rd Qu.:5.000    3rd Qu.:1.0000         
-##  Max.   :5.000   Max.   :5.000    Max.   :1.0000         
-##  NA's   :662     NA's   :658      NA's   :596            
-##  info_national_newspaper info_local_newspaper info_facebook   
-##  Min.   :0.0000          Min.   :0.0000       Min.   :0.0000  
-##  1st Qu.:0.0000          1st Qu.:0.0000       1st Qu.:0.0000  
-##  Median :0.0000          Median :0.0000       Median :0.0000  
-##  Mean   :0.3487          Mean   :0.4998       Mean   :0.1862  
-##  3rd Qu.:1.0000          3rd Qu.:1.0000       3rd Qu.:0.0000  
-##  Max.   :1.0000          Max.   :1.0000       Max.   :1.0000  
-##  NA's   :596             NA's   :596          NA's   :596     
-##  info_other_social_media  sum_measures    sum_sources      mean_trust   
-##  Min.   :0.0000          Min.   :0.000   Min.   :0.000   Min.   :1.000  
-##  1st Qu.:0.0000          1st Qu.:3.000   1st Qu.:1.000   1st Qu.:3.600  
-##  Median :0.0000          Median :4.000   Median :2.000   Median :4.000  
-##  Mean   :0.1515          Mean   :3.771   Mean   :2.086   Mean   :3.976  
-##  3rd Qu.:0.0000          3rd Qu.:5.000   3rd Qu.:3.000   3rd Qu.:4.600  
-##  Max.   :1.0000          Max.   :6.000   Max.   :5.000   Max.   :5.000  
-##  NA's   :596             NA's   :579     NA's   :596     NA's   :608
+##    trust_who     trust_scientists
+##  Min.   :1.000   Min.   :1.000   
+##  1st Qu.:4.000   1st Qu.:4.000   
+##  Median :4.000   Median :4.000   
+##  Mean   :3.968   Mean   :4.239   
+##  3rd Qu.:5.000   3rd Qu.:5.000   
+##  Max.   :5.000   Max.   :5.000   
+##  NA's   :662     NA's   :658
 ```
 ]
 
@@ -385,6 +373,7 @@ prop.table(table(corona_survey$choice_of_party, useNA = "always"))
 
 If you want fewer decimals places in the output, you can wrap the the `prop.table()` function in a `round()` call.
 
+.small[
 
 ```r
 round(prop.table(table(corona_survey$choice_of_party, useNA = "always")), 3) # rounded to 3 decimal places
@@ -406,6 +395,7 @@ round((prop.table(table(corona_survey$choice_of_party, useNA = "always")) * 100)
 ## CDU/CSU     SPD     FDP   Linke  Gruene     AfD   Other    &lt;NA&gt; 
 ##   20.00    9.80    6.75    7.62   20.08    7.46    2.20   26.08
 ```
+]
 
 ---
 
@@ -413,7 +403,6 @@ round((prop.table(table(corona_survey$choice_of_party, useNA = "always")) * 100)
 
 For more detailed summary statistics for the numeric variables you can use the `describe()` function from the [`psych` package](https://cran.r-project.org/web/packages/psych/index.html).
 
-.smaller[
 
 ```r
 library(psych)
@@ -421,8 +410,14 @@ library(psych)
 corona_survey %&gt;% 
   select_if(is.numeric) %&gt;% 
   select(-id) %&gt;% 
-  describe()
+* describe()
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ##                         vars    n mean   sd median trimmed  mad min max range
@@ -480,87 +475,55 @@ corona_survey %&gt;%
 
 The [`summarytools` package](https://github.com/dcomtois/summarytools) provides a lot of functionalities for EDA, including the `descr()` function for summary statistics for numerical variables.
 
-.small[
 
 ```r
 library(summarytools)
 
 corona_survey %&gt;% 
-  select_if(is.numeric) %&gt;%
-  select(-id) %&gt;% 
-  descr(stats = "common")
+  select(left_right,
+         starts_with("trust"),
+         sum_measures,
+         sum_sources,
+         mean_trust) %&gt;%
+* descr(stats = "common")
 ```
+
+.right[↪️]
+
+---
+
+class: center, middle
+
+.smaller[
 
 ```
 ## Descriptive Statistics  
 ## corona_survey  
 ## N: 3765  
 ## 
-##                   avoid_places   info_facebook   info_local_newspaper   info_national_newspaper
-## --------------- -------------- --------------- ---------------------- -------------------------
-##            Mean           0.84            0.19                   0.50                      0.35
-##         Std.Dev           0.36            0.39                   0.50                      0.48
-##             Min           0.00            0.00                   0.00                      0.00
-##          Median           1.00            0.00                   0.00                      0.00
-##             Max           1.00            1.00                   1.00                      1.00
-##         N.Valid        3186.00         3169.00                3169.00                   3169.00
-##       Pct.Valid          84.62           84.17                  84.17                     84.17
+##                   left_right   mean_trust   sum_measures   sum_sources   trust_chancellor
+## --------------- ------------ ------------ -------------- ------------- ------------------
+##            Mean         4.66         3.98           3.77          2.09               3.57
+##         Std.Dev         1.86         0.75           1.16          0.95               1.15
+##             Min         0.00         1.00           0.00          0.00               1.00
+##          Median         5.00         4.00           4.00          2.00               4.00
+##             Max        10.00         5.00           6.00          5.00               5.00
+##         N.Valid      3678.00      3157.00        3186.00       3169.00            3130.00
+##       Pct.Valid        97.69        83.85          84.62         84.17              83.13
 ## 
 ## Table: Table continues below
 ## 
 ##  
 ## 
-##                   info_national_public_tv   info_other_social_media   keep_distance   left_right
-## --------------- ------------------------- ------------------------- --------------- ------------
-##            Mean                      0.90                      0.15            0.80         4.66
-##         Std.Dev                      0.30                      0.36            0.40         1.86
-##             Min                      0.00                      0.00            0.00         0.00
-##          Median                      1.00                      0.00            1.00         5.00
-##             Max                      1.00                      1.00            1.00        10.00
-##         N.Valid                   3169.00                   3169.00         3186.00      3678.00
-##       Pct.Valid                     84.17                     84.17           84.62        97.69
-## 
-## Table: Table continues below
-## 
-##  
-## 
-##                   mean_trust   reduce_contacts   risk_self   risk_surround   stockup_supplies
-## --------------- ------------ ----------------- ----------- --------------- ------------------
-##            Mean         3.98              0.85        4.09            4.55               0.32
-##         Std.Dev         0.75              0.35        1.27            1.40               0.47
-##             Min         1.00              0.00        1.00            1.00               0.00
-##          Median         4.00              1.00        4.00            5.00               0.00
-##             Max         5.00              1.00        7.00            7.00               1.00
-##         N.Valid      3157.00           3186.00     3152.00         3104.00            3186.00
-##       Pct.Valid        83.85             84.62       83.72           82.44              84.62
-## 
-## Table: Table continues below
-## 
-##  
-## 
-##                   sum_measures   sum_sources   trust_chancellor   trust_government   trust_rki
-## --------------- -------------- ------------- ------------------ ------------------ -----------
-##            Mean           3.77          2.09               3.57               3.66        4.44
-##         Std.Dev           1.16          0.95               1.15               1.01        0.77
-##             Min           0.00          0.00               1.00               1.00        1.00
-##          Median           4.00          2.00               4.00               4.00        5.00
-##             Max           6.00          5.00               5.00               5.00        5.00
-##         N.Valid        3186.00       3169.00            3130.00            3134.00     3095.00
-##       Pct.Valid          84.62         84.17              83.13              83.24       82.20
-## 
-## Table: Table continues below
-## 
-##  
-## 
-##                   trust_scientists   trust_who   wash_hands   wear_mask
-## --------------- ------------------ ----------- ------------ -----------
-##            Mean               4.24        3.97         0.91        0.04
-##         Std.Dev               0.79        0.95         0.29        0.19
-##             Min               1.00        1.00         0.00        0.00
-##          Median               4.00        4.00         1.00        0.00
-##             Max               5.00        5.00         1.00        1.00
-##         N.Valid            3107.00     3103.00      3186.00     3186.00
-##       Pct.Valid              82.52       82.42        84.62       84.62
+##                   trust_government   trust_rki   trust_scientists   trust_who
+## --------------- ------------------ ----------- ------------------ -----------
+##            Mean               3.66        4.44               4.24        3.97
+##         Std.Dev               1.01        0.77               0.79        0.95
+##             Min               1.00        1.00               1.00        1.00
+##          Median               4.00        5.00               4.00        4.00
+##             Max               5.00        5.00               5.00        5.00
+##         N.Valid            3134.00     3095.00            3107.00     3103.00
+##       Pct.Valid              83.24       82.20              82.52       82.42
 ```
 ]
 
@@ -691,6 +654,13 @@ corona_survey %&gt;%
 ]
 
 Note that we only use cases without missing data for any of the variables here.
+
+---
+
+# `dplyr::across()`
+
+&lt;img src="./pics/dplyr_across.png" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -1167,7 +1137,7 @@ trust %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1238,15 +1208,21 @@ correlation(trust)
 
 Among other things, the `correlation` package, e.g., also provides options for biserial and tetrachoric correlations for factors, and it also to calculate grouped/stratified correlations.
 
-.small[
 
 ```r
 corona_survey %&gt;% 
   select(sex, starts_with("trust")) %&gt;% 
 * group_by(sex) %&gt;%
-  correlation() %&gt;% 
-  head(14)
+  correlation()
 ```
+
+.right[↪️]
+
+---
+
+class: center, middle
+
+.smaller[
 
 ```
 ## Group  |       Parameter1 |       Parameter2 |    r |       95% CI |     t |   df |      p |  Method | n_Obs
@@ -1265,6 +1241,12 @@ corona_survey %&gt;%
 ## Female |        trust_rki | trust_chancellor | 0.47 | [0.43, 0.51] | 20.56 | 1495 | &lt; .001 | Pearson |  1497
 ## Female |        trust_rki |        trust_who | 0.57 | [0.53, 0.60] | 26.75 | 1485 | &lt; .001 | Pearson |  1487
 ## Female |        trust_rki | trust_scientists | 0.54 | [0.50, 0.57] | 24.45 | 1490 | &lt; .001 | Pearson |  1492
+## Female | trust_government | trust_chancellor | 0.88 | [0.87, 0.89] | 72.30 | 1515 | &lt; .001 | Pearson |  1517
+## Female | trust_government |        trust_who | 0.57 | [0.54, 0.61] | 27.15 | 1497 | &lt; .001 | Pearson |  1499
+## Female | trust_government | trust_scientists | 0.50 | [0.46, 0.53] | 22.12 | 1504 | &lt; .001 | Pearson |  1506
+## Female | trust_chancellor |        trust_who | 0.51 | [0.47, 0.55] | 23.06 | 1495 | &lt; .001 | Pearson |  1497
+## Female | trust_chancellor | trust_scientists | 0.43 | [0.39, 0.47] | 18.66 | 1502 | &lt; .001 | Pearson |  1504
+## Female |        trust_who | trust_scientists | 0.55 | [0.51, 0.58] | 25.38 | 1492 | &lt; .001 | Pearson |  1494
 ```
 ]
 
@@ -1290,7 +1272,7 @@ This dataset has **the same correlation coefficient (Pearson's r of -0.06)** as 
 
 ---
 
-# Guilty by ~~association~~ correlation
+# Guilty by ~~association~~ correlation 🦖
 
 So does this one...
 
@@ -1303,6 +1285,52 @@ So does this one...
 We could go on... The previous three examples all come from the [`datasauRus` package](https://github.com/lockedata/datasauRus) which essentially is an extension of [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) and includes 13 datasets with the same (Pearson) correlation between x and y.
 
 &lt;img src="Day4_1_EDA_files/figure-html/dino plot 4-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Dinosaur 🦖 vs. Shark 🦈
+
+
+
+.pull-left[
+&lt;img src="Day4_1_EDA_files/figure-html/t-rex-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+.small[
+
+```r
+datasaurus_dozen %&gt;% 
+  filter(dataset == "dino") %$% 
+  cor(x, y)
+```
+
+```
+## [1] -0.06447185
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_1_EDA_files/figure-html/shark-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Data shark by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
+
+.small[
+
+```r
+shark %$% 
+  cor(x, y)
+```
+
+```
+## [1] 0.3648294
+```
+]
+]
+
+.center[
+***Sharks are more ~~coral-hated~~ correlated!***
+]
+
+.smaller[PS: You can make your own data art with [drawdata](https://drawdata.xyz/).]
 
 ---
 
@@ -1395,13 +1423,13 @@ The most common way of displaying the distribution of one categorical variable i
 corona_survey %&gt;% 
   filter(!is.na(choice_of_party)) %&gt;% 
   ggplot(aes(x = choice_of_party)) +
-  geom_bar()
+* geom_bar()
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1426,7 +1454,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1450,7 +1478,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1475,7 +1503,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1502,7 +1530,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1542,7 +1570,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1570,7 +1598,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1592,7 +1620,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1644,13 +1672,13 @@ Now we can use the *Gapminder* data on global life expectancy in 2018 to create 
 gapminder_2018 %&gt;% 
   filter(!is.na(life_exp)) %&gt;% 
   ggplot(aes(x = life_exp)) +
-  geom_histogram()
+* geom_histogram()
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1665,12 +1693,12 @@ One thing to keep in mind about histograms is that they can look quite different
 gapminder_2018 %&gt;% 
   filter(!is.na(life_exp)) %&gt;% 
   ggplot(aes(x = life_exp)) +
-  geom_histogram(binwidth = 5)
+* geom_histogram(binwidth = 5)
 ```
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1688,14 +1716,14 @@ To avoid the issue of picking the "right" number or size of bins, a density plot
 gapminder_2018 %&gt;% 
   filter(!is.na(life_exp)) %&gt;% 
   ggplot(aes(x = life_exp)) +
-  geom_density(fill="#69b3a2",
-               color="#e9ecef")
+* geom_density(fill="#69b3a2",
+*              color="#e9ecef")
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1729,7 +1757,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1755,7 +1783,7 @@ gapminder_2018 %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1781,7 +1809,7 @@ gapminder_2018 %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1843,13 +1871,13 @@ corona_survey %&gt;%
   filter(!is.na(choice_of_party)) %&gt;%
   ggplot(aes(x = education_cat, 
              fill = choice_of_party)) +
-  geom_bar(position="dodge")
+* geom_bar(position="dodge")
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1866,13 +1894,13 @@ corona_survey %&gt;%
   filter(!is.na(choice_of_party)) %&gt;%
   ggplot(aes(x = choice_of_party, 
              fill = sex)) +
-  geom_bar(position="fill")
+* geom_bar(position="fill")
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1907,12 +1935,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1930,14 +1953,21 @@ corona_survey %&gt;%
          !is.na(choice_of_party)) %&gt;% 
   ggplot(aes(x = choice_of_party, 
              y = trust_government)) +
-    geom_boxplot()
+*   geom_boxplot()
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 ]
+
+---
+
+# Show me your data points!
+
+&lt;img src="./pics/summary_statistics.png" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -1955,13 +1985,13 @@ corona_survey %&gt;%
   ggplot(aes(x = choice_of_party, 
              y = trust_government)) +
     geom_boxplot() +
-    geom_jitter()
+*   geom_jitter()
 ```
 ]
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -1990,7 +2020,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2023,7 +2053,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2053,7 +2083,7 @@ gapminder_2018 %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2081,13 +2111,15 @@ p &lt;- gapminder_2018 %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
 ]
 ---
 
 # Extensions
 
-Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). There are also several extension packages for `ggplot2` that provide additional plot types or (convenient) plotting options. For example, the following packages provide some interesting (additional) options for EDA: [`ggExtra`](https://github.com/daattali/ggExtra), [`GGAlly`](https://ggobi.github.io/ggally/), [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/index.html) 
+Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). If you want to (visually) explore time series data, [*From Data to Viz*](https://www.data-to-viz.com/) has a section on this or you could, e.g. have a look at the [`timetk` package](https://business-science.github.io/timetk/index.html).
+
+There are also several extension packages for `ggplot2` that provide additional plot types or (convenient) plotting options. For example, the following packages provide some interesting (additional) options for EDA: [`ggExtra`](https://github.com/daattali/ggExtra), [`GGAlly`](https://ggobi.github.io/ggally/), [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/index.html) 
 
 ---
 
@@ -2117,7 +2149,7 @@ vis_dat(corona_survey)
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2134,7 +2166,7 @@ vis_miss(corona_survey)
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2153,7 +2185,7 @@ gg_miss_upset(trust)
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2173,7 +2205,7 @@ gg_miss_var(corona_survey,
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2193,7 +2225,7 @@ gg_miss_case(corona_survey,
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2203,6 +2235,7 @@ gg_miss_case(corona_survey,
 .pull-left[
 The `gg_miss_fct()` function creates a plot that shows the percentage of missing values for all (other) variables for different values of a categorical.
 
+.small[
 
 ```r
 library(naniar)
@@ -2211,9 +2244,10 @@ gg_miss_fct(corona_survey,
             fct = choice_of_party)
 ```
 ]
+]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2249,7 +2283,7 @@ ggbetweenstats(data = corona_survey,
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2284,6 +2318,9 @@ gapminder_2018_cut &lt;- gapminder_2018 %&gt;%
 
 .pull-left[
 A common method for identifying multivariate outliers is Mahalanobis distance. The `outlier()` function from the `psych` package calculates and plots Mahalanobis distance.
+
+*Note*: You can also [calculate Mahalanobis distance to identify and filter outliers](https://willhipson.netlify.app/post/outliers/outliers/) using the `base R` function `mahalanobis()`.
+
 .small[
 
 ```r
@@ -2295,7 +2332,7 @@ out &lt;- outlier(gapminder_2018[, -1])
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2310,7 +2347,6 @@ Going through all of them would be too much. However, we will highlight a few ex
 
 # `skimr::skim()`
 
-.smaller[
 
 ```r
 library(skimr)
@@ -2318,6 +2354,11 @@ library(skimr)
 skim(corona_survey[, -1])
 ```
 
+.right[↪️]
+
+---
+
+.smaller[
 
 &lt;table style='width: auto;'
         class='table table-condensed'&gt;
@@ -2753,7 +2794,7 @@ corona_survey %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2774,7 +2815,7 @@ show_plot(cat)
 ]
 
 .pull-right[
-&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_1_EDA_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---

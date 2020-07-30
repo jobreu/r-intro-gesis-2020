@@ -13,6 +13,7 @@
     <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <script src="libs/twitter-widget/widgets.js"></script>
     <link rel="stylesheet" href="..\workshop.css" type="text/css" />
   </head>
@@ -137,9 +138,9 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 Johannes
 
 - was socialized with *SPSS*
-- was annoyed with *AMOS* when learning structural equation modeling (around 2010)
+- was annoyed with *AMOS* when learning structural equation modeling (around 2011)
 - decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
-- attended an *Introduction to `R` course* at *GESIS* in 2010
+- attended an introductory *Data analysis with `R`* course at *GESIS* in 2012
 - only used `R` for SEM for some time, while still doing everything else (esp. data wrangling) with *SPSS*
 - finally made the full transition to `R` when joining *GESIS* in 2017
 
@@ -148,6 +149,13 @@ Stefan
 - a
 - b
 - c
+
+---
+
+# Keep calm and carry on learning `R`
+
+&lt;img src="./pics/r_first_then.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -999,7 +1007,7 @@ Via `Tools` -&gt; `Global Options` -&gt; `Appearance` you can change the looks o
 
 # Themes and fonts
 
-Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection.
+Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection. There also is a [colorblind-safe *RStudio* theme with code highlighting](https://github.com/DesiQuintans/Pebble-safe).
 
 I also like monospaced programming fonts with ligatures. I currently use [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/) but am also fond of the [`Fira Code`](https://github.com/tonsky/FiraCode) font (pun intended).
 
@@ -1166,7 +1174,7 @@ The easiest way to edit the user-wide `.Renviron` file is to use the `edit_r_env
 
 # `.Rprofile`
 
-The `.Rprofile` file contains `R` code that is run when `R` starts. The `.Rprofile` can, e.g., be used to display a personalized welcome message or set a default *CRAN* mirror.
+The `.Rprofile` file contains `R` code that is run when `R` starts. The `.Rprofile` can, e.g., be used to display a personalized welcome message or set a default *CRAN* mirror, but there are many other [customization options](https://www.jumpingrivers.com/blog/customising-your-rprofile/) as well.
 
 The easiest option for editing the `.Rprofile` file is to the `edit_r_profile()` function from the [`usethis` package](https://usethis.r-lib.org/index.html).
 

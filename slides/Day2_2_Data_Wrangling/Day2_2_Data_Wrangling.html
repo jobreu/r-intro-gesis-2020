@@ -13,6 +13,7 @@
     <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <script src="libs/kePrint/kePrint.js"></script>
     <link rel="stylesheet" href="..\workshop.css" type="text/css" />
   </head>
@@ -56,6 +57,13 @@ Common data wrangling steps when working with tabular data in the social &amp; b
 - recoding variables/values
 - computing new variables
 - reducing a dataset by selecting a subset of variables and/or cases
+
+---
+
+# Data wrangling 🤠
+
+&lt;img src="./pics/data_cowboy.png" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -108,11 +116,6 @@ Of course, it is possible to combine `base R` and `tidyverse` code (confession: 
 
 &gt; The `tidyverse` is a .highlight[coherent system of packages for data manipulation, exploration and visualization] that share a .highlight[common design philosophy] ([Rickert, 2017](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)).
 
-
-```r
-include_graphics("./pics/hex-tidyverse.png")
-```
-
 &lt;img src="./pics/hex-tidyverse.png" width="25%" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -121,7 +124,9 @@ include_graphics("./pics/hex-tidyverse.png")
 
 As stated before, data wrangling can also be done with `base R`. However, the syntax for this is typically (more) verbose and not intuitive and, hence, difficult to learn, remember, and read (plus many `tidyverse` operations are faster than their `base R` equivalents).  
   
-`Tidyverse` syntax is designed to increase **human-readability**. This makes it especially **attractive for R novices** as it can facilitate the experience of **self-efficacy** (see [Robinson, 2017](http://varianceexplained.org/r/teach-tidyverse/)). The `tidyverse` also aims for **consistency** (e.g., data frame as first argument and output) and uses **smarter defaults** (e.g., no partial matching of data frame and column names).]
+`Tidyverse` syntax is designed to increase **human-readability**. This makes it especially **attractive for R novices** as it can facilitate the experience of **self-efficacy** (see [Robinson, 2017](http://varianceexplained.org/r/teach-tidyverse/)). The `tidyverse` also aims for **consistency** (e.g., data frame as first argument and output) and uses **smarter defaults** (e.g., no partial matching of data frame and column names).
+
+*Note*: If you want to learn more about data wrangling with the `tidyverse` through fun projects, you should check out [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday) and the associated [#tidytuesday Twitter hashtag](https://twitter.com/hashtag/tidytuesday?lang=en).
 
 ---
 
@@ -138,7 +143,7 @@ library("tidyverse")
 ```
 
 ```
-## -- Attaching packages --------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages ---------------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
@@ -149,7 +154,7 @@ library("tidyverse")
 ```
 
 ```
-## -- Conflicts ------------------------------------------------------------------------ tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter()     masks stats::filter()
 ## x dplyr::group_rows() masks kableExtra::group_rows()
 ## x dplyr::lag()        masks stats::lag()
@@ -471,11 +476,16 @@ dim(gesis_panel_corona)
 
 You can also print the first 6 lines of the dataframe with `head()`. You can easily change the number of lines by providing the number as the second argument to the `head()` function.
 
-.small[
 
 ```r
 head(gesis_panel_corona, 10)
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ## # A tibble: 10 x 137
@@ -519,17 +529,23 @@ head(gesis_panel_corona, 10)
 ## #   hzcy096a &lt;dbl&gt;, hzcy097a &lt;dbl&gt;, hzcy098a &lt;dbl&gt;, ...
 ```
 ]
+
 ---
 
 # Dataframe check 1, 2, 1, 2!
 
 If we want some more (detailed) information about the dataset, we can use the `base R` function `str()`.
 
-.small[
 
 ```r
 str(gesis_panel_corona)
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ## tibble [3,765 x 137] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
@@ -775,17 +791,23 @@ str(gesis_panel_corona)
 ##   .. )
 ```
 ]
+
 ---
 
 # Dataframe check 1, 2, 1, 2!
 
 As you saw on the previous slide, the output of `str()` can be a bit hard to read (especially for larger datasets). A good alternative that creates a more clearly laid output is the `glimpse()` function from the `dplyr` package.
 
-.small[
 
 ```r
 glimpse(gesis_panel_corona)
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ## Rows: 3,765
@@ -949,11 +971,16 @@ View(gesis_panel_corona)
 
 One thing that we need to know - and might want to change - are the names of the variables in the dataset.
 
-.small[
 
 ```r
 names(gesis_panel_corona)
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ##   [1] "za_number"             "version"               "doi"                  
@@ -1015,7 +1042,7 @@ As you can see, only a few of the variable names in the *GESIS Panel Special Sur
 
 # Renaming variables/columns
 
-It good practice to use consistent naming conventions. Since `R` is case-sensitive, we might, e.g., want to only use lowercase letters. As spaces in variable names can cause problems, we could, e.g., decide to use 🐍 snake_case (🐫 camelCase is a common alternative; for a good brief discussion of options for avoiding spaces in variable names, see this [Medium post by Patrick Divine](https://medium.com/@pddivine/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841)).
+It good practice to use consistent naming conventions. Since `R` is case-sensitive, we might, e.g., want to only use lowercase letters. As spaces in variable names can cause problems, we could, e.g., decide to use 🐍 *snake_case* (🐫 *camelCase* is a common alternative; for a good brief discussion of options for avoiding spaces in variable names, see this [Medium post by Patrick Divine](https://medium.com/@pddivine/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841)).
 
 *Note*: The [`janitor` package](https://github.com/sfirke/janitor) (which is `tidyverse`-oriented) can be used to facilitate several common data cleaning tasks. Among other things, it contains the function `clean_names()` that takes a dataframe and creates column "names are unique and consist only of the _ character, numbers, and letters" (from the help file for this function), with the default being 🐍 snake_case (but support for many other types of cases).  
 
@@ -1039,6 +1066,7 @@ The `tidyverse` example in the following will make use of functions from the [`d
 
 To choose meaningful variable names, we need to look at the codebook. Say, for example, we want to rename the variables representing the responses to the questions asking whether people use *Facebook* or other social media to get information about the Coronavirus.
 
+.small[
 
 ```r
 # Base R
@@ -1050,6 +1078,7 @@ gesis_panel_corona &lt;- gesis_panel_corona %&gt;%
   rename(corona_inf_facebook = hzcy090a, # new_name = old_name
          corona_inf_other_sm = hzcy091a)
 ```
+]
 
 ---
 
@@ -1060,20 +1089,24 @@ In many cases, we do not need all the variables in a dataset for our analyses. I
 There are two options for doing this with `base R`:
 
 Option 1
+.small[
 
 ```r
 corona_risk &lt;- gesis_panel_corona[, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
 # When subsetting with [], the first value refers to rows, the second to columns
 # [, c("var1", "var2", ...)] means we want to select all rows but only some specific columns.
 ```
+]
 
 Option 2
+.small[
 
 ```r
 corona_risk  &lt;- subset(gesis_panel_corona, TRUE, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
 # Again, here the 2nd argument refers to the rows.
 # Setting it to TRUE means that we want to include all rows in the subset.
 ```
+]
 
 ---
 
@@ -1137,7 +1170,7 @@ head(corona_risk)
 
 A nice thing about the `dplyr` verb `select` is that you can use it to select and rename variables in one step.
 
-
+.small[
 
 ```r
 corona_risk &lt;- gesis_panel_corona %&gt;% 
@@ -1161,6 +1194,7 @@ head(corona_risk)
 ## 5       -33               -33           -33             -33                -33
 ## 6         3                 3           -99               3                  3
 ```
+]
 
 ---
 
@@ -1169,6 +1203,7 @@ head(corona_risk)
 If you just want to exclude one or a few columns/variables, it is easier to unselect those than to select all others. Again, there's two ways to do this with `base R`.
 
 Option 1
+.small[
 
 ```r
 gesis_panel_corona_cut &lt;- gesis_panel_corona[!(names(gesis_panel_corona) %in% c("za_number", "version", "doi"))]
@@ -1180,8 +1215,10 @@ dim(gesis_panel_corona_cut)
 ```
 ## [1] 3765  134
 ```
+]
 
 Option 2
+.small[
 
 ```r
 gesis_panel_corona_cut &lt;- subset(gesis_panel_corona, TRUE, select = -c(za_number, version, doi))
@@ -1192,6 +1229,7 @@ dim(gesis_panel_corona_cut)
 ```
 ## [1] 3765  134
 ```
+]
 
 ---
 
@@ -1199,7 +1237,6 @@ dim(gesis_panel_corona_cut)
 
 `select()` from `dplyr` also allows you to easily exclude one or more columns/variables.
 
-.small[
 
 ```r
 gesis_panel_corona_cut &lt;- gesis_panel_corona %&gt;% 
@@ -1207,6 +1244,12 @@ gesis_panel_corona_cut &lt;- gesis_panel_corona %&gt;%
 
 glimpse(gesis_panel_corona_cut)
 ```
+
+.right[↪️]
+
+---
+
+.smaller[
 
 ```
 ## Rows: 3,765
@@ -1391,6 +1434,12 @@ gesis_panel_corona_num &lt;- gesis_panel_corona %&gt;%
 glimpse(gesis_panel_corona_num)
 ```
 
+.right[↪️]
+
+---
+
+.smaller[
+
 ```
 ## Rows: 3,765
 ## Columns: 134
@@ -1529,6 +1578,7 @@ glimpse(gesis_panel_corona_num)
 ## $ hzzr018a              &lt;dbl&gt; -33, 138, 307, 206, -33, 360, 416, 293, -33, ...
 ## $ hzzr019a              &lt;dbl&gt; -33, 0, 0, 0, -33, 0, 0, 0, -33, 0, 0, 0, -33...
 ```
+]
 
 ---
 
@@ -1543,6 +1593,13 @@ gesis_panel_corona &lt;- gesis_panel_corona %&gt;%
 ```
 
 You can also move a column before a specific other column. For this you need to provide a column name to the `.before` argument (instead of `.after`). A quick solution for moving a column to the last position in a dataframe is to use specify the argument `.after = last_col()`.
+
+---
+
+# `dplyr::relocate()`
+
+&lt;img src="./pics/dplyr_relocate.png" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -1617,11 +1674,19 @@ dim(gesis_panel_corona_male)
 
 ---
 
+# `dplyr::filter()`
+
+&lt;img src="./pics/dplyr_filter.jpg" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
+
+---
+
 # Selecting columns + filtering rows
 
 Of course, you can also combine the selection of columns and filtering or rows.
 
 `Base R` option 1
+.small[
 
 ```r
 corona_risk_male &lt;- gesis_panel_corona[gesis_panel_corona$sex == 1, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
@@ -1632,9 +1697,10 @@ dim(corona_risk_male)
 ```
 ## [1] 1933    5
 ```
-
+]
 
 `Base R` option 2
+.small[
 
 ```r
 corona_risk_male  &lt;- subset(gesis_panel_corona, sex == 1, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
@@ -1645,6 +1711,7 @@ dim(corona_risk_male)
 ```
 ## [1] 1933    5
 ```
+]
 
 ---
 
@@ -1791,6 +1858,7 @@ gesis_panel_corona %&gt;%
 
 You can also sort your dataframe by more than one variable.
 
+.small[
 
 ```r
 # Base R
@@ -1800,6 +1868,8 @@ gesis_panel_corona[order(gesis_panel_corona$political_orientation, gesis_panel_c
 gesis_panel_corona %&gt;% 
   arrange(political_orientation, education_cat)
 ```
+]
+
 ---
 
 # Missing values
@@ -1840,6 +1910,7 @@ gesis_panel_corona_measures &lt;- gesis_panel_corona %&gt;%
 
 With `base R` you can set values to `NA` for specific variables as follows:
 
+.small[
 
 ```r
 sum(is.na(gesis_panel_corona_measures$hzcy006a))
@@ -1865,6 +1936,7 @@ sum(is.na(gesis_panel_corona_measures$hzcy006a))
 ```
 ## [1] 579
 ```
+]
 
 ---
 
@@ -1993,6 +2065,13 @@ gesis_panel_corona_measures &lt;- gesis_panel_corona_measures %&gt;%
 # `dplyr::mutate`
 
 The `mutate()` function from `dplyr` can be used to transform columns/variables and create new ones. Again, this is a very powerful function for which there also are some helpful scoped variants (we've already seen `mutate_all()`). We will discuss some of the many options for using `mutate()` in the following, but for a larger overview you can, e.g., check out the [column transformation tutorial by Suzan Baert](https://suzan.rbind.io/2018/02/dplyr-tutorial-2/).
+
+---
+
+# `dplyr::mutate()`
+
+&lt;img src="./pics/dplyr_mutate.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -2204,6 +2283,13 @@ A few things to note here:
 - conditions are evaluated consecutively
 - when none of the specified conditions are met for an observation, the new variable will have a missing value `NA`
 - for more information and options check out `?case_when`
+
+---
+
+# `dplyr::case_when()`
+
+&lt;img src="./pics/dplyr_case_when.png" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 

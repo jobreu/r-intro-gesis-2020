@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R for Data Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Johannes Breuer Stefan Jünger" />
+    <meta name="date" content="2020-08-07" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="libs/tabwid/tabwid.css" rel="stylesheet" />
+    <script src="libs/tabwid/tabwid.js"></script>
+    <link rel="stylesheet" href="..\workshop.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R for Data Analysis
+## Reporting with RMarkdown
+### Johannes Breuer<br />Stefan Jünger
+### 2020-08-07
+
+---
+
+layout: true
+
+
+
+&lt;div class="my-footer"&gt;
+  &lt;div style="float: left;"&gt;&lt;span&gt;Johannes Breuer, Stefan Jünger&lt;/span&gt;&lt;/div&gt;
+  &lt;div style="float: right;"&gt;&lt;span&gt;GESIS Summer School in Survey Methodology, 2020-08-07&lt;/span&gt;&lt;/div&gt;
+  &lt;div style="text-align: center;"&gt;&lt;span&gt;Reporting with RMarkdown&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style type="text/css"&gt;
+
+pre {
+  font-size: 10px
+}
+&lt;/style&gt;
+
+---
+
+# `RMarkdown`
+
+In the previous sessions, we have seen that `R` offers plenty of options (and there are plenty of packages) for importing and exporting, wrangling, exploring, visualizing, and analyzing data. Normally, once we are (finally) done with all of these steps, we want to share and publish the results of our hard work. While the normal workflow is to somehow export (or copy) the results of our analyses into the desired output format (e.g., a *Word* document or a *Keynote* presentation), we can use an authoring tool for `R` that allows us to create a variety of outputs in different formats: `RMarkdown`
+
+.center[
+&lt;img src="./pics/data-science.png" width="60%"&gt;
+]
+&lt;small&gt;&lt;small&gt;Source: http://r4ds.had.co.nz/&lt;/small&gt;&lt;/small&gt;
+
+---
+
+# What is `RMarkdown`?
+
+&gt;R Markdown provides an unified authoring framework for data science, .highlight[combining your code, its results, and your prose commentary]. R Markdown documents are .highlight[fully reproducible] and .highlight[support dozens of output formats], like PDFs, Word files, slideshows, and more ([R for Data Science](https://r4ds.had.co.nz/r-markdown.html)).
+
+--
+
+`RMarkdown` is...
+
+- an authoring framework
+
+--
+
+- a [literate programming](https://en.wikipedia.org/wiki/Literate_programming) tool
+
+--
+
+- a document format (`.Rmd`)
+
+--
+
+- an `R` package
+
+---
+
+# What is `RMarkdown`?
+
+.center[
+.huge[
+[Markdown](https://en.wikipedia.org/wiki/Markdown) + `R`
+]
+]
+
+---
+
+# What does `RMarkdown` do?
+
+&lt;img src="./pics/rmarkdown_rockstar.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
+
+---
+
+# How `RMarkdown` works
+
+Behind the scenes, `RMarkdown` uses [`knitr`](https://yihui.org/knitr/) to create a `Markdown` (`.md`) document and [`pandoc`](https://pandoc.org/) to convert to a range of different output formats. Again, both of them are included when you install *RStudio*.
+
+.center[&lt;img src="./pics/rmarkdown_process.png" width="80%"&gt;]
+&lt;small&gt;&lt;small&gt;Figure by [Andrew Collier](https://github.com/datawookie)&lt;/small&gt;&lt;/small&gt;
+
+---
+
+# Reproducibility
+
+&lt;img src="./pics/reproducibility_court.png" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
+
+---
+
+# Disclaimer
+
+Covering everything you can do with `RMarkdown` or even exploring all options for specific kinds of outputs, such as presentations or scientific publications, in-depth would be enough for separate workshops. Hence, this session only serves as a teaser and outlook to provide an overview and give a few examples of the many things you can do and create with `RMarkdown`.
+
+---
+
+# How `RMarkdown` works
+
+&lt;img src="./pics/rmarkdown_wizards.png" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
+
+---
+
+# `(R)Markdown` formatting
+
+While it is not necessary to know `Markdown` to use `RMarkdown` (though if you want to know more, you can, e.g., check out the [Markdown Guide](https://www.markdownguide.org/) or this nice [interactive tutorial](https://commonmark.org/help/tutorial/)), it helps to know some of the basics of `Markdown` text formatting as they are the same for `RMarkdown`.
+
+Some basics:
+
+<div class="tabwid"><table style='border-collapse:collapse;'><thead><tr style="overflow-wrap:break-word;"><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 2.00px solid rgba(0, 0, 0, 1.00);border-top: 2.00px solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">Syntax</span></p></td><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 2.00px solid rgba(0, 0, 0, 1.00);border-top: 2.00px solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">Output</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">**bold**</span></p></td><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">bold</span></p></td></tr><tr style="overflow-wrap:break-word;"><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">*italics*</span></p></td><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">italics</span></p></td></tr><tr style="overflow-wrap:break-word;"><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">***bold&amp;italics***</span></p></td><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:bold;font-style:italic;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">bold&amp;italics</span></p></td></tr><tr style="overflow-wrap:break-word;"><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">superscript^2^</span></p></td><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">superscript</span><span style="font-family:'Arial';font-size:7px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;position: relative;bottom:3px;">2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 2.00px solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">subscript~2~</span></p></td><td style="width:54px;background-color:transparent;vertical-align: middle;border-bottom: 2.00px solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;"><p style="margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:2px;padding-top:2px;padding-left:5px;padding-right:5px;background-color:transparent;"><span style="font-family:'Arial';font-size:11px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;">subscript</span><span style="font-family:'Arial';font-size:7px;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(17, 17, 17, 1.00);background-color:transparent;position: relative;top:3px;">2</span></p></td></tr></tbody></table></div>
+
+---
+
+# Headers
+
+**Syntax**
+
+```
+# Header 1
+
+## Header 2
+
+### Header 3
+```
+
+**Output**
+
+# Header 1
+
+## Header 2
+
+### Header 3
+
+---
+
+# Lists
+
+**Syntax**
+
+```
+- unordered list
+  - sub-item
+
+1. ordered list
+2. ordered list
+  + sub-item
+  + sub-item
+```
+**Output**
+
+- unordered list
+  - sub-item
+
+1. ordered list
+2. ordered list
+  + sub-item
+  + sub-item
+
+---
+
+# Code &amp; formulas
+
+**Syntax**
+
+```
+`library(tidyverse)`
+
+$\bar{x} = \frac{1}{n} \sum_{i=1}^{n}x_{i}$
+
+$$\sigma^{2} = \frac{\sum_{i=1}^{n} 
+  \left(x_{i} - \bar{x}\right)^{2}}
+  {n-1}$$
+
+```
+**Output**
+
+`library(tidyverse)`
+
+`\(\bar{x} = \frac{1}{n} \sum_{i=1}^{n}x_{i}\)`
+
+`$$\sigma^{2} = \frac{\sum_{i=1}^{n} 
+  \left(x_{i} - \bar{x}\right)^{2}}
+  {n-1}$$`
+
+.small[
+*Note*: For generating formulas you can, e.g., use the [Online LaTeX Equation Editor](https://www.codecogs.com/latex/eqneditor.php) or the [Visual Math Editor](http://visualmatheditor.equatheque.net/VisualMathEditor.html).
+]
+
+---
+
+# Other formatting stuff
+
+**Syntax**
+
+```
+[link](https://www.gesis.org)
+
+&gt; block quote
+
+![R Logo](./pics/Rlogo.png)
+```
+**Output**
+
+[link](https://www.gesis.org)
+
+&gt; block quote
+
+![R Logo](./pics/Rlogo.png)
+
+For more formatting options check out the [RMarkdown Reference Guide](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) which is also available in *RStudio* via `Help` -&gt; `Cheatsheets` -&gt; `R Markdown Reference Guide`.
+
+---
+
+# YAML header
+
+
+```r
+---
+output: html_document
+---
+```
+
+---
+
+# PDF output
+
+You need \LaTeX\ 
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
