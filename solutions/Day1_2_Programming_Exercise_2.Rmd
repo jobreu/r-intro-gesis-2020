@@ -23,14 +23,14 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-In the last exercise, we already have created our first loop using an `if else` statement. Here we want to deepen our understanding of loops and apply some more of them.
+In the last exercise, we already have created our first loop using an if-else statement. Here we want to deepen our understanding of loops and apply some more of them.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Take the list you have created in the previous exercise, your fancy function to check whether a object is numeric and apply it to each one of the list elements. Use a `for()` loop for this purpose.
+Take the list you have created in the previous exercise. Use your fancy function to check whether an object is numeric and apply it to each of the list elements. Use a `for()` loop for this purpose.
 ```
 
 ```{block, opts.label = "clues"}
-When your list is not in your environment anymore, you have to re-create it again. Check out our solution, if you want to use a hideous one. Oh... the same applies to the function.
+When your list is not in your environment anymore, you have to re-create it again. Check out our solution if you want to use a hideous one. Oh... the same applies to the function.
 ```
 
 ```{r first_exercise, solution = TRUE}
@@ -75,7 +75,7 @@ lapply(cool_global_list, numeric_checker)
 `for()` loops are nice, but there are alternatives, right?
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-Now use the `lapply()`function to iterate through the list - do you see any differences to the `for()` call?
+Now use the `lapply()` function to iterate through the list - do you see any differences to the `for()` call?
 ```
 
 ```{block, opts.label = "clues"}
@@ -90,7 +90,7 @@ lapply(cool_global_list, numeric_checker)
 # through all of them
 ```
 
-To conclude this exercise let's turn to code styling. For this purpose, look at this code fragment here:
+To conclude this exercise, let's turn to code styling. For this purpose, look at this code fragment here:
 
 ```{r to_pipe, message=FALSE, results = "hide"}
 mean(sqrt(as.numeric(data.frame(id = 1, age = "20")$age)))
@@ -101,7 +101,7 @@ What do you think is the command doing?
 ```
 
 ```{block, opts.label = "clues"}
-It's always a good approach to start reading/interpreting code from the inner command and continue to the outer ones.
+It's always an excellent approach to start reading/interpreting code from the central command and continue to the outer ones.
 ```
 
 ```{block to_pipe_purpose_solution, solution = TRUE, message = FALSE}
@@ -112,7 +112,7 @@ It's always a good approach to start reading/interpreting code from the inner co
 5. The mean is calculated with `mean()`
 ```
 
-Using the commands in such a way makes the code somewhat difficult to read and understand. You should have learned that pipes provide a straightforward approach to address this issue.
+Using the commands in such a way makes the code somewhat challenging to read and understand. You should have learned that pipes provide a straightforward approach to address this issue.
 
 ```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
 Create a pipe from this nested command.
@@ -122,7 +122,9 @@ Create a pipe from this nested command.
 You can call individual columns of a piped object with `.$col_name`.
 ```
 
-```{r to_pipe_solution, , solution = TRUE}
+```{r to_pipe_solution, solution = TRUE}
+library(dplyr)
+
 data.frame(id = 1, age = "20") %>% 
   .$age %>% 
   as.numeric() %>% 
