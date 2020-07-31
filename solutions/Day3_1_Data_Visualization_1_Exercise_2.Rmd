@@ -64,3 +64,9 @@ for (variable in variable_names) {
   barplotter(variable, gp_covid)
 }
 ```
+
+Before we later start with the other exercises you may want to consider to clean your graphics device with `dev.off()`
+
+```{r cleandevice , message=FALSE}
+dev.off()
+```
