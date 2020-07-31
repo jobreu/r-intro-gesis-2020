@@ -196,10 +196,10 @@ Moreover, there are some more `is.PROPERTY_ASKED_FOR()` functions, such as `is.n
 
 ---
 
-## R's data formats
+## `R`'s data formats
 So now, here are the Tupperware containers:
 
-```{r echo = FALSE}
+```{r echo = FALSE, out.width = "75%"}
 knitr::include_graphics("./pics/9213.1526125966.png")
 ```
 
@@ -245,8 +245,8 @@ fancy_matrix <- matrix(1:16, nrow = 4)
 fancy_matrix
 ```
 
-You cannot store multiple data types, such as strings or numeric values.  Otherwise your data is getting coerced in a common type as we have seen in the previous slide.
-- In fact, this is something that happens already within vectors
+You cannot store multiple data types, such as strings or numeric values.  Otherwise, your data is getting coerced in a common type, as seen in the previous slide.
+- In fact, this is something that happens already within vectors.
 
 ```{r}
 c(1, 2, "evil string")
@@ -255,12 +255,32 @@ c(1, 2, "evil string")
 ---
 
 ## Arrays
-...
+Arrays are stacked vectors, as shown in the figure. I haven't seen too many applications with them, to be honest. But there's definitely a use, probably when implementing estimation methods.
+
+.pull-left[
+```{r arrays, eval = FALSE}
+vector_1 <- c(1, 2, 3)
+vector_2 <- 5:11
+
+array(
+  c(vector_1, vector_2), 
+  dim = c(2, 3, 2)
+)
+```
+]
+
+.pull-right[
+```{r ref.label = "arrays", echo = FALSE}
+```
+
+It repeatedly goes over the input vectors.
+]
+
 
 ---
 
 ## Data frames
-While matrices are used, e.g.,--\*drumroll\*-- for matrix operations, data frames resembles more what we know of data we usually use. We can build data.frames by hand as here:
+While matrices are used, e.g.,--\*drumroll\*-- for matrix operations, data frames resemble more what we know of data we usually use. We can build data frames by hand as here:
 
 .tinyish[
 ```{r data_frames, eval = FALSE}
@@ -276,7 +296,7 @@ fancy_data <-
       sample(15:100, 10, replace = TRUE),  
     salary_2019 = 
       sample(15:100, 10, replace = TRUE),
-    was_milk_available = 
+    eggs_available = 
       sample(c(TRUE, FALSE), 10, replace = TRUE)
   )
 
@@ -294,7 +314,7 @@ class: middle
 ---
 
 ## tibbles
-data.frames tend to be pretty large, and printing them on your screen can get difficult. As part of the Tidyverse, tibbles facilitate printing (and adding more metadata to the columns of a data.frame). Instead of using `data.frame()` for our data creation we could have been using `tibble()`. Or we convert an existing data.frame, which looks like that:
+`data.frames` tend to be pretty large, and printing them on your screen can get difficult. As part of the Tidyverse, tibbles facilitate printing (and adding more metadata to the columns of a `data.frame`). Instead of using `data.frame()` for our data creation we could have been using `tibble()`. Or we convert an existing `data.frame`, which looks like that:
 
 ```{r as_tibbles, eval = FALSE}
 library(tibble)
@@ -311,7 +331,7 @@ class: middle
 ---
 
 ## One last type you should know: lists
-Lists are perfect to store numerous and potentially diverse information at one place.
+Lists are perfect for storing numerous and potentially diverse information in one place.
 
 ```{r fancy_list, eval = FALSE}
 fancy_list <- 
@@ -361,7 +381,7 @@ class: middle
 ## Accessing elements by index
 Generally, there is this use of `[index_number]`-logic in R to access only a subset of information in data, no matter if we had vectors or data frames.
 
-Say, we want to extract the second element of our `character_vector`object, we  could do that as this:
+Say, we want to extract the second element of our `character_vector`object, we  could do that like this:
 
 ```{r}
 character_vector[2]
@@ -370,18 +390,18 @@ character_vector[2]
 ---
 
 # More complicated cases: matrices
-Matrices can have more dimensions, often you want information from a specific row and column
+Matrices can have more dimensions, often you want information from a specific row and column.
 
 ```{r eval = FALSE}
 a_wonderful_matrix[number_of_row, number_of_column]
 ```
 
-(You can do the same indexing with data frames)
+(You can do the same indexing with `data.frame`s)
 
 ---
 
 ## Matrices and subscripts (as in mathematical annotation)
-Identify rows, columns or elements using subscripts is similar to matrix  notation: 
+Identify rows, columns, or elements using subscripts is similar to matrix  notation:
 
 ```{r eval = FALSE}
 fancy_matrix[, 4] # 4th column of matrix
@@ -389,7 +409,7 @@ fancy_matrix[3,] # 3rd row of matrix
 fancy_matrix[2:4, 1:3] # rows 2,3,4 of columns 1,2,3 
 ```
 
-If you plan to participate at the mathematical tools workshop in this summer school, you will learn how to do some calculations, such as matrix multiplications:
+If you plan to participate in the mathematical tools workshop in this Summer School, you will learn how to do some calculations, such as matrix multiplications:
 
 ```{r}
 fancy_matrix[2:4, 1:3] %*% fancy_matrix[1:3, 2:4]
@@ -398,7 +418,7 @@ fancy_matrix[2:4, 1:3] %*% fancy_matrix[1:3, 2:4]
 ---
 
 ## The case of data frames
-A nice feature of data frames or tibbles is that their columns are names, just as variable names in ordinary data. It would be cumbersome do use index numbers to extract a specific column/variable, right? Do not fear:
+A nice feature of `data.frames` or `tibbles` is that their columns are names, just as variable names in ordinary data. It would be cumbersome do use index numbers to extract a specific column/variable, right? Do not fear:
 
 ```{r}
 fancy_data$who
@@ -409,7 +429,7 @@ Just place a `$`-sign between the data object's and the variable's name.
 ---
 
 ## `[]` in data frames
-In programming, as you will learn, we often have to rely on character strings as input information, e.g., for iterating over data. Therefore, we can use `[]` to access variables. 
+In programming, as you will learn, we often have to rely on character strings as input information, e.g., for iterating over data. Therefore, we can use also `[]` to access variables. 
 
 .pull-left[ 
 Not only this way:
@@ -440,8 +460,8 @@ knitr::include_graphics("./pics/indexing_lists.png")
 ---
 
 ## Object orientation in R
-R is an object orientated language
-- That's more than just assigning, e.g., a number to an object and working on it like 
+R is an object-orientated language
+- That's more than just assigning, e.g., a number to an object and working on it like: 
 
 ```{r}
 object <- 2
@@ -458,12 +478,12 @@ str(character_vector)
 class(character_vector)
 ```
   
-But we'll leave it at that for now, so don't worry too much about this topic.
+But we'll leave it now, so don't worry too much about this topic.
 
 ---
 
 ## Functional Programming: In R, everything's a function (more or less)
-So you might already be familiar with using functions in R (at least we have used them heavily in the preceding slides). Functions are applied as shown here:
+So you might already be familiar with using functions in R (at least we have used them heavily in the previous slides). Functions are applied as shown here:
 
 ```{r eval = FALSE}
 fancy_function(data)
@@ -475,12 +495,12 @@ They can be nested, for example:
 log(sum(c(1, 2, 3)))
 ```
 
-Later on, we will learn about pipes `%>%` which help to navigate some issues  with too many levels of nesting
+Later on, we will learn about pipes `%>%`, which help navigate some issues with too many nesting levels.
 
 ---
 
 ## Defining your own function is straightforward
-First, let's create a simple function which is pasting together some strings and numbers.
+First, let's create a simple function that is pasting together some strings and numbers.
 
 ```{r}
 milk_bought <- function (n_bottles) {
@@ -493,7 +513,7 @@ milk_bought <- function (n_bottles) {
 }
 ```
 
-Now, we can simply apply it to some data as in any other R function
+Now, we can simply apply it to some data as in any other R function.
 
 ```{r}
 milk_bought(n_bottles = 20)
@@ -504,7 +524,7 @@ milk_bought(n_bottles = 20)
 ## Loops
 .pull-left[
 We can use loops to iterate through data, applying a function. The loop types we'll use here are:
-- if else statements/requests
+- if-else statements/requests
 - iteration with
   - `for()` 
   - `while()`
@@ -565,7 +585,7 @@ DiagrammeR::grViz("digraph flowchart {
 ---
 
 ## if else architecture in R
-Using if else statements in R requires at least 3 steps:
+Using if-else statements in R requires at least 3 steps:
 1. Starting the loop with `if()`
 2. Add the condition to be tested in the brackets of `if(condition)`
 3. Write a function or procedure on data in the curly brackets of `if(condition){ ... }`
@@ -581,7 +601,7 @@ if (1 < 2) {
 ---
 
 ## Adding else statements
-In a fourth step, we can add a `else { ... }`
+In a fourth step, we can add an `else { ... }`
 
 ```{r}
 if (1 > 2) {
@@ -600,7 +620,7 @@ if (condition) {
 }
 ```
 
-(we could also test for another condition in the else statements with `else if()`)
+(We could also test for another condition in the else statements with `else if()`)
 
 ---
 
@@ -667,7 +687,7 @@ if (eggs_available[2]) {
 ---
 
 ## ifelse() shortcut
-There's also a shorcut using the function `ifelse()` when the operations applied to the data are not too complex (or at least embedded in another function as in our case):
+There's  a shortcut using the function `ifelse()` when the operations applied to the data are not too complicated (or at least embedded in another function as in our case):
 
 ```{r}
 ifelse(
@@ -677,7 +697,7 @@ ifelse(
 )
 ```
 
-But be aware that `if()` and `ifelse()` were designed for different purposes and the latter is not always a shortcut rather than data type specific. It is handy when you aim to assign the result, e.g, to an object or a variable in a data frame. Ordinary if else statements are more general and should always be your choice when you are not sure.
+But be aware that `if()` and `ifelse()` [were designed for different purposes](https://stackoverflow.com/a/22433767), and the latter is not always a shortcut rather than data type-specific. It is handy when you aim to assign the result, e.g., to an object or a variable in a data frame. Ordinary if-else statements are more general and should always be your choice when you are not sure.
 
 ---
 
@@ -728,7 +748,11 @@ milk_bought(who = "Johannes", n_bottles = 12, eggs_available = FALSE)
 
 ---
 
-## EXERCISE TIME
+class: center, middle
+
+# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+
+## [Solutions](XXX)
 
 ---
 
@@ -737,8 +761,8 @@ In my opinion, loops using the `for()` function are some of the most useful tool
 
 They enable iterating through input data and applying functions to each element of the data
 - it depends on specific purpose what defines this element
-  - they can be rows, column, list elements etc.
-- thus, it is important to think about the iterator of the specific call
+  - they can be rows, columns, list elements, etc.
+- thus, it is crucial to think about the iterator of the specific call
 
 ---
 
@@ -750,7 +774,7 @@ for (iterator_name in data) {
 }
 ```
 
-So if we had data about a whole programmer gang buying milk but who experience varying availability of eggs, we could apply our function to each one of them. Let's try that out!
+If we had data about a whole programmer gang buying milk but who experienced varying availability of eggs, we could apply our function to each of them. Let's try that out!
 
 ---
 
@@ -768,8 +792,12 @@ for (row_number in 1:nrow(fancy_data)) {
 ```
 
 ---
+class: middle
+## `while()` loops
 
 > The next day, the same programmer's roommate calls him to ask where he is. "I'm back at the grocery," says the programmer. "While you're there, pick up some bread. Thanks!" says the roommate. The programmer never comes home.
+
+.footnote[https://www.reddit.com/r/Jokes/comments/5qyxar/a_programmer_goes_shopping/]
 
 ---
 
@@ -782,14 +810,14 @@ while (still_there) {
 }
 ```
 
-This runs into an infinite loop, which is the joke is all about. 
+This runs into an infinite loop, which is what the joke is all about. 
 
 ---
 
 ## Better try this one
-Yet, this infinite loop would also require that bread is infinitive
-- This is unrealistic
-- So we may want to add a bread counter that can reach a minimum
+Yet, this infinite loop would also require that bread is infinitive.
+- This is unrealistic.
+- We may want to add a bread counter that can reach a minimum.
 
 ```{r}
 still_there <- TRUE
@@ -829,15 +857,15 @@ What have we learned so far?
 - while-loops are also useful for algorithms that should stop after a certain point is reached
 
 What's left?
-- Some vecotrizations that make life easier: the apply family
+- Some vectorization that makes life easier: the apply family
 - Using the pipe operator `%>%`
 - Some notes on style
 
 ---
 
 ## The apply family
-The apply family is aimed to make your life easier, saves you a lot of typing  time and prevents you from writing explicit loops
-- provides a nice interface to enter your data
+The apply family is aimed to make your life easier, saves you a lot of typing time and prevents you from writing explicit loops.
+- provides a friendly interface to enter your data
 - data come out in a standard format
 - it may be faster than, e.g., writing a `for()` loop
 
@@ -847,12 +875,11 @@ However, we won't cover all functions of this precious family
 - **`sapply()`**
 - **`tapply()`**
 - `mapply()`, `rapply()`, & `vapply()` is left out
-  - These are the functions usually not invited to the family dinner
 
 ---
 
 ## apply()
-The apply() command is useful when you want to fire up a short command across either all columns (option `MARGIN = 2`) _or_ rows (option `MARGIN = 2`).
+The `apply()` function is useful when you want to fire up a short command across either all columns (option `MARGIN = 2`) _or_ rows (option `MARGIN = 2`).
 
 ```{r}
 # means across columns/variables
@@ -862,12 +889,12 @@ apply(fancy_data[,3:4], 2, mean)
 apply(fancy_data[,3:4], 1, mean)
 ```
 
-While there are packages for building descriptive table already out there (XXX), this becomes handy when you want to create them yourself.
+While there are packages for building descriptive table already out there (e.g., `psych::describe` ), this becomes handy when you want to create them yourself.
 
 ---
 
 ## lapply()
-lapply() is for more elaborated operations. However, there are no `MARGIN`  options, so let's see what happens when we use it similarly as before:
+`lapply()` is for more elaborated operations. However, there are no `MARGIN`  options, so let's see what happens when we use it similarly as before:
 
 ```{r lapply_error, eval = FALSE}
 lapply(fancy_data, mean)
@@ -885,7 +912,7 @@ class: middle
 ---
 
 ## lapply() returns lists
-It might be a little bit uncomfortable, but `lapply()` outputs returns each results of an iterated operation as a list element. Thus, the output of applying the function is a list. 
+It might be a little bit uncomfortable, but `lapply()` returns each result of an iterated operation as a list element. Thus, the output of applying the function is a list. 
 
 Some people don't like lists as they separate information from each other.
 
@@ -895,15 +922,30 @@ I like lists.
 
 ## The real merit lies in the iterators
 
-```{r}
+.tinyish[
+.pull-left[
+```{r merit, eval = FALSE}
 lapply(1:nrow(fancy_data), function (i) {
-  ifelse(fancy_data$salary_2019[i] > mean(fancy_data$salary_2019), 1, 0)
+  ifelse(
+    fancy_data$salary_2019[i] > mean(fancy_data$salary_2019), 
+    1, 
+    0
+  )
 })
 ```
+]
+]
+
+.tinyisher[
+.pull-right[
+```{r ref.label = "merit", echo = FALSE}
+```
+]
+]
 
 ---
 ## sapply()
-`sapply()` is similar to `lapply()`. The minor but significant difference is that it returns vectors instead of lists. This comes handy, when you want to add the results of this function as a new column to your existing data.
+`sapply()` is similar to `lapply()`. The minor but significant difference is that it returns vectors instead of lists. When you want to add the results of this function as a new column to your existing data, this comes handy.
 
 ```{r sapply, eval = FALSE}
 fancy_data$poverty_indicator <- 
@@ -933,16 +975,16 @@ class: middle
 Finally, `tapply()` is useful when you want to perform an action across different groups in your data.
 
 ```{r}
-tapply(fancy_data$salary_2019,fancy_data$was_milk_available, mean)
+tapply(fancy_data$salary_2019, fancy_data$eggs_available, mean)
 ```
 
 
 ---
 
 ## Let's end this loop
-At this point, we stop with adding more looping functions to our inventory. In `R`, there are definitely more functions that at least implicitly use loops and apply-like functions (for a nice overview, please refer to http://uc-r.github.io/apply_family). 
+At this point, we stop adding more looping functions to our inventory. In `R`, there are definitely more functions that at least implicitly use loops and apply-like functions (for a nice overview, please refer to http://uc-r.github.io/apply_family). 
 
-What we also have left out are some newer `tidyverse` functions, e.g., from the `purrr::`-package. If you have any more questions on that please let us know. But for now we will turn to another feature of modern programming in `R` that will be way more supportive for your daily actions in `R` after you have converted to a full-time R-user after this course:
+We have left out some newer `tidyverse` functions, e.g., from the `purrr` package. If you have any more questions on that, please let us know. But for now we will turn to another feature of modern programming in `R`. It will be way more supportive for your daily actions after you have converted to a full-time R-user after this course:
 
 .center[**pipes**]
 
@@ -1161,13 +1203,9 @@ include_graphics("./pics/crazy_pipes.png")
 
 ## Some precocious notes on style
 .column-left-half[
-In some ways, writing code is similar to writing a novel
-- it's a craft
-- you set the tone how you want to be perceived
-  - your future you
-  - and others
+In some ways, writing code is similar to writing a novel; it's a craft where you set the tone of how you want to be perceived from your future-you and others.
   
-What helps to be understood is styling of your code
+What helps to be understood is the styling of your code.
 ]
 
 .column-right-half[
@@ -1180,8 +1218,8 @@ https://images-na.ssl-images-amazon.com/images/I/71z4varBITL.jpg
 ---
 
 ## General elements of style
-These are only some of the topics you will face when researching for styling your code
-- line length (see the "sacred 80 column rule": https://www.emacswiki.org/emacs/EightyColumnRule)
+These are only some of the topics you will face when researching for styling your code.
+- line length (see the ["sacred 80 column rule"]( https://www.emacswiki.org/emacs/EightyColumnRule))
 - indentions
 - variable/object naming
 - comments
@@ -1193,12 +1231,11 @@ R is pretty flexible in styling which is why it is necessary to think about thes
 ---
 
 ## Style guides out there
-It's really not uncommon to follow a certain style guide that already exists.
+It's really not uncommon to follow a specific style guide that already exists.
 
-A lot of institutions define styles for several different programming languages,
-such as Google's style guide for R: https://google.github.io/styleguide/Rguide.html
+Many institutions define styles for several different programming languages, such as [Google's style guide for `R`](https://google.github.io/styleguide/Rguide.html)
 
-It really doesn't matter what style you use as long as you are consice (at least in one single R-file)
+It really doesn't matter what style you use as long as you are concise (at least in one single `R`-file, right?).
 
 ---
 
@@ -1224,4 +1261,8 @@ include_graphics("./pics/styler_addin.png")
 
 ---
 
-## EXERCISE TIME
+class: center, middle
+
+# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+
+## [Solutions](XXX)
