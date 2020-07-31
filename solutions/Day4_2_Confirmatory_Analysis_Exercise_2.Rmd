@@ -1,0 +1,202 @@
+---
+title: 'Exercise 2 Confirmatory Analysis - Solutions'
+# title: 'Exercise 2 Confirmatory Analysis'
+author: 'Johannes Breuer, Stefan Jünger'
+date: 'Introduction to R for Data Analysis'
+output:
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
+# custom boxes
+knitr::opts_template$set(
+  clues = list(box.title = "Clues",
+               box.body = list(fill = "#fff9dc", colour = "black"),
+               box.header = list(fill = "#ffec8b", colour = "black"),
+               box.icon = "fa-search",
+               box.collapse = TRUE)
+)
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(gapminder)
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy()
+```
+
+In the last exercise, we exploited some regression models for our analysis. That was a good start, but publications need tables of results and also fancy visualizations, e.g., of predictions.
+
+Again, we load our GESIS Panel COVID-19 data and also - just to make sure - re-run the regression models:
+
+```{r loadgpcovid, message=FALSE, eval=FALSE}
+library(dplyr)
+library(haven)
+library(sjlabelled)
+
+gp_covid <-
+  read_sav(
+    "../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+  ) %>% 
+  set_na(na = c(-1:-99, 97)) %>% 
+  mutate(
+    likelihood_hospital = hzcy003a,
+    age_cat = as.factor(age_cat),
+    likelihood_hospital_cut =
+      ifelse(
+        likelihood_hospital > median(likelihood_hospital, na.rm = TRUE),
+        1,
+        0
+      )
+  ) %>% 
+  remove_all_labels()
+
+serious_logistic_regression <- 
+  glm(
+    likelihood_hospital_cut ~ age_cat + sex + political_orientation + marstat,
+    data = gp_covid,
+    family = binomial(link = "logit")
+  )
+
+serious_cauchit_regression <- 
+  glm(
+    likelihood_hospital_cut ~ age_cat + sex + political_orientation + marstat,
+    data = gp_covid,
+    family = binomial(link = "cauchit")
+  )
+```
+
+In the lecture, we started with the visualization of predictions. However, it is good practice to first build a regression table that shows, for example, statistical significance of regression coefficients.
+
+... 
+
+```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
+Build a stargazer regression table of both models to compare them. Use the option `type = "text"` in order to have it printed in the console. Moreover, choose a table style for the journal where you want to publish.
+```
+
+```{block, opts.label = "clues"}
+You can find an overview of all supported style with `?stargazer::`list of supported styles``.
+```
+
+```{r stargazer, solution = TRUE}
+library(stargazer)
+
+stargazer(
+  serious_logistic_regression,
+  serious_cauchit_regression,
+  type = "text",
+  style = "asr"
+)
+```
+
+You know what: reviewer 2 ist post-signficant, at least a little. He requested that you should please use confidence intervals at a level of `.93`.
+
+```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
+Rebuild your regression table and add the confidence intervals with the requested level.
+```
+
+```{block, opts.label = "clues"}
+Have a look at the help page for all possible options `?stargazer?`. Moreover, it may be that CI are still not show, this is due to the custom style.
+```
+
+```{r stargazer, solution = TRUE}
+library(stargazer)
+
+stargazer(
+  serious_logistic_regression,
+  serious_cauchit_regression,
+  type = "text",
+  ci = TRUE,
+  ci.level = .93
+)
+```
+
+The previous exercise might also show that such integrated packages like `stargazer` have limits. Because of these limits, standardized procedures of gathering results like in `broom` are quite attractive as packages like `huxtable` 'understand' this common format.
+
+We'll leave regression tables now and turn to the plotting of the results. Reviewer 2 wants you to that after the third review as you should know...
+
+```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
+Draw a prediction plot of the variable "age_cat" for both models using the `sjPlot` package. Also, try to draw them side by side.
+```
+
+```{block, opts.label = "clues"}
+You can use the `patchwork` package for creating the joined plot.
+```
+
+```{r predictionplot, solution = TRUE}
+library(sjPlot)
+library(patchwork)
+
+logit_plot <- 
+  plot_model(
+    serious_logistic_regression,
+    type = "pred",
+    terms = "age_cat"
+    )
+
+cauchit_plot <- 
+  plot_model(
+    serious_cauchit_regression,
+    type = "pred",
+    terms = "age_cat"
+    )
+
+logit_plot | cauchit_plot
+```
+
+Reviewer 2 is happy now. But Reviewer 1, who is more trusted by the editor, thinks estimating predictions based on 'real' average marginal effects (AME) is more cutting-edge. She also thinks that you have proven that choosing a logit or a cauchit link doesn't make a difference. Therefore she'd prefer to see only one plot for the cauchit model as this is not a methodological paper.
+
+```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
+Draw a prediction plot of the variable "age_cat" only for the cauchit model, but this time base on AME.
+```
+
+```{block, opts.label = "clues"}
+The `margins` package and its `cplot()` function are your friend.
+```
+
+```{r predictionplot, solution = TRUE}
+library(margins)
+
+cplot(
+  serious_cauchit_regression,
+  "age_cat",
+  what = "prediction"
+)
+```
+
+Bonus: You may have seen that `cplot()` outputs the actual prediction data automatically. This was annoying in the slides, but you could use this output to draw a plot in `ggplot2`. Moreover, when you toggle the option `draw = FALSE` then only the data are created.
+
+```{block, box.title = "BONUS", box.body = list(fill = "white"), box.icon = "fa-star"}
+Draw a prediction plot of the variable "age_cat" only for the cauchit model based on AME in `ggplot2`.
+```
+
+```{block, opts.label = "clues"}
+1. The column "xvals" is stored as character. You should convert it into numeric.
+2. There's a `geom` called `geom_errorbar` which you can use for the confidence intervals
+```
+
+```{r predictionplot, solution = TRUE}
+library(ggplot2)
+
+prediction_data <-
+  cplot(
+  serious_cauchit_regression,
+  "age_cat",
+  what = "prediction",
+  draw = FALSE
+) %>% 
+  dplyr::mutate(
+    xvals = as.numeric(xvals)
+  )
+
+ggplot(
+  prediction_data,
+  aes(x = xvals, y = yvals)
+) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = .1) +
+  theme_bw()
+```
