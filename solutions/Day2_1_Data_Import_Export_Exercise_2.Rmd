@@ -1,0 +1,102 @@
+---
+title: 'Exercise 2 Data Import & Export - Solutions'
+# title: 'Exercise 2 Data Import & Export'
+author: 'Johannes Breuer, Stefan Jünger'
+date: 'Introduction to R for Data Analysis'
+output:
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
+# custom boxes
+knitr::opts_template$set(
+  clues = list(box.title = "Clues",
+               box.body = list(fill = "#fff9dc", colour = "black"),
+               box.header = list(fill = "#ffec8b", colour = "black"),
+               box.icon = "fa-search",
+               box.collapse = TRUE)
+)
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy()
+```
+
+Now we are in the second exercise session. Non-flat files were promised, so please load the GESIS Panel COVID-19 data.
+
+This first part of the exercises only deals with importing data. Later, in the second exercise, we will turn more to non-flat data files and label them before exporting.
+
+```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
+Load the GESIS Panel COVID-19 data.
+```
+
+```{block, opts.label = "clues"}
+You can either load the SPSS or Stata file for which you need the `haven` package.
+```
+
+```{r load_gp, solution = TRUE}
+library(haven)
+
+gp_covid <-
+  read_spss("../data/gesis_panel_covid19/ZA5667_v1-1-0.sav")
+```
+
+In contrast to the flat files, such as CSV, the variables now have labels. I wonder how the labels are for the first ten variables...
+
+```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
+Print the labels of the first ten variables.
+```
+
+```{block, opts.label = "clues"}
+You can print labels with the function `sjlabelled::get_label(your_data)`, but you have to make sure only to print the first ten variables.
+```
+
+```{r print_labels, solution = TRUE}
+library(sjlabelled)
+
+get_label(gp_covid[1:10])
+```
+
+Unfortunately, it's all in German. Imagine you are an education researcher and you are interested in the variable `education_cat`. So you may want to consider to translate the variable into English?
+
+```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
+Rename the variable label of `age_cat` from "Bildung, kategorisiert" into "Education, categorized".
+```
+
+```{block, opts.label = "clues"}
+There a two ways: Either using the function `sjlabelled::set_label()` or do it in a pipe with `sjlabelled::var_labels()`.
+```
+
+```{r changevarlabel, solution = TRUE}
+# either
+gp_covid$education_cat <- 
+  set_label(
+    gp_covid$education_cat, 
+    label = "Education, categorized"
+  )
+
+# or
+gp_covid <- 
+  gp_covid %>% 
+  var_labels(
+    education_cat = "Education, categorized"
+  )
+
+# proof
+get_label(gp_covid$education_cat)
+```
+
+Your colleague asks you for providing your new data after changing labels and stuff. Unfortunately, she does not use `R` or `SPSS` and asks you for exporting your data as a Stata file.
+
+```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
+Export your data as a Stata file.
+```
+
+```{block, opts.label = "clues"}
+Like in the case of importing you again need the `haven`package.
+```
+
+```{r exportstata, solution = TRUE}
+write_stata(gp_covid, "gesis_panel_corona_fancy_panels_final_final.dta")
+```
