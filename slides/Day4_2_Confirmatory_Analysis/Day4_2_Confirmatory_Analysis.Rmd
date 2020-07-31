@@ -56,6 +56,7 @@ xaringanExtra::use_extra_styles(
 ## Content of this sessions
 .pull-left[
 **What we will cover**
+- Bivariate hypothesis testing
 - Using more or less simple regression models in R
   - OLS, GLM and the like
 - How to re-use results of these models
@@ -227,10 +228,88 @@ So it should be clear that we could also change the data type of variables withi
 
 ---
 
+## Where to use formulas?
+The previous description refers a lot to formulas used in regression models. Where we also use the concept of formulas with dependent variables, however, is bivariate hypothesis testing. Most prominently methods such as t-tests or ANOVA belong to this group of analysis.
+
+Indeed, these 'basic' statistical models can be used in `R` too, as in any other statistical language. Let's try them out!
+
+---
+
+## Testing group differences in the distribution
+As said, one of the most prominent methods to analyze group differences are t-tests. You can use the `t.test()` to easily perfom such a test. However, our dependent variable may not be distributed normally between groups, such as gender of our respondents.
+
+```{r notnormaldata, eval = FALSE}
+barplot(
+  table(
+    gp_covid$likelihood_infection, 
+    gp_covid$sex
+  ),
+  beside = TRUE
+)
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+.tinyish[
+```{r ref.label = "notnormaldata", echo = FALSE}
+```
+]
+
+---
+
+## Apply a t-test
+If you think about hypothesis testing, t-tests may be the first method that comes to your mind. First and foremost `R` is a statistical language. Indeed, you could thus perform t-tests rather straightforward.
+
+```{r}
+t.test(
+  likelihood_infection ~ sex,
+  data = gp_covid
+)
+```
+
+---
+
+## Test of normaility
+Ok, t-tests are nice, but what if our data is not normally distributed in the first place, one of the basic assumptions of performing t-tests? We can use a Shapiro-Wilk test of normality!
+
+```{r}
+shapiro.test(gp_covid$likelihood_infection)
+```
+
+---
+
+## Alternative: Wilcoxon/Mann-Whitney test
+
+```{r}
+wilcox.test(
+  likelihood_infection ~ sex,
+  data = gp_covid
+  )
+```
+
+---
+
+## Testing multiple groups with an ANOVA
+There are occassions where we want to test difference across multiple groups. The classic method to use is a analysis of variance (ANOVA) test. Again, you can easily do that in `R`.
+
+```{r}
+nice_anova <- 
+  aov(
+    likelihood_infection ~ age_cat,
+    data = gp_covid
+  )
+
+summary(nice_anova)
+```
+
+---
+
 ## Simple linear regressions
+We will now turn to the complex of regression models. These models are also easy to perform in `R`. Disclaimer: We won't do many regression diagnostics and also assume that our dependent variable is continuous for the OLS regression context.
 
 .tinyish[
-```{r}
+```{r linmodel, eval = FALSE}
 simple_linear_model <-
   lm(
     likelihood_infection~ 
@@ -242,6 +321,14 @@ simple_linear_model <-
   )
 
 simple_linear_model
+```
+]
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+.tinyish[
+```{r ref.label = "linmodel", echo = FALSE}
 ```
 ]
 
@@ -266,7 +353,7 @@ summary(simple_linear_model)
 In the visualization session, we have already learned from the built-in function to visually inspect modeling of regressions in R.
 
 .pull-left[
-```{r lm_summary_plot, eval = FALSE, echo = FALSE}
+```{r lm_summary_plot, eval = FALSE}
 par(mfrow = c(2, 2))
 plot(simple_linear_model)
 ```
@@ -414,10 +501,10 @@ summary(simple_linear_model_probit)
 
 ---
 
-## Handling regression results
+## Handling regression results (a note probably nobody wants to hear...)
 While this is not a statistics course, I have to admit I am not a huge fan of running regressions, searching for 'significant' p-values, and pasting the results in a table without interpreting them substantially. Later, you _will_ learn how create nice tables, but further along you will also see how we can apply some other techniques to gain more substantial insights in your data.
 
-Before we actually do that, we will have a look into some general techniques to work with a readily estimated regression object in R.
+Before we actually do that, we will have a look into some general techniques to work with a readily estimated regression object in R. This exercise is to understand the mechanics on what is actually happening in the background.
 
 ---
 
