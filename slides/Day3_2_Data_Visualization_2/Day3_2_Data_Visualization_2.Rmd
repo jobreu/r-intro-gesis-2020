@@ -33,19 +33,6 @@ xaringanExtra::use_extra_styles(
 </div>
 
 ```{css, echo = FALSE}
-# .remark-slide-content {
-#   font-size: 28px;
-#   padding: 20px 80px 20px 80px;
-# }
-# .remark-code, .remark-inline-code {
-#   background: #f0f0f0;
-# }
-# .remark-code {
-#   font-size: 24px;
-# }
-# .huge .remark-code { /*Change made here*/
-#   font-size: 200% !important;
-# }
 .tinyish .remark-code { /*Change made here*/
   font-size: 70% !important;
 }
@@ -118,10 +105,19 @@ gp_covid <-
   sjlabelled::set_na(na = c(-1:-99, 97))
 ```
 
-```{r ggplot_histogram, out.width = "65%"}
+.tinyish[
+.pull-left[
+```{r base_histogram, eval = FALSE}
 ggplot(gp_covid, aes(x = age_cat)) + 
   geom_histogram()
 ```
+]
+]
+
+.pull-right[
+```{r ref.label = "base_histogram", echo = FALSE}
+```
+]
 
 ---
 
@@ -134,7 +130,6 @@ According to Wickham (2010, 8)* a layered plot consists of the following compone
 
 
 - data and aesthetic mappings,
-
 - geometric objects,
 - scales,
 - and facet specification
@@ -187,6 +182,119 @@ knitr::include_graphics("./pics/long.png")
 <small><small>Source: https://github.com/gadenbuie/tidyexplain#tidy-data</small></small>
 ]
   
+
+---
+
+## Before we start some more examples
+The architecture of building plots in `ggplot` is similar as in base R graphics. There is some additional call and subsequently more stuff is added to the plot. 
+
+However, in base R, it is sometimes difficult where to add your stuff. For example, think of removing the axis ticks in the scatter plot.
+
+We will systematically explore which elements are used in ggplot in this session. To get an idea how easy it is to create figures in `ggplot`, in the following slides we will have a look at some of the basic plot types you can choose from.
+
+---
+
+## Scatterplot from previous sessions
+
+```{r load_gp_covid, include = FALSE}
+gp_covid <- 
+  haven::read_sav(
+    "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+  ) %>% 
+  sjlabelled::set_na(na = c(-1:-99, 97))
+```
+
+.tinyish[
+.pull-left[
+```{r scatter, eval = FALSE}
+ggplot(
+  data = gp_covid,
+  aes(
+    x = age_cat, 
+    y = hzcy001a
+  )
+) +
+  geom_point()
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "scatter", echo = FALSE}
+```
+]
+
+---
+
+## Scatterplot from previous sessions with jitter
+
+.tinyish[
+.pull-left[
+```{r jitter, eval = FALSE}
+ggplot(
+  data = gp_covid,
+  aes(
+    x = age_cat, 
+    y = hzcy001a
+  )
+) +
+  geom_jitter()
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "jitter", echo = FALSE}
+```
+]
+
+---
+
+## Boxplots
+
+.tinyish[
+.pull-left[
+```{r boxplot, eval = FALSE}
+ggplot(
+  data = gp_covid,
+  aes(
+    x = as.factor(age_cat), 
+    y = hzcy001a
+  )
+) +
+  geom_boxplot()
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "boxplot", echo = FALSE}
+```
+]
+
+---
+
+## Densities
+
+.tinyish[
+.pull-left[
+```{r density, eval = FALSE}
+ggplot(
+  data = gp_covid,
+  aes(
+    x = hzcy001a
+  )
+) +
+  geom_density()
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "density", echo = FALSE}
+```
+]
+
 ---
 
 ## Creating your own plot
@@ -217,9 +325,10 @@ Three components are important:
 ---
 
 ## Plot initiation
+Now, let's start from the beginning and have a closer look at the *grammar of graphics*.
 
 .pull-left[
-`ggplot()` is the most basic command to create a plot:
+`ggplot()` is the most basic command to create a plot (similar as `plot()`:
 
 ```{r ggplot_basic, eval = FALSE}
 ggplot()
@@ -237,10 +346,11 @@ ggplot()
 
 ## Data input
 
+.tinyish[
 .pull-left[
 As we've already learned `ggplot()` expects data as input
 
-```{r load_gapminder_data, message = F, echo = FALSE}
+```{r load_gapminder_data, echo = TRUE}
 gapminder_children <- 
   readr::read_csv(
     "../../data/gapminder/children_per_woman_total_fertility.csv"
@@ -261,12 +371,12 @@ gapminder_children <-
     continent = as.factor(continent)
     ) %>% 
   tidyr::drop_na()
-
 ```
 
 ```{r ggplot_data, eval = FALSE}
 ggplot(data = gapminder_children)
 ```
+]
 ]
 
 .pull-right[
@@ -275,7 +385,6 @@ ggplot(data = gapminder_children)
 ]
 
 **Still nothing there...**
-
 
 ---
 
@@ -310,8 +419,6 @@ ggplot(data = gapminder_children) +
 ```
 ]
 
---
-
 .pull-right[
 ```{r ref.label = "ggplot_geom", echo = FALSE}
 ```
@@ -321,7 +428,7 @@ ggplot(data = gapminder_children) +
 
 ---
 
-## Add a line
+## Add a fancy `geom`
 .pull-left[
 We can also add more than one `geom`
 
@@ -339,7 +446,7 @@ ggplot(data = gapminder_children) +
 ]
 
 
-**A smoothed regression line!**
+**A smoothed regression line!** (The regression behind this operation is run automatically)
 
 ---
 
@@ -354,7 +461,6 @@ ggplot(
   aes(
     x = year, 
     y = children, 
-    color = continent,
     group = continent
     )
   ) +
@@ -394,11 +500,73 @@ ggplot(
 ```
 ]
 
+The legend is drawn automatically, that's handy!
+
+---
+
+## Using another palette
+
+.pull-left[
+```{r ggplot_group_spectral, eval = FALSE}
+ggplot(
+  data = gapminder_children,
+  aes(
+    x = year, 
+    y = children, 
+    color = continent,
+    group = continent
+    )
+  ) +
+  geom_smooth() +
+  scale_color_brewer(palette = "Spectral") 
+```
+]
+
+.pull-right[
+```{r ref.label = "ggplot_group_spectral", echo = FALSE}
+```
+]
+
+---
+
+## Difference betwenn `color` and `fill`
+When you work with `ggplot`, at least after some time you will be faced by two components of plot or `geom` which are associated with colors: `color` and `fill`.
+
+Generally, `color` refers to the borders of a geometry, such as a line. `fill` refers to an area of a geometry, such as a polygon.
+
+Have this difference in mind when you use `scale_color_brewer` or `scale_fill_brewer` in your plots. Manipulating these colors and their corresponding legends in a complex plot can get really tedious, to be honest. 
+
+---
+
+## Choosing a fill color
+
+.pull-left[
+```{r ggplot_group_fill, eval = FALSE}
+ggplot(
+  data = gapminder_children,
+  aes(
+    x = year, 
+    y = children, 
+    color = continent,
+    group = continent,
+    fill = continent
+    )
+  ) +
+  geom_smooth() +
+  scale_color_brewer(palette = "Spectral") +
+  scale_fill_brewer(palette = "Dark2")
+```
+]
+
+.pull-right[
+```{r ref.label = "ggplot_group_fill", echo = FALSE}
+```
+]
+
 ---
 
 ## Colors and `theme`s
-
-One particular strength of `ggplot2` lies in its theming capabilities. The package has some built-in theme functions that makes theming a plot fairly easy, e.g.,
+One particular strength of `ggplot2` still lies in its theming capabilities. The package has some built-in theme functions that makes theming a plot fairly easy, e.g.,
 - `theme_bw()`
 - `theme_dark()`
 - `theme_void()`
@@ -436,7 +604,7 @@ ggplot(
 
 ---
 
-## The `theme()` argument
+## The `theme()` argument in general
 The most direct interface for manipulating your theme is the `theme()` argument. Here you can change the appearance of
 - axis labels
 - captions and titles
@@ -449,7 +617,35 @@ The most direct interface for manipulating your theme is the `theme()` argument.
 
 ## Example: changing the grid layout & axis labels
 .pull-left[
-```{r theming, eval = FALSE}
+```{r grid_layout, eval = FALSE}
+ggplot(
+  data = gapminder_children,
+  aes(
+    x = year, 
+    y = children
+    )
+  ) +
+  geom_smooth(color = "black") +
+  facet_wrap(~continent, ncol = 3) +
+  theme_bw() +
+  theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    strip.background = element_rect(fill = "white")
+  )
+```
+]
+
+.pull-right[
+```{r ref.label = "grid_layout", echo = FALSE}
+```
+]
+
+---
+
+## Example: changing  axis labels
+.pull-left[
+```{r axis_labels, eval = FALSE}
 ggplot(
   data = gapminder_children,
   aes(
@@ -471,22 +667,22 @@ ggplot(
 ]
 
 .pull-right[
-```{r ref.label = "theming", echo = FALSE}
+```{r ref.label = "axis_labels", echo = FALSE}
 ```
 ]
 
 ---
 
-## Another on manipulations
+## Another remark on manipulations
 
 .pull-left[
 Working with combined aesthetics and different data inputs can become cumbersome.
 
 Particularly, plotting similar aesthetics which interfere with the automatic procedures can create conflicts.
 
-Some 'favorites' include:
+Some 'favourites' include:
 - Multiple legends
-- and various color scales for similar geoms 
+- and various color scales for similar `geoms` 
 - ... and there's more!
 ]
 
@@ -502,46 +698,100 @@ knitr::include_graphics("./pics/800px-The_Scream.jpg")
 
 ---
 
-## Boxplots
-```{r}
-ggplot(
-  data = 
-    gapminder_children %>% 
-    dplyr::filter(year == 2018),
-  aes(
-    y = children,
-    x = continent
-    )
-  ) +
-  geom_boxplot() +
-  theme_bw()
+## `ggplot` plots are 'simple' objects
+In difference to standard `R` plots `ggplot` are standard objects as any other object in `R` (they are lists). So there is no graphics device involved from which we have record our plot in order to re-use it later. We can just use it like that.
+
+```{r eval = FALSE}
+my_fancy_plot <- 
+  ggplot(data = gapminder_children) +
+  aes(x = year, y = children) +
+  geom_point() 
+
+my_fancy_plot <- 
+  my_fancy_plot +
+  geom_smooth()
 ```
+
+Additionally, there is also no need to call `dev.off()`
 
 ---
 
-## Densities
-```{r}
-ggplot(
-  data = 
-    gapminder_children %>% 
-    dplyr::mutate(year = as.factor(year)) %>% 
-    dplyr::filter(year == 2018 | year == 1990 | year == 1950),
-  aes(
-    x = children,
-    group = year,
-    fill = year
-    )
-  ) +
-  geom_density(alpha = .5) +
-  facet_wrap(~continent, nrow = 3) +
-  scale_fill_brewer(palette = "Spectral") +
-  theme_bw() 
-```
+## It makes combining plots easy
+As of today, there are now a lot of packages that help combining `ggplot`s fairly easy. For example, the [`cowplot` package](https://cran.r-project.org/web/packages/cowplot/index.html) provides a really flexible framework. I have used `cowplot` to create the map in the previous session.
 
+Yet, fiddeling with this package can be become quite complex. One of my favorite packages at the moment is, therefore, the [`patchwork` package](https://cran.r-project.org/web/packages/patchwork/index.html) because of its easy to use syntax. It's really really easy.
 
 ---
 
-## Shortcuts
+## Plotting side by side in one row
+.pull-left[
+```{r one_row, eval = FALSE}
+library(patchwork)
+
+my_histogram <- 
+  ggplot(
+    gp_covid, 
+    aes(x = age_cat)
+  ) + 
+  geom_histogram()
+
+my_boxplot <-  
+  ggplot(
+    gp_covid, 
+    aes(y = age_cat)
+  ) + 
+  geom_boxplot()
+
+my_histogram | my_boxplot
+```
+]
+
+.pull-right[
+```{r ref.label = "one_row", echo = FALSE}
+```
+]
+
+---
+
+## Plotting in two columns
+.pull-left[
+```{r one_column, eval = FALSE}
+my_histogram / my_boxplot
+```
+]
+
+.pull-right[
+```{r ref.label = "one_column", echo = FALSE}
+```
+]
+
+---
+
+## combine them with base R graphics
+.pull-left[
+```{r combine_base, eval = FALSE}
+(my_histogram | ~hist(gp_covid$age_cat)) /
+  (my_boxplot | ~boxplot(gp_covid$age_cat))
+```
+]
+
+.pull-right[
+```{r ref.label = "combine_base", echo = FALSE}
+```
+]
+
+---
+
+## There's more
+You can also annotate plots with titles, subtitles, captions, and tags.
+
+You can nest plots and introduce more complex layouts.
+
+I'd recommend, if you're interested, to check out the [`patchwork` repository on Github](https://github.com/thomasp85/patchwork) since everything's really good documented.
+
+---
+
+## Shortcuts in `ggplot`
 
 `ggplot2` is powerful...
 - yet, it is admittedly somewhat complicated to use in the beginning
@@ -603,9 +853,14 @@ nice_plot <-
     geom = c("point", "smooth")
   )
 
-ggsave("nice_plot.png", nice_plot)
+ggsave("nice_plot.png", nice_plot, dpi = 300)
 ```
 
+Or:
+
+```{r eval = FALSE}
+ggsave("nice_plot.tiff", nice_plot, dpi = 300)
+```
 
 ---
 
