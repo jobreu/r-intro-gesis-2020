@@ -1,0 +1,328 @@
+---
+title: "Introduction to R for Data Analysis"
+subtitle: "Geospatial Data"
+author: "Johannes Breuer<br />Stefan Jünger"
+date: "2020-08-07"
+location: "GESIS, Cologne, Germany"
+output:
+  xaringan::moon_reader:
+  lib_dir: libs
+css: ["default", "default-fonts", "../workshop.css"]
+nature:
+  highlightStyle: "github"
+highlightLines: true
+countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+layout: true
+
+```{r setup, include = FALSE}
+source("../xaringan_r_setup.R") 
+xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+```
+
+<div class="my-footer">
+<div style="float: left;"><span>`r gsub("<br />", ", ", gsub("<br /><br />|<a.+$", "", metadata$author))`</span></div>
+<div style="float: right;"><span>`r metadata$location`, `r metadata$date`</span></div>
+<div style="text-align: center;"><span>`r gsub(".+<br />", " ", metadata$subtitle)`</span></div>
+</div>
+  
+```{css, echo = FALSE}
+.tinyish .remark-code { /*Change made here*/
+    font-size: 70% !important;
+}
+```
+
+---
+
+## What are geospatial data?
+.pull-left[
+Geospatial data are nothing totally crazy as they are data as any other data. The sole difference to other data is that observations depict geometries. These can be:
+- Points
+- Lines
+- Polygons
+- Grids
+]
+
+.pull-right[
+```{r echo = FALSE}
+knitr::include_graphics("./pics/geometries.png")
+```
+]
+
+---
+
+## Geospatial data can be layered
+```{r echo = FALSE, out.width = "70%"}
+knitr::include_graphics("./pics/layers.png")
+```
+
+
+---
+
+## Traditional data format
+We usually differentiate between vector and raster data formats. Vector data provide accuracy to the point when you pick one point, say randomly on a map. Usually points, lines, and polygons are represented in vector data format. Raster data are basically a table where one general set of metadata defines the extent and resolution of raster cells. Grids are usually defined as raster data, although you could also convert them to the vector format.
+
+
+---
+
+## Vector data in `R` 
+.pull-left[
+Traditionally, there has been the `sp` package to represent vector data in R. For example,
+- `SpatialPointsDataFrames` for points
+- `SpatialLinesDataFrames`for lines
+- `SpatialPolygonDataFrames` for polygons
+
+These object types are rather complex and not easy to work with. For some time now, and this is the cutting-edge format, we can now rely on the one of the excellent `sf` package. It implemented the ISO 19125 standard for geospatial data.
+]
+
+.pull-right[
+```{r echo = FALSE}
+knitr::include_graphics("./pics/sf.jpg")
+```
+
+.footnote[https://r-spatial.github.io/sf/]
+]
+
+---
+
+## Simple Features in the `sf` package
+Features are observations in data: 
+
+> A feature is thought of as a thing, or an object in the real world, such as a building or a tree (https://r-spatial.github.io/sf/articles/sf1.html)
+
+We won't go in too much detail on all possible features or geometries that can be represented in the simple features format. What is most important for working with such geospatial data is for now that simple features in R are simple data frames with observations in the rows and variables in the columns. One of the main differences to a plain data.frame or tibble is that they comprise a `geometry` column and some additional metadata, such as the coordinate reference system.
+
+---
+
+## The importance of coordinate references systems (CRS)
+Coordinate reference systems are the 'translation' of plenary points on earth to the 2D surface which we know from maps. They can be more precise for specific areas, or more general and less precise for larger areas. If you mess them up, your data is messed up.
+
+```{r echo = FALSE, out.width = "70%"}
+knitr::include_graphics("./pics/crs.png")
+```
+
+---
+
+## That's all you have to know
+To start with geospatial data this is all you have to know. Probably due to Google Maps and friends we are so much used to look at maps all day, such that dealing with geospatial data is  inherent in our mind already.
+
+The world of geospatial data gets complicated if we aim to some really fancy stuff:
+- geometric operations, e.g., cropping, cutting, or dissolving data
+- spatial analysis as in spatial regression
+  - see the [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) package if you aim to that in `R`
+  
+---
+
+## Make yourself at home
+This session is about making yourself familiar with geospatial data. 
+
+1. We will load two geospatial datasets, comprising different information, play with them and create some maps.
+2. We will then simulate some coordinates for our GESIS Panel data, do some geospatial operations with them, and add information from our second geospatial data as additional attributes to the survey data.
+
+That's a lot, so let's get started.
+
+---
+
+## First geospatial dataset: Municipality Boundaries of Germany
+We don't have them stored in our folders. Let's download them first and unzip the folder and delete .zip file
+
+```{r eval = FALSE}
+download.file(
+  "https://daten.gdz.bkg.bund.de/produkte/vg/vg250_ebenen_0101/aktuell/vg250_01-01.tm32.shape.ebenen.zip",
+  "vg250_01-01.tm32.shape.ebenen.zip"
+)
+
+unzip("vg250_01-01.tm32.shape.ebenen.zip")
+
+unlink("vg250_01-01.tm32.shape.ebenen.zip")
+```
+
+Now we can load the file as so-called shapefile with this command:
+
+```{r}
+municipalities <-
+  sf::read_sf("./vg250_01-01.tm32.shape.ebenen/vg250_ebenen_0101/VG250_GEM.shp") %>% 
+  sf::st_transform(3035)
+```
+
+---
+
+## Want to have a first look? Let's plot the shape of Cologne
+
+.tinyish[
+.pull-left[
+```{r cologne_plot, eval = FALSE}
+municipalities %>% 
+  dplyr::filter(GEN == "Köln") %>%
+  ggplot() +
+  geom_sf()
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "cologne_plot", echo = FALSE}
+```
+]
+
+---
+
+## Second geospatial dataset: Soil Sealing
+This is a raster dataset, things are a little bit different here and I have it already prepared.
+
+```{r}
+soil_sealing <- 
+  raster::raster("S40RG_2015_100m.tif")
+```
+
+---
+
+## Let's plot it as well but only for Cologne
+
+.tinyish[
+.pull-left[
+```{r sealing_plot, eval = FALSE}
+soil_sealing %>% 
+  raster::crop(
+    ., 
+    municipalities %>% 
+      dplyr::filter(GEN == "Köln")
+  ) %>% 
+  raster::as.data.frame(xy = TRUE) %>% 
+  ggplot() +
+  geom_raster(aes(x, y, fill = S40RG_2015_100m))
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "sealing_plot", echo = FALSE}
+```
+]
+
+---
+
+## Workflow for spatial linking of survey data
+
+```{r echo = FALSE, out.width = "50%"}
+knitr::include_graphics("./pics/spatial_linking_workflow.png")
+```
+
+---
+
+## Load GESIS Panel Data
+
+```{r}
+gp_covid <-
+  haven::read_sav(
+    "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+  ) %>% 
+  sjlabelled::set_na(na = c(-1:-99, 97)) %>% 
+  dplyr::mutate(
+    likelihood_infection = hzcy001a,
+    age_cat = as.factor(age_cat)
+  ) %>% 
+  sjlabelled::remove_all_labels()
+```
+
+---
+
+## Sample points for GESIS Panel from municipalities
+
+.pull-left[
+```{r fake_addresses, eval = FALSE}
+fake_gp_coordinates <-
+  sf::st_sample(
+    municipalities, 
+    nrow(gp_covid)
+    ) %>% 
+  sf::st_as_sf()
+
+ggplot() +
+  geom_sf(data = fake_gp_coordinates)
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "fake_addresses", echo = FALSE}
+```
+]
+
+
+---
+
+## Spatial linking with municpalities
+
+```{r}
+AGS <- 
+  sf::st_join(
+    fake_gp_coordinates,
+    municipalities
+  ) %>% 
+  dplyr::select(AGS) %>% 
+  sf::st_drop_geometry()
+
+gp_covid_linked <-
+  dplyr::bind_cols(
+    gp_covid,
+    AGS
+  )
+```
+
+---
+
+## Spatial linking with soil sealing
+
+```{r echo = FALSE, out.width = "50%"}
+knitr::include_graphics("./pics/buffers.png")
+```
+
+---
+
+## Actual linking
+
+```{r eval = FALSE, echo = FALSE}
+soil_sealing_500 <-
+  raster::extract(
+    soil_sealing,
+    fake_gp_coordinates,
+    buffer = 500,
+    fun = mean
+  )
+
+soil_sealing_1000 <-
+  raster::extract(
+    soil_sealing,
+    fake_gp_coordinates,
+    buffer = 1000,
+    fun = mean
+  )
+
+saveRDS(soil_sealing_500, "soil_sealing_500.rds")
+saveRDS(soil_sealing_1000, "soil_sealing_1000.rds")
+```
+
+
+```{r eval = FALSE}
+soil_sealing_500 <-
+  raster::extract(
+    soil_sealing,
+    fake_gp_coordinates,
+    buffer = 500,
+    fun = mean
+  )
+```
+
+
+```{r echo = FALSE, eval = FALSE}
+soil_sealing_500 <- readRDS("soil_sealing_500.rds")
+soil_sealing_1000 <- readRDS("soil_sealing_1000.rds")
+```
+

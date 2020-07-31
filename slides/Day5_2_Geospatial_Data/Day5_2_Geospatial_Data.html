@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R for Data Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Johannes Breuer Stefan Jünger" />
+    <meta name="date" content="2020-08-07" />
+    <script src="Day5_2_Geospatial_Data_files/header-attrs/header-attrs.js"></script>
+    <link href="Day5_2_Geospatial_Data_files/remark-css/default.css" rel="stylesheet" />
+    <link href="Day5_2_Geospatial_Data_files/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="Day5_2_Geospatial_Data_files/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="Day5_2_Geospatial_Data_files/tile-view/tile-view.js"></script>
+    <script src="Day5_2_Geospatial_Data_files/clipboard/clipboard.min.js"></script>
+    <link href="Day5_2_Geospatial_Data_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="Day5_2_Geospatial_Data_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="Day5_2_Geospatial_Data_files/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="default" type="text/css" />
+    <link rel="stylesheet" href="default-fonts" type="text/css" />
+    <link rel="stylesheet" href="../workshop.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R for Data Analysis
+## Geospatial Data
+### Johannes Breuer<br />Stefan Jünger
+### 2020-08-07
+
+---
+
+layout: true
+
+
+
+&lt;div class="my-footer"&gt;
+&lt;div style="float: left;"&gt;&lt;span&gt;Johannes Breuer, Stefan Jünger&lt;/span&gt;&lt;/div&gt;
+&lt;div style="float: right;"&gt;&lt;span&gt;GESIS, Cologne, Germany, 2020-08-07&lt;/span&gt;&lt;/div&gt;
+&lt;div style="text-align: center;"&gt;&lt;span&gt;Geospatial Data&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+  
+&lt;style type="text/css"&gt;
+.tinyish .remark-code { /*Change made here*/
+    font-size: 70% !important;
+}
+&lt;/style&gt;
+
+---
+
+## What are geospatial data?
+.pull-left[
+Geospatial data are nothing totally crazy as they are data as any other data. The sole difference to other data is that observations depict geometries. These can be:
+- Points
+- Lines
+- Polygons
+- Grids
+]
+
+.pull-right[
+&lt;img src="./pics/geometries.png" width="1683" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Geospatial data can be layered
+&lt;img src="./pics/layers.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Traditional data format
+We usually differentiate between vector and raster data formats. Vector data provide accuracy to the point when you pick one point, say randomly on a map. Usually points, lines, and polygons are represented in vector data format. Raster data are basically a table where one general set of metadata defines the extent and resolution of raster cells. Grids are usually defined as raster data, although you could also convert them to the vector format.
+
+
+---
+
+## Vector data in `R` 
+.pull-left[
+Traditionally, there has been the `sp` package to represent vector data in R. For example,
+- `SpatialPointsDataFrames` for points
+- `SpatialLinesDataFrames`for lines
+- `SpatialPolygonDataFrames` for polygons
+
+These object types are rather complex and not easy to work with. For some time now, and this is the cutting-edge format, we can now rely on the one of the excellent `sf` package. It implemented the ISO 19125 standard for geospatial data.
+]
+
+.pull-right[
+&lt;img src="./pics/sf.jpg" width="1600" style="display: block; margin: auto;" /&gt;
+
+.footnote[https://r-spatial.github.io/sf/]
+]
+
+---
+
+## Simple Features in the `sf` package
+Features are observations in data: 
+
+&gt; A feature is thought of as a thing, or an object in the real world, such as a building or a tree (https://r-spatial.github.io/sf/articles/sf1.html)
+
+We won't go in too much detail on all possible features or geometries that can be represented in the simple features format. What is most important for working with such geospatial data is for now that simple features in R are simple data frames with observations in the rows and variables in the columns. One of the main differences to a plain data.frame or tibble is that they comprise a `geometry` column and some additional metadata, such as the coordinate reference system.
+
+---
+
+## The importance of coordinate references systems (CRS)
+Coordinate reference systems are the 'translation' of plenary points on earth to the 2D surface which we know from maps. They can be more precise for specific areas, or more general and less precise for larger areas. If you mess them up, your data is messed up.
+
+&lt;img src="./pics/crs.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## That's all you have to know
+To start with geospatial data this is all you have to know. Probably due to Google Maps and friends we are so much used to look at maps all day, such that dealing with geospatial data is  inherent in our mind already.
+
+The world of geospatial data gets complicated if we aim to some really fancy stuff:
+- geometric operations, e.g., cropping, cutting, or dissolving data
+- spatial analysis as in spatial regression
+  - see the [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) package if you aim to that in `R`
+  
+---
+
+## Make yourself at home
+This session is about making yourself familiar with geospatial data. 
+
+1. We will load two geospatial datasets, comprising different information, play with them and create some maps.
+2. We will then simulate some coordinates for our GESIS Panel data, do some geospatial operations with them, and add information from our second geospatial data as additional attributes to the survey data.
+
+That's a lot, so let's get started.
+
+---
+
+## First geospatial dataset: Municipality Boundaries of Germany
+We don't have them stored in our folders. Let's download them first and unzip the folder and delete .zip file
+
+
+```r
+download.file(
+  "https://daten.gdz.bkg.bund.de/produkte/vg/vg250_ebenen_0101/aktuell/vg250_01-01.tm32.shape.ebenen.zip",
+  "vg250_01-01.tm32.shape.ebenen.zip"
+)
+
+unzip("vg250_01-01.tm32.shape.ebenen.zip")
+
+unlink("vg250_01-01.tm32.shape.ebenen.zip")
+```
+
+Now we can load the file as so-called shapefile with this command:
+
+
+```r
+municipalities &lt;-
+  sf::read_sf("./vg250_01-01.tm32.shape.ebenen/vg250_ebenen_0101/VG250_GEM.shp") %&gt;% 
+  sf::st_transform(3035)
+```
+
+---
+
+## Want to have a first look? Let's plot the shape of Cologne
+
+.tinyish[
+.pull-left[
+
+```r
+municipalities %&gt;% 
+  dplyr::filter(GEN == "Köln") %&gt;%
+  ggplot() +
+  geom_sf()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day5_2_Geospatial_Data_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Second geospatial dataset: Soil Sealing
+This is a raster dataset, things are a little bit different here and I have it already prepared.
+
+
+```r
+soil_sealing &lt;- 
+  raster::raster("S40RG_2015_100m.tif")
+```
+
+```
+## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
+##  but +towgs84= values preserved
+```
+
+---
+
+## Let's plot it as well but only for Cologne
+
+.tinyish[
+.pull-left[
+
+```r
+soil_sealing %&gt;% 
+  raster::crop(
+    ., 
+    municipalities %&gt;% 
+      dplyr::filter(GEN == "Köln")
+  ) %&gt;% 
+  raster::as.data.frame(xy = TRUE) %&gt;% 
+  ggplot() +
+  geom_raster(aes(x, y, fill = S40RG_2015_100m))
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day5_2_Geospatial_Data_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Workflow for spatial linking of survey data
+
+&lt;img src="./pics/spatial_linking_workflow.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Load GESIS Panel Data
+
+
+```r
+gp_covid &lt;-
+  haven::read_sav(
+    "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+  ) %&gt;% 
+  sjlabelled::set_na(na = c(-1:-99, 97)) %&gt;% 
+  dplyr::mutate(
+    likelihood_infection = hzcy001a,
+    age_cat = as.factor(age_cat)
+  ) %&gt;% 
+  sjlabelled::remove_all_labels()
+```
+
+---
+
+## Sample points for GESIS Panel from municipalities
+
+
+```r
+fake_gp_coordinates &lt;-
+  sf::st_sample(
+    municipalities, 
+    nrow(gp_covid)
+    ) %&gt;% 
+  sf::st_as_sf()
+```
+
+---
+
+## Spatial linking with municpalities
+
+
+```r
+AGS &lt;- 
+  sf::st_join(
+    fake_gp_coordinates,
+    municipalities
+  ) %&gt;% 
+  dplyr::select(AGS) %&gt;% 
+  sf::st_drop_geometry()
+
+gp_covid_linked &lt;-
+  dplyr::bind_cols(
+    gp_covid,
+    AGS
+  )
+```
+
+---
+
+## Spatial linking with soil sealing
+
+&lt;img src="./pics/buffers.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Actual linking
+
+
+
+
+
+```r
+soil_sealing_500 &lt;-
+  raster::extract(
+    soil_sealing,
+    fake_gp_coordinates,
+    buffer = 500,
+    fun = mean
+  )
+```
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
