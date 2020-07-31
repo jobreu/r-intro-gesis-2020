@@ -59,6 +59,7 @@ layout: true
 ## Content of this sessions
 .pull-left[
 **What we will cover**
+- Bivariate hypothesis testing
 - Using more or less simple regression models in R
   - OLS, GLM and the like
 - How to re-use results of these models
@@ -248,7 +249,129 @@ So it should be clear that we could also change the data type of variables withi
 
 ---
 
+## Where to use formulas?
+The previous description refers a lot to formulas used in regression models. Where we also use the concept of formulas with dependent variables, however, is bivariate hypothesis testing. Most prominently methods such as t-tests or ANOVA belong to this group of analysis.
+
+Indeed, these 'basic' statistical models can be used in `R` too, as in any other statistical language. Let's try them out!
+
+---
+
+## Testing group differences in the distribution
+As said, one of the most prominent methods to analyze group differences are t-tests. You can use the `t.test()` to easily perfom such a test. However, our dependent variable may not be distributed normally between groups, such as gender of our respondents.
+
+
+```r
+barplot(
+  table(
+    gp_covid$likelihood_infection, 
+    gp_covid$sex
+  ),
+  beside = TRUE
+)
+```
+
+.right[↪️]
+
+---
+.tinyish[
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Apply a t-test
+If you think about hypothesis testing, t-tests may be the first method that comes to your mind. First and foremost `R` is a statistical language. Indeed, you could thus perform t-tests rather straightforward.
+
+
+```r
+t.test(
+  likelihood_infection ~ sex,
+  data = gp_covid
+)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  likelihood_infection by sex
+## t = -0.57985, df = 3149.6, p-value = 0.5621
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.11473917  0.06236364
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        4.081047        4.107235
+```
+
+---
+
+## Test of normaility
+Ok, t-tests are nice, but what if our data is not normally distributed in the first place, one of the basic assumptions of performing t-tests? We can use a Shapiro-Wilk test of normality!
+
+
+```r
+shapiro.test(gp_covid$likelihood_infection)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  gp_covid$likelihood_infection
+## W = 0.94396, p-value &lt; 2.2e-16
+```
+
+---
+
+## Alternative: Wilcoxon/Mann-Whitney test
+
+
+```r
+wilcox.test(
+  likelihood_infection ~ sex,
+  data = gp_covid
+  )
+```
+
+```
+## 
+## 	Wilcoxon rank sum test with continuity correction
+## 
+## data:  likelihood_infection by sex
+## W = 1223403, p-value = 0.4646
+## alternative hypothesis: true location shift is not equal to 0
+```
+
+---
+
+## Testing multiple groups with an ANOVA
+There are occassions where we want to test difference across multiple groups. The classic method to use is a analysis of variance (ANOVA) test. Again, you can easily do that in `R`.
+
+
+```r
+nice_anova &lt;- 
+  aov(
+    likelihood_infection ~ age_cat,
+    data = gp_covid
+  )
+
+summary(nice_anova)
+```
+
+```
+##               Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## age_cat        9    400   44.45   29.93 &lt;2e-16 ***
+## Residuals   3142   4666    1.49                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 613 observations deleted due to missingness
+```
+
+---
+
 ## Simple linear regressions
+We will now turn to the complex of regression models. These models are also easy to perform in `R`. Disclaimer: We won't do many regression diagnostics and also assume that our dependent variable is continuous for the OLS regression context.
 
 .tinyish[
 
@@ -265,6 +388,12 @@ simple_linear_model &lt;-
 
 simple_linear_model
 ```
+]
+
+.right[↪️]
+
+---
+.tinyish[
 
 ```
 ## 
@@ -341,7 +470,7 @@ In the visualization session, we have already learned from the built-in function
 ]
 
 .pull-right[
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -623,10 +752,10 @@ summary(simple_linear_model_probit)
 
 ---
 
-## Handling regression results
+## Handling regression results (a note probably nobody wants to hear...)
 While this is not a statistics course, I have to admit I am not a huge fan of running regressions, searching for 'significant' p-values, and pasting the results in a table without interpreting them substantially. Later, you _will_ learn how create nice tables, but further along you will also see how we can apply some other techniques to gain more substantial insights in your data.
 
-Before we actually do that, we will have a look into some general techniques to work with a readily estimated regression object in R.
+Before we actually do that, we will have a look into some general techniques to work with a readily estimated regression object in R. This exercise is to understand the mechanics on what is actually happening in the background.
 
 ---
 
@@ -755,13 +884,13 @@ anova(simple_linear_model_logistic, simple_linear_model_probit)
 ## There are easier ways
 Addon-packages usually, e.g., for creating tables gather such information automatically that you don't need to to apply everything byy ourself. However, we think it makes sense to at least know there are always some ways to that.
 
-<div id="htmlwidget-0084ad22b95c2070ec3e" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0084ad22b95c2070ec3e">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ad31c5945a1d77068925" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ad31c5945a1d77068925">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 Later in this session, we will also learn from some tidy functions that makes accessing results even more easier.
 
-<div id="htmlwidget-5987f8d953ba4bcd5eb6" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5987f8d953ba4bcd5eb6">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f17914e7ea307fa5ed3d" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f17914e7ea307fa5ed3d">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -781,7 +910,7 @@ hist(
 )
 ```
 
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
@@ -792,7 +921,7 @@ hist(
 )
 ```
 
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
 ]
 ]
 
@@ -868,7 +997,7 @@ sjPlot::plot_model(
 ]
 
 .pull-right[
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-44-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -941,7 +1070,7 @@ simple_linear_model$coefficients
 
 ## AME are nice for predicting and plotting results as well
 
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
