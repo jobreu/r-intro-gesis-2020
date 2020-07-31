@@ -30,7 +30,7 @@ klippy::klippy()
 
 We are now entering the phase of doing serious statistics: we run regression models, inspect them, plot and tabulate them.
 
-For this exercise, let's again pretent to be researchers who are interested in the determinants of the subjective likelihood estimation (hoho) of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the GESIS Panel COVID-19 data again:
+For this exercise, let's again pretent to be researchers who are interested in the determinants of the subjective likelihood estimation of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the GESIS Panel COVID-19 data again:
 
 ```{r loadgpcovid, message=FALSE, eval=FALSE}
 library(dplyr)
@@ -49,7 +49,7 @@ gp_covid <-
   remove_all_labels()
 ```
 
-We start our analysis by checking the relationship with an ANOVA. We also include some very, very essential (TM) covariates: gender, political orientation, and marital status. 
+We start our analysis by checking the relationship with an ANOVA. We also include some very essential covariates: gender, political orientation, and marital status. 
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
 Run an ANOVA on the proposed relationship between subjective likelihood of a treatment in a hospital and age. Also, include all the covariates
@@ -59,7 +59,7 @@ Run an ANOVA on the proposed relationship between subjective likelihood of a tre
 We had a similar analysis before... you can simply add the control variables with `+`.
 ```
 
-```{r barplotfunction, solution = TRUE}
+```{r anova, solution = TRUE}
 serious_anova <- 
   aov(
     likelihood_hospital ~ age_cat + sex + political_orientation + marstat,
@@ -68,4 +68,87 @@ serious_anova <-
 
 summary(serious_anova)
 ```
+
+Alright, there's definitely something in the data we should investigate. Sometimes it is considered as bad practice, but we could try to make a median cut for the dependent variable and run a logistic regression first.
+
+```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
+Make a median cut for the variable "likelihood_hospital" and run a logistic regression with all variables. What do you see in the results?
+```
+
+```{block, opts.label = "clues"}
+You can create new variables fairly easily with the function `dplyr::mutate()` in combination with the `ifelse()` function. 
+```
+
+```{r mediancutlog, solution = TRUE}
+gp_covid <-
+  gp_covid %>% 
+  mutate(
+    likelihood_hospital_cut =
+      ifelse(
+        likelihood_hospital > median(likelihood_hospital, na.rm = TRUE),
+        1,
+        0
+      )
+  )
+
+serious_logistic_regression <- 
+  glm(
+    likelihood_hospital_cut ~ age_cat + sex + political_orientation + marstat,
+    data = gp_covid,
+    family = binomial(link = "logit")
+  )
+
+summary(serious_logistic_regression)
+
+# Interpretation:
+# With increasing age the probability of thinking it's likely to be hospitalized 
+# because of COVID-19 increases. But really?
+```
+
+Running one model is not enough. It may be that the assumptions for a logistic regression are not fulfilled or a reviewer simply doesn't like these types of regressions. Instead, she proposes to run a binomial regression but with cauchit link.
+
+```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
+Run the same model with the sole difference of using a cauchit link. How would interpret the different regression coefficients?
+```
+
+```{block, opts.label = "clues"}
+Have a look at the help page `?family` to see how you can include a cauchit link.
+```
+
+```{r cauchit, solution = TRUE}
+serious_cauchit_regression <- 
+  glm(
+    likelihood_hospital_cut ~ age_cat + sex + political_orientation + marstat,
+    data = gp_covid,
+    family = binomial(link = "cauchit")
+  )
+
+summary(serious_cauchit_regression)
+
+# Interpretation of difference:
+# I don't know...
+```
+
+Ok, using different link functions is sometimes done as they provide different model fits. That's definitely something we should investigate as well.
+
+```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
+Compare both regression models with an ANOVA. Use the option `test = "LRT" to perform a likelihood ratio test. What's your interpretation?
+```
+
+```{block, opts.label = "clues"}
+Have a look at the help page `?family` to see how you can include a cauchit link.
+```
+
+```{r cauchit, solution = TRUE}
+anova(
+  serious_logistic_regression, 
+  serious_cauchit_regression,
+  test = "LRT"
+  )
+
+# Interpretation of difference:
+# It seems there is no big difference. We can make the reviewer happy with the
+# cauchit models and still keep our results
+```
+
 
