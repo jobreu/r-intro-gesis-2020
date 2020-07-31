@@ -11,5 +11,5 @@ easypackages::packages(
 
 options(htmltools.dir.version = FALSE)
 
-opts_chunk$set(echo = TRUE, fig.align = "center")
+opts_chunk$set(echo = TRUE, fig.align = "center", message = FALSE)
 
