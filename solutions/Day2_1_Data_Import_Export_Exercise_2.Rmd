@@ -39,7 +39,7 @@ You can either load the SPSS or Stata file for which you need the `haven` packag
 library(haven)
 
 gp_covid <-
-  read_spss("../data/gesis_panel_covid19/ZA5667_v1-1-0.sav")
+  read_spss("../data/ZA5667_v1-1-0.sav")
 ```
 
 In contrast to the flat files, such as CSV, the variables now have labels. I wonder how the labels are for the first ten variables...
@@ -58,7 +58,7 @@ library(sjlabelled)
 get_label(gp_covid[1:10])
 ```
 
-Unfortunately, it's all in German. Imagine you are an education researcher and you are interested in the variable `education_cat`. So you may want to consider to translate the variable into English?
+Unfortunately, it's all in German. Imagine you are an education researcher, and you are interested in the variable `education_cat`. So you may want to consider translating the variable into English, right?
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
 Rename the variable label of `age_cat` from "Bildung, kategorisiert" into "Education, categorized".
@@ -77,6 +77,8 @@ gp_covid$education_cat <-
   )
 
 # or
+library(dplyr)
+
 gp_covid <- 
   gp_covid %>% 
   var_labels(
@@ -87,14 +89,14 @@ gp_covid <-
 get_label(gp_covid$education_cat)
 ```
 
-Your colleague asks you for providing your new data after changing labels and stuff. Unfortunately, she does not use `R` or `SPSS` and asks you for exporting your data as a Stata file.
+Your colleague asks you to provide your new data after changing labels and stuff. Unfortunately, she does not use `R` or `SPSS` and asks you to export your data as a Stata file.
 
 ```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
 Export your data as a Stata file.
 ```
 
 ```{block, opts.label = "clues"}
-Like in the case of importing you again need the `haven`package.
+Like in the case of importing, you again need the `haven` package.
 ```
 
 ```{r exportstata, solution = TRUE}
