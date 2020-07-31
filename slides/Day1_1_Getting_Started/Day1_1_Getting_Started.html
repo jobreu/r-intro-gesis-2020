@@ -47,7 +47,7 @@ pre {
 
 ---
 
-# About this course
+## About this course
 
 In this course, we will provide an introduction to the basic concepts and functionalities of `R` and go through a prototypical data analysis workflow: import, wrangling, exploration, (basic) analysis, and reporting. 
 
@@ -65,21 +65,21 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 ---
 
-# What we want to avoid
+## What we want to avoid
 
 .center[&lt;img src="./pics/owl.jpg" width="75%"&gt;]
 &lt;small&gt;&lt;small&gt;Source: https://bit.ly/2Xhz81a&lt;/small&gt;&lt;/small&gt;
 
 ---
 
-# Learning by coding
+## Learning by coding
 
 <blockquote class="twitter-tweet" data-width="550" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">The only way to write good code is to write tons of shitty code first. Feeling shame about bad code stops you from getting to good code</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/589068687669243905?ref_src=twsrc%5Etfw">April 17, 2015</a></blockquote>
 
 
 ---
 
-# Prerequisites for this course
+## Prerequisites for this course
 
 .large[
 - Working versions of `R` and *RStudio* on your computer 
@@ -91,9 +91,9 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 ---
 
-# About us
+## About us
 
-### Johannes Breuer
+**Johannes Breuer**
 
 - senior researcher in the team Data Linking &amp; Data Security at the GESIS Data Archive
     - main areas: data linking &amp; digital trace data  
@@ -112,9 +112,9 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 ---
 
-# About us
+## About us
 
-### Stefan Jünger
+**Stefan Jünger**
 
 - postdoctoal researcher in the team Data Linking &amp; Data Security at the GESIS Data Archive
     - main area: geospatial data/georeferencing  
@@ -133,9 +133,9 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 ---
 
-# Our jou`R`neys
+## Our jou`R`neys
 
-Johannes
+**Johannes**
 
 - was socialized with *SPSS*
 - was annoyed with *AMOS* when learning structural equation modeling (around 2011)
@@ -144,7 +144,7 @@ Johannes
 - only used `R` for SEM for some time, while still doing everything else (esp. data wrangling) with *SPSS*
 - finally made the full transition to `R` when joining *GESIS* in 2017
 
-Stefan
+**Stefan**
 
 - a
 - b
@@ -152,14 +152,14 @@ Stefan
 
 ---
 
-# Keep calm and carry on learning `R`
+## Keep calm and carry on learning `R`
 
 &lt;img src="./pics/r_first_then.png" width="50%" style="display: block; margin: auto;" /&gt;
 &lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
-# About you
+## About you
 
 - What's your name?  
 
@@ -175,7 +175,7 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 ---
 
-# Preliminaries
+## Preliminaries
 
 - The workshop consists of a combination of lectures and hands-on exercises
 
@@ -196,9 +196,9 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 ---
 
-# Course schedule
+## Course schedule
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:full schedule">
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:full-schedule">
 <col><col><col><col><col><col><tr>
 <th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;"> </th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Monday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Tuesday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Wednesday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Thursday</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 1pt 1pt 1pt 1pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Friday</th></tr>
 <tr>
@@ -212,7 +212,7 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 ---
 
-# What is `R`?
+## What is `R`?
 
 &gt;R is a free software environment for statistical computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS ([`R` Project website](https://www.r-project.org/)).
 
@@ -220,21 +220,30 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 ---
 
-# A very brief history of `R`
+## A very brief history of `R`
 
-- `R` was created by Ross Ihaka and Robert Gentleman at the Department of Statistics at the University of Auckland (NZ) in 1991
+- `R` was created by Ross Ihaka and Robert Gentleman at the Department of Statistics at the University of Auckland (NZ) in 1993
 
-- The `R` *Core Group* that has been responsible for the development of `R` since then was created in 1997
+- The `R` *Core Group* that has been responsible for the development of `R` since then and `CRAN` were founded in 1997
 
 - version `1.0.0` of `R` was released in 2000
 
+- *RStudio* was initially released in 2011
+
 - today we are at version `4.0.2`
 
-If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science*](https://bookdown.org/rdpeng/rprogdatascience/) by Roger D.Peng provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html).
+If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science*](https://bookdown.org/rdpeng/rprogdatascience/) by Roger D.Peng provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html). Alternatively, you can also watch this [*YouTube* video in which David Smith talks about *Twenty Years of R*](https://youtu.be/iq_biXEIx-U).
 
 ---
 
-# Why use `R`?
+## O`R`igins
+
+<blockquote class="twitter-tweet" data-width="550" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">A CD-ROM of the original version of R, signed by the R Core Team <a href="https://twitter.com/hashtag/fangirling?src=hash&amp;ref_src=twsrc%5Etfw">#fangirling</a> <a href="https://twitter.com/hashtag/gbifbid?src=hash&amp;ref_src=twsrc%5Etfw">#gbifbid</a> <a href="https://t.co/SnNiZpHXqi">pic.twitter.com/SnNiZpHXqi</a></p>&mdash; Dr. Hannah Owens (@HannahOish) <a href="https://twitter.com/HannahOish/status/1036353875605737472?ref_src=twsrc%5Etfw">September 2, 2018</a></blockquote>
+
+
+---
+
+## Why use `R`?
 
 - it is **free** an **open-source**
 
@@ -267,7 +276,7 @@ If you want to know a bit more about the origins and history of `R` as well as t
 
 ---
 
-# Fun with `R`
+## Fun with `R`
 
 You can use `R` to...
 
@@ -297,7 +306,7 @@ You can use `R` to...
 
 ---
 
-# Fun with `R`
+## Fun with `R`
 
 The first (clumsy and silly) `R` function Johannes ever wrote...
 
@@ -317,7 +326,7 @@ batman &lt;- function() {
 
 ---
 
-# Things you can do and create with `R`
+## Things you can do and create with `R`
 
 - all sorts or statistical analysis &amp; machine learning (e.g., with [tidymodels](https://www.tidymodels.org/))
 - text mining and natural language processing (e.g., with [quanteda](https://quanteda.io/))
@@ -339,7 +348,7 @@ batman &lt;- function() {
 
 ---
 
-# (My take on) `R` vs. `Python`
+## (My take on) `R` vs. `Python`
 
 - both are great
 
@@ -358,7 +367,7 @@ batman &lt;- function() {
 
 ---
 
-# (My take on) `R` vs. `Python`
+## (My take on) `R` vs. `Python`
   
 - in terms of setting up and maintaining your installation, `R` is quite a bit easier to handle
 
@@ -367,7 +376,7 @@ batman &lt;- function() {
 
 ---
 
-# Installing `R`
+## Installing `R`
 
 You can download `R` via the [`R` Project website](https://www.r-project.org/). The exact installation process depends on your operating system (OS). The *R Cookbook* provides a [detailed explanation of the installation process for *Windows*, *macOS*, and *Linux/Unix*](https://rc2e.com/gettingstarted#recipe-id001).
 
@@ -375,7 +384,7 @@ If you want or need to update your version of `R`, you can do this the same way 
 
 ---
 
-# Graphical user interfaces (GUI) for `R`
+## Graphical user interfaces (GUI) for `R`
 
 `R` comes with a basic GUI (on *Windows* you can access it by opening the `Rgui.exe` file). However, it is quite limited in terms of its functions.
 
@@ -383,7 +392,7 @@ If you want or need to update your version of `R`, you can do this the same way 
 
 ---
 
-# Graphical user interfaces (GUI) for `R`
+## Graphical user interfaces (GUI) for `R`
 
 A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/web/packages/Rcmdr/index.html) which essentially is a package for `R` that can be used via the basic GUI that comes with `R` or the `R` command line tool (`R.exe` on *Windows*).
 
@@ -391,7 +400,7 @@ A more comprehensive GUI for `R` is [*R Commander*](https://cran.r-project.org/w
 
 ---
 
-# Intergrated development interfaces (IDE) for `R`
+## Intergrated development interfaces (IDE) for `R`
 
 Using an IDE provides several advantages:
   - syntax highlighting
@@ -408,7 +417,7 @@ The most easy-to-use IDE that is specifically tailored to `R` is [*RStudio*](htt
 
 ---
 
-# *RStudio*
+## *RStudio*
 
 *RStudio* is the most widely used IDE for `R`. In addition to the general advantages of an IDE, it has some specific ones:
 
@@ -422,7 +431,7 @@ The most easy-to-use IDE that is specifically tailored to `R` is [*RStudio*](htt
 
 ---
 
-# Installing *RStudio*
+## Installing *RStudio*
 
 You can download the installer for your OS from the [*RStudio* website](https://rstudio.com/products/rstudio/download/). The [*R Cookbook*](https://rc2e.com/) also provides some more [details on how to install and start *RStudio*](https://rc2e.com/gettingstarted#recipe-id002b).
 
@@ -432,13 +441,13 @@ When you open *RStudio* for the first time it should look like this (only in whi
 
 ---
 
-# *RStudio* interface
+## *RStudio* interface
 
 &lt;img src="./pics/rstudio_1st_explained.png" width="120%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# The `R` console in *RStudio*
+## The `R` console in *RStudio*
 
 The console is the interactive input-output window of *RStudio*. You can enter commands here and press &lt;kbd&gt;Enter&lt;/kbd&gt; to execute them. Typically, the output the the commands you enter into the console will also be displayed here.
 
@@ -450,7 +459,7 @@ Once you have executed at least one command in the console you can cycle through
 
 ---
 
-# `R` as a calculator
+## `R` as a calculator
 
 The simplest thing you can do with the `R` console is to use it as a calculator. 
 
@@ -484,7 +493,7 @@ The `[1]` before the result indicates that this is the first output value of the
 
 ---
 
-# `R` as a calculator
+## `R` as a calculator
 
 
 ```r
@@ -525,7 +534,7 @@ options(scipen=999)
 
 ---
 
-# Objects in `R`
+## Objects in `R`
 
 `R` is an object-oriented programming language.
 The simplest example of assignment in `R` is the assignment of a single value to an object. This value can, e.g., be an single number or a character string. 
@@ -554,7 +563,7 @@ What is important to know and keep in mind is that all of your workspace (includ
 
 ---
 
-# `R` objects in *RStudio*
+## `R` objects in *RStudio*
 
 Once one or more objects have been assigned values they also appear in the `Environment` tab in *RStudio*.
 
@@ -562,7 +571,7 @@ Once one or more objects have been assigned values they also appear in the `Envi
 
 ---
 
-# Functions
+## Functions
 
 Put simply, a function takes an input, does something with it, and produces some sort of output. Functions typically have arguments. In the simplest case, a function only requires an input (a value or object) as a single argument. 
 
@@ -600,7 +609,7 @@ x
 
 ---
 
-# Functions
+## Functions
 
 Most functions in `R` have more than one argument.
 
@@ -618,7 +627,7 @@ gsub(pattern = "i", replacement = "X", y)
 
 ---
 
-# Functions
+## Functions
 
 If you want to access the help file for a function, you can use the following command:
 
@@ -633,7 +642,7 @@ This will open a file in the `Help` tab in *RStudio*.
 
 ---
 
-# Functions
+## Functions
 
 Arguments can have required and optional arguments. Required arguments need to be specified for a function to run, whereas optional arguments have defaults and, hence, do not have to be provided in a function call.
 You can easily identify required and optional arguments in the `Usage` section of the help file for a function: If the argument is in the format `argument = value` it is optional. If only the argument name is provided `function(argument_1)`, this means that this argument is required. 
@@ -642,7 +651,7 @@ You can easily identify required and optional arguments in the `Usage` section o
 
 ---
 
-# Functions
+## Functions
 
 Function arguments can be provided in the specified order or by referencing them by name (in which case the order can change). For example, the following two versions of the `gsub` function call are both valid.
 
@@ -677,8 +686,7 @@ class: center, middle
 
 ---
 
-
-# `R` packages
+## `R` packages
 
 They element part of the `R` universe are its packages. They essentially are collections of functions (and sometimes also datasets) and provide some form of documentation for those.
 
@@ -688,7 +696,7 @@ The basic `R` system as well as a huge number of additional packages that extend
 
 ---
 
-# `base R`
+## `base R`
 
 When we talk about `base R` we typically refer to the set of packages that come with a new installation of `R` via *CRAN*. 
 
@@ -698,7 +706,7 @@ In addition, a new installation also includes the following "recommended" packag
 
 ---
 
-# Finding packages
+## Finding packages
 
 *CRAN* provides an [alphabetically sorted list with all available packages](https://cran.r-project.org/web/packages/available_packages_by_name.html). You can search for your keywords of interest in that list, but that is not the most convenient option. Of course, you can also use your search engine of choice and search for what you want to do plus "R package" (example: "ANOVA R package").
 
@@ -710,7 +718,7 @@ Two helpful resources for finding `R` packages are:
 
 ---
 
-# Installing packages from *CRAN* in `R`
+## Installing packages from *CRAN* in `R`
 
 Installing packages from *CRAN* in `R` is very straightforward.
 
@@ -733,7 +741,7 @@ To find where packages are installed on your machine you can use the following c
 
 ---
 
-# Loading packages
+## Loading packages
 
 Once you have installed a package, you need to load it to be able to use the functions (and/or datasets) it contains in your `R` session.
 
@@ -744,7 +752,7 @@ library(correlation) # no quotation marks needed
 
 ---
 
-# Other sources for `R` packages
+## Other sources for `R` packages
 
 While it is the main source, not all packages for `R` are available via *CRAN*. Another important source of `R` packages, especially those that are still in early development, is [*GitHub*](https://github.com/). To be able to install packages hosted on *GitHub* you need to use functions from the [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) or the [`remotes`](https://cran.r-project.org/web/packages/remotes/index.html) package (which you need to install first as they do not come with `base R`). For example, if you want to install the [RPG dice roll package](https://github.com/Felixmil/rollR) that I mentioned before:
 
@@ -763,7 +771,7 @@ A source of `R` packages that is less relevant for the social and behavioral sci
 
 ---
 
-# Packages about packages
+## Packages about packages
 
 There are a few packages that facilitate the installation and loading of `R` packages (from various sources). Two popular ones are:
 
@@ -773,13 +781,13 @@ There are a few packages that facilitate the installation and loading of `R` pac
 
 ---
 
-# Space of names ♠️
+## Space of names ♠️
 
 Packages are developed (and maintained) by different people and teams and - according to [METACRAN](https://www.r-pkg.org/) - there are currently (mid-July 2020) over 16,000 packages available on *CRAN*. Also, there are clear limits for creativity in naming functions. Hence, different packages can use the same function names. This can create what is called a "namespace conflict". 
 
 ---
 
-# Masking 😷
+## Masking 😷
 
 If you load a package and some of its functions have the same names as those from packages you loaded before in your current `R` session, it "masks" these functions.
 
@@ -809,7 +817,7 @@ library(dplyr)
 
 ---
 
-# Avoiding/resolving namespace conflicts
+## Avoiding/resolving namespace conflicts
 
 The order in which packages are loaded (in a session) matters as the masking of functions happens consecutively. You can, however, still access masked functions.
 
@@ -829,7 +837,7 @@ detach("package:dplyr", unload = TRUE)
 
 ---
 
-# Updating packages
+## Updating packages
 
 You can update all packages you have installed with the following command:
 
@@ -849,7 +857,7 @@ update.packages(oldPkgs = c("correlation", "effectsize"))
 
 ---
 
-# Uninstalling packages
+## Uninstalling packages
 
 If you want to uninstall one or more packages, you can do so as follows:
 
@@ -866,7 +874,7 @@ Normally, it is not necessary to uninstall packages. However, it may (have to be
 
 ---
 
-# Installed packages
+## Installed packages
 
 You can get information about the packages you have installed on your system with the following function:
 
@@ -878,7 +886,7 @@ installed.packages()
 
 ---
 
-# Managing packages with the *RStudio* GUI
+## Managing packages with the *RStudio* GUI
 
 You can also use the `Packages` tab in the *RStudio* GUI to install, load, update, and uninstall packages.
 To install or update the package you can simply use the corresponding buttons. You can load a package by clicking the checkbox on the left side of its name, and you can uninstall a package by clicking on the small gray X on the right hand side of the tab.
@@ -888,7 +896,7 @@ To make sure that you (and others) can reproduce what you have done, however, yo
 
 ---
 
-# `R` scripts
+## `R` scripts
 
 While the console is useful for trying things out, you should not use it for your actual data analysis. For this you should use `R` scripts that allow you to store and document your code. `R` scripts are similar to syntax files for *SPSS* or do-files for *Stata*. `R` scripts have the file extension `.R`.
 
@@ -896,7 +904,7 @@ In *RStudio*, you can create a new script via the menu (`File` -&gt; `New File` 
 
 ---
 
-# *RStudio* interface: Scripts
+## *RStudio* interface: Scripts
 
 When you open or create a script in *RStudio* this will be displayed in a fourth pane (which will have multiple tabs if you open/create more than one `R` script).
 
@@ -904,19 +912,19 @@ When you open or create a script in *RStudio* this will be displayed in a fourth
 
 ---
 
-# Working with `R` scripts
+## Working with `R` scripts
 
 You can write your code in an `R` script just like you do in the console. 
 
 If you want to execute a single line of code from your script in *RStudio*, you can do so by placing your cursor somewhere in that line and clicking the `Run` button in the menu or by using the keyboard shortcut &lt;kbd&gt;Ctrl + Return&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Enter&lt;/kbd&gt; (*Mac*). This also works if you select multiple lines. **NB**: The number of lines in your script may differ from the number of lines you see in the *RStudio* pane (depending on the size of the pane and the length of the lines). The numbers on the left side of the script pane show the actual line numbers.
 
-You can also run all commands in your script by selecting `Run all` from the dropdown menu next to the `Run` button or via the keyboard shortcut &lt;kbd&gt;Ctrl + Alt + R&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Alt + R&lt;/kbd&gt; (*Mac*).   
+You can also run all commands in your script by selecting `Run all` from the dropdown menu next to the `Run` button or via the keyboard shortcut &lt;kbd&gt;Ctrl + Alt + R&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Option + R&lt;/kbd&gt; (*Mac*).   
 
 You can save your script in *RStudio* via `File` -&gt; `Save` or `Save As...`, by clicking the small blue floppy disk icon, or through the keyboard shortcut &lt;kbd&gt;Ctrl + S&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + S&lt;/kbd&gt; (*Mac*).   
 
 ---
 
-# Working with `R` scripts
+## Working with `R` scripts
 
 Instead of producing one extremely long `R` script, it usually makes sense to split up your work into smaller scripts for individual steps in the analysis process (e.g., data cleaning and different analyses).
 
@@ -924,7 +932,7 @@ You can also run an `R` script from another `R` script by using the `source()` c
 
 ---
 
-# Commenting `R` scripts
+## Commenting `R` scripts
 
 To properly document your code (for your future self as well as other people who may use your code) it is good practice to use comments. In `R` scripts, you can create a comment by starting a line with a `#`.
 
@@ -934,19 +942,19 @@ A neat trick in *RStudio* is that if you end a comment preceding a block of code
 
 ---
 
-# Commenting `R` scripts
+## Commenting `R` scripts
 
 &lt;img src="./pics/script_sections_expanded_highlighted.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Commenting `R` scripts
+## Commenting `R` scripts
 
 &lt;img src="./pics/script_sections_collapsed_highlighted.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Coding in style 😎
+## Coding in style 😎
 
 - [Google's R Style Guide](https://google.github.io/styleguide/Rguide.html)
 
@@ -958,7 +966,7 @@ A neat trick in *RStudio* is that if you end a comment preceding a block of code
 
 ---
 
-# Keyboard shortcuts in *RStudio*
+## Keyboard shortcuts in *RStudio*
 
 *RStudio* offers a wide range of useful [keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts). You can access a *Keyboard Shortcut Quick Reference* in *RStudio* via `Help`-&gt; `Keyboard Shortcuts Help`. There even is a keyboard shortcut for accessing the keyboard shortcuts help (very meta): &lt;kbd&gt;Alt + Shift + K&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Option + Shift + K&lt;/kbd&gt; (*Mac*).
 
@@ -966,7 +974,7 @@ One *RStudio* keyboard shortcut that is particularly helpful for writing `R` cod
 
 ---
 
-# Autocomplete in *RStudio*
+## Autocomplete in *RStudio*
 
 Once you start typing a command in *RStudio* (in the console or a script), *RStudio* will make autocomplete suggestions (for functions but also other objects). You can cycle through these suggestions using ↑ and ↓ on your keyboard. If you move your mouse cursor to one of the suggestions, *RStudio* displays an excerpt from the help file of that function. You can accept a suggestion by selecting it and pressing &lt;kbd&gt;Tab&lt;/kbd&gt;. 
 
@@ -974,7 +982,7 @@ Once you start typing a command in *RStudio* (in the console or a script), *RStu
 
 ---
 
-# Customization options in *RStudio*
+## Customization options in *RStudio*
 
 *RStudio* offers a wide range of [customization options](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). In the following, we will discuss three of them:
 
@@ -986,7 +994,7 @@ Once you start typing a command in *RStudio* (in the console or a script), *RStu
 
 ---
 
-# *RStudio* pane layout
+## *RStudio* pane layout
 
 You can adjust the size of the different panes in *RStudio* and you can minimize or maximize panes.
 You can also customize the pane layout for *RStudio* by selecting `Tools` -&gt; `Global Options` -&gt; `Pane Layout` via the *RStudio* menu.
@@ -997,7 +1005,7 @@ However, (for this workshop) we would advise that you keep the standard settings
 
 ---
 
-# *RStudio* appearance
+## *RStudio* appearance
 
 Via `Tools` -&gt; `Global Options` -&gt; `Appearance` you can change the looks of *RStudio* by choosing a theme and font (+ font size).
 
@@ -1005,7 +1013,7 @@ Via `Tools` -&gt; `Global Options` -&gt; `Appearance` you can change the looks o
 
 ---
 
-# Themes and fonts
+## Themes and fonts
 
 Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection. There also is a [colorblind-safe *RStudio* theme with code highlighting](https://github.com/DesiQuintans/Pebble-safe).
 
@@ -1013,7 +1021,7 @@ I also like monospaced programming fonts with ligatures. I currently use [`JetBr
 
 ---
 
-# General settings for *RStudio*
+## General settings for *RStudio*
 
 In order to optimize your workflow, there are some general settings in *RStudio* that you might want to change via `Tools` -&gt; `Global Options` -&gt; `General`. 
 I will explain the reason for these suggested settings in the following.
@@ -1022,7 +1030,7 @@ I will explain the reason for these suggested settings in the following.
 
 ---
 
-# Workflows for `R` and *RStudio*
+## Workflows for `R` and *RStudio*
 
 The suggestions for regarding the general settings in *RStudio*  and many of the recommendations in the following are based on the freely available online book [What They Forgot to Teach You About R](https://rstats.wtf/).
 
@@ -1032,7 +1040,7 @@ The following information is, admittedly, a lot to digest for `R` newbies, but t
 
 ---
 
-# File paths
+## File paths
 
 There are absolute (example: "C:/Users/user/Documents/example.R") and relative file paths (example: "./r-scripts/example.R"). Relative file paths are relative to the current working directory. Common shorthand options for relative file paths are `.` for the current (working) directory, `..` for one folder level up (parent folder), and `~` for the home directory (default working directory) in `R`.
 
@@ -1042,7 +1050,7 @@ To facilitate the reuse of your code on other systems (by you or others), it is 
 
 ---
 
-# Working directory
+## Working directory
 
 The working directory is where `R` will look for and save files by default.
 
@@ -1062,7 +1070,7 @@ There are two ways in which you can set/change your working directory:
 
 ---
 
-# Setting the working directory via the *RStudio* GUI
+## Setting the working directory via the *RStudio* GUI
 
 The *RStudio* menu `Session` -&gt; `Set Working Directory` which provides different options:
 
@@ -1078,7 +1086,7 @@ To increase the reproducibility of your work, however, using functions in script
 
 ---
 
-# Setting the working directory using functions
+## Setting the working directory using functions
 
 You can set a working directory with the following command:
 
@@ -1098,7 +1106,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 ---
 
-# `R` workspace
+## `R` workspace
 
 The workspace contains all objects (e.g., assigned values or functions) you have created. The contents of the workspace are stored in the working memory (RAM) of your computer until you exit `R` (or *RStudio*). You can view the content of your workspace via the `Environment` tab in *RStudio* or via the `ls()` command.
 
@@ -1106,7 +1114,7 @@ Unless you change the default settings in *RStudio* as suggested on the previous
 
 ---
 
-# `R` workspace
+## `R` workspace
 
 While saving your workspace can be useful, this should not be your main (or default) way of saving your work. Instead, you should use scripts to store your code (including any functions you define) and save any output (including relevant intermediary results; especially if they take a substantial amount of time to produce) in files of an appropriate format (we will discuss this in more detail in the sections on importing and exporting data and). This increases reproducibility and also makes it easier to share your work (or collaborate on it) with others. Also, you will eventually probably work on more than one project, so you would need to use multiple workspaces which can get messy quite quickly.
 
@@ -1114,7 +1122,7 @@ If you explicitly want to save your whole workspace (e.g., because you notice th
 
 ---
 
-# `R` workspace
+## `R` workspace
 
 Because many people (by default) save and restore their workspaces in `R`, you see the following command at the beginning if many `R` scripts:
 
@@ -1130,7 +1138,7 @@ Hence, `rm(list = ls())` (and the need to use it) should be avoided if possible.
 
 ---
 
-# Command history
+## Command history
 
 The command history contains all commands you have executed in the current session (in the console or from scripts). In *RStudio* you can view them in the `History` tab which includes buttons for restoring/opening, and saving a command history, exporting selecting commands from the history to the console or a source file (typically an `R` script), removing individual entries, and cleaning the whole history. You can also search your command history.
 
@@ -1138,7 +1146,7 @@ The command history contains all commands you have executed in the current sessi
 
 ---
 
-# Command history
+## Command history
 
 You can also view your command history with the `history()` function (in *RStudio* this will activate the `History` tab).
 
@@ -1148,7 +1156,7 @@ Similar to the workspace, the command history should not be the main/default way
 
 ---
 
-# *RStudio* projects
+## *RStudio* projects
 
 *RStudio* projects are very useful for keeping all files associated with a specific project (data, scripts, output, etc.) organized together.
 
@@ -1158,7 +1166,7 @@ Explaining *RStudio* projects in detail is beyond the scope of this course, but 
 
 ---
 
-# `.Renviron`
+## `.Renviron`
 
 `.Renviron` files can be used for storing sensitive information like passwords or API keys that you frequently need to use/access in your `R` code as well as for setting [environment variables](https://en.wikipedia.org/wiki/Environment_variable).
 
@@ -1172,7 +1180,7 @@ The easiest way to edit the user-wide `.Renviron` file is to use the `edit_r_env
 
 ---
 
-# `.Rprofile`
+## `.Rprofile`
 
 The `.Rprofile` file contains `R` code that is run when `R` starts. The `.Rprofile` can, e.g., be used to display a personalized welcome message or set a default *CRAN* mirror, but there are many other [customization options](https://www.jumpingrivers.com/blog/customising-your-rprofile/) as well.
 
@@ -1184,7 +1192,7 @@ If you want to know more: The [chapter on the `R` startup process in *What They 
 
 ---
 
-# Summary: Workflow and setup recommendations
+## Summary: Workflow and setup recommendations
 
 - avoid saving and restoring your whole workspace
 
@@ -1202,7 +1210,7 @@ If you want to know more: The [chapter on the `R` startup process in *What They 
 
 ---
 
-# Troubleshooting 101
+## Troubleshooting 101
 
 - abort `R` process: `Session` -&gt; `Terminate R` in the *RStudio* menu or by clicking the stop shield icon in the upper right corner of the console
 
@@ -1217,7 +1225,7 @@ If you want to know more: The [chapter on the `R` startup process in *What They 
 
 ---
 
-# Common sources of errors
+## Common sources of errors
 
 - typos (e.g., capitalization in package names)
 
@@ -1231,9 +1239,14 @@ If you want to know more: The [chapter on the `R` startup process in *What They 
 
 - code (chunks) executed in the wrong order
 
+&lt;img src="./pics/breakr.gif" width="25%" style="display: block; margin: auto;" /&gt;
+.center[
+&lt;small&gt;&lt;small&gt;GIF by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
+]
+
 ---
 
-# How to find help?
+## How to find help?
 
 There are many ways for finding help for you `R`-problems, including but not limited to:
 
@@ -1251,7 +1264,7 @@ There is a helpful [short tutorial on *Getting Help with R* on the R Project web
 
 ---
 
-# Help files
+## Help files
 
 To access the help file for a specific function you can use `?function_name` (NB: this only works if the package containing the function has been loaded). In *RStudio*, this will activate the `Help` tab. While some (or much) of the content of these help files may be confusing for `R` newbies, one thing that often helps is to look at the *Examples* at the end of help file.
 
@@ -1259,7 +1272,7 @@ You can also explore all help files for a particular package with `help(package 
 
 ---
 
-# Vignettes
+## Vignettes
 
 Many `R` packages also provide so-called vignettes which are documents that provide some more detailed explanations and examples of some of the functionalities of a package.
 
@@ -1276,7 +1289,7 @@ vignette("interpret")
 
 ---
 
-# Package documentation
+## Package documentation
 
 Packages on *CRAN* include (PDF) Reference Manuals (see the [*CRAN* website for the `usethis` package](https://cran.r-project.org/web/packages/usethis/index.html) for an example) that include descriptions of all functions included in the package.
 
@@ -1286,7 +1299,7 @@ If packages are hosted on *GitHub*, the associated repository normally also incl
 
 ---
 
-# Forums &amp; mailing lists
+## Forums &amp; mailing lists
 
 There are many `R`-related forums and mailing lists. Two important (and helpful) forums for `R` are [*Stack Overflow*](https://stackoverflow.com/) and the [*RStudio Community*](https://community.rstudio.com/). 
 
@@ -1296,7 +1309,7 @@ The *R Project* provides an [overview of `R` mailing lists](https://www.r-projec
 
 ---
 
-# Understanding error messages
+## Understanding error messages
 
 If you receive an error message and don't (fully) understand what it means, you can simply enter it into your preferred search engine. Usually, this yields some helpful results. Alternatively, you can also directly copy the error message into the search field on *Stack Overflow*.
 
@@ -1304,7 +1317,7 @@ If copying and pasting is not your thing, you can also use the [`searcher`](http
 
 ---
 
-# Resources: Introductory books
+## Resources: Introductory books
 
 [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham
 
@@ -1319,7 +1332,7 @@ If copying and pasting is not your thing, you can also use the [`searcher`](http
 [Discovering Statistics Using R](https://uk.sagepub.com/en-gb/eur/discovering-statistics-using-r/book236067) by Andy Field, Jeremy Miles, &amp; Zoe Field
 ---
 
-# Resources: Online courses &amp; tutorials
+## Resources: Online courses &amp; tutorials
 
 [Overview of resources *learnR4free* by Mine Dogucu](https://www.learnr4free.com/)
 
@@ -1333,7 +1346,7 @@ Learning `R` (and statistics) with a cute story and beautiful illustrations: [Te
 
 ---
 
-# Resources: Cheatsheets
+## Resources: Cheatsheets
 
 *RStudio* offers a good collection of [cheatsheets for R](https://www.rstudio.com/resources/cheatsheets/).
 
@@ -1348,6 +1361,14 @@ The following ones are of particular interest for this workshop:
 - [Data Visualization Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
 
 - [RMarkdown Cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/A5_DataWrangling1_exercises_question.html) time 💪🏃
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/A5_DataWrangling1_exercises_solution.html)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
