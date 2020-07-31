@@ -39,7 +39,10 @@ vignettes/*.pdf
 .Renviron
 
 # unnamed chunk files
-*unnamed-chunk*.png
+# *unnamed-chunk*.png
 
 # automatically generated files
-*_files/*
+# *_files/*
+
+# GESIS Panel Data
+*ZA5667*
