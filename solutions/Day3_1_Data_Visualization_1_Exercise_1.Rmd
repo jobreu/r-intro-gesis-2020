@@ -105,7 +105,7 @@ barplot(tab_4)
 
 That's interesting. One may wonder what the median is in each of these distributions. You know what's perfect for visualizing this statistic? Boxplots!
 
-```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
+```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
 Use the same plotting approach, but change the barplot to a boxplot using `boxplot()`
 ```
 
@@ -119,4 +119,11 @@ boxplot(gp_covid$hzcy001a)
 boxplot(gp_covid$hzcy002a)
 boxplot(gp_covid$hzcy003a)
 boxplot(gp_covid$hzcy004a)
-````
+```
+
+Before we later start with the other exercises you may want to consider to clean your graphics device with `dev.off()`
+
+```{r cleandevice , message=FALSE}
+dev.off()
+```
+
