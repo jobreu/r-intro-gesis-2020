@@ -1,0 +1,71 @@
+---
+title: 'Exercise 1 Confirmatory Analysis - Solutions'
+# title: 'Exercise 1 Confirmatory Analysis'
+author: 'Johannes Breuer, Stefan Jünger'
+date: 'Introduction to R for Data Analysis'
+output:
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
+# custom boxes
+knitr::opts_template$set(
+  clues = list(box.title = "Clues",
+               box.body = list(fill = "#fff9dc", colour = "black"),
+               box.header = list(fill = "#ffec8b", colour = "black"),
+               box.icon = "fa-search",
+               box.collapse = TRUE)
+)
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(gapminder)
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy()
+```
+
+We are now entering the phase of doing serious statistics: we run regression models, inspect them, plot and tabulate them.
+
+For this exercise, let's again pretent to be researchers who are interested in the determinants of the subjective likelihood estimation (hoho) of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the GESIS Panel COVID-19 data again:
+
+```{r loadgpcovid, message=FALSE, eval=FALSE}
+library(dplyr)
+library(haven)
+library(sjlabelled)
+
+gp_covid <-
+  read_sav(
+    "../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+  ) %>% 
+  set_na(na = c(-1:-99, 97)) %>% 
+  mutate(
+    likelihood_hospital = hzcy003a,
+    age_cat = as.factor(age_cat)
+  ) %>% 
+  remove_all_labels()
+```
+
+We start our analysis by checking the relationship with an ANOVA. We also include some very, very essential (TM) covariates: gender, political orientation, and marital status. 
+
+```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
+Run an ANOVA on the proposed relationship between subjective likelihood of a treatment in a hospital and age. Also, include all the covariates
+```
+
+```{block, opts.label = "clues"}
+We had a similar analysis before... you can simply add the control variables with `+`.
+```
+
+```{r barplotfunction, solution = TRUE}
+serious_anova <- 
+  aov(
+    likelihood_hospital ~ age_cat + sex + political_orientation + marstat,
+    data = gp_covid
+  )
+
+summary(serious_anova)
+```
+
