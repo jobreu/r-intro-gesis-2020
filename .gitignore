@@ -37,3 +37,9 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# unnamed chunk files
+*unnamed-chunk*.png
+
+# automatically generated files
+*_files/*
