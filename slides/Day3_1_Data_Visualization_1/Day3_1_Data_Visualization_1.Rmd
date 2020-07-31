@@ -627,6 +627,25 @@ Densities
 
 ---
 
+## One last detail: the `par()` and `dev.off()` function
+`par()` stands for graphical parameters and is called before the actual plotting function. It prepares the graphics device in `R` so that it knows: hey, plot(s) incoming. So a lot can be done within this function, the most often used options are for indeed telling the device that 2, 3, 4, or `x` have to be printed in the device.
+
+For this purpose we have used the option `mfrow` before by telling it how many rows (the first value in the vector) and columns (the second value in the vector) we aim to plot. 
+
+```{r eval = FALSE}
+par(mfrow = c(2, 2))
+```
+
+One caveat of using this function is that the actively have to turn off the device before we want to generate another independent plot with.
+
+```{r eval = FALSE}
+dev.off()
+```
+
+This afternoon, we will learn from the `patchwork` package which makes assembling plots much easier.
+
+---
+
 ## EXERCISE TIME
 
 ---
@@ -656,25 +675,6 @@ plot(linear_model)
 ```{r ref.label = "lm_summary_plot", echo = FALSE}
 ```
 ]
-
----
-
-## The `par()` and `dev.off()` function
-`par()` stands for graphical parameters and is called before the actual plotting function. It prepares the graphics device in `R` so that it knows: hey, plot(s) incoming. So a lot can be done within this function, the most often used options are for indeed telling the device that 2, 3, 4, or `x` have to be printed in the device.
-
-For this purpose we have used the option `mfrow` before by telling it how many rows (the first value in the vector) and columns (the second value in the vector) we aim to plot. 
-
-```{r eval = FALSE}
-par(mfrow = c(2, 2))
-```
-
-One caveat of using this function is that the actively have to turn off the device before we want to generate another independent plot with.
-
-```{r eval = FALSE}
-dev.off()
-```
-
-This afternoon, we will learn from the `patchwork` package which makes assembling plots much easier.
 
 ---
 
