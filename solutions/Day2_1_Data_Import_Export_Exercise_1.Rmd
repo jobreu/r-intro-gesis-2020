@@ -30,20 +30,20 @@ Load the titanic data.
 ```
 
 ```{block, opts.label = "clues"}
-The file format is CSV, accordingly you may want to use the `readr` library and a function that starts with `read_...` if your are not aiming at using base R.
+The file format is CSV. Accordingly, you may want to use the `readr` library and a function that starts with `read_...` if you are not aiming at using base R.
 ```
 
 ```{r load_titanic, solution = TRUE}
 library(readr)
 
 titanic <-
-  read_csv("../data/titanic/titanic.csv")
+  read_csv("../data/titanic.csv")
 ```
 
-You may have noticed that the function you just imports factor variables as characters by default. For some analyses, this may not be what we want (for example, if we want to use sex as predictor in a regression).
+You may have noticed that the function you just imports factor variables as characters by default. For some analyses, this may not be what we want (for example, if we're going to use "sex" as a predictor in a regression).
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-Convert the variable `Sex` to a factor.
+Convert the variable `sex` to a factor.
 ```
 
 ```{block, opts.label = "clues"}
@@ -53,7 +53,7 @@ You can do that while importing the data or after loading them.
 ```{r convert_sex, solution = TRUE}
 titanic <-
   read_csv(
-    "../data/titanic/titanic.csv",
+    "../data/titanic.csv",
     col_types = cols(
       Sex = col_factor()
     )
@@ -63,18 +63,18 @@ titanic <-
 We have already worked with the *Titanic* data quite a bit. Let's import some other data for a change.
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-Load the gapminder GDP data. Use the .xlsx file in the *gapminder* folder.
+Load the gapminder GDP data. Use the .xlsx file in the `data` folder.
 ```
 
 ```{block, opts.label = "clues"}
-We need the `readxl` package for this import task.
+We need the `readxl` package for this importing task.
 ```
 
 ```{r load_gapminder_gdp, solution = TRUE}
 library(readxl)
 
 gapminder_GDP <-
-  read_excel("../data/gapminder/GDPpercapitaconstant2000US.xlsx")
+  read_excel("../data/GDPpercapitaconstant2000US.xlsx")
 ```
 
 As you may have noticed, the format of the output of the two importing functions is the same (tibbles in both cases). Sometimes, however, the contents of an Excel file are not that easy to import. We will illustrate this with the help of the `Unicorns on Unicycles` dataset. This is what is known about this data according to its creator:
@@ -99,7 +99,7 @@ library(readxl)
 
 unicorn_sales <-
   read_excel(
-    "../data/unicorns/sales.xlsx",
+    "../data/sales.xlsx",
     range = "A1:C43"
       )
 ```
