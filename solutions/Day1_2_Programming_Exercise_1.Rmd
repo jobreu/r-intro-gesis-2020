@@ -23,16 +23,16 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-After successfully completing your first exercises to make yourself familiar with `R` and `Rstudio`, listening to lengthy lectures on data types, formats as well as functions and loops it's now time to program a little bit. Surely, we cannot cover all topics of the lecture, but you should get a good feel about programming. While it can get complex, don't worry a first start is not that hard.
+After successfully completing your first exercises to make yourself familiar with `R` and `Rstudio`, listening to lengthy lectures on data types, formats, functions, and loops, it's now time to program a little bit. Surely, we cannot cover all the lecture topics, but you should get a good feel about programming. While it can get involved, don't worry; the first start is not that hard.
 
-This being said, let's start with some casual tingling with different data types.
+This being said, let's start with some casual tinkering with different data types.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
 Create at least 3 different data formats containing different data types and put them in a list.
 ```
 
 ```{block, opts.label = "clues"}
-Data formats are the Tupperware containers, such as `c()` or `matrix()`, data types, e.g., can be numeric, character strings and so forth. Please also add another list in this list to create a nested one.
+Data formats are the Tupperware containers, such as `c()` or `matrix()`. Data types, e.g., can be numeric, character strings, and so forth. Please also add another list in this list to create a nested one.
 ```
 
 ```{r first_exercise, solution = TRUE}
@@ -54,10 +54,10 @@ cool_global_list <-
 cool_global_list
 ```
 
-Ok. That's quite a mishmash (I am so happy this word exists) of different data, right? It's not easy to grasp which list element is of what data format and what data type. Sometimes we therefore have to query this information and print it out. I am sure you can build a loop for that.
+Ok. That's quite a mishmash (I am so happy this word exists) of different data, right? It's not easy to grasp which list element is of what data format and what data type. Sometimes we, therefore, have to query this information and print it out. I am sure you can build a loop for that.
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-Have a look at this vector `numeric_vector <- c(1, 2, 3, "four")`. Create an `if else` loop that checks whether this vector really comprise numeric values, print out a correspinding message if yes, and the same if does not comprise numeric values.
+Have a look at this vector `numeric_vector <- c(1, 2, 3, "four")`. Create an if-else loop that checks whether this vector really comprises numeric values, prints out a corresponding message if yes, and the same if it does not comprise numeric values.
 ```
 
 ```{block, opts.label = "clues"}
@@ -74,14 +74,14 @@ if (is.numeric(numeric_vector)) {
 }
 ```
 
-That's nice, but static. We have to repeatidely write this statement if we want to check multiple objects. Let's write a function
+That's nice but static. We have to repeatedly write this statement if we want to check multiple objects. Let's write a function.
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-Take your `if else` loop and create a function out of it. Also try it out on more than one object.
+Take your if-else loop and create a function out of it. Also, try it out on more than one object.
 ```
 
 ```{block, opts.label = "clues"}
-Make sure your function arguments in `function ()` match the ones within the curly brackets `{}`.
+Ensure your function arguments in `function ()` match the ones within the curly brackets `{}`.
 ```
 
 ```{r third_exercise, solution = TRUE}
