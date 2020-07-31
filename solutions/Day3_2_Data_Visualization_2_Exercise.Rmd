@@ -1,6 +1,6 @@
 ---
-title: 'Exercise 1 Data Visualization Part 2 - Solutions'
-# title: 'Exercise 1 Data Visualization Part 2'
+title: 'Exercise Data Visualization Part 2 - Solutions'
+# title: 'Exercise Data Visualization Part 2'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
@@ -17,6 +17,11 @@ knitr::opts_template$set(
                box.icon = "fa-search",
                box.collapse = TRUE)
 )
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(gapminder)
 ```
 
 ```{r klippy, echo=FALSE, include=TRUE}
@@ -26,8 +31,7 @@ klippy::klippy()
 Data exploration is not only about creating numbers and summary statistics. Sometimes a good plot can reveal more insights than a whole dataframe filled with numbers (especially to the human eye). In this exercise we make use of what we've just learned about plots with `ggplot2`. This time we are going to use all of the [*Gapminder*](https://www.gapminder.org/) GDP data.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Load the gapminder GDP data from the Excel file and convert it to long format (as in the Summary Statistics exercise). You can simply reuse the code from the exercises on Summary statistics for this, but 
-make sure that you do *not* exclude data for the years 1970 to 2001.
+Load the gapminder GDP data from the Excel file and convert it to long format (as in the Summary Statistics exercise). You can simply reuse the code from the exercises on Summary statistics for this, but make sure that you do *not* exclude data for the years 1970 to 2001.
 ```
 
 ```{block, opts.label = "clues"}
