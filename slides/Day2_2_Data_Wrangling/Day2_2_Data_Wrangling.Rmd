@@ -45,7 +45,7 @@ pre {
 
 ---
 
-# Data wrangling `r ji("cowboy_hat_face")`
+## Data wrangling `r ji("cowboy_hat_face")`
 
 Data wrangling is the process of "getting the data into shape", so that you can then explore and analyze them.
 
@@ -58,16 +58,16 @@ Common data wrangling steps when working with tabular data in the social & behav
 
 ---
 
-# Data wrangling `r ji("cowboy_hat_face")`
+## Data wrangling `r ji("cowboy_hat_face")`
 
-```{r, wrangling_cartoon, out.width = "95%", echo = F}
+```{r, wrangling-cartoon, out.width = "95%", echo = F}
 include_graphics("./pics/data_cowboy.png")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Data wrangling `r ji("cowboy_hat_face")`
+## Data wrangling `r ji("cowboy_hat_face")`
 
 .large[The (in)famous **80/20-rule**: 80% wrangling, 20% analysis]<sup>1</sup>  
   
@@ -79,7 +79,7 @@ include_graphics("./pics/data_cowboy.png")
 
 ---
 
-# `Base R` vs. `tidyverse`
+## `Base R` vs. `tidyverse`
 
 While data wrangling can be done with `base R`, packages from the [`tidyverse`](https://www.tidyverse.org/) can facilitate this process, especially for `R` novices.
 
@@ -92,7 +92,7 @@ Our personal experience with teaching the `tidyverse` is something like this...
 
 ---
 
-# `data.table`
+## `data.table`
 
 Another option for data wrangling with `R` is the [`data.table` package](https://rdatatable.gitlab.io/data.table/index.html). The reason we do not discuss `data.table` in this course is that neither of us has extensive experience with it and comparing all three options (`base R`, `tidyverse`, and `data.table`) side-by-side would be enough for a separate workshop/course.
 
@@ -100,7 +100,7 @@ There is, however, a very detailed [blog post by Jason Mercer](https://wetlandsc
 
 ---
 
-# Structure & focus of this session
+## Structure & focus of this session
 
 For most of the data wrangling tasks we discuss in this section, we will show how do do them with `base R` and the `tidyverse`, so that you can get a sense of the differences.
 
@@ -110,19 +110,19 @@ Of course, it is possible to combine `base R` and `tidyverse` code (confession: 
 
 ---
 
-# What is the `tidyverse`?
+## What is the `tidyverse`?
 
 > The `tidyverse` is an .highlight[opinionated collection of R packages designed for data science]. All packages share an .highlight[underlying design philosophy, grammar, and data structures] ([Tidyverse website](https://www.tidyverse.org/)).
 
 > The `tidyverse` is a .highlight[coherent system of packages for data manipulation, exploration and visualization] that share a .highlight[common design philosophy] ([Rickert, 2017](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/)).
 
-```{r, out.width = "25%", echo = F}
+```{r tidyverse-hex, out.width = "25%", echo = F}
 include_graphics("./pics/hex-tidyverse.png")
 ```
 
 ---
 
-# Benefits of the `tidyverse`
+## Benefits of the `tidyverse`
 
 As stated before, data wrangling can also be done with `base R`. However, the syntax for this is typically (more) verbose and not intuitive and, hence, difficult to learn, remember, and read (plus many `tidyverse` operations are faster than their `base R` equivalents).  
   
@@ -132,21 +132,21 @@ As stated before, data wrangling can also be done with `base R`. However, the sy
 
 ---
 
-# Lift-off into the `tidyverse` `r ji("rocket")`
+## Lift-off into the `tidyverse` `r ji("rocket")`
 **install all `tidyverse` packages** (for the full list of `tidyverse` packages see [https://www.tidyverse.org/packages/](https://www.tidyverse.org/packages/))
-```{r install tidyverse, eval = F, echo = T}
+```{r install-tidyverse, eval = F, echo = T}
 install.packages("tidyverse")
 
 ```
 **load core `tidyverse` packages** (NB: To save time and reduce namespace conflicts it can make sense to load the `tidyverse` packages individually)
-```{r load tidyverse, eval = T, echo = T, message = T}
+```{r load-tidyverse, eval = T, echo = T, message = T}
 library("tidyverse")
 
 ```
 
 ---
 
-# `tidyverse` vocabulary 101
+## `tidyverse` vocabulary 101
 
 While there is much more to the `tidyverse` than this, three important concepts that you need to be familiar with, if you want to use it, are:
 
@@ -158,9 +158,9 @@ While there is much more to the `tidyverse` than this, three important concepts 
 
 ---
 
-# What is a pipe?
+## What is a pipe?
 
-```{r pipe_johannes, echo = F, out.width = "40%"}
+```{r pipe-johannes, echo = F, out.width = "40%"}
 include_graphics("./pics/pipe_office_decoration.jpg")
 ```
 .center[<small><small>Source: Johannes' office </small></small>]
@@ -172,7 +172,7 @@ You might know pipes from other scripting utilities
 
 ---
 
-# What is a pipe?
+## What is a pipe?
 
 Put briefly, the pipe operator `%>%` takes an object (which can be the outcome of a previous function) and pipes it (by default as the first argument) into the next function. 
 
@@ -180,17 +180,17 @@ We'll show how to use the pipes and how it compares to `base R` code in the foll
 
 ---
 
-# Nested code in `base R`
+## Nested code in `base R`
 
 If, for example, we wanted to calculate the mean of the mileage per gallon (`mpg`) of the cars in the `mtcars` dataset included as an example in the `readr` package, the `base R` code could look like this:
 
-```{r base R nested code, message = FALSE}
+```{r base-R-nested, message = FALSE}
 mean(read_csv(readr_example("mtcars.csv"))$mpg)
 ```
 
 Essentially, the code has to be read from the inside out. Of course, you can also always create new/intermediary objects as in the following example. However, this quickly fills up your workspace and can, eventually, slow down your computer (remember that the objects in the workspace are stored in your computer's working memory.)
 
-```{r intermediate objects, message = FALSE}
+```{r intermediate-objects, message = FALSE}
 example_file        <- readr_example("mtcars.csv")
 example_file_loaded <- read_csv(example_file)
 mean(example_file_loaded$mpg)
@@ -198,11 +198,11 @@ mean(example_file_loaded$mpg)
 
 ---
 
-# Pipes to the rescue!
+## Pipes to the rescue!
 
 Pipes disentangle the whole process with an alternative approach by applying any involved function step by step:
 
-```{r read_mtcars_mpg_pipe, echo = TRUE, message = FALSE}
+```{r read-mtcars-mpg-pipe, echo = TRUE, message = FALSE}
 "mtcars.csv" %>% 
   readr_example() %>% 
   read_csv() %>% 
@@ -216,7 +216,7 @@ Here the code can be read from top to bottom and you can think of the pipe opera
 
 ---
 
-# Types of pipes
+## Types of pipes
 
 While `%>%` is the most widely used pipe operator in the `tidyverse`, there are other types of pipes. These are included in the [`magrittr` package](https://magrittr.tidyverse.org/).
 
@@ -226,7 +226,7 @@ However, for the sake of readability, and because it allows to give the output o
 
 ---
 
-# tibbles
+## tibbles
 
 Tibbles are the data format used in the `tidyverse`.
 
@@ -253,7 +253,7 @@ Tibbles come with the [`tibbles` package](https://tibble.tidyverse.org/) and it 
 
 ---
 
-# Tidy data
+## Tidy data
 
 The 3 rules of tidy data:
 
@@ -270,7 +270,7 @@ Source: https://r4ds.had.co.nz/tidy-data.html
 
 ---
 
-# Wide vs. long format
+## Wide vs. long format
 
 <img src="pics/wide-long.png" width="90%">
 Source: https://github.com/gadenbuie/tidyexplain#tidy-data
@@ -283,7 +283,7 @@ The easiest way to switch from wide to long format and vice versa are the functi
 
 ---
 
-# Dataset
+## Dataset
 
 For most of the examples and exercises in this session (and the following sessions), we will use the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You can [download the dataset in different formats as well as the codebook and the questionnaire (in German) from the *GESIS* Data Archive](https://search.gesis.org/research_data/ZA5667) (note: you need to have/create a user account).
 
@@ -293,7 +293,7 @@ The *GESIS Panel* website provides [detailed documentation](https://www.gesis.or
 
 ---
 
-# Interlude: Citing data
+## Interlude: Citing data
 
 If you (re-)use existing datasets, please cite them in your publications, theses, teaching materials, etc. Data repositories normally provide information on how to cite the data. For example, the APA-style citation for *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is:
 
@@ -301,7 +301,7 @@ GESIS Panel Team (2020). GESIS Panel Special Survey on the Coronavirus SARS-CoV-
 
 ---
 
-# Interlude: Citing FOSS
+## Interlude: Citing FOSS
 
 You should also make sure to cite the free and open-source software that you use, such as `R` packages and `R` itself. There is a function in `R` that tells you how to cite it or any of the packages you have installed.
 
@@ -312,16 +312,19 @@ citation()
 ]
 ---
 
-# Interlude: Citing FOSS
+## Interlude: Citing FOSS
 
 .small[
-```{r pkg citation}
+```{r pkg-citation}
 citation("tidyverse")
 ```
 ]
+
+There even is an `R` package called [`grateful`](https://github.com/Pakillo/grateful) that automatically generates a document with references for all `R` packages that have been used for a given project
+
 ---
 
-# Codebook
+## Codebook
 
 It is always advisable to consult the codebook (if there is one) before starting to work with a(n existing) dataset. The *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* comes with a very [detailed codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
 
@@ -335,21 +338,21 @@ Side note: If you want to generate a codebook for your own dataset, there are se
 
 ---
 
-# Load the data
+## Load the data
 
 The first step, of course, is loading the data into `R`. The *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is available in different formats. We will work with the `.csv` file.
 
-```{r load gesis panel data display, eval = F}
+```{r load-gesis-panel-data-display, eval = F}
 gesis_panel_corona <- read_csv2("./data/ZA5667_v1-1-0.csv")
 ```
 
-```{r load gesis panel data, echo = F}
+```{r load-gesis-panel-data, echo = F}
 gesis_panel_corona <- read_csv2("../../../../data/ZA5667_v1-1-0.csv")
 ```
 
 ---
 
-# Note: Tidy vs. untidy data
+## Note: Tidy vs. untidy data
 
 As a lot of work (by many people) has already gone into this dataset, the *Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* is already tidy. Notably, if you collect data yourself, this may not be the case (at least at the beginning). For example, cells may hold more than one value or a variable that should be in one column is spread across multiple columns (e.g., parts of a date or name).
 
@@ -357,11 +360,11 @@ If you need to make your data tidy or change it from wide to long format or vice
 
 ---
 
-# Dataframe check 1, 2, 1, 2!
+## Dataframe check 1, 2, 1, 2!
 
 Even before checking the codebook for a dataset (if there is one) it always helps to have a quick look at the data. The most high-level information you can get is about the object type and its dimensions.
 
-```{r class dim}
+```{r class-dim}
 # object type
 class(gesis_panel_corona)
 
@@ -372,7 +375,7 @@ dim(gesis_panel_corona)
 
 ---
 
-# Dataframe check 1, 2, 1, 2!
+## Dataframe check 1, 2, 1, 2!
 
 You can also print the first 6 lines of the dataframe with `head()`. You can easily change the number of lines by providing the number as the second argument to the `head()` function.
 
@@ -391,7 +394,7 @@ head(gesis_panel_corona, 10)
 
 ---
 
-# Dataframe check 1, 2, 1, 2!
+## Dataframe check 1, 2, 1, 2!
 
 If we want some more (detailed) information about the dataset, we can use the `base R` function `str()`.
 
@@ -410,7 +413,7 @@ str(gesis_panel_corona)
 
 ---
 
-# Dataframe check 1, 2, 1, 2!
+## Dataframe check 1, 2, 1, 2!
 
 As you saw on the previous slide, the output of `str()` can be a bit hard to read (especially for larger datasets). A good alternative that creates a more clearly laid output is the `glimpse()` function from the `dplyr` package.
 
@@ -429,7 +432,7 @@ glimpse(gesis_panel_corona)
 
 ---
 
-# Dataframe check 1, 2, 1, 2!
+## Dataframe check 1, 2, 1, 2!
 
 If you want to have a look at your full dataset, you can use the `View()` function. In *RStudio*, this will open a new tab in the source pane through which you can explore the dataset (including a search function). You can also click on the small spreadsheet symbol on the right side of the object in the environment tab to open this view. 
 
@@ -437,17 +440,17 @@ If you want to have a look at your full dataset, you can use the `View()` functi
 View(gesis_panel_corona)
 ```
 
-```{r, view pic, out.width = "70%", echo = F}
+```{r, view-pic, out.width = "70%", echo = F}
 include_graphics("./pics/rstudio_view.png")
 ```
 
 ---
 
-# What's in a name?
+## What's in a name?
 
 One thing that we need to know - and might want to change - are the names of the variables in the dataset.
 
-```{r names_gpc, eval = F}
+```{r names-gpc, eval = F}
 names(gesis_panel_corona)
 ```
 
@@ -462,13 +465,13 @@ names(gesis_panel_corona)
 
 ---
 
-# What's in a name?
+## What's in a name?
 
 As you can see, only a few of the variable names in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset are descriptive. The names have meaning as they are composed of codes representing the study wave, study name, variable number and whether they are original or derived variables, but they are not intuitive to understand. Hence, for analyzing them, especially if you want to create tables and/or plots, it can make sense to rename them. This is also a common step if you work with your own data. Depending on what method or tool(s) you used to collect the data, the variable names may also not be what you want or need them to be.
 
 ---
 
-# Renaming variables/columns
+## Renaming variables/columns
 
 It good practice to use consistent naming conventions. Since `R` is case-sensitive, we might, e.g., want to only use lowercase letters. As spaces in variable names can cause problems, we could, e.g., decide to use `r ji("snake")` *snake_case* (`r ji("camel")` *camelCase* is a common alternative; for a good brief discussion of options for avoiding spaces in variable names, see this [Medium post by Patrick Divine](https://medium.com/@pddivine/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841)).
 
@@ -476,7 +479,7 @@ It good practice to use consistent naming conventions. Since `R` is case-sensiti
 
 ---
 
-# `dplyr`
+## `dplyr`
 
 The `tidyverse` example in the following will make use of functions from the [`dplyr` package](https://dplyr.tidyverse.org/).
 
@@ -490,12 +493,12 @@ The `tidyverse` example in the following will make use of functions from the [`d
 
 ---
 
-# Renaming variables/columns
+## Renaming variables/columns
 
 To choose meaningful variable names, we need to look at the codebook. Say, for example, we want to rename the variables representing the responses to the questions asking whether people use *Facebook* or other social media to get information about the Coronavirus.
 
 .small[
-```{r rename vars, eval = F}
+```{r rename-vars, eval = F}
 # Base R
 colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy090a"] <- "corona_inf_facebook"
 colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy091a"] <- "corona_inf_other_sm"
@@ -510,7 +513,7 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Selecting columns/variables
+## Selecting columns/variables
 
 In many cases, we do not need all the variables in a dataset for our analyses. In the following example, we use two options from `base R` to select the variables from the *GESIS Panel* dataset relating to the self-assessed risk of becoming infected with the Coronavirus.
 
@@ -518,7 +521,7 @@ There are two options for doing this with `base R`:
 
 Option 1
 .small[
-```{r select vars base}
+```{r select-vars-base}
 corona_risk <- gesis_panel_corona[, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
 # When subsetting with [], the first value refers to rows, the second to columns
 # [, c("var1", "var2", ...)] means we want to select all rows but only some specific columns.
@@ -536,7 +539,7 @@ corona_risk  <- subset(gesis_panel_corona, TRUE, select = c(hzcy001a, hzcy002a, 
 
 ---
 
-# Selecting columns/variables
+## Selecting columns/variables
 
 In the `tidyverse`, we can create a subset of variables with the `dplyr` verb `select()`.
 
@@ -553,11 +556,11 @@ head(corona_risk)
 
 ---
 
-# Selecting a range of columns/variables
+## Selecting a range of columns/variables
 
 There also is a shorthand notation for selecting a set of consecutive columns with `select()`.
 
-```{r select range}
+```{r select-range}
 corona_risk <- gesis_panel_corona %>% 
   select(hzcy001a:hzcy005a)
 
@@ -566,12 +569,12 @@ head(corona_risk)
 
 ---
 
-# Re~~wind~~name selecta
+## Re~~wind~~name selecta
 
 A nice thing about the `dplyr` verb `select` is that you can use it to select and rename variables in one step.
 
 .small[
-```{r select & rename}
+```{r select-rename}
 corona_risk <- gesis_panel_corona %>% 
   select(risk_self = hzcy001a,
          risk_surroundings = hzcy002a,
@@ -585,13 +588,13 @@ head(corona_risk)
 
 ---
 
-# Unselecting columns/variables
+## Unselecting columns/variables
 
 If you just want to exclude one or a few columns/variables, it is easier to unselect those than to select all others. Again, there's two ways to do this with `base R`.
 
 Option 1
 .small[
-```{r unselect base}
+```{r unselect-base}
 gesis_panel_corona_cut <- gesis_panel_corona[!(names(gesis_panel_corona) %in% c("za_number", "version", "doi"))]
 # The %in% operator means "is included in" (in this case the following character vector)
 
@@ -601,7 +604,7 @@ dim(gesis_panel_corona_cut)
 
 Option 2
 .small[
-```{r subset unselect}
+```{r subset-unselect}
 gesis_panel_corona_cut <- subset(gesis_panel_corona, TRUE, select = -c(za_number, version, doi))
 
 dim(gesis_panel_corona_cut)
@@ -610,11 +613,11 @@ dim(gesis_panel_corona_cut)
 
 ---
 
-# Unselecting columns/variables
+## Unselecting columns/variables
 
 `select()` from `dplyr` also allows you to easily exclude one or more columns/variables.
 
-```{r select_unselect, eval = F}
+```{r select-unselect, eval = F}
 gesis_panel_corona_cut <- gesis_panel_corona %>% 
   select(-(za_number:doi))
 
@@ -626,13 +629,13 @@ glimpse(gesis_panel_corona_cut)
 ---
 
 .smaller[
-```{r ref.label = "select_unselect", echo = F}
+```{r ref.label = "select-unselect", echo = F}
 ```
 ]
 
 ---
 
-# Advanced ways of selecting columns/variables
+## Advanced ways of selecting columns/variables
 
 Sometimes the ways of selecting columns/variables shown on the previous slides might be difficult or tedious to use, especially if you have datasets with a large number of variables in them.  
 
@@ -640,9 +643,9 @@ Fortunately, there are many so-called helper functions and scoped variants for t
 
 ---
 
-# Select columns/variables based on parts their names
+## Select columns/variables based on parts their names
 
-```{r select name parts}
+```{r select-name-parts}
 gesis_panel_corona_cy <- gesis_panel_corona %>% 
   select(starts_with("hzcy"))
 
@@ -654,9 +657,9 @@ glimpse(gesis_panel_corona_cat)
 
 ---
 
-# Select columns/variables based on their type
+## Select columns/variables based on their type
 
-```{r select_type, eval = F}
+```{r select-type, eval = F}
 # Only keep numeric variables from the dataset
 gesis_panel_corona_num <- gesis_panel_corona %>% 
   select_if(is.numeric)
@@ -669,13 +672,13 @@ glimpse(gesis_panel_corona_num)
 ---
 
 .smaller[
-```{r ref.label = "select_type", echo = F}
+```{r ref.label = "select-type", echo = F}
 ```
 ]
 
 ---
 
-# Moving columns
+## Moving columns
 
 While the positions of columns in the dataframe do not matter for the analyses or plotting (unless you want to select columns using their numerical index), you might want to change them. For this purpose, `dplyr` provides the `relocate()` function.
 
@@ -688,16 +691,16 @@ You can also move a column before a specific other column. For this you need to 
 
 ---
 
-# `dplyr::relocate()`
+## `dplyr::relocate()`
 
-```{r, relocate_cartoon, out.width = "85%", echo = F}
+```{r, relocate-cartoon, out.width = "85%", echo = F}
 include_graphics("./pics/dplyr_relocate.png")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Filtering rows/observations
+## Filtering rows/observations
 
 In `R`, you can filter rows/observations dependent on one or more conditions.
 
@@ -720,19 +723,19 @@ To filter rows/observations you can use...
 
 ---
 
-# Filtering rows/observations
+## Filtering rows/observations
 
 Similar to selecting columns/variables, there are two parallel options for filtering rows/observations with `base R`.
 
 Option 1
-```{r filter base}
+```{r filter-base}
 gesis_panel_corona_male <- gesis_panel_corona[gesis_panel_corona$sex == 1, ]
 
 dim(gesis_panel_corona_male)
 ```
 
 Option 2
-```{r filter subset}
+```{r filter-subset}
 gesis_panel_corona_male <- subset(gesis_panel_corona, sex == 1)
 
 dim(gesis_panel_corona_male)
@@ -740,11 +743,11 @@ dim(gesis_panel_corona_male)
 
 ---
 
-# Filtering rows/observations
+## Filtering rows/observations
 
 The `tidyverse` solution for filtering rows/observations is the `dplyr` verb `filter()`.
 
-```{r dplyr filter 1}
+```{r dplyr-filter-1}
 gesis_panel_corona_male <- gesis_panel_corona %>% 
   filter(sex == 1)
 
@@ -753,22 +756,22 @@ dim(gesis_panel_corona_male)
 
 ---
 
-# `dplyr::filter()`
+## `dplyr::filter()`
 
-```{r, filter_cartoon, out.width = "95%", echo = F}
+```{r, filter-cartoon, out.width = "95%", echo = F}
 include_graphics("./pics/dplyr_filter.jpg")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Selecting columns + filtering rows
+## Selecting columns + filtering rows
 
 Of course, you can also combine the selection of columns and filtering or rows.
 
 `Base R` option 1
 .small[
-```{r colsrows base}
+```{r colsrows-base}
 corona_risk_male <- gesis_panel_corona[gesis_panel_corona$sex == 1, c("hzcy001a", "hzcy002a", "hzcy003a", "hzcy004a", "hzcy005a")]
 
 dim(corona_risk_male)
@@ -777,7 +780,7 @@ dim(corona_risk_male)
 
 `Base R` option 2
 .small[
-```{r colsrows subset}
+```{r colsrows-subset}
 corona_risk_male  <- subset(gesis_panel_corona, sex == 1, select = c(hzcy001a, hzcy002a, hzcy003a, hzcy004a, hzcy005a))
 
 dim(corona_risk_male)
@@ -786,11 +789,11 @@ dim(corona_risk_male)
 
 ---
 
-# Selecting columns + filtering rows
+## Selecting columns + filtering rows
 
 The `tidyverse` approach to combining the selection of columns and the filtering of rows is to chain these steps together in a pipe (in this case, the order of the pipe steps does not matter).
 
-```{r dplyr select + filter}
+```{r dplyr-select-filter}
 corona_risk_male <- gesis_panel_corona %>% 
   filter(sex == 1) %>% 
   select(hzcy001a:hzcy005a)
@@ -800,11 +803,11 @@ dim(corona_risk_male)
 
 ---
 
-# `dplyr::filter` - multiple conditions
+## `dplyr::filter` - multiple conditions
 
 Of yourse, you can also filter rows/observations based on more than one condition.
 
-```{r filter 2 cond}
+```{r filter-2-ond}
 gesis_panel_corona_old_men <- gesis_panel_corona %>% 
   filter(sex == 1, age_cat > 7)
 
@@ -813,13 +816,13 @@ dim(gesis_panel_corona_old_men)
 
 ---
 
-# `dplyr::filter` - multiple conditions
+## `dplyr::filter` - multiple conditions
 
 By default, multiple conditions in `filter()` are added as & (and). You can, however, also specify multiple conditions differently.
 
 **or** (cases for which at least one of the conditions is true)
 
-```{r filter or}
+```{r filter-or}
 gesis_panel_corona_old_andor_male <- gesis_panel_corona %>% 
   filter(sex == 1 |
            age_cat > 7)
@@ -827,7 +830,7 @@ gesis_panel_corona_old_andor_male <- gesis_panel_corona %>%
 
 **xor** (cases for which only one of the two conditions is true)
 
-```{r filter xor}
+```{r filter-xor}
 gesis_panel_corona_old_or_male <- gesis_panel_corona %>%
   filter(xor(sex == 1, 
              age_cat > 7))
@@ -835,7 +838,7 @@ gesis_panel_corona_old_or_male <- gesis_panel_corona %>%
 
 ---
 
-# Advanced ways of filtering observations
+## Advanced ways of filtering observations
 
 Similar to the basic options for `select()`, the basic variants of `filter()` might not meet your needs when it comes to more specific or complicated ways of data wrangling.  
 
@@ -843,9 +846,9 @@ Again, there are several helper functions and scoped variants of the `filter()` 
 
 ---
 
-# Filter rows based on a range in a numeric variable
+## Filter rows based on a range in a numeric variable
 
-```{r filter between}
+```{r filter-between}
 gesis_panel_corona_rightwing <- gesis_panel_corona %>% 
   filter(between(political_orientation, 8, 10))
 
@@ -856,9 +859,9 @@ Note that the range specified in `between()` is inclusive.
 
 ---
 
-# Filter based on a selection of variables
+## Filter based on a selection of variables
 
-```{r filter at}
+```{r filter-at}
 # Select all cases where at least one of the specified variables is > 0
 gesis_panel_corona_measures_taken <- gesis_panel_corona %>% 
     filter_at(vars(hzcy006a:hzcy016a),
@@ -869,11 +872,11 @@ dim(gesis_panel_corona_measures_taken)
 
 ---
 
-# Sorting a dataframe by a single variable
+## Sorting a dataframe by a single variable
 
 Again, while this does not directly matter for analyses or plotting (unless you want to filter rows by their numeric index), you can rearrange the order of rows in a dataset.
 
-```{r sort 1 var, eval = F}
+```{r sort-1-var, eval = F}
 # Base R
 gesis_panel_corona[order(gesis_panel_corona$political_orientation),]
 
@@ -884,11 +887,11 @@ gesis_panel_corona %>%
 
 ---
 
-# Sorting a dataframe by a single variable
+## Sorting a dataframe by a single variable
 
 Of course, it is also possible to sort a dataframe in descending order of a variable.
 
-```{r sort 1 var desc, eval = F}
+```{r sort-1-var-desc, eval = F}
 # Base R
 gesis_panel_corona[order(desc(gesis_panel_corona$political_orientation)),]
 
@@ -901,7 +904,7 @@ gesis_panel_corona %>%
 
 ---
 
-# Sorting a dataframe by a multiple variables
+## Sorting a dataframe by a multiple variables
 
 You can also sort your dataframe by more than one variable.
 
@@ -918,7 +921,7 @@ gesis_panel_corona %>%
 
 ---
 
-# Missing values
+## Missing values
 
 Most of the real datasets we work with have missing data. As the data can be missing for various reasons, we often use codes (and labels) to distinguish between different types of missing data.
 
@@ -926,7 +929,7 @@ If you look at the the [codebook](https://dbk.gesis.org/dbksearch/download.asp?i
 
 ---
 
-# Missing values
+## Missing values
 
 In `R`, missing values are represented by `NA`. `NA` is a reserved term in `R`, meaning that you cannot use it as a name for anything else (this is also the case for `TRUE` and `FALSE`).
 
@@ -938,25 +941,25 @@ When we prepare our data for analysis there are generally two things we might wa
 
 ---
 
-# Types of missing values
+## Types of missing values
 
 If you look through the [codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378) of the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany*, you will notice that some types of missing values are the same across variables, while some variables also have additional types of missing data (and, hence, additional codes for missings).
 
 To make things easier for the following examples, we will select a subset of variables.
 
-```{r gpc measures subset}
+```{r gpc-measures-subset}
 gesis_panel_corona_measures <- gesis_panel_corona %>% 
   select(hzcy006a:hzcy016a)
 ```
 
 ---
 
-# Recode values as `NA`
+## Recode values as `NA`
 
 With `base R` you can set values to `NA` for specific variables as follows:
 
 .small[
-```{r set NA var base}
+```{r set-NA-var-base}
 sum(is.na(gesis_panel_corona_measures$hzcy006a))
 
 gesis_panel_corona_measures$hzcy006a[gesis_panel_corona_measures$hzcy006a == -99] <- NA
@@ -974,11 +977,11 @@ sum(is.na(gesis_panel_corona_measures$hzcy006a))
 
 ---
 
-# Recode values as `NA`
+## Recode values as `NA`
 
 The `tidyverse` option for setting values of individual variables to `NA` is the `na_if()` function combined with the `mutate()`function (which we will discuss in more detail when we talk about transforming variables and creating new ones), both from the `dplyr` package.
 
-```{r na_if}
+```{r na-if}
 gesis_panel_corona_measures <- gesis_panel_corona_measures %>% 
   mutate(hzcy006a = na_if(hzcy006a, -99)) %>% 
   mutate(hzcy006a = na_if(hzcy006a, -77)) %>% 
@@ -992,13 +995,13 @@ gesis_panel_corona_measures <- gesis_panel_corona_measures %>%
 
 ---
 
-# Recode values as `NA`
+## Recode values as `NA`
 
 Of course, setting values to `NA` for individual variables can become quite tedious if there are a lot of variables and missing value codes.
 
 If the missing values are the same for the whole dataframe, a quick solution is to use `mutate_all()` which is a scoped variant of `mutate()` from the `dplyr` package (again, we will talk about these functions in more depth later):
 
-```{r mutate_all na_if}
+```{r mutate-all-na-if}
 sum(is.na(gesis_panel_corona_measures$hzcy008a))
 
 gesis_panel_corona_measures <- gesis_panel_corona_measures %>%
@@ -1012,11 +1015,11 @@ sum(is.na(gesis_panel_corona_measures$hzcy008a))
 
 ---
 
-# The missings of `naniar` `r ji("lion")`
+## The missings of `naniar` `r ji("lion")`
 
 A good option for wrangling (and exploring) missing data is the [`naniar` package](http://naniar.njtierney.com/index.html). For example, if you want to replace specific values with `NA` in all variables in your dataframe:
 
-```{r naniar replace with NA all}
+```{r naniar-replace-with-NA-all}
 library(naniar)
 
 missings <- c(-99, -77, -33, -22)
@@ -1027,13 +1030,13 @@ gesis_panel_corona_measures <- gesis_panel_corona_measures %>%
 
 ---
 
-# Exclude cases with missing values
+## Exclude cases with missing values
 
 If you want to exclude observations with missing values for individual variables, you can use `is.na(variable_name)` with your filtering method of choice.
 
 If you only want to keep complete cases in your dataframe, you can easily do so with both `base R` and the `tidyverse` (in this case a function from the `tidyr` package).
 
-```{r only complete cases}
+```{r only-complete-cases}
 # base R
 corona_measures_complete <- na.omit(gesis_panel_corona_measures) 
 
@@ -1048,11 +1051,11 @@ A nice thing about `drop_na()` is that you can also provide variable names as ar
 
 ---
 
-# Recode `NA` into something else
+## Recode `NA` into something else
 
 An easy option for replacing `NA` with another value for a single variable is the `replace_na()` function from the `tidyr` package (in combination with `mutate()` from `dplyr`). Using the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* subset for which we have previously defined all relevant values as `NA`, we would, for example do the following:
 
-```{r replace_na, eval = F}
+```{r replace-na, eval = F}
 gesis_panel_corona_measures <- gesis_panel_corona_measures %>% 
   mutate(hzcy006a = replace_na(hzcy006a, -99))
 
@@ -1062,11 +1065,11 @@ Of course, this particular example does not make much sense. You can, however, s
 
 ---
 
-# Changing columns/variables: Simple transformations
+## Changing columns/variables: Simple transformations
 
 The simplest case of changing a column/variable is a direct transformation of its values. If, for example, after defining values as `NA`, we want to increase the value of the variables in the `gesis_panel_corona_measures` by one, we could do so as follows:
 
-```{r simple var transform, eval = F}
+```{r simple-var-transform, eval = F}
 # base R
 gesis_panel_corona_measures$hzcy006a <- gesis_panel_corona_measures$hzcy006a + 1
 
@@ -1077,22 +1080,22 @@ gesis_panel_corona_measures <- gesis_panel_corona_measures %>%
 
 ---
 
-# `dplyr::mutate`
+## `dplyr::mutate`
 
 The `mutate()` function from `dplyr` can be used to transform columns/variables and create new ones. Again, this is a very powerful function for which there also are some helpful scoped variants (we've already seen `mutate_all()`). We will discuss some of the many options for using `mutate()` in the following, but for a larger overview you can, e.g., check out the [column transformation tutorial by Suzan Baert](https://suzan.rbind.io/2018/02/dplyr-tutorial-2/).
 
 ---
 
-# `dplyr::mutate()`
+## `dplyr::mutate()`
 
-```{r, mutate_cartoon, out.width = "60%", echo = F}
+```{r, mutate-cartoon, out.width = "60%", echo = F}
 include_graphics("./pics/dplyr_mutate.png")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Changing columns/variables: Recoding values
+## Changing columns/variables: Recoding values
 
 Very often we want/need to recode values in a variable (e.g., if we have reverse-scored items as part of a scale). Say, for example, you want to recode the item from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* that measures trust in scientists with regard to dealing with the Coronavirus to represent distrust. In `base R`, you can use the same method as for defining a value as `NA` (which we showed you before). Another handy option is the `recode()` function from `dplyr` (again, in combination with `mutate()`).
 
@@ -1107,11 +1110,11 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Creating new columns/variables
+## Creating new columns/variables
 
 If you want to add a columnn/variable to a dataset that has the same value for all rows (e.g., to indicate the wave nr. of a longitudinal survey study), you can do so as follows:
 
-```{r add col with same value, eval = F}
+```{r add-col-with-same-value, eval = F}
 # base R
 gesis_panel_corona$wave <- 1
 
@@ -1122,11 +1125,11 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Creating new columns/variables
+## Creating new columns/variables
 
 Usually, however, we want to create new columns/variables based on the values of existing ones. Again, a straightforward way of doing this is `mutate()` plus `recode()`. Using the same example as before:
 
-```{r recode new var, eval = F}
+```{r recode-new-var, eval = F}
 gesis_panel_corona <- gesis_panel_corona %>% 
   mutate(distrust_scientists = recode(hzcy052a,
                                       `5` = 1, # `old value` = new value
@@ -1137,12 +1140,12 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Aggregate variables
+## Aggregate variables
 
 Something we might want to do for our analyses is to create aggregate variables, such as sum or mean scores for a set of items (that form a scale). If, for example, we want to compute the mean score from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* items that ask how much people trust specific people or institutions in dealing with the Coronavirus, we might try the following:
 
 .small[
-```{r scale mean wrong}
+```{r scale-mean-wrong}
 corona_trust <- gesis_panel_corona %>% 
   select(hzcy044a:hzcy052a) %>% 
   mutate_all(list(~na_if(., -99))) %>% 
@@ -1166,22 +1169,22 @@ corona_trust <- gesis_panel_corona %>%
 
 ---
 
-# Aggregate variables
+## Aggregate variables
 
 What went wrong here?
 
-```{r scale mean wrong result}
+```{r scale-mean-wrong-result}
 glimpse(corona_trust)
 ```
 
 ---
 
-# Aggregate variables
+## Aggregate variables
 
 The reason the code on the previous slide did not achieve what we (might have) expected is that aggregate functions like `mean()` or `sum()` operate on columns. One solution can be to calculate the mean manually:
 
 .small[
-```{r mean calc}
+```{r mean-calc}
 corona_trust <- corona_trust %>% 
   mutate(mean_trust = (hzcy044a + hzcy045a + hzcy046a + hzcy047a + hzcy048a + hzcy049a + hzcy050a + hzcy051a + hzcy052a)/9)
 
@@ -1193,7 +1196,7 @@ However, the problem here is that some rows have missing values for one or more 
 
 ---
 
-# `dplyr::rowwise`
+## `dplyr::rowwise`
 
 A better option is the `rowwise()`function which changes how `dplyr` verbs operate on the dataset. If we want a row-wise aggregate for our example dataset, we can use the following code:
 
@@ -1219,9 +1222,9 @@ corona_trust <- corona_trust %>%
 
 ---
 
-# `dplyr::rowwise`
+## `dplyr::rowwise`
 
-```{r rowwise result}
+```{r rowwise-result}
 glimpse(corona_trust)
 ```
 
@@ -1229,11 +1232,11 @@ glimpse(corona_trust)
 
 ---
 
-# Create a new variable conditional on values of another one
+## Create a new variable conditional on values of another one
 
 If you want create to create a new variable (or recode an existing one) and the values depend on the values of another variable in your data, the `case_when()` function from `dplyr` can come in handy.
 
-```{r case_when, eval = F}
+```{r case-when, eval = F}
 gesis_panel_corona <- gesis_panel_corona %>% 
   mutate(pol_leaning_cat = case_when(
     between(political_orientation, 0, 3) ~ "left",
@@ -1249,16 +1252,16 @@ A few things to note here:
 
 ---
 
-# `dplyr::case_when()`
+## `dplyr::case_when()`
 
-```{r, case_when_cartoon, out.width = "95%", echo = F}
+```{r, case-when-cartoon, out.width = "95%", echo = F}
 include_graphics("./pics/dplyr_case_when.png")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Factors
+## Factors
 
 Factor are a special type of variable in `R` that represent categorical data. Before `R` version `4.0.0.` the default for `base R` was that all characters variables are imported as factors (remember that `R` was originally developed by and for statisticians).
 
@@ -1270,11 +1273,11 @@ Using factors can be necessary for certain statistical analysis and plots (e.g.,
 
 ---
 
-# Factors 4 `r ji("cat")`s 
+## Factors 4 `r ji("cat")`s 
 
 There are many functions for working with factors in `base R`, such as `factor()` or `as.factor()`. However, a generally more versatile and easier-to-use option is the [`forcats` package](https://forcats.tidyverse.org/) from the `tidyverse`. 
 
-```{r forcats hex, out.width = "25%", echo = F}
+```{r forcats-hex, out.width = "25%", echo = F}
 include_graphics("./pics/hex-forcats.png")
 ```
 
@@ -1282,11 +1285,11 @@ There is a good [introduction on the `tidyverse` website by Emily Robinson](http
 
 ---
 
-# From numeric to factor
+## From numeric to factor
 
 Using the `recode_factor()` function (together with `mutate()`) from `dplyr`, you can create a factor from a numeric (or a character) variable. In the example below, we want an ordered factor.
 
-```{r recode_factor}
+```{r recode-factor}
 gesis_panel_corona <- gesis_panel_corona %>% 
   mutate(education_cat = recode_factor(education_cat,
                                        `1` = "Low",
@@ -1297,9 +1300,9 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Creating a factor based on values of another variable
+## Creating a factor based on values of another variable
 
-```{r case_when factor, eval = F}
+```{r case-when-factor, eval = F}
 gesis_panel_corona <- gesis_panel_corona %>% 
   mutate(pol_leaning_cat = factor(case_when(
     between(political_orientation, 0, 3) ~ "left",
@@ -1312,7 +1315,7 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Dummy variables
+## Dummy variables
 
 You can combine the `mutate()` function with a simple `ifelse()` statement to create a dummy variable based on a numeric one. For more advanced creation of dummy variables (e.g., for categorical variables) you should check out the [`fastDummies` package](https://github.com/jacobkap/fastDummies).
 
@@ -1325,11 +1328,11 @@ gesis_panel_corona <- gesis_panel_corona %>%
 
 ---
 
-# Working with strings/text
+## Working with strings/text
 
 Working with strings in R is a topic that would require its own workshop. The `tidyverse` package [`stringr`](https://stringr.tidyverse.org/index.html) offers a collection of convenient functions for working with strings.
 
-```{r stringr hex, out.width = "20%", echo = F}
+```{r stringr-hex, out.width = "20%", echo = F}
 include_graphics("./pics/hex-stringr.png")
 ```
 
@@ -1339,11 +1342,11 @@ If you want (or have) to work with [regular expressions](https://en.wikipedia.or
 
 ---
 
-# Times and dates
+## Times and dates
 
 As our focus in this course is on tabular data common to the social and behavioral sciences, we will not cover working with times and dates in `R`. If you are interested in this topic, you may want to look into the [`lubridate` package](https://lubridate.tidyverse.org/) which is part of the `tidyverse`, and for which *RStudio* also provides a [cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/lubridate.pdf).
 
-```{r lubridate hex, out.width = "20%", echo = F}
+```{r lubridate-hex, out.width = "20%", echo = F}
 include_graphics("./pics/lubridate_hex.jpg")
 ```
 
@@ -1351,7 +1354,7 @@ If you work with time series data, it is also worth to check out the [`tsibble` 
 
 ---
 
-# Relational data
+## Relational data
 
 In some cases, you may need to combine different datasets (e.g., if you have seperate datasets from waves of a longitudinal survey study or data on the same subjects from different sources). 
 
@@ -1361,7 +1364,7 @@ In those cases, you can use the `base R` functions `rbind()` to add/combine rows
 
 ---
 
-# Relational data
+## Relational data
 
 For all other situations, you can use the `merge()` function from `base R`. However, a more convenient option is using the the so-called *two-table verbs* from `dplyr` which allow us to combine two (or more) tabular datasets in various ways. We will look at two categories of those verbs in the following:
 
@@ -1373,11 +1376,11 @@ If you have ever worked with (or at least seen) `SQL` code, many of the followin
 
 ---
 
-# Superhero data `r ji("bat")``r ji("zap")``r ji("spider_web")``r ji("merman")`
+## Superhero data `r ji("bat")``r ji("zap")``r ji("spider_web")``r ji("merman")`
 
 As the we cannot use the data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* for to illustrate the different joins from `dlpyr`, we will instead use data from the Super Heroes dataset from [*Kaggle*](https://www.kaggle.com/claudiodavi/superhero-set).
 
-```{r superhero data, include = F}
+```{r superhero-data, include = F}
 heroes <- read_csv("../../data/heroes_information.csv") %>% 
   select(name, Alignment, Race, Publisher) %>% 
   rename(Name = name) %>%
@@ -1413,13 +1416,12 @@ publishers <- read_csv("../../data/heroes_information.csv") %>%
     Publisher == "Image" ~ "Berkeley (CA)"
   ))
 
-
 ```
 
 .pull-left[
 .center[
 **Superheroes**
-```{r superhero table, echo = F}
+```{r superhero-table, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 16)
@@ -1430,7 +1432,7 @@ heroes %>%
 .pull-right[
 .center[
 **Publishers**
-```{r publishers table, echo = F}
+```{r publishers-table, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 16)
@@ -1440,7 +1442,7 @@ publishers %>%
 
 ---
 
-# Mutating joins
+## Mutating joins
 
 .large[
 > A mutating join [...] .highlight[first matches observations by their keys], then .highlight[copies across variables from one table to the other] ([R for Data Science](https://r4ds.had.co.nz/relational-data.html#mutating-joins)).
@@ -1456,7 +1458,7 @@ publishers %>%
 
 ---
 
-# Inner join
+## Inner join
 
  > All rows from `x` where there are matching values in `y`, and all columns from `x` and `y`.
 
@@ -1468,11 +1470,11 @@ Animation by [Garrick Aden-Buie](https://github.com/gadenbuie/tidyexplain)
 
 ---
 
-# Inner join example
+## Inner join example
 
 .pull-left[
 .center[
-```{r superhero table 2, echo = F}
+```{r superhero-table 2, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1482,7 +1484,7 @@ heroes %>%
 
 .pull-right[
 .center[
-```{r publishers table 2, echo = F}
+```{r publishers-table-2, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1490,12 +1492,12 @@ publishers %>%
 ]
 ]
 <br>
-```{r eval = F}
+```{r inber-join-display, eval = F}
 heroes %>% 
   inner_join(publishers, by = "Publisher")
 ```
 
-```{r inner join, echo = F}
+```{r inner-join-result, echo = F}
 heroes %>% 
   inner_join(publishers, by = "Publisher") %>%
   kable("html") %>% 
@@ -1504,7 +1506,7 @@ heroes %>%
 
 ---
 
-# Left join
+## Left join
 
 > All rows from `x`, and all columns from `x` and `y`. Rows in `x` with no match in `y` will have `NA` values in the new columns.
 
@@ -1516,11 +1518,11 @@ Animation by [Garrick Aden-Buie](https://github.com/gadenbuie/tidyexplain)
 
 ---
 
-# Left join example
+## Left join example
 
 .pull-left[
 .center[
-```{r superhero table 3, echo = F}
+```{r superhero-table-3, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1530,7 +1532,7 @@ heroes %>%
 
 .pull-right[
 .center[
-```{r publishers table 3, echo = F}
+```{r publishers-table-3, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1538,12 +1540,12 @@ publishers %>%
 ]
 ]
 <br>
-```{r eval = F}
+```{r left-join-display, eval = F}
 heroes %>% 
   left_join(publishers, by = "Publisher")
 ```
 
-```{r left join, echo = F}
+```{r left-join-result, echo = F}
 heroes %>% 
   left_join(publishers, by = "Publisher") %>%
   kable("html") %>% 
@@ -1552,7 +1554,7 @@ heroes %>%
 
 ---
 
-# Right join
+## Right join
 
 > All rows from y, and all columns from `x` and `y`. Rows in `y` with no match in `x` will have `NA` values in the new columns.
 
@@ -1564,11 +1566,11 @@ Animation by [Garrick Aden-Buie](https://github.com/gadenbuie/tidyexplain)
 
 ---
 
-# Right join example
+## Right join example
 
 .pull-left[
 .center[
-```{r superhero table 4, echo = F}
+```{r superhero-table-4, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1578,7 +1580,7 @@ heroes %>%
 
 .pull-right[
 .center[
-```{r publishers table 4, echo = F}
+```{r publishers-table-4, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1586,12 +1588,12 @@ publishers %>%
 ]
 ]
 <br>
-```{r eval = F}
+```{r right-join-display, eval = F}
 heroes %>% 
   right_join(publishers, by = "Publisher")
 ```
 
-```{r right join, echo = F}
+```{r right-join-result, echo = F}
 heroes %>% 
   right_join(publishers, by = "Publisher") %>%
   kable("html") %>% 
@@ -1600,7 +1602,7 @@ heroes %>%
 
 ---
 
-# Full join
+## Full join
 
 > All rows and all columns from both `x` and `y`. Where there are not matching values, returns `NA` for the one missing.
 
@@ -1612,11 +1614,11 @@ Animation by [Garrick Aden-Buie](https://github.com/gadenbuie/tidyexplain)
 
 ---
 
-# Full join example
+## Full join example
 
 .pull-left[
 .center[
-```{r superhero table 5, echo = F}
+```{r superhero-table-5, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1626,7 +1628,7 @@ heroes %>%
 
 .pull-right[
 .center[
-```{r publishers table 5, echo = F}
+```{r publishers-table-5, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1634,12 +1636,12 @@ publishers %>%
 ]
 ]
 <br>
-```{r eval = F}
+```{r full-join-display, eval = F}
 heroes %>% 
   full_join(publishers, by = "Publisher")
 ```
 
-```{r full join, echo = F}
+```{r full-join-result, echo = F}
 heroes %>% 
   full_join(publishers, by = "Publisher") %>%
   kable("html") %>% 
@@ -1648,7 +1650,7 @@ heroes %>%
 
 ---
 
-# Filtering joins
+## Filtering joins
 
 .large[
 > Filtering joins .highlight[match observations in the same way as mutating joins], but .highlight[affect the observations, not the variables] ([R for Data Science](https://r4ds.had.co.nz/relational-data.html#filtering-joins)).
@@ -1660,7 +1662,7 @@ heroes %>%
 
 ---
 
-# Semi join
+## Semi join
 
 > All rows from `x` where there are matching values in `y`, keeping just columns from `x`.
 
@@ -1672,11 +1674,11 @@ Animation by [Garrick Aden-Buie](https://github.com/gadenbuie/tidyexplain)
 
 ---
 
-# Semi join example
+## Semi join example
 
 .pull-left[
 .center[
-```{r superhero table 6, echo = F}
+```{r superhero-table-6, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1686,7 +1688,7 @@ heroes %>%
 
 .pull-right[
 .center[
-```{r publishers table 6, echo = F}
+```{r publishers-table-6, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1694,12 +1696,12 @@ publishers %>%
 ]
 ]
 <br>
-```{r eval = F}
+```{r semi-join-display, eval = F}
 heroes %>% 
   semi_join(publishers, by = "Publisher")
 ```
 
-```{r semi join, echo = F}
+```{r semi-join-result, echo = F}
 heroes %>% 
   semi_join(publishers, by = "Publisher") %>%
   kable("html") %>% 
@@ -1708,7 +1710,7 @@ heroes %>%
 
 ---
 
-# Anti join
+## Anti join
 
 > All rows from `x` where there are not matching values in `y`, keeping just columns from `x`.
 
@@ -1720,11 +1722,11 @@ Animation by [Garrick Aden-Buie](https://github.com/gadenbuie/tidyexplain)
 
 ---
 
-# Anti join example
+## Anti join example
 
 .pull-left[
 .center[
-```{r superhero table 7, echo = F}
+```{r superhero-table-7, echo = F}
 heroes %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1734,7 +1736,7 @@ heroes %>%
 
 .pull-right[
 .center[
-```{r publishers table 7, echo = F}
+```{r publishers-table-7, echo = F}
 publishers %>%
   kable("html") %>% 
   kable_styling(font_size = 10)
@@ -1742,12 +1744,12 @@ publishers %>%
 ]
 ]
 <br>
-```{r eval = F}
+```{r anti-join-display, eval = F}
 heroes %>% 
   anti_join(publishers, by = "Publisher")
 ```
 
-```{r anti join, echo = F}
+```{r anti-join-result, echo = F}
 heroes %>% 
   anti_join(publishers, by = "Publisher") %>%
   kable("html") %>% 

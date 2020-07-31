@@ -45,7 +45,7 @@ pre {
 
 ---
 
-# Exploratory Data Analysis (EDA)
+## Exploratory Data Analysis (EDA)
 
 After wrangling our data, the next thing we should do is exploring them. In practice, of course, these steps are often done iteratively. Exploratory data analysis can take many shapes in forms. In this session, we will look at the following:
 
@@ -58,7 +58,7 @@ A key tool for EDA is the use of visualizations which is why we will use some of
 
 ---
 
-# Data
+## Data
 
 As using the full dataset can become somewhat unwieldy for the examples in this section, we will create/use a subset of the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* data. We will select a subset of variables on the following:
 - demographics
@@ -74,18 +74,18 @@ As a repetition and reminder, we will quickly go through a wrangling pipeline fo
 
 ---
 
-# Wrangling pipeline: Select & rename 
+## Wrangling pipeline: Select & rename 
 
 .small[
-```{r load gesis panel data display, eval = F}
+```{r load-gesis-panel-data display, eval = F}
 gesis_panel_corona <- read_csv2("./data/ZA5667_v1-1-0.csv")
 ```
 
-```{r load gesis panel data, echo = F, message = F}
+```{r load-gesis-panel-data, echo = F, message = F}
 gesis_panel_corona <- read_csv2("../../../../data/ZA5667_v1-1-0.csv")
 ```
 
-```{r select & rename}
+```{r select-rename}
 corona_survey <- gesis_panel_corona %>% 
   select(id,
          sex:education_cat,
@@ -114,12 +114,12 @@ corona_survey <- gesis_panel_corona %>%
 
 ---
 
-# Wrangling pipeline: Missing values
+## Wrangling pipeline: Missing values
 
 If you look at the [codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378) for the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany*, you will see that some of the variables we have selected have specific values that we should either code as missing values or exclude before we do any analyses (exploratory or otherwise).
 
 .small[
-```{r pipeline missings}
+```{r pipeline-missings}
 library(naniar)
 
 missings <- c(-111, -99, -77, -33, -22)
@@ -139,10 +139,10 @@ corona_survey <- corona_survey %>%
 
 ---
 
-# Wrangling pipeline: Change variable types, recode values, & compute new variables
+## Wrangling pipeline: Change variable types, recode values, & compute new variables
 
 .smaller[
-```{r var type & recode}
+```{r var-type-recode}
 corona_survey <- corona_survey %>% 
     mutate(sex = recode_factor(sex,
                                `1`= "Male",
@@ -178,9 +178,9 @@ corona_survey <- corona_survey %>%
 
 ---
 
-# Wrangling pipeline: Compute new variables
+## Wrangling pipeline: Compute new variables
 
-```{r new vars}
+```{r new-vars}
 corona_survey <- corona_survey %>%
   mutate(sum_measures = avoid_places + 
            keep_distance + 
@@ -205,7 +205,7 @@ corona_survey <- corona_survey %>%
 
 ---
 
-# Explore your data: First look
+## Explore your data: First look
 
 To get some first impression of the dataset you can use some of the functions that we discussed in the session on *Data Wrangling*, such as `dim()`, `head()`, or `str()` from `base R`, `glimpse()` from `dplyr`, or `View()`.
 
@@ -213,7 +213,7 @@ While looking at the the full dataset can give us a general understanding of the
 
 ---
 
-# Making sense of data
+## Making sense of data
 
 To make sense of quantitative data we can reduce their information to unique values.
 
@@ -236,7 +236,7 @@ As such, we can use summarizing functions of
 
 ---
 
-# Summary statistics: `summary()`
+## Summary statistics: `summary()`
 
 A quick and easy way to check some summary statistics for your dataset is the `base R` function `summary()` which can be applied to individual variables as well as whole dataframes:
 
@@ -258,7 +258,7 @@ summary(corona_survey[, 2:19])
 
 ---
 
-# Frequencies: `table()`
+## Frequencies: `table()`
 
 A simple way of looking at frequencies (e.g., for categorical variables) is the `base R` function `table()`.
 
@@ -268,18 +268,18 @@ table(corona_survey$choice_of_party)
 
 If you also want to include `NA` in the frequency counts, you need to specify the argument `useNA = "always"`.
 
-```{r table NA}
+```{r table-NA}
 table(corona_survey$choice_of_party, useNA = "always")
 ```
 
 ---
 
-# Proportions with `prop.table()`
+## Proportions with `prop.table()`
 
 If you want proportions instead of raw counts, you can use the `base R` function `prop.table()`. You need to apply this function to an output produced by `table()`. 
 
 .small[
-```{r prop.table}
+```{r prop-table}
 prop.table(table(corona_survey$choice_of_party))
 
 prop.table(table(corona_survey$choice_of_party, useNA = "always"))
@@ -288,7 +288,7 @@ prop.table(table(corona_survey$choice_of_party, useNA = "always"))
 
 ---
 
-# Proportions with `prop.table()`
+## Proportions with `prop.table()`
 
 If you want fewer decimals places in the output, you can wrap the the `prop.table()` function in a `round()` call.
 
@@ -303,7 +303,7 @@ round((prop.table(table(corona_survey$choice_of_party, useNA = "always")) * 100)
 
 ---
 
-# Summary statistics: `psych::describe()`
+## Summary statistics: `psych::describe()`
 
 For more detailed summary statistics for the numeric variables you can use the `describe()` function from the [`psych` package](https://cran.r-project.org/web/packages/psych/index.html).
 
@@ -328,7 +328,7 @@ corona_survey %>%
 
 ---
 
-# Summary statistics: `summarytools::descr()`
+## Summary statistics: `summarytools::descr()`
 
 The [`summarytools` package](https://github.com/dcomtois/summarytools) provides a lot of functionalities for EDA, including the `descr()` function for summary statistics for numerical variables.
 
@@ -358,7 +358,7 @@ class: center, middle
 
 ---
 
-# Summary statistics with `dplyr`
+## Summary statistics with `dplyr`
 
 `dplyr` provides a helpful function for creating summary statistics: `summarize()`
 
@@ -378,10 +378,10 @@ A very nice thing about `summarize()` is that it produces a `tibble` which can b
 
 ---
 
-# `dplyr::summarize()`
+## `dplyr::summarize()`
 
 .small[
-```{r summarize example}
+```{r summarize-example}
 corona_survey %>% 
   summarize(
     mean_trust_gov = mean(trust_government, na.rm = TRUE),
@@ -395,12 +395,12 @@ corona_survey %>%
 
 ---
 
-# `dplyr::group_by()`
+## `dplyr::group_by()`
 
 The `dplyr` function `group_by()` creates dataframes (tibbles) that are grouped by one or more variables. This can, e.g., be used to produce grouped summary statistics. *Note:* To end/undo the grouping we can use the `ungroup()` function.
 
 .small[
-```{r group_by}
+```{r group-by}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   group_by(choice_of_party) %>% #<<
@@ -417,7 +417,7 @@ corona_survey %>%
 
 ---
 
-# `dplyr::across()`
+## `dplyr::across()`
 
 To produce grouped summary statistics for multiple variables you can use the `dplyr` function `across()`. *Note*: We only use cases without missing data for any of the variables here (= listwise deletion).
 
@@ -439,20 +439,20 @@ Note that we only use cases without missing data for any of the variables here.
 
 ---
 
-# `dplyr::across()`
+## `dplyr::across()`
 
-```{r, across_cartoon, out.width = "95%", echo = F}
+```{r, across-cartoon, out.width = "95%", echo = F}
 include_graphics("./pics/dplyr_across.png")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Frequencies and proportions with `dplyr`
+## Frequencies and proportions with `dplyr`
 
 We can also use `group_by()` and `summarize()` to get frequencies and proportions for variables in our dataset.
 
-```{r freqprop dplyr}
+```{r freqprop-dplyr}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   group_by(choice_of_party) %>% 
@@ -463,11 +463,11 @@ corona_survey %>%
 
 ---
 
-# Frequencies and proportions with `dplyr`
+## Frequencies and proportions with `dplyr`
 
 Instead of using `group_by` and `summarize()` to get frequency counts, we can also use `count()` from `dplyr` as a shorthand.
 
-```{r freqprop count}
+```{r freqprop-count}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   count(choice_of_party) %>% #<<
@@ -477,7 +477,7 @@ corona_survey %>%
 
 ---
 
-# Frequencies and proportions with `janitor::tabyl()`
+## Frequencies and proportions with `janitor::tabyl()`
 
 The [`janitor` package](https://github.com/sfirke/janitor) that we briefly mentioned in the section on *Data Wrangling* also provides a helpful function for creating frequency and proportion tables:
 
@@ -493,12 +493,12 @@ corona_survey %>%
 
 ---
 
-# Frequencies and proportions with `summarytools::freq()`
+## Frequencies and proportions with `summarytools::freq()`
 
 The `summarytools` package also includes the `freq()` function for frequency tables.
 
 .small[
-```{r summarytools freq, message = F}
+```{r summarytools-freq, message = F}
 library(summarytools)
 
 freq(corona_survey$choice_of_party)
@@ -507,7 +507,7 @@ freq(corona_survey$choice_of_party)
 
 ---
 
-# Relationships between variables
+## Relationships between variables
 
 In addition to checking summary statistics for individual variables, another thing that you quite possibly also want to look at as part of your exploratory data analysis (EDA) are the relationships between (specific) variables in your dataset. There are many ways to do so and the appropriate choice of methods, of course, depends on the types of variables you want to explore. In the following, we will briefly discuss some options for two methods of exploring relationships between variables:
 
@@ -517,11 +517,11 @@ In addition to checking summary statistics for individual variables, another thi
 
 ---
 
-# Crosstabs
+## Crosstabs
 
 Crosstabs can be used to explore relationships between categorical variables. As with almost everything in `R`, there are many different options for creating crosstabs, some of which we will discuss in the following. To start with, you can use the `base R` functions `table()` and `prop.table()` to generate crosstabs.
 
-```{r base crosstabs}
+```{r base-crosstabs}
 table(corona_survey$sex, corona_survey$choice_of_party) # rows, columns
 
 round(prop.table(table(corona_survey$sex, corona_survey$choice_of_party))*100, 2)
@@ -529,11 +529,11 @@ round(prop.table(table(corona_survey$sex, corona_survey$choice_of_party))*100, 2
 
 ---
 
-# Crosstabs
+## Crosstabs
 
 We can also calculate row or column percentages.
 
-```{r base crosstabs margins}
+```{r base-crosstabs-margins}
 round(prop.table(table(corona_survey$sex, corona_survey$choice_of_party), 1)*100, 2) # row percentages
 round(prop.table(table(corona_survey$sex, corona_survey$choice_of_party), 2)*100, 2) # column percentages
 ```
@@ -542,11 +542,11 @@ If you want to generate tables based on more than two variables, the `base R` fu
 
 ---
 
-# Crosstabs with `dplyr`
+## Crosstabs with `dplyr`
 
 We can also use functions from `dplyr` in a similar fashion as we have done for a single variable to create crosstabs including frequencies and proportions.
 
-```{r dplyr crosstabs freq}
+```{r dplyr-crosstabs-freq}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   count(sex, choice_of_party) %>% 
@@ -556,11 +556,11 @@ corona_survey %>%
 
 ---
 
-# Crosstabs with `dplyr`
+## Crosstabs with `dplyr`
 
 We can also use functions from `dplyr` in a similar fashion as we have done for a single variable to create crosstabs including frequencies and proportions.
 
-```{r dplyr crosstabs prop}
+```{r dplyr-crosstabs-prop}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   count(sex, choice_of_party) %>% 
@@ -572,7 +572,7 @@ corona_survey %>%
 
 ---
 
-# Other options for crosstabulation in `R`
+## Other options for crosstabulation in `R`
 
 Some of the interesting alternative options for crosstabs in `R` include the `CrossTable()` and `crosstab()` functions from the [`descr` package](https://cran.r-project.org/web/packages/descr/index.html), the latter of which also produces a mosaic plot to visualize the conditional frequencies, the `CrossTable()` function from the [`gmodels` package](https://cran.r-project.org/web/packages/gmodels/index.html), or the `ctable()` function from the [`summarytools` package](https://github.com/dcomtois/summarytools).
 
@@ -580,12 +580,12 @@ A very versatile option for crosstabs is the `tabyl()` function from the `janito
 
 ---
 
-# Crosstabs with the `janitor` package
+## Crosstabs with the `janitor` package
 
 The `tabyl()` function from the `janitor` package provides quite a few options for crosstabs. We will only show one example here, but you can learn more in the [`tabyl` vignette](https://cran.r-project.org/web/packages/janitor/vignettes/tabyls.html).
 
 .small[
-```{r tabyl crosstabs}
+```{r tabyl-crosstabs}
 library(janitor)
 
 corona_survey %>% 
@@ -600,7 +600,7 @@ corona_survey %>%
 
 ---
 
-# Chi-Square Test
+## Chi-Square Test
 
 You can, e.g., use the `summary()` function in combination with `table()` to do a chi-square test. The other packages mentioned previously that include functions for crosstabs can also be used for chi-square tests: For example, the `janitor` package,
 
@@ -621,7 +621,7 @@ corona_survey %>%
 
 ---
 
-# Correlations
+## Correlations
 
 Again, as with the crosstabs examples, there are many different options for calculating and displaying correlations in `R`. In addition to the `base R` functions, we will look at two packages in this part: [`corrr`](https://corrr.tidymodels.org/) and [`correlation`](https://github.com/easystats/correlation).
 
@@ -632,7 +632,7 @@ Again, as with the crosstabs examples, there are many different options for calc
 The `base R` function `cor()` computes the correlation coefficient(s) between two or more variables. This function can be used to calculate *Pearson's r*, *Kendall's tau*, and *Spearman's rho*. We also need to specify how we want to deal with missing values (e.g., use pairwise complete observations). For example, let's look at the correlations between the trust variables in our dataset:
 
 .small[
-```{r corr base}
+```{r corr-base}
 trust <- corona_survey %>% 
   select(starts_with("trust"))
 
@@ -643,17 +643,17 @@ cor(trust,
 ]
 
 ---
-# Correlations with `base R`
+## Correlations with `base R`
 
 With `corr.test()` you can display the results of a significance test for a correlation.
 
-```{r corr.test}
+```{r corr-test}
 cor.test(trust$trust_rki, trust$trust_scientists, method = "pearson")
 ```
 
 ---
 
-# The `corrr` package
+## The `corrr` package
 
 The [`corrr` package](https://corrr.tidymodels.org/) is part of the [`tidymodels` suite of packages](https://www.tidymodels.org/) and provides various functions for displaying correlations. The main function is `correlate()` which produces a `tibble` as output.
 
@@ -667,12 +667,12 @@ correlate(trust)
 
 ---
 
-# The `corrr` package
+## The `corrr` package
 
 The `corrr` package provides several functions for tweaking/optimizing the output of the `correlate()` function. Here's one example:
 
 .small[
-```{r corr output tweaks}
+```{r corr-output-tweaks}
 trust %>% 
   correlate() %>% 
   rearrange() %>% 
@@ -683,7 +683,7 @@ trust %>%
 
 ---
 
-# The `corrr` package
+## The `corrr` package
 
 .pull-left[
 The package also provides different options for visualizing correlation coefficients.
@@ -703,20 +703,20 @@ trust %>%
 
 ---
 
-# Plotting correlations with `GGally::ggcorr()`
+## Plotting correlations with `GGally::ggcorr()`
 
 The [`ggcorr` function](https://briatte.github.io/ggcorr/) from the [`GGAlly` package](https://ggobi.github.io/ggally/) - which is an extension to `ggplot2` -  also provides some interesting options for visualizing correlation coefficients.
 
-```{r load ggcorr}
+```{r load-ggally}
 library(GGally)
 ```
 
 ---
 
-# `GGAlly::ggcorr()`
+## `GGAlly::ggcorr()`
 
 .small[
-```{r ggcorr example, out.width = "60%"}
+```{r ggcorr-example, out.width = "60%"}
 trust %>% 
   ggcorr(label = TRUE,
          label_round = 2)
@@ -725,7 +725,7 @@ trust %>%
 
 ---
 
-# The `correlation` package
+## The `correlation` package
 
 The [`correlation` package](https://github.com/easystats/correlation) is part of the [`easystats` project](https://easystats.github.io/blog/portfolio/). It provides a much wider range of correlation types than the `base R` function `cor()` and the `correlate()` function from the `corrr` package. Its main workhorse is the `correlation()` function.
 
@@ -739,11 +739,11 @@ correlation(trust)
 
 ---
 
-# The `correlation` package
+# #The `correlation` package
 
 Among other things, the `correlation` package, e.g., also provides options for biserial and tetrachoric correlations for factors, and it also to calculate grouped/stratified correlations.
 
-```{r correlation_grouped, eval = F}
+```{r correlation-grouped, eval = F}
 corona_survey %>% 
   select(sex, starts_with("trust")) %>% 
   group_by(sex) %>% #<<
@@ -757,21 +757,21 @@ corona_survey %>%
 class: center, middle
 
 .smaller[
-```{r ref.label = "correlation_grouped", echo = F}
+```{r ref.label = "correlation-grouped", echo = F}
 
 ```
 ]
 
 ---
 
-# Guilty by ~~association~~ correlation
+## Guilty by ~~association~~ correlation
 
 .column-left-half[
 While correlation coefficients are useful for exploring relationships between variables, they can also be misleading. For example, if we do correlation analysis and we encounter a (Pearson's) correlation coefficient close to 0, we often think of relationships as pictured on the right side.
 ]
 
 .column-right-half[
-```{r dino plot 1, out.width = "80%", echo = F}
+```{r dino-plot-1, out.width = "80%", echo = F}
 library(datasauRus)
 
 datasaurus_dozen %>% 
@@ -784,11 +784,11 @@ datasaurus_dozen %>%
 
 ---
 
-# Guilty by ~~association~~ correlation
+## Guilty by ~~association~~ correlation
 
 This dataset has **the same correlation coefficient (Pearson's r of -0.06)** as the one on the previous slide:
 
-```{r dino plot 2, out.width = "50%", echo = F}
+```{r dino-plot-2, out.width = "50%", echo = F}
 datasaurus_dozen %>% 
   filter(dataset == "slant_up") %>% 
   ggplot(aes(x = x, y = y)) + 
@@ -798,11 +798,11 @@ datasaurus_dozen %>%
 
 ---
 
-# Guilty by ~~association~~ correlation `r emo::ji("T-Rex")`
+## Guilty by ~~association~~ correlation `r emo::ji("T-Rex")`
 
 So does this one...
 
-```{r dino plot 3, out.width = "60%", echo = F}
+```{r dino-plot-3, out.width = "60%", echo = F}
 datasaurus_dozen %>% 
   filter(dataset == "dino") %>% 
   ggplot(aes(x = x, y = y)) + 
@@ -812,11 +812,11 @@ datasaurus_dozen %>%
 
 ---
 
-# Guilty by ~~association~~ correlation
+## Guilty by ~~association~~ correlation
 
 We could go on... The previous three examples all come from the [`datasauRus` package](https://github.com/lockedata/datasauRus) which essentially is an extension of [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) and includes 13 datasets with the same (Pearson) correlation between x and y.
 
-```{r dino plot 4, out.width = "55%", echo = F}
+```{r dino-plot-4, out.width = "55%", echo = F}
 datasaurus_dozen %>% 
 ggplot(aes(x = x, y = y, colour = dataset)) +
   geom_point() +
@@ -827,9 +827,9 @@ ggplot(aes(x = x, y = y, colour = dataset)) +
 
 ---
 
-# Dinosaur `r emo::ji("T-Rex")` vs. Shark `r emo::ji("shark")`
+## Dinosaur `r emo::ji("T-Rex")` vs. Shark `r emo::ji("shark")`
 
-```{r load shark, echo = F, message= F}
+```{r load-shark, echo = F, message= F}
 shark <- read_csv("../../data/shark_raw.csv")
 ```
 
@@ -843,7 +843,7 @@ datasaurus_dozen %>%
 ```
 
 .small[
-```{r t-rex corr}
+```{r t-rex-corr}
 datasaurus_dozen %>% 
   filter(dataset == "dino") %$% 
   cor(x, y)
@@ -861,12 +861,14 @@ shark %>%
 <small><small>Data shark by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 .small[
-```{r shark corr}
+```{r shark-corr}
 shark %$% 
   cor(x, y)
 ```
 ]
 ]
+
+--
 
 .center[
 ***Sharks are more ~~coral-hated~~ correlated!***
@@ -876,12 +878,12 @@ shark %$%
 
 ---
 
-# Trust no singular value!
+## Trust no singular value!
 
 Importantly, the x- and y-variables in these `datasaurus_dozen` dataset also all have the same means and standard deviations.
 
 .smaller[
-```{r datasaurus summary stats}
+```{r datasaurus-summary-stats}
 datasaurus_dozen %>% 
   group_by(dataset) %>%
   summarize(
@@ -896,7 +898,7 @@ datasaurus_dozen %>%
 
 ---
 
-# Plot your data!
+## Plot your data!
 
 The message from the `datasaurus_dozen` examples should be clear. Relying only on singular values that summarize the location or spread of a single variable or the association of two variables is not a good idea. To avoid reducing a ~~mountain to a molehill~~ dinosaur to a lack of correlation, it is important to plot your data as part of your EDA to explore:
 
@@ -910,13 +912,13 @@ There are many good resources for plotting with `R`. A very exhaustive and appro
 
 ---
 
-# EDA vs. publication-ready plots
+## EDA vs. publication-ready plots
 
 When you get more familiar with plotting in `R` you will notice that there are seemingly unlimited plotting options that allow for comprehensive customization. This means that you can spend a lot of time on tweaking and optimizing plot. While this makes sense for producing figures for publications, in the context of EDA, the figures you produce are meant for yourself (plus maybe a few collaborators). Hence, we will mostly make use of (rather) basic examples in the following. However, although `base R` provides quite a few plotting options, we will focus using `ggplot2` (and extensions thereof) as it is generally more versatile.
 
 ---
 
-# Plotting univariate distributions
+## Plotting univariate distributions
 
 In the following, we will discuss some examples of plotting univariate distributions of
 
@@ -930,13 +932,13 @@ Of course, there are more options than the ones we will show for plotting univar
 
 ---
 
-# Bar chart
+## Bar chart
 
 .pull-left[
 The most common way of displaying the distribution of one categorical variable is a bar chart. The simplest way of creating a bar chart that shows counts per category with `ggplot2` is:
 
 .small[
-```{r bar_chart_basic, eval = F}
+```{r bar-chart-basic, eval = F}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   ggplot(aes(x = choice_of_party)) +
@@ -946,19 +948,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_basic", echo = F}
+```{r ref.label = "bar-chart-basic", echo = F}
 ```
 ]
 
 ---
 
-# Bar chart: Add colors
+## Bar chart: Add colors
 
 .pull-left[
 We can also have different colors for the categories in our bar chart:
 
 .small[
-```{r bar_chart_color, eval = F}
+```{r bar-chart-color, eval = F}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   ggplot(aes(x = choice_of_party, 
@@ -971,19 +973,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_color", echo = F}
+```{r ref.label = "bar-chart-color", echo = F}
 ```
 ]
 
 ---
 
-# Row chart
+## Row chart
 
 .pull-left[
 While we are quite used to seeing bar charts, flipping its coordinates, so that it becomes a row chart, can make it easier to read (at least for people from countries in which the reading direction is left to right, top to bottom).
 
 .small[
-```{r bar_chart_flip, eval = F}
+```{r bar-chart-flip, eval = F}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   ggplot(aes(x = choice_of_party, 
@@ -995,19 +997,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_flip", echo = F}
+```{r ref.label = "bar-chart-flip", echo = F}
 ```
 ]
 
 ---
 
-# Change the order of categories
+## Change the order of categories
 
 .pull-left[
 There are [several ways of changing the order of categorical variable values for a plot](https://www.r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html). In the previous example, we might want to change the order of parties from top to bottom based on their counts. To do this we can, e.g., use the `fct_rev()` and `fct_infreq()` functions from the `forcats` package.
 
 .small[
-```{r bar_chart_order, eval = F}
+```{r bar-chart-order, eval = F}
 corona_survey %>% 
   filter(!is.na(choice_of_party)) %>% 
   ggplot(aes(x = fct_rev(fct_infreq(choice_of_party)), #<<
@@ -1020,19 +1022,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_order", echo = F}
+```{r ref.label = "bar-chart-order", echo = F}
 ```
 ]
 
 ---
 
-# Bar or row chart with percentages
+## Bar or row chart with percentages
 
 .pull-left[
 We might want to display relative frequencies (proportions) instead of absolute frequencies (counts) for our categorical variable.
 
 .small[
-```{r bar_chart_perc, eval = F}
+```{r bar-chart-perc, eval = F}
 library(scales)
 
 corona_survey %>% 
@@ -1047,19 +1049,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_perc", echo = F, message = F}
+```{r ref.label = "bar-chart-perc", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Pretty bar plot
+## Pretty bar plot
 
 .pull-left[
 Although we don't want to (and can't) discuss all plot customization option in detail, we want to show one example of a heavily tweaked bar chart to illustrate what is possible.
 
 .smaller[
-```{r bar_chart_custom, eval = F}
+```{r bar-chart-custom, eval = F}
 colors <- c("#000000", "#E30013", "#FFEE00", "#BE3075", "#19A329", "#009FE1", "#808080")
 
 corona_survey %>% 
@@ -1087,25 +1089,25 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_custom", echo = F, warning = F}
+```{r ref.label = "bar-chart-custom", echo = F, warning = F}
 ```
 ]
 
 ---
 
-# Alternatives to bar charts
+## Alternatives to bar charts
 
 There are [several alternatives to bar charts](https://towardsdatascience.com/anything-but-bars-the-10-best-alternatives-to-bar-graphs-fecb2aaee53a) for plotting categorical variables. An interesting one is the so-called [donut chart](https://www.r-graph-gallery.com/128-ring-or-donut-plot.html) which can, e.g., be created with the `ggdonutchart()` function from the [`ggpubr` package](https://rpkgs.datanovia.com/ggpubr/index.html).
 
 ---
 
-# Discrete numeric variables
+## Discrete numeric variables
 
 .pull-left[
 For plotting the univariate distribution of discrete numeric variables (such as those based on Likert scales) it is, of course, possible to also use bar charts.
 
 .small[
-```{r bar_chart_num, eval = F}
+```{r bar-chart-num, eval = F}
 corona_survey %>% 
   filter(!is.na(trust_scientists)) %>% 
   ggplot(aes(x = trust_scientists)) +
@@ -1115,19 +1117,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_num", echo = F, message = F}
+```{r ref.label = "bar-chart-num", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Discrete numeric variables
+## Discrete numeric variables
 
 .pull-left[
 Bar plots can become a bit unwieldy for visualizing the distribution of discrete numeric variables, if the number of individual values is high. In cases where there is a very high number of different values in a discrete numeric variable it may be better to use histograms instead of bar plots.
 
 .small[
-```{r bar_chart_num2, eval = F}
+```{r bar-chart-num2, eval = F}
 corona_survey %>% 
   filter(!is.na(left_right)) %>% 
   ggplot(aes(x = left_right)) +
@@ -1137,24 +1139,24 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "bar_chart_num2", echo = F, message = F}
+```{r ref.label = "bar-chart-num2", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Special case: Likert-plots
+## Special case: Likert-plots
 
 For plotting the shares of responses to Likert-type items, the `plot_likert()` function from the [`sjPlot` package](https://strengejacke.github.io/sjPlot/) is an interesting option. However, this requires labelled data. Another option is the [`likert` package](https://github.com/jbryer/likert).
 
 ---
 
-# Continuous numeric variables
+## Continuous numeric variables
 
 The univariate distribution of a continuous numeric variable can be plotted as a histogram. As there are no continuous variables in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset, we will use data from [*Gapminder*](https://www.gapminder.org/) on worldwide life expectancy and GDP per capita in 2018. As always, we first need to load and wrangle the data.
 
 .smaller[
-```{r load & wrangle gapminder data display, eval = F}
+```{r gapminder-data-display, eval = F}
 life_exp_2018 <- read_csv("./data/life_expectancy_years.csv") %>%
   pivot_longer(-country,
                names_to = "year",
@@ -1173,7 +1175,7 @@ gapminder_2018 <- life_exp_2018 %>%
   left_join(gdp_pc_2018, by = "country")
 ```
 
-```{r load & wrangle gapminder data, echo = F, message = F}
+```{r gapminder-data, echo = F, message = F}
 life_exp_2018 <- read_csv("../../data/life_expectancy_years.csv") %>%
   pivot_longer(-country,
                names_to = "year",
@@ -1195,7 +1197,7 @@ gapminder_2018 <- life_exp_2018 %>%
 
 ---
 
-# Histogram
+## Histogram
 
 .pull-left[
 Now we can use the *Gapminder* data on global life expectancy in 2018 to create a histogram.
@@ -1217,12 +1219,12 @@ gapminder_2018 %>%
 
 ---
 
-# Histogram
+## Histogram
 
 .pull-left[
 One thing to keep in mind about histograms is that they can look quite different for the same data, depending on the number and size of the bins they use. We can easily adapt this with `ggplot2` by specifying the `binwidth` or the `bins` argument.
 
-```{r hist_binwidth, eval = F}
+```{r hist-binwidth, eval = F}
 gapminder_2018 %>% 
   filter(!is.na(life_exp)) %>% 
   ggplot(aes(x = life_exp)) +
@@ -1231,13 +1233,13 @@ gapminder_2018 %>%
 ]
 
 .pull-right[
-```{r ref.label = "hist_binwidth", echo = F, message = F}
+```{r ref.label = "hist-binwidth", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Density plot
+## Density plot
 
 .pull-left[
 To avoid the issue of picking the "right" number or size of bins, a density plot can be a good alternative to a histogram for continuous numeric variables.
@@ -1262,19 +1264,19 @@ gapminder_2018 %>%
 
 ---
 
-# Testing the normality assumption
+## Testing the normality assumption
 
 Some statistical tests require that the data (roughly) follow a normal distribution. Histograms and density plots can already help us get a good first impression if our data are (approximately) normally distributed. Two other options for visually testing the normal distribution of our data are [QQ-plots and PP-plots](https://homepage.divms.uiowa.edu/~luke/classes/STAT4580/qqpp.html#pp-plots). While [`ggplot` offers geoms for QQ-plots](https://ggplot2.tidyverse.org/reference/geom_qq.html), the [`qqplotr` package](https://github.com/aloy/qqplotr) offers a lot of convenient functions and options for creating and customizing QQ- and PP-plots.
 
 ---
 
-# QQ-Plot
+## QQ-Plot
 
 .pull-left[
 The QQ-plot plots data quantiles against theoretical quantiles (e.g., of the normal distribution). If our data are (approximately) normally distributed, they should follow the diagonal line in the QQ-plot, or at least be within its confidence band. Let's create a QQ-plot for the political orientation variable from the *GESIS Panel* dataset.
 
 .small[
-```{r qqplot_gesis_panel, eval = F}
+```{r qqplot-gp, eval = F}
 library(qqplotr)
 
 corona_survey %>% 
@@ -1290,19 +1292,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "qqplot_gesis_panel", echo = F, message = F}
+```{r ref.label = "qqplot-gp", echo = F, message = F}
 ```
 ]
 
 ---
 
-# QQ-Plot
+## QQ-Plot
 
 .pull-left[
 The reason the QQ-plot for the political orientation variable looks the way it does is that the values of the variable are discrete. The ~~picture~~ plot looks different, if we use a continuous variable.
 
 .small[
-```{r qqplot_gapminder, eval = F}
+```{r qqplot-gapminder, eval = F}
 gapminder_2018 %>% 
   filter(!is.na(life_exp)) %>% 
   ggplot(mapping = aes(sample = life_exp)) +
@@ -1316,19 +1318,19 @@ gapminder_2018 %>%
 ]
 
 .pull-right[
-```{r ref.label = "qqplot_gapminder", echo = F, message = F}
+```{r ref.label = "qqplot-gapminder", echo = F, message = F}
 ```
 ]
 
 ---
 
-# PP-Plot
+## PP-Plot
 
 .pull-left[
 The PP-plot compares the proportion of values between the actual and a theoretical (in this case normal) distribution.
 
 .small[
-```{r ppplot_gapminder, eval = F}
+```{r ppplot-gapminder, eval = F}
 gapminder_2018 %>% 
   filter(!is.na(life_exp)) %>% 
   ggplot(mapping = aes(sample = life_exp)) +
@@ -1342,18 +1344,18 @@ gapminder_2018 %>%
 ]
 
 .pull-right[
-```{r ref.label = "ppplot_gapminder", echo = F, message = F}
+```{r ref.label = "ppplot-gapminder", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Normality test
+## Normality test
 
 `Base R` also provides functions for statistical tests of normality. The most common ones are *Shapiro-Wilk's test* and the *Kolmogorov-Smirnov* test, both of which test the H0 that the data follow a normal distribution against the H1 that they do not follow a normal distribution. It should be noted, however, that, especially for larger sample sizes, these tests tend to be quite conservative.
 
 .small[
-```{r normality tests, warning = F}
+```{r normality-tests, warning = F}
 shapiro.test(gapminder_2018$life_exp)
 
 ks.test(gapminder_2018$life_exp, 
@@ -1365,7 +1367,7 @@ ks.test(gapminder_2018$life_exp,
 
 ---
 
-# Visual group comparisons
+## Visual group comparisons
 
 If we want to visually compare distributions (or summary statistics) across groups or, more generally speaking, across different values of categorical variables in our dataset, there are plenty of options in `R`. There are grouped versions of all of the plots we discussed before: bar plots, histograms, and density plots. However, there also are other plot types that are especially suited for comparing subsets/groups in our data. 
 
@@ -1373,13 +1375,13 @@ If we want to visually compare distributions (or summary statistics) across grou
 
 ---
 
-# Grouped & stacked barplots
+## Grouped & stacked barplots
 
 .pull-left[
 If we want to compare the distribution of categorical variables across groups, we can use grouped or stacked barplots. If, e.g., we want to compare the party preferences across education categories in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset, we could do so with a grouped barplot.
 
 .small[
-```{r grouped_barplot, eval = F}
+```{r grouped-barplot, eval = F}
 corona_survey %>%
   filter(!is.na(choice_of_party)) %>%
   ggplot(aes(x = education_cat, 
@@ -1390,19 +1392,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "grouped_barplot", echo = F}
+```{r ref.label = "grouped-barplot", echo = F}
 ```
 ]
 
 ---
 
-# Grouped & stacked barplots
+## Grouped & stacked barplots
 
 .pull-left[
 If we want to compare the share of female and male voters for each party, we can use a stacked barplot.
 
 .small[
-```{r stacked_barplot, eval = F}
+```{r stacked-barplot, eval = F}
 corona_survey %>%
   filter(!is.na(choice_of_party)) %>%
   ggplot(aes(x = choice_of_party, 
@@ -1413,13 +1415,13 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "stacked_barplot", echo = F}
+```{r ref.label = "stacked-barplot", echo = F}
 ```
 ]
 
 ---
 
-# Barplot with error bars
+## Barplot with error bars
 
 .pull-left[
 One way to compare, e.g., mean values across groups is a barplot with error bars, sometimes also called a dynamite plot.
@@ -1454,13 +1456,13 @@ corona_survey %>%
 
 ---
 
-# Boxplot
+## Boxplot
 
 .pull-left[
 A plot type that, despite having [received quite some criticism in recent years](https://www.data-to-viz.com/caveat/boxplot.html), is still widely used to visually summarize numeric data is the boxplot. `ggplot2` provides its own geom for this type of plot.
 
 .small[
-```{r boxplot_basic, eval = F}
+```{r boxplot-basic, eval = F}
 corona_survey %>%
   filter(!is.na(trust_government),
          !is.na(choice_of_party)) %>% 
@@ -1472,28 +1474,28 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "boxplot_basic", echo = F, message = F}
+```{r ref.label = "boxplot-basic", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Show me your data points!
+## Show me your data points!
 
-```{r, summary_cartoon, out.width = "95%", echo = F}
+```{r, summary-cartoon, out.width = "95%", echo = F}
 include_graphics("./pics/summary_statistics.png")
 ```
 <small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 
 ---
 
-# Boxplot with individual data points
+## Boxplot with individual data points
 
 .pull-left[
 One key point of criticism regarding the use of boxplots as well as dynamite plots (barplots with error bars) is that they do not provide any information about the distribution of the data. This has even led some scientists to start an initiative to [#barbarplots](https://barbarplots.github.io/index.html). However, with `ggplot2` information about the distribution of variables can easily be added to a boxplot (or other types of plots), e.g., with the `geom_jitter`.
 
 .small[
-```{r boxplot_jitter, eval = F}
+```{r boxplot-jitter, eval = F}
 corona_survey %>%
   filter(!is.na(trust_government),
          !is.na(choice_of_party)) %>% 
@@ -1506,19 +1508,19 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "boxplot_jitter", echo = F, message = F}
+```{r ref.label = "boxplot-jitter", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Violin plots
+## Violin plots
 
 .pull-left[
 The previous version of adding individual data points to the boxplot was not really visually appealing. A good alternative to boxplots are violin plots which show the distribution of the variable (within groups) and can be combined with boxplots.
 
 .small[
-```{r violin_box, eval = F}
+```{r violin-box, eval = F}
 corona_survey %>%
   filter(!is.na(trust_government),
          !is.na(choice_of_party)) %>% 
@@ -1535,13 +1537,13 @@ corona_survey %>%
 ]
 
 .pull-right[
-```{r ref.label = "violin_box", echo = F, message = F}
+```{r ref.label = "violin-box", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Half-violin plots
+## Half-violin plots
 
 .pull-left[
 Violin plots include a mirrored density plot. An alterntive to this are half-violin plot that can, e.g., be created with the [`gghalves` package](https://github.com/erocoar/gghalves).
@@ -1574,19 +1576,19 @@ corona_survey %>%
 
 ---
 
-# Plotting bivariate distributions of numeric variables
+## Plotting bivariate distributions of numeric variables
 
 Similar to univariate statistics and distributions, there are multiple options for plotting bivariate distributions in `R`. Again, [*From Data to Viz*](https://www.data-to-viz.com/) is a good resource to consult here. We will explore some of the options for plotting bivariate distributions of numeric variables in the following.
 
 ---
 
-# Scatter plot
+## Scatter plot
 
 .pull-left[
 A very common option for plotting bivariate distributions to explore relationships between numeric variables is the scatter plot.
 
 .small[
-```{r scatter_plot, eval = F}
+```{r scatter-plot, eval = F}
 gapminder_2018 %>% 
   filter(!is.na(life_exp),
          !is.na(gdp_percap)) %>% 
@@ -1598,19 +1600,19 @@ gapminder_2018 %>%
 ]
 
 .pull-right[
-```{r ref.label = "scatter_plot", echo = F, message = F}
+```{r ref.label = "scatter-plot", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Scatter plot + marginal distributions
+## Scatter plot + marginal distributions
 
 .pull-left[
 The `ggMarginal()` function from the [`ggExtra` package](https://github.com/daattali/ggExtra) allows us to add information about the distribution of variables to the margins of a scatter plot. We can add histograms, density plots or boxplots.
 
 .small[
-```{r scatter_margin, eval = F}
+```{r scatter-margin, eval = F}
 library(ggExtra)
 
 p <- gapminder_2018 %>% 
@@ -1626,12 +1628,12 @@ p <- gapminder_2018 %>%
 ]
 
 .pull-right[
-```{r ref.label = "scatter_margin", echo = F, message = F}
+```{r ref.label = "scatter-margin", echo = F, message = F}
 ```
 ]
 ---
 
-# Extensions
+## Extensions
 
 Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). If you want to (visually) explore time series data, [*From Data to Viz*](https://www.data-to-viz.com/) has a section on this or you could, e.g. have a look at the [`timetk` package](https://business-science.github.io/timetk/index.html).
 
@@ -1639,24 +1641,24 @@ There are also several extension packages for `ggplot2` that provide additional 
 
 ---
 
-# Missings & outliers
+## Missings & outliers
 
 Two things that can influence summary statistics as well as univariate and bivariate distributions are missings and outliers. Hence, before we can analyze our data, we should check whether we have clear patterns of missingness or extreme outliers in our data.
 
 ---
 
-# Missing data
+## Missing data
 
 In the *Data Wrangling* session we have already discussed how we can define specific values as missings (`NA`) and how we can recode `NA` into something else. As we have seen in that session, the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset contains quite a few codes for different types of missing data. However, when we collect data ourselves or if we (re-)use datasets that are not as well-documented as the *GESIS Panel* data, we may need to explore potential patterns of missingness to see, if there may have been identifiable reasons why data for certain variables and/or observations are missing. There is a [vignette for the `naniar` package](https://cran.r-project.org/web/packages/naniar/vignettes/naniar-visualisation.html) that provides a good overview of different missing data visualizations. We will explore some of those in the following.
 
 ---
 
-# `visdat::vis_dat()`
+## `visdat::vis_dat()`
 
 .pull-left[
 The [`visdat` package](http://visdat.njtierney.com/) provides several functions for visualizing missind data.
 
-```{r vis_dat, eval = F}
+```{r visdat, eval = F}
 library(visdat)
 
 vis_dat(corona_survey)
@@ -1664,35 +1666,35 @@ vis_dat(corona_survey)
 ]
 
 .pull-right[
-```{r ref.label = "vis_dat", echo = F, message = F}
+```{r ref.label = "visdat", echo = F, message = F}
 ```
 ]
 
 ---
 
-# `visdat::vis_dat()`
+## `visdat::vis_dat()`
 
 .pull-left[
 The `vis_miss()` function from the `visdat` package provides some further details on missing values in a dataset.
 
-```{r vis_miss, eval = F}
+```{r vis-miss, eval = F}
 vis_miss(corona_survey)
 ```
 ]
 
 .pull-right[
-```{r ref.label = "vis_miss", echo = F, message = F}
+```{r ref.label = "vis-miss", echo = F, message = F}
 ```
 ]
 
 ---
 
-# `UpSetR::gg_miss_upset()`
+## `UpSetR::gg_miss_upset()`
 
 .pull-left[
 The [`UpSetR` package](https://github.com/hms-dbmi/UpSetR) includes the `gg_miss_upset()` function which allows some in-depth exploration of missingness patters in a dataset.
 
-```{r gg_miss_upset, eval = F}
+```{r gg-miss-upset, eval = F}
 library(UpSetR)
 
 gg_miss_upset(trust)
@@ -1700,18 +1702,18 @@ gg_miss_upset(trust)
 ]
 
 .pull-right[
-```{r ref.label = "gg_miss_upset", echo = F, message = F}
+```{r ref.label = "gg-miss-upset", echo = F, message = F}
 ```
 ]
 
 ---
 
-# `naniar::gg_miss_var()`
+## `naniar::gg_miss_var()`
 
 .pull-left[
 The [`naniar` package](http://naniar.njtierney.com/index.html) that we have used to replace specific values with `NA` in our data also provides a set of functions for visualizing missing data. The first one we want to look at is `gg_miss_var()` which shows the number or percentage of missing values for each variable in a dataset.
 
-```{r gg_miss_var, eval = F}
+```{r gg-miss-var, eval = F}
 library(naniar)
 
 gg_miss_var(corona_survey,
@@ -1720,18 +1722,18 @@ gg_miss_var(corona_survey,
 ]
 
 .pull-right[
-```{r ref.label = "gg_miss_var", echo = F, message = F}
+```{r ref.label = "gg-miss-var", echo = F, message = F}
 ```
 ]
 
 ---
 
-# `naniar::gg_miss_case()`
+## `naniar::gg_miss_case()`
 
 .pull-left[
 The complement to `gg_miss_var()` is `gg_miss_case()` which shows the number or percentage of missing values for each case/observation in a dataset.
 
-```{r gg_miss_case, eval = F}
+```{r gg-miss-case, eval = F}
 library(naniar)
 
 gg_miss_case(corona_survey,
@@ -1740,19 +1742,19 @@ gg_miss_case(corona_survey,
 ]
 
 .pull-right[
-```{r ref.label = "gg_miss_case", echo = F, message = F}
+```{r ref.label = "gg-miss-case", echo = F, message = F}
 ```
 ]
 
 ---
 
-# `naniar::gg_miss_fct()`
+## `naniar::gg_miss_fct()`
 
 .pull-left[
 The `gg_miss_fct()` function creates a plot that shows the percentage of missing values for all (other) variables for different values of a categorical.
 
 .small[
-```{r gg_miss_fct, eval = F}
+```{r gg-miss-fct, eval = F}
 library(naniar)
 
 gg_miss_fct(corona_survey,
@@ -1762,13 +1764,13 @@ gg_miss_fct(corona_survey,
 ]
 
 .pull-right[
-```{r ref.label = "gg_miss_fct", echo = F, message = F}
+```{r ref.label = "gg-miss-fct", echo = F, message = F}
 ```
 ]
 
 ---
 
-# Outliers
+## Outliers
 
 There are many ways of identifying and dealing with outliers. In the following, we will look at three of them: box/violin plots, interquartile range (IQR), and Mahalanobis distance.
 
@@ -1776,7 +1778,7 @@ There are many ways of identifying and dealing with outliers. In the following, 
 
 ---
 
-# Detecting outliers: Box/violin plots
+## Detecting outliers: Box/violin plots
 
 .pull-left[
 The [`ggstatsplot` package](https://github.com/IndrajeetPatil/ggstatsplot) includes the `ggbetweenstats()` function for creating a combined violin and boxplot that tags outliers.
@@ -1804,7 +1806,7 @@ ggbetweenstats(data = corona_survey,
 
 ---
 
-# Detecting outliers: IQR
+## Detecting outliers: IQR
 
 For identifying univariate outliers we can specify lower and upper cutoffs using the formula 25th percentile - 1.5 * interquartile range (IQR) for the lower and 75 percentile + 1.5 * IQR for the upper limit. In `R` this can be done as follows:
 
@@ -1830,7 +1832,7 @@ gapminder_2018_cut <- gapminder_2018 %>%
 
 ---
 
-# Detecting outliers: Mahalanobis distance
+## Detecting outliers: Mahalanobis distance
 
 .pull-left[
 A common method for identifying multivariate outliers is Mahalanobis distance. The `outlier()` function from the `psych` package calculates and plots Mahalanobis distance.
@@ -1853,7 +1855,7 @@ out <- outlier(gapminder_2018[, -1])
 
 ---
 
-# EDA packages
+## EDA packages
 
 There are quite a few packages that are made for easy EDA or include functions that facilitate EDA. For example: [`inspectdf`](https://alastairrushworth.github.io/inspectdf/), [`skimr`](https://docs.ropensci.org/skimr/), [`summarytools`](https://github.com/dcomtois/summarytools), [`dataMaid`](https://github.com/ekstroem/dataMaid), [`DataExplorer`](https://boxuancui.github.io/DataExplorer/), [`descriptr`](https://descriptr.rsquaredacademy.com/index.html), [`GGAlly`](https://ggobi.github.io/ggally/index.html)
 
@@ -1861,7 +1863,7 @@ Going through all of them would be too much. However, we will highlight a few ex
 
 ---
 
-# `skimr::skim()`
+## `skimr::skim()`
 
 ```{r skim, eval = F}
 library(skimr)
@@ -1881,7 +1883,7 @@ skim(corona_survey[, -1])
 
 ---
 
-# `GGAlly::ggpairs()`
+## `GGAlly::ggpairs()`
 
 .pull-left[
 .small[
@@ -1909,11 +1911,11 @@ corona_survey %>%
 
 ---
 
-# `inspectdf::inspect_cat()`
+## `inspectdf::inspect_cat()`
 
 .pull-left[
 .small[
-```{r inspect_cat, eval = F}
+```{r inspect-cat, eval = F}
 library(inspectdf)
 
 cat <- inspect_cat(corona_survey)
@@ -1924,7 +1926,7 @@ show_plot(cat)
 ]
 
 .pull-right[
-```{r ref.label = "inspect_cat", echo = F, message = F}
+```{r ref.label = "inspect-cat", echo = F, message = F}
 ```
 ]
 
