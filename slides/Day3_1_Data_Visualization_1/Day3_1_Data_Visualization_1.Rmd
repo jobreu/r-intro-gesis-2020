@@ -627,6 +627,10 @@ Densities
 
 ---
 
+## EXERCISE TIME
+
+---
+
 ## Integrating plots in functions/packages
 Creating plots in R is not complicated. Since the real advantage of R is the community with additional packages and routines, it's clear that the real benefit is this accessible interface to plotting techniques.
 
