@@ -670,9 +670,9 @@ This afternoon, we will learn from the `patchwork` package, which makes assembli
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day3_1_Data_Visualization_1_Exercise_1_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day3_1_Data_Visualization_1_Exercise_1_solution.html)
 
 ---
 
@@ -899,8 +899,8 @@ In the next session, we will learn more modern techniques using `ggplot2`. Yet, 
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day3_1_Data_Visualization_1_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day3_1_Data_Visualization_1_Exercise_2_solution.html)
 
 

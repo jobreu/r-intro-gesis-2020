@@ -619,9 +619,9 @@ DiagrammeR::grViz("digraph flowchart {
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day4_2_Confirmatory_Analysis_Exercise_1_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day4_2_Confirmatory_Analysis_Exercise_1_solution.html)
 
 ---
 
@@ -866,6 +866,6 @@ This may seem like an unnecessary effort having packages, such as `stargazer`, a
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day4_2_Confirmatory_Analysis_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day4_2_Confirmatory_Analysis_Exercise_2_solution.html)

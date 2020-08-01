@@ -898,6 +898,6 @@ ggsave("nice_plot.tiff", nice_plot, dpi = 300)
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day3_2_Data_Visualization_2_Exercise_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day3_2_Data_Visualization_2_Exercise_solution.html)

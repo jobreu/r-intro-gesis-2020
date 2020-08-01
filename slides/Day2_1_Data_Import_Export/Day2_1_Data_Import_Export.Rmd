@@ -535,9 +535,9 @@ Ok, but that's already data wrangling, a topic for this afternoon.
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day2_1_Data_Import_Export_Exercise_1_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day2_1_Data_Import_Export_Exercise_1_solution.html)
 
 ---
 
@@ -664,6 +664,6 @@ load("../../data/fancy_data.Rdata")
 
 class: center, middle
 
-# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day2_1_Data_Import_Export_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day2_1_Data_Import_Export_Exercise_2_solution.html)
