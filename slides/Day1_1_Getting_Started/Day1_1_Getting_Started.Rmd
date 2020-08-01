@@ -1300,3 +1300,11 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/A5_DataWrangling1_exercises_question.html) time `r ji("muscle")``r ji("running_man")`
 
 ## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/A5_DataWrangling1_exercises_solution.html)
+
+---
+
+# Extracurricular activities
+
+Watch the talk[ talk by David Smith on the history of `R`](https://youtu.be/iq_biXEIx-U) on *YouTube*
+
+Explore the [*#rstats* hashtag on Twitter](https://twitter.com/search?q=%23rstats&src=typed_query)

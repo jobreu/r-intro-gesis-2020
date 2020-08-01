@@ -1749,6 +1749,10 @@ summary {
 
 
 <!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-text-begin -->
+<div id="information-about-the-r-notebook-format" class="section level1">
+<h1>Information about the <code>R</code> Notebook format</h1>
 <p>This is an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. When you execute code within the notebook, the results appear beneath the code.</p>
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
@@ -1762,8 +1766,219 @@ summary {
 <p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
 <p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiVXNpbmcgJywnIGFzIGRlY2ltYWwgYW5kICcuJyBhcyBncm91cGluZyBtYXJrLiBVc2UgcmVhZF9kZWxpbSgpIGZvciBtb3JlIGNvbnRyb2wuXG5QYXJzZWQgd2l0aCBjb2x1bW4gc3BlY2lmaWNhdGlvbjpcbmNvbHMoXG4gIC5kZWZhdWx0ID0gY29sX2RvdWJsZSgpLFxuICB6YV9udW1iZXIgPSBjb2xfY2hhcmFjdGVyKCksXG4gIHZlcnNpb24gPSBjb2xfY2hhcmFjdGVyKCksXG4gIGRvaSA9IGNvbF9jaGFyYWN0ZXIoKVxuKVxuU2VlIHNwZWMoLi4uKSBmb3IgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbnMuXG4ifQ== -->
+<pre><code>Using &#39;,&#39; as decimal and &#39;.&#39; as grouping mark. Use read_delim() for more control.
+Parsed with column specification:
+cols(
+  .default = col_double(),
+  za_number = col_character(),
+  version = col_character(),
+  doi = col_character()
+)
+See spec(...) for full column specifications.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="the-data" class="section level1">
+<h1>The data</h1>
+<p>The data we use comes from the <a href="https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf">Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany</a>. We have selected 28 variables of interest for our analysis. The dataset includes data for <em>N</em> = 3765 respondents.</p>
+<div id="missing-data" class="section level2">
+<h2>Missing data</h2>
+<p>As not all of the respondents answered every question in the survey, we have missing data. Before we further explore the data, we want to know whether there are identifiable patterns of missingness in them.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh2aXNkYXQpXG5cbnZpc19taXNzKGNvcm9uYV9zdXJ2ZXkpXG5gYGAifQ== -->
+<pre class="r"><code>library(visdat)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkdFU0lTIFBhbmVsIENPVklELTE5IFN1cnZleSBEYXRhIEV4cGxvcmF0aW9uIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gDQoNClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gDQoNCmBgYHtyfQ0KcGxvdChjYXJzKQ0KYGBgDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQoNClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4NCg==</div>
+vis_miss(corona_survey)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="exploring-the-gesis-panel-special-survey-on-the-coronavirus-sars-cov-2-outbreak-in-germany-dataset" class="section level1">
+<h1>Exploring the <em>GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany</em> dataset</h1>
+<div id="demographics" class="section level2">
+<h2>Demographics</h2>
+<p>We first want to look at gender, age (categories), education, and party affiliation in our sample.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShqYW5pdG9yKVxuXG5jb3JvbmFfc3VydmV5ICU+JSBcbiAgdGFieWwoc2V4KSAlPiUgXG4gIGFkb3JuX3RvdGFscyhcInJvd1wiKSAlPiVcbiAgYWRvcm5fcGN0X2Zvcm1hdHRpbmcoKSAlPiUgXG4gIGtuaXRyOjprYWJsZSgpXG5cbmNvcm9uYV9zdXJ2ZXkgJT4lIFxuICB0YWJ5bChhZ2VfY2F0KSAlPiUgXG4gIGFkb3JuX3RvdGFscyhcInJvd1wiKSAlPiVcbiAgYWRvcm5fcGN0X2Zvcm1hdHRpbmcoKSAlPiUgXG4gIGtuaXRyOjprYWJsZSgpXG5cbmNvcm9uYV9zdXJ2ZXkgJT4lIFxuICB0YWJ5bChlZHVjYXRpb25fY2F0KSAlPiUgXG4gIGFkb3JuX3RvdGFscyhcInJvd1wiKSAlPiVcbiAgYWRvcm5fcGN0X2Zvcm1hdHRpbmcoKSAlPiUgXG4gIGtuaXRyOjprYWJsZSgpXG5cbmNvcm9uYV9zdXJ2ZXkgJT4lIFxuICB0YWJ5bChjaG9pY2Vfb2ZfcGFydHkpICU+JSBcbiAgYWRvcm5fdG90YWxzKFwicm93XCIpICU+JVxuICBhZG9ybl9wY3RfZm9ybWF0dGluZygpICU+JSBcbiAga25pdHI6OmthYmxlKClcblxuY29yb25hX3N1cnZleSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IGVkdWNhdGlvbl9jYXQsIFxuICAgICAgICAgICAgIGZpbGwgPSBlZHVjYXRpb25fY2F0KSkgKyBcbiAgZ2VvbV9iYXIoYWVzKHkgPSAoLi5jb3VudC4uKS9zdW0oLi5jb3VudC4uKSkpICtcbiAgc2NhbGVfeV9jb250aW51b3VzKGxhYmVscz1zY2FsZXM6OnBlcmNlbnQpICtcbiAgeWxhYihcIlJlbGF0aXZlIEZyZXF1ZW5jaWVzXCIpXG5cbmNvcm9uYV9zdXJ2ZXkgJT4lIFxuICBmaWx0ZXIoIWlzLm5hKGNob2ljZV9vZl9wYXJ0eSkpICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gY2hvaWNlX29mX3BhcnR5LCBcbiAgICAgICAgICAgICBmaWxsID0gY2hvaWNlX29mX3BhcnR5KSkgKyBcbiAgZ2VvbV9iYXIoYWVzKHkgPSAoLi5jb3VudC4uKS9zdW0oLi5jb3VudC4uKSkpICtcbiAgc2NhbGVfeV9jb250aW51b3VzKGxhYmVscz1zY2FsZXM6OnBlcmNlbnQpICtcbiAgeWxhYihcIlJlbGF0aXZlIEZyZXF1ZW5jaWVzXCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code>library(janitor)
+
+corona_survey %&gt;% 
+  tabyl(sex) %&gt;% 
+  adorn_totals(&quot;row&quot;) %&gt;%
+  adorn_pct_formatting() %&gt;% 
+  knitr::kable()
+
+corona_survey %&gt;% 
+  tabyl(age_cat) %&gt;% 
+  adorn_totals(&quot;row&quot;) %&gt;%
+  adorn_pct_formatting() %&gt;% 
+  knitr::kable()
+
+corona_survey %&gt;% 
+  tabyl(education_cat) %&gt;% 
+  adorn_totals(&quot;row&quot;) %&gt;%
+  adorn_pct_formatting() %&gt;% 
+  knitr::kable()
+
+corona_survey %&gt;% 
+  tabyl(choice_of_party) %&gt;% 
+  adorn_totals(&quot;row&quot;) %&gt;%
+  adorn_pct_formatting() %&gt;% 
+  knitr::kable()
+
+corona_survey %&gt;% 
+  ggplot(aes(x = education_cat, 
+             fill = education_cat)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab(&quot;Relative Frequencies&quot;)
+
+corona_survey %&gt;% 
+  filter(!is.na(choice_of_party)) %&gt;% 
+  ggplot(aes(x = choice_of_party, 
+             fill = choice_of_party)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab(&quot;Relative Frequencies&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="summary-statistics" class="section level2">
+<h2>Summary statistics</h2>
+<p>Let’s look at the summary statistic for the items on trust in institutions.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShwYW5kZXIpXG5cbmNvcm9uYV9zdXJ2ZXkgJT4lIFxuICBzZWxlY3Qoc3RhcnRzX3dpdGgoXCJ0cnVzdFwiKSkgJT4lIFxuICBzdW1tYXJ5KCkgJT4lIFxuICBwYW5kZXIoKVxuYGBgIn0= -->
+<pre class="r"><code>library(pander)
+
+corona_survey %&gt;% 
+  select(starts_with(&quot;trust&quot;)) %&gt;% 
+  summary() %&gt;% 
+  pander()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="distribution-of-variables" class="section level2">
+<h2>Distribution of variables</h2>
+<p>We want to explore how some of the data for the question on the perceived personal risk of getting infected with the Coronavirus and political orientation (left-right) are distributed in our sample.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yb25hX3N1cnZleSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IHJpc2tfc2VsZikpICtcbiAgZ2VvbV9iYXIoKSArXG4gIHNjYWxlX3lfY29udGludW91cyhleHBhbmQ9ZXhwYW5zaW9uKG11bHQ9YygwLDAuMSkpKVxuYGBgIn0= -->
+<pre class="r"><code>corona_survey %&gt;% 
+  ggplot(aes(x = risk_self)) +
+  geom_bar() +
+  scale_y_continuous(expand=expansion(mult=c(0,0.1)))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yb25hX3N1cnZleSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IGxlZnRfcmlnaHQpKSArXG4gIGdlb21fYmFyKCkgK1xuICBzY2FsZV95X2NvbnRpbnVvdXMoZXhwYW5kPWV4cGFuc2lvbihtdWx0PWMoMCwwLjEpKSlcbmBgYCJ9 -->
+<pre class="r"><code>corona_survey %&gt;% 
+  ggplot(aes(x = left_right)) +
+  geom_bar() +
+  scale_y_continuous(expand=expansion(mult=c(0,0.1)))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="party-affiliation-and-trust-in-government" class="section level2">
+<h2>Party affiliation and trust in government</h2>
+<p>How does trusting the government in dealing with the Coronavirus differ between supporters of different parties?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yb25hX3N1cnZleSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IGNob2ljZV9vZl9wYXJ0eSwgeSA9IHRydXN0X2dvdmVybm1lbnQpKSArXG4gIGdlb21fYm94cGxvdCgpICtcbiAgZ2VvbV9qaXR0ZXIocG9zaXRpb24gPSBwb3NpdGlvbl9qaXR0ZXIod2lkdGggPSAwLjEsIGhlaWdodCA9IDApLFxuICAgICAgICAgICAgICBhbHBoYSA9IDAuMjUpXG5gYGAifQ== -->
+<pre class="r"><code>corona_survey %&gt;% 
+  ggplot(aes(x = choice_of_party, y = trust_government)) +
+  geom_boxplot() +
+  geom_jitter(position = position_jitter(width = 0.1, height = 0),
+              alpha = 0.25)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="analyses" class="section level1">
+<h1>Analyses</h1>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<p>We want to explore the correlations between political orientation, number of preventive measures taken, trust in different institutions with regard to dealing with the Coronavirus, and the sum of (a subset of) media sources people use to get current information about the Coronavirus.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShjb3JyZWxhdGlvbilcbmxpYnJhcnkoR0dhbGx5KVxuXG5jb3JvbmFfc3VydmV5ICU+JSBcbiAgc2VsZWN0KGxlZnRfcmlnaHQsXG4gICAgICAgICBzdW1fbWVhc3VyZXMsXG4gICAgICAgICBzdGFydHNfd2l0aChcInRydXN0XCIpLFxuICAgICAgICAgc3VtX3NvdXJjZXMpICU+JSBcbiAgY29ycmVsYXRpb24gJT4lIFxuICBrbml0cjo6a2FibGUoKVxuXG5jb3JvbmFfc3VydmV5ICU+JSBcbiAgc2VsZWN0KGxlZnRfcmlnaHQsXG4gICAgICAgICBzdW1fbWVhc3VyZXMsXG4gICAgICAgICBzdGFydHNfd2l0aChcInRydXN0XCIpLFxuICAgICAgICAgc3VtX3NvdXJjZXMpICU+JSBcbiAgZ2djb3JyKGxhYmVsID0gVFJVRSxcbiAgICAgICAgIGxhYmVsX3JvdW5kID0gMilcbiAgXG5gYGAifQ== -->
+<pre class="r"><code>library(correlation)
+library(GGally)
+
+corona_survey %&gt;% 
+  select(left_right,
+         sum_measures,
+         starts_with(&quot;trust&quot;),
+         sum_sources) %&gt;% 
+  correlation %&gt;% 
+  knitr::kable()
+
+corona_survey %&gt;% 
+  select(left_right,
+         sum_measures,
+         starts_with(&quot;trust&quot;),
+         sum_sources) %&gt;% 
+  ggcorr(label = TRUE,
+         label_round = 2)
+  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="regression-analysis" class="section level2">
+<h2>Regression analysis</h2>
+<p>We use a logistic regression model to explore the willingness to obey a possible curfew (full lockdown) is predicted by mean trust in (selected) institutions and the perceived personal risk of getting infected with the Coronavirus.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShicm9vbSlcblxubW9kZWwgPC0gZ2xtKG9iZXlfY3VyZmV3IH4gMSArIG1lYW5fdHJ1c3QgKyByaXNrX3NlbGYsIFxuICAgICAgICAgICAgIGZhbWlseSA9IGJpbm9taWFsKGxpbmsgPSBcImxvZ2l0XCIpLFxuICAgICAgICAgICAgIGRhdGEgPSBjb3JvbmFfc3VydmV5KVxuXG50aWR5X21vZGVsIDwtIG1vZGVsICU+JSBcbiAgdGlkeSgpXG5cbnRpZHlfbW9kZWwgJT4lIFxuICBrbml0cjo6a2FibGUoKVxuXG5nbGFuY2UobW9kZWwpXG5gYGAifQ== -->
+<pre class="r"><code>library(broom)
+
+model &lt;- glm(obey_curfew ~ 1 + mean_trust + risk_self, 
+             family = binomial(link = &quot;logit&quot;),
+             data = corona_survey)
+
+tidy_model &lt;- model %&gt;% 
+  tidy()
+
+tidy_model %&gt;% 
+  knitr::kable()
+
+glance(model)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The unstandardized regression coefficient for the perceived personal risk of getting infected with the Coronavirus is <em>b</em> = 0.12 (p=0.023), while the coefficient for mean trust in institutions is <em>b</em> = 0.88 (p&lt;0.001).</p>
+<div id="regression-plots" class="section level3">
+<h3>Regression plots</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzalBsb3QpXG5cbnBsb3RfbW9kZWwobW9kZWwpXG5cbnBsb3RfbW9kZWwobW9kZWwsXG4gICAgICAgICAgIHR5cGUgPSBcInByZWRcIilcbmBgYCJ9 -->
+<pre class="r"><code>library(sjPlot)
+
+plot_model(model)
+
+plot_model(model,
+           type = &quot;pred&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkdFU0lTIFBhbmVsIENPVklELTE5IFN1cnZleSBEYXRhIEV4cGxvcmF0aW9uIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUsDQogICAgICAgICAgICAgICAgICAgICAgbWVzc2FnZSA9IEZBTFNFKQ0KDQpvcHRpb25zKHNjaXBlbiA9IDE1KQ0KYGBgDQoNCiMgSW5mb3JtYXRpb24gYWJvdXQgdGhlIGBSYCBOb3RlYm9vayBmb3JtYXQNCg0KVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gDQoNClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gDQoNCmBgYHtyfQ0KcGxvdChjYXJzKQ0KYGBgDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQoNClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4NCg0KYGBge3IgbG9hZC13cmFuZ2xlLWRhdGEsIGVjaG8gPSBGQUxTRX0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShuYW5pYXIpDQoNCmdlc2lzX3BhbmVsX2Nvcm9uYSA8LSByZWFkX2NzdjIoIi4uLy4uLy4uL2RhdGEvWkE1NjY3X3YxLTEtMC5jc3YiKQ0KDQptaXNzaW5ncyA8LSBjKC0xMTEsIC05OSwgLTc3LCAtMzMsIC0yMikNCg0KY29yb25hX3N1cnZleSA8LSBnZXNpc19wYW5lbF9jb3JvbmEgJT4lIA0KICBzZWxlY3QoaWQsDQogICAgICAgICBzZXg6ZWR1Y2F0aW9uX2NhdCwNCiAgICAgICAgIGNob2ljZV9vZl9wYXJ0eSwNCiAgICAgICAgIGxlZnRfcmlnaHQgPSBwb2xpdGljYWxfb3JpZW50YXRpb24sDQogICAgICAgICByaXNrX3NlbGYgPSAgaHpjeTAwMWEsDQogICAgICAgICByaXNrX3N1cnJvdW5kID0gIGh6Y3kwMDJhLA0KICAgICAgICAgYXZvaWRfcGxhY2VzID0gIGh6Y3kwMDZhLA0KICAgICAgICAga2VlcF9kaXN0YW5jZSA9ICBoemN5MDA3YSwNCiAgICAgICAgIHdhc2hfaGFuZHMgPSBoemN5MDExYSwNCiAgICAgICAgIHN0b2NrdXBfc3VwcGxpZXMgPSAgaHpjeTAxM2EsDQogICAgICAgICByZWR1Y2VfY29udGFjdHMgPSAgaHpjeTAxNGEsDQogICAgICAgICB3ZWFyX21hc2sgPSBoemN5MDE1YSwNCiAgICAgICAgIHRydXN0X3JraSA9IGh6Y3kwNDdhLA0KICAgICAgICAgdHJ1c3RfZ292ZXJubWVudCA9IGh6Y3kwNDhhLA0KICAgICAgICAgdHJ1c3RfY2hhbmNlbGxvciA9IGh6Y3kwNDlhLA0KICAgICAgICAgdHJ1c3Rfd2hvID0gaHpjeTA1MWEsDQogICAgICAgICB0cnVzdF9zY2llbnRpc3RzID0gaHpjeTA1MmEsDQogICAgICAgICBvYmV5X2N1cmZldyA9IGh6Y3kwMjZhLA0KICAgICAgICAgaW5mb19uYXRpb25hbF9wdWJsaWNfdHYgPSBoemN5MDg0YSwNCiAgICAgICAgIGluZm9fbmF0aW9uYWxfbmV3c3BhcGVyID0gaHpjeTA4NmEsDQogICAgICAgICBpbmZvX2xvY2FsX25ld3NwYXBlciA9IGh6Y3kwODlhLA0KICAgICAgICAgaW5mb19mYWNlYm9vayA9IGh6Y3kwOTBhLA0KICAgICAgICAgaW5mb19vdGhlcl9zb2NpYWxfbWVkaWEgPSBoemN5MDkxYSkgJT4lIA0KICByZXBsYWNlX3dpdGhfbmFfYWxsKGNvbmRpdGlvbiA9IH4ueCAlaW4lIG1pc3NpbmdzKSAlPiUgDQogICAgcmVwbGFjZV93aXRoX25hKHJlcGxhY2UgPSBsaXN0KGNob2ljZV9vZl9wYXJ0eSA9IGMoOTcsOTgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByaXNrX3NlbGYgPSBjKDk3KSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmlza19zdXJyb3VuZCA9IGMoOTcpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cnVzdF9ya2kgPSBjKDk4KSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJ1c3RfZ292ZXJubWVudCA9IGMoOTgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cnVzdF9jaGFuY2VsbG9yID0gYyg5OCksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRydXN0X3dobyA9IGMoOTgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cnVzdF9zY2llbnRpc3RzID0gYyg5OCksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9iZXlfY3VyZmV3ID0gYyg0KSkpICU+JSANCiAgbXV0YXRlKG9iZXlfY3VyZmV3ID0gcmVjb2RlKG9iZXlfY3VyZmV3LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDJgID0gMCksDQogICAgICAgICBzZXggPSByZWNvZGVfZmFjdG9yKHNleCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgMWA9ICJNYWxlIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgMmAgPSAiRmVtYWxlIiksDQogICAgICAgICBlZHVjYXRpb25fY2F0ID0gcmVjb2RlX2ZhY3RvcihlZHVjYXRpb25fY2F0LA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDFgID0gIkxvdyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgMmAgPSAiTWVkaXVtIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGAzYD0gIkhpZ2giLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLm9yZGVyZWQgPSBUUlVFKSwNCiAgICAgICAgIGFnZV9jYXQgPSByZWNvZGVfZmFjdG9yKGFnZV9jYXQsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGAxYD0gIjw9IDI1IHllYXJzIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDJgPSAiMjYgdG8gMzAgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgM2AgPSAiMzEgdG8gMzUgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgNGAgPSAiMzYgdG8gNDAgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgNWAgPSAiNDEgdG8gNDUgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgNmAgPSAiNDYgdG8gNTAgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgN2AgPSAiNTEgdG8gNjAgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgOGAgPSAiNjEgdG8gNjUgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgOWAgPSAiNjYgdG8gNzAgeWVhcnMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgMTBgID0gIj49IDcxIHllYXJzIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLm9yZGVyZWQgPSBUUlVFKSwNCiAgICAgICAgICAgY2hvaWNlX29mX3BhcnR5ID0gcmVjb2RlX2ZhY3RvcihjaG9pY2Vfb2ZfcGFydHksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDFgID0gIkNEVS9DU1UiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGAyYCA9ICJTUEQiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGAzYCA9ICJGRFAiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGA0YCA9ICJMaW5rZSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDVgID0gIkdydWVuZSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDZgID0gIkFmRCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYDdgID0gIk90aGVyIikpICU+JSANCiAgbXV0YXRlKHN1bV9tZWFzdXJlcyA9IGF2b2lkX3BsYWNlcyArDQogICAgICAgICAgIGtlZXBfZGlzdGFuY2UgKyANCiAgICAgICAgICAgd2FzaF9oYW5kcyArIA0KICAgICAgICAgICBzdG9ja3VwX3N1cHBsaWVzICsgDQogICAgICAgICAgIHJlZHVjZV9jb250YWN0cyArIA0KICAgICAgICAgICB3ZWFyX21hc2ssDQogICAgICAgICBzdW1fc291cmNlcyA9IGluZm9fbmF0aW9uYWxfcHVibGljX3R2ICsgDQogICAgICAgICAgIGluZm9fbmF0aW9uYWxfbmV3c3BhcGVyICsgDQogICAgICAgICAgIGluZm9fbG9jYWxfbmV3c3BhcGVyICsgDQogICAgICAgICAgIGluZm9fZmFjZWJvb2sgKyANCiAgICAgICAgICAgaW5mb19vdGhlcl9zb2NpYWxfbWVkaWEpICU+JQ0KICByb3d3aXNlKCkgJT4lIA0KICBtdXRhdGUobWVhbl90cnVzdCA9IG1lYW4oYyh0cnVzdF9ya2ksIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cnVzdF9nb3Zlcm5tZW50LCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJ1c3RfY2hhbmNlbGxvciwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRydXN0X3dobywgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRydXN0X3NjaWVudGlzdHMpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbmEucm0gPSBUUlVFKSkgJT4lIA0KICB1bmdyb3VwKCkNCmBgYA0KDQojIFRoZSBkYXRhDQoNClRoZSBkYXRhIHdlIHVzZSBjb21lcyBmcm9tIHRoZSBbUHVibGljIFVzZSBGaWxlIChQVUYpIG9mIHRoZSBHRVNJUyBQYW5lbCBTcGVjaWFsIFN1cnZleSBvbiB0aGUgQ29yb25hdmlydXMgU0FSUy1Db1YtMiBPdXRicmVhayBpbiBHZXJtYW55XShodHRwczovL3d3dy5nZXNpcy5vcmcvZ2VzaXMtcGFuZWwvY29yb25hdmlydXMtb3V0YnJlYWsvcHVibGljLXVzZS1maWxlLXB1ZikuIFdlIGhhdmUgc2VsZWN0ZWQgYHIgbmNvbChjb3JvbmFfc3VydmV5KWAgdmFyaWFibGVzIG9mIGludGVyZXN0IGZvciBvdXIgYW5hbHlzaXMuIFRoZSBkYXRhc2V0IGluY2x1ZGVzIGRhdGEgZm9yICpOKiA9IGByIG5yb3coY29yb25hX3N1cnZleSlgIHJlc3BvbmRlbnRzLg0KDQoNCiMjIE1pc3NpbmcgZGF0YQ0KDQpBcyBub3QgYWxsIG9mIHRoZSByZXNwb25kZW50cyBhbnN3ZXJlZCBldmVyeSBxdWVzdGlvbiBpbiB0aGUgc3VydmV5LCB3ZSBoYXZlIG1pc3NpbmcgZGF0YS4gQmVmb3JlIHdlIGZ1cnRoZXIgZXhwbG9yZSB0aGUgZGF0YSwgd2Ugd2FudCB0byBrbm93IHdoZXRoZXIgdGhlcmUgYXJlIGlkZW50aWZpYWJsZSBwYXR0ZXJucyBvZiBtaXNzaW5nbmVzcyBpbiB0aGVtLg0KDQpgYGB7ciB2aXMtbWlzc30NCmxpYnJhcnkodmlzZGF0KQ0KDQp2aXNfbWlzcyhjb3JvbmFfc3VydmV5KQ0KYGBgDQoNCiMgRXhwbG9yaW5nIHRoZSAqR0VTSVMgUGFuZWwgU3BlY2lhbCBTdXJ2ZXkgb24gdGhlIENvcm9uYXZpcnVzIFNBUlMtQ29WLTIgT3V0YnJlYWsgaW4gR2VybWFueSogZGF0YXNldA0KDQojIyBEZW1vZ3JhcGhpY3MNCg0KV2UgZmlyc3Qgd2FudCB0byBsb29rIGF0IGdlbmRlciwgYWdlIChjYXRlZ29yaWVzKSwgZWR1Y2F0aW9uLCBhbmQgcGFydHkgYWZmaWxpYXRpb24gaW4gb3VyIHNhbXBsZS4NCg0KYGBge3IgZGVtby10YWJsZXN9DQpsaWJyYXJ5KGphbml0b3IpDQoNCmNvcm9uYV9zdXJ2ZXkgJT4lIA0KICB0YWJ5bChzZXgpICU+JSANCiAgYWRvcm5fdG90YWxzKCJyb3ciKSAlPiUNCiAgYWRvcm5fcGN0X2Zvcm1hdHRpbmcoKSAlPiUgDQogIGtuaXRyOjprYWJsZSgpDQoNCmNvcm9uYV9zdXJ2ZXkgJT4lIA0KICB0YWJ5bChhZ2VfY2F0KSAlPiUgDQogIGFkb3JuX3RvdGFscygicm93IikgJT4lDQogIGFkb3JuX3BjdF9mb3JtYXR0aW5nKCkgJT4lIA0KICBrbml0cjo6a2FibGUoKQ0KDQpjb3JvbmFfc3VydmV5ICU+JSANCiAgdGFieWwoZWR1Y2F0aW9uX2NhdCkgJT4lIA0KICBhZG9ybl90b3RhbHMoInJvdyIpICU+JQ0KICBhZG9ybl9wY3RfZm9ybWF0dGluZygpICU+JSANCiAga25pdHI6OmthYmxlKCkNCg0KY29yb25hX3N1cnZleSAlPiUgDQogIHRhYnlsKGNob2ljZV9vZl9wYXJ0eSkgJT4lIA0KICBhZG9ybl90b3RhbHMoInJvdyIpICU+JQ0KICBhZG9ybl9wY3RfZm9ybWF0dGluZygpICU+JSANCiAga25pdHI6OmthYmxlKCkNCg0KY29yb25hX3N1cnZleSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGVkdWNhdGlvbl9jYXQsIA0KICAgICAgICAgICAgIGZpbGwgPSBlZHVjYXRpb25fY2F0KSkgKyANCiAgZ2VvbV9iYXIoYWVzKHkgPSAoLi5jb3VudC4uKS9zdW0oLi5jb3VudC4uKSkpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGxhYmVscz1zY2FsZXM6OnBlcmNlbnQpICsNCiAgeWxhYigiUmVsYXRpdmUgRnJlcXVlbmNpZXMiKQ0KDQpjb3JvbmFfc3VydmV5ICU+JSANCiAgZmlsdGVyKCFpcy5uYShjaG9pY2Vfb2ZfcGFydHkpKSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGNob2ljZV9vZl9wYXJ0eSwgDQogICAgICAgICAgICAgZmlsbCA9IGNob2ljZV9vZl9wYXJ0eSkpICsgDQogIGdlb21fYmFyKGFlcyh5ID0gKC4uY291bnQuLikvc3VtKC4uY291bnQuLikpKSArDQogIHNjYWxlX3lfY29udGludW91cyhsYWJlbHM9c2NhbGVzOjpwZXJjZW50KSArDQogIHlsYWIoIlJlbGF0aXZlIEZyZXF1ZW5jaWVzIikNCg0KYGBgDQoNCiMjIFN1bW1hcnkgc3RhdGlzdGljcw0KDQpMZXQncyBsb29rIGF0IHRoZSBzdW1tYXJ5IHN0YXRpc3RpYyBmb3IgdGhlIGl0ZW1zIG9uIHRydXN0IGluIGluc3RpdHV0aW9ucy4NCg0KYGBge3Igc3VtbWFyeXN0YXRzfQ0KbGlicmFyeShwYW5kZXIpDQoNCmNvcm9uYV9zdXJ2ZXkgJT4lIA0KICBzZWxlY3Qoc3RhcnRzX3dpdGgoInRydXN0IikpICU+JSANCiAgc3VtbWFyeSgpICU+JSANCiAgcGFuZGVyKCkNCmBgYA0KDQojIyBEaXN0cmlidXRpb24gb2YgdmFyaWFibGVzDQoNCldlIHdhbnQgdG8gZXhwbG9yZSBob3cgc29tZSBvZiB0aGUgZGF0YSBmb3IgdGhlIHF1ZXN0aW9uIG9uIHRoZSBwZXJjZWl2ZWQgcGVyc29uYWwgcmlzayBvZiBnZXR0aW5nIGluZmVjdGVkIHdpdGggdGhlIENvcm9uYXZpcnVzIGFuZCBwb2xpdGljYWwgb3JpZW50YXRpb24gKGxlZnQtcmlnaHQpIGFyZSBkaXN0cmlidXRlZCBpbiBvdXIgc2FtcGxlLg0KDQpgYGB7ciBkZW5zaXR5LXJpc2t9DQpjb3JvbmFfc3VydmV5ICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gcmlza19zZWxmKSkgKw0KICBnZW9tX2JhcigpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGV4cGFuZD1leHBhbnNpb24obXVsdD1jKDAsMC4xKSkpDQpgYGANCg0KYGBge3IgZGVuc2l0eS1scn0NCmNvcm9uYV9zdXJ2ZXkgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBsZWZ0X3JpZ2h0KSkgKw0KICBnZW9tX2JhcigpICsNCiAgc2NhbGVfeV9jb250aW51b3VzKGV4cGFuZD1leHBhbnNpb24obXVsdD1jKDAsMC4xKSkpDQpgYGANCg0KIyMgUGFydHkgYWZmaWxpYXRpb24gYW5kIHRydXN0IGluIGdvdmVybm1lbnQNCg0KSG93IGRvZXMgdHJ1c3RpbmcgdGhlIGdvdmVybm1lbnQgaW4gZGVhbGluZyB3aXRoIHRoZSBDb3JvbmF2aXJ1cyBkaWZmZXIgYmV0d2VlbiBzdXBwb3J0ZXJzIG9mIGRpZmZlcmVudCBwYXJ0aWVzPyANCg0KYGBge3IgcGFydHktdHJ1c3R9DQpjb3JvbmFfc3VydmV5ICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gY2hvaWNlX29mX3BhcnR5LCB5ID0gdHJ1c3RfZ292ZXJubWVudCkpICsNCiAgZ2VvbV9ib3hwbG90KCkgKw0KICBnZW9tX2ppdHRlcihwb3NpdGlvbiA9IHBvc2l0aW9uX2ppdHRlcih3aWR0aCA9IDAuMSwgaGVpZ2h0ID0gMCksDQogICAgICAgICAgICAgIGFscGhhID0gMC4yNSkNCmBgYA0KDQojIEFuYWx5c2VzDQoNCiMjIENvcnJlbGF0aW9ucw0KDQpXZSB3YW50IHRvIGV4cGxvcmUgdGhlIGNvcnJlbGF0aW9ucyBiZXR3ZWVuIHBvbGl0aWNhbCBvcmllbnRhdGlvbiwgbnVtYmVyIG9mIHByZXZlbnRpdmUgbWVhc3VyZXMgdGFrZW4sIHRydXN0IGluIGRpZmZlcmVudCBpbnN0aXR1dGlvbnMgd2l0aCByZWdhcmQgdG8gZGVhbGluZyB3aXRoIHRoZSBDb3JvbmF2aXJ1cywgYW5kIHRoZSBzdW0gb2YgKGEgc3Vic2V0IG9mKSBtZWRpYSBzb3VyY2VzIHBlb3BsZSB1c2UgdG8gZ2V0IGN1cnJlbnQgaW5mb3JtYXRpb24gYWJvdXQgdGhlIENvcm9uYXZpcnVzLg0KDQpgYGB7ciBjb3JyZWxhdGlvbnN9DQpsaWJyYXJ5KGNvcnJlbGF0aW9uKQ0KbGlicmFyeShHR2FsbHkpDQoNCmNvcm9uYV9zdXJ2ZXkgJT4lIA0KICBzZWxlY3QobGVmdF9yaWdodCwNCiAgICAgICAgIHN1bV9tZWFzdXJlcywNCiAgICAgICAgIHN0YXJ0c193aXRoKCJ0cnVzdCIpLA0KICAgICAgICAgc3VtX3NvdXJjZXMpICU+JSANCiAgY29ycmVsYXRpb24gJT4lIA0KICBrbml0cjo6a2FibGUoKQ0KDQpjb3JvbmFfc3VydmV5ICU+JSANCiAgc2VsZWN0KGxlZnRfcmlnaHQsDQogICAgICAgICBzdW1fbWVhc3VyZXMsDQogICAgICAgICBzdGFydHNfd2l0aCgidHJ1c3QiKSwNCiAgICAgICAgIHN1bV9zb3VyY2VzKSAlPiUgDQogIGdnY29ycihsYWJlbCA9IFRSVUUsDQogICAgICAgICBsYWJlbF9yb3VuZCA9IDIpDQogIA0KYGBgDQoNCiMjIFJlZ3Jlc3Npb24gYW5hbHlzaXMNCg0KV2UgdXNlIGEgbG9naXN0aWMgcmVncmVzc2lvbiBtb2RlbCB0byBleHBsb3JlIHRoZSB3aWxsaW5nbmVzcyB0byBvYmV5IGEgcG9zc2libGUgY3VyZmV3IChmdWxsIGxvY2tkb3duKSBpcyBwcmVkaWN0ZWQgYnkgbWVhbiB0cnVzdCBpbiAoc2VsZWN0ZWQpIGluc3RpdHV0aW9ucyBhbmQgdGhlIHBlcmNlaXZlZCBwZXJzb25hbCByaXNrIG9mIGdldHRpbmcgaW5mZWN0ZWQgd2l0aCB0aGUgQ29yb25hdmlydXMuDQoNCmBgYHtyIHJlZ3Jlc3Npb259DQpsaWJyYXJ5KGJyb29tKQ0KDQptb2RlbCA8LSBnbG0ob2JleV9jdXJmZXcgfiAxICsgbWVhbl90cnVzdCArIHJpc2tfc2VsZiwgDQogICAgICAgICAgICAgZmFtaWx5ID0gYmlub21pYWwobGluayA9ICJsb2dpdCIpLA0KICAgICAgICAgICAgIGRhdGEgPSBjb3JvbmFfc3VydmV5KQ0KDQp0aWR5X21vZGVsIDwtIG1vZGVsICU+JSANCiAgdGlkeSgpDQoNCnRpZHlfbW9kZWwgJT4lIA0KICBrbml0cjo6a2FibGUoKQ0KDQpnbGFuY2UobW9kZWwpDQpgYGANCg0KVGhlIHVuc3RhbmRhcmRpemVkIHJlZ3Jlc3Npb24gY29lZmZpY2llbnQgZm9yIHRoZSBwZXJjZWl2ZWQgcGVyc29uYWwgcmlzayBvZiBnZXR0aW5nIGluZmVjdGVkIHdpdGggdGhlIENvcm9uYXZpcnVzIGlzICpiKiA9IGByIHJvdW5kKHRpZHlfbW9kZWwkZXN0aW1hdGVbM10sIDIpYCAoYHIgc2NhbGVzOjpwdmFsdWUodGlkeV9tb2RlbCRwLnZhbHVlWzNdLCBhY2N1cmFjeSA9IDAuMDAxLCBhZGRfcCA9IFRSVUUpYCksIHdoaWxlIHRoZSBjb2VmZmljaWVudCBmb3IgbWVhbiB0cnVzdCBpbiBpbnN0aXR1dGlvbnMgaXMgKmIqID0gYHIgcm91bmQodGlkeV9tb2RlbCRlc3RpbWF0ZVsyXSwgMilgIChgciBzY2FsZXM6OnB2YWx1ZSh0aWR5X21vZGVsJHAudmFsdWVbMl0sIGFjY3VyYWN5ID0gMC4wMDEsIGFkZF9wID0gVFJVRSlgKS4NCg0KIyMjIFJlZ3Jlc3Npb24gcGxvdHMNCg0KYGBge3IgcmVncmVzc2lvbi1wbG90c30NCmxpYnJhcnkoc2pQbG90KQ0KDQpwbG90X21vZGVsKG1vZGVsKQ0KDQpwbG90X21vZGVsKG1vZGVsLA0KICAgICAgICAgICB0eXBlID0gInByZWQiKQ0KYGBgDQo=</div>
 
 
 

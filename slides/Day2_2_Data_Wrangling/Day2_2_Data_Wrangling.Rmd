@@ -364,6 +364,7 @@ If you need to make your data tidy or change it from wide to long format or vice
 
 Even before checking the codebook for a dataset (if there is one) it always helps to have a quick look at the data. The most high-level information you can get is about the object type and its dimensions.
 
+.small[
 ```{r class-dim}
 # object type
 class(gesis_panel_corona)
@@ -371,7 +372,13 @@ class(gesis_panel_corona)
 # number of rows and columns
 dim(gesis_panel_corona)
 
+# number of rows
+nrow(gesis_panel_corona)
+
+# number of columns
+ncol(gesis_panel_corona)
 ```
+]
 
 ---
 
@@ -459,7 +466,7 @@ names(gesis_panel_corona)
 ---
 
 .smaller[
-```{r ref.label = "names_gpc", echo = F}
+```{r ref.label = "names-gpc", echo = F}
 ```
 ]
 
@@ -1101,7 +1108,7 @@ Very often we want/need to recode values in a variable (e.g., if we have reverse
 
 ```{r recode, eval = F}
 gesis_panel_corona <- gesis_panel_corona %>% 
-  mutate(hzcy052a = recode(hzcy052a,
+  mutate(hzcy052aR = recode(hzcy052a,
                            `5` = 1, # `old value` = new value
                            `4` = 2,
                            `2` = 4,
@@ -1351,6 +1358,14 @@ include_graphics("./pics/lubridate_hex.jpg")
 ```
 
 If you work with time series data, it is also worth to check out the [`tsibble` package](https://tsibble.tidyverts.org/) for your wrangling tasks.
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
 
 ---
 
@@ -1763,3 +1778,11 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
 ## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
+
+---
+
+## Extracurricular activities
+
+If you have not yet seen this, watch the famous [TED Talk by Hans Rosling](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) on data visualization (to both get to know more about the background/roots of the [*Gapminder* project](https://www.gapminder.org/)) and to get you in the mood for tomorrow's topic which is data visualization with `R`).
+
+Check out the [*Tidy Tuesday* repository on *GitHub*](https://github.com/rfordatascience/tidytuesday), liste to a few of the very short episodes of the [*Tidy Tuesday* Podcast](https://www.tidytuesday.com/), check out the [#tidytuesday Twitter hashtag](https://twitter.com/hashtag/tidytuesday?lang=en), or watch one (or more) of the [*Tidy Tuesday* screencasts on *YouTube* by David Robinson](https://www.youtube.com/watch?v=E2amEz_upzU&list=PL19ev-r1GBwkuyiwnxoHTRC8TTqP8OEi8).

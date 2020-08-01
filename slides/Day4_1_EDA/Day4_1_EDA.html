@@ -1144,7 +1144,7 @@ trust %&gt;%
 
 ## Plotting correlations with `GGally::ggcorr()`
 
-The [`ggcorr` function](https://briatte.github.io/ggcorr/) from the [`GGAlly` package](https://ggobi.github.io/ggally/) - which is an extension to `ggplot2` -  also provides some interesting options for visualizing correlation coefficients.
+The [`ggcorr` function](https://briatte.github.io/ggcorr/) from the [`GGally` package](https://ggobi.github.io/ggally/) - which is an extension to `ggplot2` -  also provides some interesting options for visualizing correlation coefficients.
 
 
 ```r
@@ -1159,7 +1159,7 @@ library(GGally)
 
 ---
 
-## `GGAlly::ggcorr()`
+## `GGally::ggcorr()`
 
 .small[
 
@@ -1204,7 +1204,7 @@ correlation(trust)
 
 ---
 
-# #The `correlation` package
+## The `correlation` package
 
 Among other things, the `correlation` package, e.g., also provides options for biserial and tetrachoric correlations for factors, and it also to calculate grouped/stratified correlations.
 
@@ -1249,6 +1249,14 @@ class: center, middle
 ## Female |        trust_who | trust_scientists | 0.55 | [0.51, 0.58] | 25.38 | 1492 | &lt; .001 | Pearson |  1494
 ```
 ]
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
 
 ---
 
@@ -1557,8 +1565,8 @@ corona_survey %&gt;%
             stat = 'count',
             size = 3,
             vjust = -.5) +
-  scale_y_continuous(labels=scales::percent,
-                     expand=expand_scale(mult=c(0,0.1))) +
+  scale_y_continuous(labels = scales::percent,
+                     expand = expansion(mult=c(0,0.1))) +
   scale_fill_manual(values = colors) +
   labs(title = "Which party would you vote for if federal elections were held next Sunday?",
        x = "",
@@ -1861,10 +1869,10 @@ If we want to visually compare distributions (or summary statistics) across grou
 
 ---
 
-## Grouped &amp; stacked barplots
+## Grouped &amp; stacked bar plots
 
 .pull-left[
-If we want to compare the distribution of categorical variables across groups, we can use grouped or stacked barplots. If, e.g., we want to compare the party preferences across education categories in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset, we could do so with a grouped barplot.
+If we want to compare the distribution of categorical variables across groups, we can use grouped or stacked bar plots. If, e.g., we want to compare the party preferences across education categories in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset, we could do so with a grouped bar plot.
 
 .small[
 
@@ -1884,10 +1892,10 @@ corona_survey %&gt;%
 
 ---
 
-## Grouped &amp; stacked barplots
+## Grouped &amp; stacked bar plots
 
 .pull-left[
-If we want to compare the share of female and male voters for each party, we can use a stacked barplot.
+If we want to compare the share of female and male voters for each party, we can use a stacked bar plot.
 
 .small[
 
@@ -1907,10 +1915,10 @@ corona_survey %&gt;%
 
 ---
 
-## Barplot with error bars
+## Bar plot with error bars
 
 .pull-left[
-One way to compare, e.g., mean values across groups is a barplot with error bars, sometimes also called a dynamite plot.
+One way to compare, e.g., mean values across groups is a bar plot with error bars, sometimes also called a dynamite plot.
 
 .small[
 
@@ -1976,7 +1984,7 @@ corona_survey %&gt;%
 ## Boxplot with individual data points
 
 .pull-left[
-One key point of criticism regarding the use of boxplots as well as dynamite plots (barplots with error bars) is that they do not provide any information about the distribution of the data. This has even led some scientists to start an initiative to [#barbarplots](https://barbarplots.github.io/index.html). However, with `ggplot2` information about the distribution of variables can easily be added to a boxplot (or other types of plots), e.g., with the `geom_jitter`.
+One key point of criticism regarding the use of boxplots as well as dynamite plots (bar plots with error bars) is that they do not provide any information about the distribution of the data. This has even led some scientists to start an initiative to [#barbarplots](https://barbarplots.github.io/index.html). However, with `ggplot2` information about the distribution of variables can easily be added to a boxplot (or other types of plots), e.g., with the `geom_jitter`.
 
 .small[
 
@@ -2119,7 +2127,7 @@ p &lt;- gapminder_2018 %&gt;%
 
 ## Extensions
 
-Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots of map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). If you want to (visually) explore time series data, [*From Data to Viz*](https://www.data-to-viz.com/) has a section on this or you could, e.g. have a look at the [`timetk` package](https://business-science.github.io/timetk/index.html).
+Of course, it is also to include more than just two variables in a plot. For example, you can create grouped scatter plots and map the size of the plots in a scatter plot to another variable (e.g., the population of a country in the *Gapminder* examples). If you want to (visually) explore time series data, [*From Data to Viz*](https://www.data-to-viz.com/) has a section on this or you could, e.g. have a look at the [`timetk` package](https://business-science.github.io/timetk/index.html).
 
 There are also several extension packages for `ggplot2` that provide additional plot types or (convenient) plotting options. For example, the following packages provide some interesting (additional) options for EDA: [`ggExtra`](https://github.com/daattali/ggExtra), [`GGAlly`](https://ggobi.github.io/ggally/), [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/index.html) 
 
@@ -2341,7 +2349,7 @@ out &lt;- outlier(gapminder_2018[, -1])
 
 ## EDA packages
 
-There are quite a few packages that are made for easy EDA or include functions that facilitate EDA. For example: [`inspectdf`](https://alastairrushworth.github.io/inspectdf/), [`skimr`](https://docs.ropensci.org/skimr/), [`summarytools`](https://github.com/dcomtois/summarytools), [`dataMaid`](https://github.com/ekstroem/dataMaid), [`DataExplorer`](https://boxuancui.github.io/DataExplorer/), [`descriptr`](https://descriptr.rsquaredacademy.com/index.html), [`GGAlly`](https://ggobi.github.io/ggally/index.html)
+There are quite a few packages that are made for easy EDA or include functions that facilitate EDA. For example: [`inspectdf`](https://alastairrushworth.github.io/inspectdf/), [`skimr`](https://docs.ropensci.org/skimr/), [`summarytools`](https://github.com/dcomtois/summarytools), [`dataMaid`](https://github.com/ekstroem/dataMaid), [`DataExplorer`](https://boxuancui.github.io/DataExplorer/), [`descriptr`](https://descriptr.rsquaredacademy.com/index.html), [`GGally`](https://ggobi.github.io/ggally/index.html)
 
 Going through all of them would be too much. However, we will highlight a few exemplary functions from these packages for automated/simplified EDA that combine several of the different steps and options we covered in this session in the following.
 
@@ -2773,7 +2781,7 @@ skim(corona_survey[, -1])
 
 ---
 
-## `GGAlly::ggpairs()`
+## `GGally::ggpairs()`
 
 .pull-left[
 .small[
@@ -2827,6 +2835,12 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
 
 ## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
+
+---
+
+# Extracurricular activities
+
+Further explore the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset and develop some ideas for interesting research questions that you could answer by analyzing it with `R`.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

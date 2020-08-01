@@ -143,7 +143,7 @@ library("tidyverse")
 ```
 
 ```
-## -- Attaching packages --------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages ---------------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
@@ -154,7 +154,7 @@ library("tidyverse")
 ```
 
 ```
-## -- Conflicts ------------------------------------------------------------------------ tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter()     masks stats::filter()
 ## x dplyr::group_rows() masks kableExtra::group_rows()
 ## x dplyr::lag()        masks stats::lag()
@@ -454,6 +454,7 @@ If you need to make your data tidy or change it from wide to long format or vice
 
 Even before checking the codebook for a dataset (if there is one) it always helps to have a quick look at the data. The most high-level information you can get is about the object type and its dimensions.
 
+.small[
 
 ```r
 # object type
@@ -472,6 +473,25 @@ dim(gesis_panel_corona)
 ```
 ## [1] 3765  137
 ```
+
+```r
+# number of rows
+nrow(gesis_panel_corona)
+```
+
+```
+## [1] 3765
+```
+
+```r
+# number of columns
+ncol(gesis_panel_corona)
+```
+
+```
+## [1] 137
+```
+]
 
 ---
 
@@ -985,6 +1005,54 @@ names(gesis_panel_corona)
 
 .smaller[
 
+```
+##   [1] "za_number"             "version"               "doi"                  
+##   [4] "id"                    "cohort"                "sex"                  
+##   [7] "age_cat"               "education_cat"         "intention_to_vote"    
+##  [10] "choice_of_party"       "political_orientation" "marstat"              
+##  [13] "household"             "hzcy001a"              "hzcy002a"             
+##  [16] "hzcy003a"              "hzcy004a"              "hzcy005a"             
+##  [19] "hzcy006a"              "hzcy007a"              "hzcy008a"             
+##  [22] "hzcy009a"              "hzcy010a"              "hzcy011a"             
+##  [25] "hzcy012a"              "hzcy013a"              "hzcy014a"             
+##  [28] "hzcy015a"              "hzcy016a"              "hzcy018a"             
+##  [31] "hzcy019a"              "hzcy020a"              "hzcy021a"             
+##  [34] "hzcy022a"              "hzcy023a"              "hzcy024a"             
+##  [37] "hzcy025a"              "hzcy026a"              "hzcy027a"             
+##  [40] "hzcy028a"              "hzcy029a"              "hzcy030a"             
+##  [43] "hzcy031a"              "hzcy032a"              "hzcy033a"             
+##  [46] "hzcy034a"              "hzcy035a"              "hzcy036a"             
+##  [49] "hzcy037a"              "hzcy038a"              "hzcy039a"             
+##  [52] "hzcy040a"              "hzcy041a"              "hzcy042a"             
+##  [55] "hzcy043a"              "hzcy044a"              "hzcy045a"             
+##  [58] "hzcy046a"              "hzcy047a"              "hzcy048a"             
+##  [61] "hzcy049a"              "hzcy050a"              "hzcy051a"             
+##  [64] "hzcy052a"              "hzcy053a"              "hzcy054a"             
+##  [67] "hzcy055a"              "hzcy056a"              "hzcy057a"             
+##  [70] "hzcy058a"              "hzcy059a"              "hzcy060a"             
+##  [73] "hzcy061a"              "hzcy062a"              "hzcy063a"             
+##  [76] "hzcy064a"              "hzcy065a"              "hzcy066a"             
+##  [79] "hzcy067a"              "hzcy068a"              "hzcy069a"             
+##  [82] "hzcy070a"              "hzcy071a"              "hzcy072a"             
+##  [85] "hzcy073a"              "hzcy074a"              "hzcy075a"             
+##  [88] "hzcy076a"              "hzcy077a"              "hzcy078a"             
+##  [91] "hzcy079a"              "hzcy080a"              "hzcy081a"             
+##  [94] "hzcy083a"              "hzcy084a"              "hzcy085a"             
+##  [97] "hzcy086a"              "hzcy087a"              "hzcy088a"             
+## [100] "hzcy089a"              "hzcy090a"              "hzcy091a"             
+## [103] "hzcy092a"              "hzcy093a"              "hzcy095a"             
+## [106] "hzcy096a"              "hzcy097a"              "hzcy098a"             
+## [109] "hzcy099a"              "hzza001a"              "hzza002a"             
+## [112] "hzza003a"              "hzzq009a"              "hzzq016b"             
+## [115] "hzzq023a"              "hzzp201a"              "hzzp204a"             
+## [118] "hzzp207a"              "hzzr001a"              "hzzr002a"             
+## [121] "hzzr003a"              "hzzr004a"              "hzzr005a"             
+## [124] "hzzr006a"              "hzzr007a"              "hzzr008a"             
+## [127] "hzzr009a"              "hzzr010a"              "hzzr011a"             
+## [130] "hzzr012a"              "hzzr013a"              "hzzr014a"             
+## [133] "hzzr015a"              "hzzr016a"              "hzzr017a"             
+## [136] "hzzr018a"              "hzzr019a"
+```
 ]
 
 ---
@@ -2037,7 +2105,7 @@ Very often we want/need to recode values in a variable (e.g., if we have reverse
 
 ```r
 gesis_panel_corona &lt;- gesis_panel_corona %&gt;% 
-  mutate(hzcy052a = recode(hzcy052a,
+  mutate(hzcy052aR = recode(hzcy052a,
                            `5` = 1, # `old value` = new value
                            `4` = 2,
                            `2` = 4,
@@ -2335,6 +2403,14 @@ As our focus in this course is on tabular data common to the social and behavior
 &lt;img src="./pics/lubridate_hex.jpg" width="20%" style="display: block; margin: auto;" /&gt;
 
 If you work with time series data, it is also worth to check out the [`tsibble` package](https://tsibble.tidyverts.org/) for your wrangling tasks.
+
+---
+
+class: center, middle
+
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
+
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
 
 ---
 
@@ -3517,6 +3593,14 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
 
 ## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
+
+---
+
+## Extracurricular activities
+
+If you have not yet seen this, watch the famous [TED Talk by Hans Rosling](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) on data visualization (to both get to know more about the background/roots of the [*Gapminder* project](https://www.gapminder.org/)) and to get you in the mood for tomorrow's topic which is data visualization with `R`).
+
+Check out the [*Tidy Tuesday* repository on *GitHub*](https://github.com/rfordatascience/tidytuesday), liste to a few of the very short episodes of the [*Tidy Tuesday* Podcast](https://www.tidytuesday.com/), check out the [#tidytuesday Twitter hashtag](https://twitter.com/hashtag/tidytuesday?lang=en), or watch one (or more) of the [*Tidy Tuesday* screencasts on *YouTube* by David Robinson](https://www.youtube.com/watch?v=E2amEz_upzU&amp;list=PL19ev-r1GBwkuyiwnxoHTRC8TTqP8OEi8).
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
