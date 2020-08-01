@@ -94,7 +94,7 @@ vis_miss(gap_full)
 
 ## Data for 2018
 
-Given that we only have data on DGP per capita from `r min(gap_gdp$year)` to `r max(gap_gdp$year)`, we will focus on data from the year `r max(gap_gdp$year)` in our analysis. The dataset for `r max(gap_gdp$year)` contains data for `r nrow(gap_2018)` countries from `r n_distinct(gap_2018$continent)` continents. Let's have a look at this dataset.
+Given that we only have data on GDP per capita from `r min(gap_gdp$year)` to `r max(gap_gdp$year)`, we will focus on data from the year `r max(gap_gdp$year)` in our analysis. The dataset for `r max(gap_gdp$year)` contains data for `r nrow(gap_2018)` countries from `r n_distinct(gap_2018$continent)` continents. Let's have a look at this dataset.
 
 ```{r full-table}
 gap_2018

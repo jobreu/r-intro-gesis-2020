@@ -25,8 +25,12 @@ klippy::klippy()
 
 We will continue working with the same subset of data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* as in the last exercise. If you have saved it while working on the previous exercise, you should be able to load it with the following command:
 
-```{r save-df}
+```{r load, echo = F}
 corona_survey <- readRDS("../../../data/gp_corona_subset.rds")
+```
+
+```{r load-rds, eval = F}
+corona_survey <- readRDS("../data/gp_corona_subset.rds")
 ```
 
 If you have not saved the dataframe, you need to run the full wrangling pipeline from the beginning of the previous exercise again.
@@ -51,7 +55,7 @@ corona_survey %>%
 ```
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-Next, let's create a plot to show differences in party preferences between men and women in the sample; with different colors for the parties.
+Next, let's create a plot to show differences in party preferences between men and women in the sample with different colors for the parties.
 ```
 
 ```{block, opts.label = "clues"}
@@ -63,7 +67,7 @@ corona_survey %>%
   filter(!is.na(choice_of_party)) %>%
   ggplot(aes(x = sex, 
              fill = choice_of_party)) +
-  geom_bar(position="dodge")
+  geom_bar(position = "dodge")
 ```
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}

@@ -106,7 +106,7 @@ For most of the data wrangling tasks we discuss in this section, we will show ho
 
 Our main focus, however, will be on the use of packages (and functions) from the `tidyverse` and how they can be used to clean and transform your data.
 
-Of course, it is possible to combine `base R` and `tidyverse` code (confession: and I still sometimes do that). However, in the long run you should try to aim for consistency.
+Of course, it is possible to combine `base R` and `tidyverse` code (confession: and I still frequently do that). However, in the long run, you should try to aim for consistency.
 
 ---
 
@@ -130,20 +130,28 @@ As stated before, data wrangling can also be done with `base R`. However, the sy
 
 ---
 
+# (IMHO minor) Downsides of using the `tidyverse`
+
+The `tidyverse` is a collection of packages with quite a few dependencies. Hence, installing it can take time if you cannot use binary packages and need to install from source (e.g., on a *Linux* system or if you install development versions from *GitHub*). To avoid this (plus potential namespace conflicts), a good solution is installing and loading `tidyverse` packages individually.
+
+The `tidyverse` is being continuously developed by a big team of people. This means that, unlike for `base R` functions, there can be major changes to how stuff works. Two recent examples are the [change from `spread()` and `gather()` to `pivot_longer()` and `pivot_wider()`](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/#pivoting) and the [replacement of scoped variants of some `dplyr` functions with the `across()` function](https://dplyr.tidyverse.org/reference/across.html). However, `tidyverse` developers generally make sure that there is backwards compatibility with previous versions (so that superseded functions can still be used; although this typically leads to warnings being displayed and this backwards compatibility may end some time with some future version). 
+
+---
+
 ## Lift-off into the `tidyverse` 🚀
-**install all `tidyverse` packages** (for the full list of `tidyverse` packages see [https://www.tidyverse.org/packages/](https://www.tidyverse.org/packages/))
+**Install all `tidyverse` packages** (for the full list of `tidyverse` packages see [https://www.tidyverse.org/packages/](https://www.tidyverse.org/packages/))
 
 ```r
 install.packages("tidyverse")
 ```
-**load core `tidyverse` packages** (NB: To save time and reduce namespace conflicts it can make sense to load the `tidyverse` packages individually)
+**Load core `tidyverse` packages** (NB: To save time and reduce namespace conflicts it can make sense to load the `tidyverse` packages individually)
 
 ```r
 library("tidyverse")
 ```
 
 ```
-## -- Attaching packages ---------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
@@ -154,7 +162,7 @@ library("tidyverse")
 ```
 
 ```
-## -- Conflicts ------------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter()     masks stats::filter()
 ## x dplyr::group_rows() masks kableExtra::group_rows()
 ## x dplyr::lag()        masks stats::lag()
@@ -172,113 +180,7 @@ While there is much more to the `tidyverse` than this, three important concepts 
 
 3. tidy data
 
----
-
-## What is a pipe?
-
-&lt;img src="./pics/pipe_office_decoration.jpg" width="40%" style="display: block; margin: auto;" /&gt;
-.center[&lt;small&gt;&lt;small&gt;Source: Johannes' office &lt;/small&gt;&lt;/small&gt;]
-
---
-
-You might know pipes from other scripting utilities 
-- e.g., `bash` where a `|` operator is used
-
----
-
-## What is a pipe?
-
-Put briefly, the pipe operator `%&gt;%` takes an object (which can be the outcome of a previous function) and pipes it (by default as the first argument) into the next function. 
-
-We'll show how to use the pipes and how it compares to `base R` code in the following, but what may already be interesting to know is that *RStudio* has a keyboard shortcut for the the pipe operator `%&gt;%`: &lt;kbd&gt;Ctrl + Shift + M&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Shift + M&lt;/kbd&gt; (*Mac*)
-
----
-
-## Nested code in `base R`
-
-If, for example, we wanted to calculate the mean of the mileage per gallon (`mpg`) of the cars in the `mtcars` dataset included as an example in the `readr` package, the `base R` code could look like this:
-
-
-```r
-mean(read_csv(readr_example("mtcars.csv"))$mpg)
-```
-
-```
-## [1] 20.09062
-```
-
-Essentially, the code has to be read from the inside out. Of course, you can also always create new/intermediary objects as in the following example. However, this quickly fills up your workspace and can, eventually, slow down your computer (remember that the objects in the workspace are stored in your computer's working memory.)
-
-
-```r
-example_file        &lt;- readr_example("mtcars.csv")
-example_file_loaded &lt;- read_csv(example_file)
-mean(example_file_loaded$mpg)
-```
-
-```
-## [1] 20.09062
-```
-
----
-
-## Pipes to the rescue!
-
-Pipes disentangle the whole process with an alternative approach by applying any involved function step by step:
-
-
-```r
-"mtcars.csv" %&gt;% 
-  readr_example() %&gt;% 
-  read_csv() %&gt;% 
-  .$mpg %&gt;% 
-  mean()
-```
-
-```
-## [1] 20.09062
-```
-
-Here the code can be read from top to bottom and you can think of the pipe operator `%&gt;%` as meaning "and then...".
-
-*Note*: The `.` before `$mpg` in the above code example is a placeholder for the output of the previous step. This is useful if this output is not the first argument of a following function. The example is also somewhat unusual in another regard as it starts with a text string. More commonly, pipes start with dataframes.
-
----
-
-## Types of pipes
-
-While `%&gt;%` is the most widely used pipe operator in the `tidyverse`, there are other types of pipes. These are included in the [`magrittr` package](https://magrittr.tidyverse.org/).
-
-A useful one is the assignment pipe `%&lt;&gt;%` which assigns the outcome of a pipe to the object that serves as input at the beginning of the pipe.
-
-However, for the sake of readability, and because it allows to give the output object a different name, it is usually better to use the regular `R` assignment operator `&lt;-`, even though this means a little more typing (as you have to type the name of the input and the resulting output object, which may be the same.
-
----
-
-## tibbles
-
-Tibbles are the data format used in the `tidyverse`.
-
---
-
-They are basically standard `R data.frame()`s, enriched with some more features and metadata:
-
---
-
-- information about dimensions (rows x columns) of dataframes
-
---
-
-- information about variable types
-
---
-
-- better readability
-  - they are printed in a way that fits the screen/window
-
---
-
-Tibbles come with the [`tibbles` package](https://tibble.tidyverse.org/) and it is easy to convert a `data.frame` to a `tibble` (with `as_tibble(data.frame)`) and vice versa (using `as.data.frame(tibble)`.
+We discussed pipes and tibbles in the session on *Programming in `R`*, so we'll only (very briefly) talk about *tidy data* here.
 
 ---
 
@@ -402,7 +304,7 @@ There even is an `R` package called [`grateful`](https://github.com/Pakillo/grat
 
 It is always advisable to consult the codebook (if there is one) before starting to work with a(n existing) dataset. The *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* comes with a very [detailed codebook](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
 
-Side note: If you want to generate a codebook for your own dataset, there are several options in `R`:
+Side note: If you want to (semi-)automatically generate a codebook for your own dataset, there are several options in `R`:
 
 - The [`codebook` package](https://github.com/rubenarslan/codebook) which includes an *RStudio*-Addin and also offers a [web app](https://rubenarslan.ocpu.io/codebook/www/)
 
@@ -1059,7 +961,7 @@ names(gesis_panel_corona)
 
 ## What's in a name?
 
-As you can see, only a few of the variable names in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset are descriptive. The names have meaning as they are composed of codes representing the study wave, study name, variable number and whether they are original or derived variables, but they are not intuitive to understand. Hence, for analyzing them, especially if you want to create tables and/or plots, it can make sense to rename them. This is also a common step if you work with your own data. Depending on what method or tool(s) you used to collect the data, the variable names may also not be what you want or need them to be.
+As you can see, only a few of the variable names in the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* dataset are descriptive. The names have meaning as they are composed of codes representing the study wave, study name, variable number and whether they are original or derived variables (have a look at the [*GESIS Panel* cheatsheet](https://www.gesis.org/fileadmin/upload/forschung/programme_projekte/Drittmittelprojekte/GESIS_Panel/gesis_panel_cheatsheet.pdf) if you want to know more), but they are not intuitive to understand. Hence, for analyzing them, especially if you want to create tables and/or plots, it can make sense to rename them. This is also a common step if you work with your own data. Depending on what method or tool(s) you used to collect the data, the variable names may also not be what you want or need them to be.
 
 ---
 
@@ -1073,7 +975,7 @@ It good practice to use consistent naming conventions. Since `R` is case-sensiti
 
 ## `dplyr`
 
-The `tidyverse` example in the following will make use of functions from the [`dplyr` package](https://dplyr.tidyverse.org/).
+The `tidyverse` examples in the following will make use of functions from the [`dplyr` package](https://dplyr.tidyverse.org/).
 
 - `dplyr` functions are verbs that signal an action  
 
@@ -1706,7 +1608,7 @@ dim(gesis_panel_corona_male)
 
 ## Selecting columns + filtering rows
 
-Of course, you can also combine the selection of columns and filtering or rows.
+Of course, you can also combine the selection of columns and the filtering of rows.
 
 `Base R` option 1
 .small[
@@ -2031,7 +1933,7 @@ gesis_panel_corona_measures &lt;- gesis_panel_corona_measures %&gt;%
 
 ## Exclude cases with missing values
 
-If you want to exclude observations with missing values for individual variables, you can use `is.na(variable_name)` with your filtering method of choice.
+If you want to exclude observations with missing values for individual variables, you can use `!is.na(variable_name)` with your filtering method of choice.
 
 If you only want to keep complete cases in your dataframe, you can easily do so with both `base R` and the `tidyverse` (in this case a function from the `tidyr` package).
 
@@ -2284,7 +2186,7 @@ glimpse(corona_trust)
 ## $ mean_trust &lt;dbl&gt; NaN, 4.222222, 4.000000, 4.000000, NaN, 4.000000, 3.4444...
 ```
 
-*Note*: `NaN` means "not a number" which is [not the same as `NA`](http://onetipperday.sterding.com/2012/08/difference-between-na-and-nan-in-r.html). If you want to change `NaN` to `NA` for this variable, you can, e.g., do so with the `base R` command `corona_trust$mean_trust[is.nan(corona_trust$mean_trust)] &lt;- NA` or with `corona_trust &lt;- corona_trust %&gt;% mutate(mean_trust = na_if(mean_trust, "NaN"))`.
+*Note*: `NaN` means "not a number" which is [not the same as `NA`](http://onetipperday.sterding.com/2012/08/difference-between-na-and-nan-in-r.html). If you want to change `NaN` to `NA` for this variable, you can, e.g., do so with the `base R` command `corona_trust$mean_trust[is.nan(corona_trust$mean_trust)] &lt;- NA` or with `dplyr`: `corona_trust &lt;- corona_trust %&gt;% mutate(mean_trust = na_if(mean_trust, "NaN"))`.
 
 ---
 
@@ -2320,7 +2222,7 @@ A few things to note here:
 
 Factor are a special type of variable in `R` that represent categorical data. Before `R` version `4.0.0.` the default for `base R` was that all characters variables are imported as factors (remember that `R` was originally developed by and for statisticians).
 
-Internally, factors are stored as integers, but they have (character) labels associated with them. Hence, if you are not working with the special class of labelled data (e.g., via the packages [`haven`](https://haven.tidyverse.org/), [`labelled`](https://larmarange.github.io/labelled/index.html), or [`sjlabelled`](https://strengejacke.github.io/sjlabelled/index.html)), factors come closest to having variables with value labels as you might know from *SPSS*.
+Internally, factors are stored as integers, but they have (character) labels (so-called *levels*) associated with them. Hence, if you are not working with the special class of labelled data (e.g., via the packages [`haven`](https://haven.tidyverse.org/), [`labelled`](https://larmarange.github.io/labelled/index.html), or [`sjlabelled`](https://strengejacke.github.io/sjlabelled/index.html)), factors come closest to having variables with value labels as you might know from *SPSS*.
 
 Factors in `R` can be **unordered** - in which case they are similar to **nominal** level variables in *SPSS* - or **ordered** - in which case they are similar to **ordinal** level variables in *SPSS*.
 
@@ -2366,7 +2268,7 @@ gesis_panel_corona &lt;- gesis_panel_corona %&gt;%
     ))
 ```
 
-*Note*: If we want the factor levels to be sorted differently (the default is alphabetical order), we need to provide a vector of levels to the `levels` argument of the `factor()` function. If the factor should be ordered, the `ordered` argument should be set to `TRUE`.
+*Note*: If the factor should be ordered, the `.ordered` argument should be set to `TRUE`.
 
 ---
 
@@ -2390,7 +2292,7 @@ Working with strings in R is a topic that would require its own workshop. The `t
 
 &lt;img src="./pics/hex-stringr.png" width="20%" style="display: block; margin: auto;" /&gt;
 
-As we cannot cover everything, we decided not to discuss working with strings and text in `R` in this course. However,`stringr` provides a good [introduction vignette](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html), the book *R for Data Science* has a whole section on [strings with `stringr`](https://r4ds.had.co.nz/strings.html), and there also is an [*RStudio* Cheat Sheet for `stringr`](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf).
+As we cannot cover everything, we decided not to discuss working with strings and text in `R` in this course. However, `stringr` provides a good [introduction vignette](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html), the book *R for Data Science* has a whole section on [strings with `stringr`](https://r4ds.had.co.nz/strings.html), and there also is an [*RStudio* Cheat Sheet for `stringr`](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf).
 
 If you want (or have) to work with [regular expressions](https://en.wikipedia.org/wiki/Regular_expression), you should also check out the [`rebus` package](https://github.com/richierocks/rebus) which allows you to create regular expressions in R in a human-readable way. Another helpful tool is the *RStudio* addin [`RegExplain`](https://www.garrickadenbuie.com/project/regexplain/).  
 
@@ -2438,7 +2340,7 @@ If you have ever worked with (or at least seen) `SQL` code, many of the followin
 
 ## Superhero data 🦇⚡🕸🧜‍♂️
 
-As the we cannot use the data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* for to illustrate the different joins from `dlpyr`, we will instead use data from the Super Heroes dataset from [*Kaggle*](https://www.kaggle.com/claudiodavi/superhero-set).
+As we cannot use the data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* to illustrate the different joins from `dlpyr`, we will instead use data from the Super Heroes dataset from [*Kaggle*](https://www.kaggle.com/claudiodavi/superhero-set).
 
 
 
@@ -3598,9 +3500,9 @@ class: center, middle
 
 ## Extracurricular activities
 
-If you have not yet seen this, watch the famous [TED Talk by Hans Rosling](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) on data visualization (to both get to know more about the background/roots of the [*Gapminder* project](https://www.gapminder.org/)) and to get you in the mood for tomorrow's topic which is data visualization with `R`).
+If you have not yet seen this, watch the famous [TED Talk by Hans Rosling](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen) on data visualization to get to know more about the background/roots of the [*Gapminder* project](https://www.gapminder.org/) and to get you in the mood for tomorrow's topic which is data visualization with `R`.
 
-Check out the [*Tidy Tuesday* repository on *GitHub*](https://github.com/rfordatascience/tidytuesday), liste to a few of the very short episodes of the [*Tidy Tuesday* Podcast](https://www.tidytuesday.com/), check out the [#tidytuesday Twitter hashtag](https://twitter.com/hashtag/tidytuesday?lang=en), or watch one (or more) of the [*Tidy Tuesday* screencasts on *YouTube* by David Robinson](https://www.youtube.com/watch?v=E2amEz_upzU&amp;list=PL19ev-r1GBwkuyiwnxoHTRC8TTqP8OEi8).
+Check out the [*Tidy Tuesday* repository on *GitHub*](https://github.com/rfordatascience/tidytuesday), listen to a few of the very short episodes of the [*Tidy Tuesday* Podcast](https://www.tidytuesday.com/), check out the [#tidytuesday Twitter hashtag](https://twitter.com/hashtag/tidytuesday?lang=en), or watch one (or more) of the [*Tidy Tuesday* screencasts on *YouTube* by David Robinson](https://www.youtube.com/watch?v=E2amEz_upzU&amp;list=PL19ev-r1GBwkuyiwnxoHTRC8TTqP8OEi8).
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

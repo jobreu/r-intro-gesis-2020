@@ -203,7 +203,7 @@ There are quite a few packages that offer extension output formats for `R Markdo
 - [`xaringan`](https://github.com/yihui/xaringan) for presentations - which is what we used for our slides
 - [`bookdown`](https://bookdown.org/) for books (but also for websites)
 - [`blogdown`](https://bookdown.org/yihui/blogdown/) for websites - which is how Johannes created his [personal website](https://www.johannesbreuer.com/)
-- [`vitae`](https://github.com/mitchelloharawild/vitae) for (data-based) Résumés and CVs
+- [`vitae`](https://github.com/mitchelloharawild/vitae) for (data-based) Résumés and CVs - which Johannes used to create his [CV](https://www.johannesbreuer.com/files/cv_JB_June20_apa-style.pdf)
 - [`posterdown`](https://github.com/brentthorne/posterdown) for academic (conference) posters
 - [`flexdashboard`](https://rmarkdown.rstudio.com/flexdashboard/index.html) for interactive dashboards
 
@@ -211,7 +211,7 @@ There are quite a few packages that offer extension output formats for `R Markdo
 
 ## Getting started with `R Markdown`
 
-When you create a new `R Markdown` document in *RStudio* the new document will include a basic template to which I added a few lines at the end in the example below.
+When you create a new `R Markdown` document in *RStudio* the new document will include a basic template to which I added a few lines on inline code at the end in the example below.
 
 &lt;img src="./pics/rmarkdown_example.png" width="70%" style="display: block; margin: auto;" /&gt;
 
@@ -418,7 +418,7 @@ As the name says, code chunks in `R Markdown` documents include code. This is ty
 
 You can insert a code chunk via the `Insert` button (select `R`) or using the keyboard shortcut &lt;kbd&gt;Ctrl + Alt + I&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Option + I&lt;/kbd&gt; (*Mac*). 
 
-It is good practice to name code chunks. In the above example `{r cars}` specifies the language for the code `r` and a name `cars`. By naming code chunks it is, e.g., possible to reference them in other code chunks and they will also appear in the interactive ToC at the bottom of the tab for the `R Markdown` document. Chunk names may never be used twide in a single document and should not include spaces or underscores.
+It is good practice to name code chunks. In the above example `{r cars}` specifies the language for the code `r` and a name `cars`. By naming code chunks it is, e.g., possible to reference them in other code chunks and they will also appear in the interactive ToC at the bottom of the tab for the `R Markdown` document. Chunk names may never be used twice in a single document and should not include spaces or underscores.
 
 ---
 
@@ -426,7 +426,7 @@ It is good practice to name code chunks. In the above example `{r cars}` specifi
 
 &lt;img src="./pics/code_chunk_options.png" width="1281" style="display: block; margin: auto;" /&gt;
 
-You can also set a variety of options for code chunks. In the above example, we set `echo = FALSE` which means that the code itself will not be displayed in the output document (only its output). Other exemplary chunk options are `eval = FALSE`, meaning that the code is not executed, or `warning = FALSE` or `message = FALSE` which mean that warnings or messages produced by the code are not shown in the output document. Yihui Xie, the main author of the `knitr` package keeps an [updated list of all code chunk options](https://yihui.org/knitr/options/). 
+You can also set a variety of options for code chunks. In the above example, we set `echo = FALSE` which means that the code itself will not be displayed in the output document (only its output). Other exemplary chunk options are `eval = FALSE`, meaning that the code is not executed, or `warning = FALSE` or `message = FALSE` which mean that warnings or messages produced by the code are not shown in the output document. Yihui Xie, the main author of the `knitr` package, keeps an [updated list of all code chunk options](https://yihui.org/knitr/options/). 
 
 ---
 
@@ -448,7 +448,7 @@ It is also possible to execute code within text. This makes sense to print `R` o
 
 ## Comments
 
-It is also possible to include comments in an `RMarkdown` document that will not be displayed in the output. To comment something out, you can highlight it and use the keyboard shortcut &lt;kbd&gt;Ctrl + Shift + C&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Shift + C&lt;/kbd&gt; (*Mac*). A comment in `R Markdown` looks like this: `&lt;!-- This is a comment --&gt;` 
+It is also possible to include comments in an `RMarkdown` document that will not be displayed in the output. To comment something out, you can select it and use the keyboard shortcut &lt;kbd&gt;Ctrl + Shift + C&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Shift + C&lt;/kbd&gt; (*Mac*). A comment in `R Markdown` looks like this: `&lt;!-- This is a comment --&gt;` 
 
 ---
 
@@ -511,13 +511,13 @@ As with almost everything in `R`, there are many options (read: packages) for cr
 
 ## Tables
 
-Each of the packages listed on the previous slide have their own strengths and limitations. In addition to the formats and functionalities they offer, they also differ in the types of output formats that they support. While most packages, e.g., support `HTML` output, not all can be used to produce output for `LaTeX` or *Microsoft Word*. Discussing these packages for table creation in detail is beyond the scope of this session, but we do provide some examples for creating tables in the exemplary `R Markdown` documents we have created for the exercises.
+Each of the packages listed on the previous slide have their own strengths and limitations. In addition to the formats and functionalities they offer, they also differ in the types of output formats that they support. While most packages, e.g., support `HTML` output, not all can be used to produce output for `LaTeX` or *Microsoft Word*. Discussing these packages for table creation in detail is beyond the scope of this session, but we do provide some examples for creating tables in the exemplary `R Markdown` documents we have created for the exercise for this session.
 
 ---
 
 ## Citations &amp; bibliographies
 
-Through `Pandoc` it is possible to [automatically generate citations and bibliographies in a variety of styles](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html#Bibliographies). If you use a reference manager, such as the free and open-source [*Zotero*](https://www.zotero.org/), you can generate [`BibTeX`](https://en.wikipedia.org/wiki/BibTeX) files which you need for the [`citr` package](https://github.com/crsh/citr) which provides a handy *RStudio* addin for automatically creating citations and bibliographies in `R Markdown` documents. Another package that can be used for this is [`RefManageR`](https://github.com/ropensci/RefManageR/). For easily citing the `R` packages you have used you can use the [`grateful` package](https://github.com/Pakillo/grateful). 
+Through `Pandoc` it is possible to [automatically generate citations and bibliographies in a variety of styles](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html#Bibliographies). If you use a reference manager, such as the free and open-source [*Zotero*](https://www.zotero.org/), you can generate [`BibTeX`](https://en.wikipedia.org/wiki/BibTeX) files which you need for the [`citr` package](https://github.com/crsh/citr) which provides a handy *RStudio* addin for automatically creating citations and bibliographies in `R Markdown` documents. Another package that can be used for this is [`RefManageR`](https://github.com/ropensci/RefManageR/). 
 
 ---
 
@@ -589,7 +589,7 @@ output: html_notebook
 
 ## Excursus: Interactive Notebooks
 
- `R` Notebooks are a nice option. However, if you want to use interactive notebooks to, e.g., share your results (with collaborators) or in your teaching, I would generally see [*Jupyter Notebooks*](https://jupyter.org/) as the better option as the provide some nice extra functionalities (especially when used with [*Jupyter Lab*](https://towardsdatascience.com/jupyter-lab-evolution-of-the-jupyter-notebook-5297cacde6b) and [*Binder*](https://mybinder.org/)). While they are not a native `R` format, *Jupyter* stands for `Julia`, `Python`, `R` and *Jupyter Notebooks* can be used with an `R` kernel. Notably, *Jupyter Notebooks* cannot be edited with *RStudio*, but an easy-to-use option for this is [*Anaconda*](https://www.anaconda.com/products/individual). If you use or want to use *Jupyter Notebooks*, you should also check out the [*GESIS Notebooks* service](https://notebooks.gesis.org/).
+ `R` Notebooks are a nice option. However, if you want to use interactive notebooks to, e.g., share your results (with collaborators) or in your teaching, I would generally see [*Jupyter Notebooks*](https://jupyter.org/) as the better option as they provide some nice extra functionalities (especially when used with [*Jupyter Lab*](https://towardsdatascience.com/jupyter-lab-evolution-of-the-jupyter-notebook-5297cacde6b) and [*Binder*](https://mybinder.org/)). While they are not a native `R` format, *Jupyter* stands for `Julia`, `Python`, `R` and *Jupyter Notebooks* can be used with an `R` kernel. Notably, *Jupyter Notebooks* cannot be edited with *RStudio*, but an easy-to-use option for this is [*Anaconda*](https://www.anaconda.com/products/individual). If you use or want to use *Jupyter Notebooks*, you should also check out the [*GESIS Notebooks* service](https://notebooks.gesis.org/).
 
 ---
 

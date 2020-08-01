@@ -27,7 +27,7 @@ We will, again, use data from [*Gapminder*](https://www.gapminder.org/) for the 
 
 There is an `R` package named [`gapminder`](https://cran.r-project.org/web/packages/gapminder/) that contains a selection of the data from *Gapminder*.
 
-Our aim for this exercises is to use individual data files from *Gapminder* to create combined datasets that resembles the one included in the `gapminder` package.
+Our aim for this exercises is to use individual data files from *Gapminder* to create combined datasets that resemble the one included in the `gapminder` package.
 
 Before we can begin with these exercises, we need to load the datasets. To do this, you can simply use the following code (that repeats some parts of the previous exercises).
 
@@ -51,7 +51,7 @@ gap_cont <- gap_cont %>%
 First of all, let's have a look at the *Gapminder* data that is included in the `gapminder` package.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Load the `gapminder` package and have a look at the dataset it contains. The dataset we want is simply called *gapminder*.
+Install and load the `gapminder` package and have a look at the dataset it contains. The dataset we want is simply called *gapminder*.
 ```
 
 ```{block, opts.label = "clues"}
@@ -59,6 +59,9 @@ In order to print the dataset, you can just type its name and run that line.
 ```
 
 ```{r first-exercise, solution = TRUE}
+if (!require(gapminder)) install.packages("gapminder")
+# check if the gapminder package is installed and install it, if that is not the case
+
 library(gapminder)
 
 gapminder

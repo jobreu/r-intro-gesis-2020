@@ -31,6 +31,7 @@ inverter <- function (var) {
 }
 
 gesis_panel_corona <- read_csv2("../../../data/ZA5667_v1-1-0.csv")
+# you need to change the file path to "../data/ZA5667_v1-1-0.csv"
 
 missings <- c(-111, -99, -77, -33, -22)
 
@@ -258,7 +259,7 @@ corona_survey %>%
 
 ## Regression analysis
 
-We use a logistic regression model to explore the willingness to obey a possible curfew (full lockdown) is predicted by mean trust in (selected) institutions and the perceived personal risk of getting infected with the Coronavirus.
+We use a logistic regression model to explore how the willingness to obey a possible curfew (full lockdown) is predicted by mean trust in (selected) institutions and the perceived personal risk of getting infected with the Coronavirus.
 
 ```{r regression}
 library(broom)

@@ -48,7 +48,7 @@ pre {
 
 ## Exploratory Data Analysis (EDA)
 
-After wrangling our data, the next thing we should do is exploring them. In practice, of course, these steps are often done iteratively. Exploratory data analysis can take many shapes in forms. In this session, we will look at the following:
+After wrangling our data, the next thing we should do is exploring them. In practice, of course, these steps are often done iteratively. Exploratory data analysis can take many shapes and forms. In this session, we will look at the following:
 
 - summary statistics &amp; frequencies
 - correlations &amp; cross-tabulations
@@ -211,7 +211,7 @@ corona_survey &lt;- corona_survey %&gt;%
 
 ## Explore your data: First look
 
-To get some first impression of the dataset you can use some of the functions that we discussed in the session on *Data Wrangling*, such as `dim()`, `head()`, or `str()` from `base R`, `glimpse()` from `dplyr`, or `View()`.
+To get a first impression of the dataset you can use some of the functions that we discussed in the session on *Data Wrangling*, such as `dim()`, `head()`, or `str()` from `base R`, `glimpse()` from `dplyr`, or `View()`.
 
 While looking at the the full dataset can give us a general understanding of the data and their format and also show if (and how) we may need to wrangle them (further), it is difficult to make sense of the data just by looking at it.
 
@@ -545,7 +545,7 @@ class: center, middle
 
 - etc.
 
-A very nice thing about `summarize()` is that it produces a `tibble` which can be used for further analyses, plots, or to output tables (we will discuss the creation of tables in the session on `RMarkdown`).
+A very nice thing about `summarize()` is that it produces a `tibble` which can be used for further analyses, plots, or to output tables (we will talk about the creation of tables in the session on `RMarkdown`).
 
 ---
 
@@ -947,7 +947,7 @@ corona_survey %&gt;%
 
 ## Chi-Square Test
 
-You can, e.g., use the `summary()` function in combination with `table()` to do a chi-square test. The other packages mentioned previously that include functions for crosstabs can also be used for chi-square tests: For example, the `janitor` package,
+You can, e.g., use the `summary()` function in combination with `table()` to do a chi-square test. The other packages mentioned previously that include functions for crosstabs can also be used for chi-square tests (e.g., the `janitor` package).
 
 .small[
 
@@ -1206,7 +1206,7 @@ correlation(trust)
 
 ## The `correlation` package
 
-Among other things, the `correlation` package, e.g., also provides options for biserial and tetrachoric correlations for factors, and it also to calculate grouped/stratified correlations.
+Among other things, the `correlation` package, e.g., also provides options for biserial and tetrachoric correlations for factors, and it also allows to calculate grouped/stratified correlations.
 
 
 ```r
@@ -1404,7 +1404,7 @@ There are many good resources for plotting with `R`. A very exhaustive and appro
 
 ## EDA vs. publication-ready plots
 
-When you get more familiar with plotting in `R` you will notice that there are seemingly unlimited plotting options that allow for comprehensive customization. This means that you can spend a lot of time on tweaking and optimizing plot. While this makes sense for producing figures for publications, in the context of EDA, the figures you produce are meant for yourself (plus maybe a few collaborators). Hence, we will mostly make use of (rather) basic examples in the following. However, although `base R` provides quite a few plotting options, we will focus using `ggplot2` (and extensions thereof) as it is generally more versatile.
+When you get more familiar with plotting in `R` you will notice that there are seemingly unlimited plotting options that allow for comprehensive customization. This means that you can spend a lot of time on tweaking and optimizing plot. While this makes sense for producing figures for publications, in the context of EDA, the figures you produce are meant for yourself (plus maybe a few collaborators). Hence, we will mostly make use of (rather) basic examples in the following. Although `base R` provides quite a few plotting options, we will focus using `ggplot2` (and extensions thereof) as it is generally more versatile.
 
 ---
 
@@ -1418,7 +1418,7 @@ In the following, we will discuss some examples of plotting univariate distribut
 
 These plots can be created for a whole dataset or to compare specific subsets (groups) within the data.
 
-Of course, there are more options than the ones we will show for plotting univariate distributions. Which to choose depends on the specific kind of data you have, the question you want to answer with the data, and also - to some degree - personal preferences or what is customary in your field.
+Of course, there are more options than the ones we will show for plotting univariate distributions. Which one(s) to choose depends on the specific kind of data you have, the question you want to answer with the data, and also - to some degree - personal preferences or what is customary in your field.
 
 ---
 
@@ -1895,7 +1895,7 @@ corona_survey %&gt;%
 ## Grouped &amp; stacked bar plots
 
 .pull-left[
-If we want to compare the share of female and male voters for each party, we can use a stacked bar plot.
+If, e.g., we want to compare the share of female and male voters for each party, we can use a stacked bar plot.
 
 .small[
 
@@ -2300,7 +2300,7 @@ ggbetweenstats(data = corona_survey,
 
 ## Detecting outliers: IQR
 
-For identifying univariate outliers we can specify lower and upper cutoffs using the formula 25th percentile - 1.5 * interquartile range (IQR) for the lower and 75 percentile + 1.5 * IQR for the upper limit. In `R` this can be done as follows:
+For identifying univariate outliers we can specify lower and upper cutoffs, e.g., using the formula 25th percentile - 1.5 * interquartile range (IQR) for the lower and 75 percentile + 1.5 * IQR for the upper limit. In `R` this can be done as follows:
 
 .small[
 
@@ -2320,7 +2320,7 @@ gapminder_2018_cut &lt;- gapminder_2018 %&gt;%
 ```
 ]
 
-**NB**: The value of 1.5 * IQR is a rule of thumb. You should always check whether this makes sense for your data. In the above example with the *Gapminder* date, e.g., it most likely does not. An alternative approach is using mean + 2 * SD (or 3 * SD), but, again, this is nothing more than a rule of thumb.
+**NB**: The value of 1.5 x IQR is a rule of thumb. You should always check whether this makes sense for your data. In the above example with the *Gapminder* data, e.g., it most likely does not. An alternative approach is using mean + 2 x SD (or 3 x SD), but, again, this is nothing more than a rule of thumb.
 
 ---
 

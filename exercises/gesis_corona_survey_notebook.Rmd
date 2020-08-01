@@ -262,7 +262,7 @@ corona_survey %>%
 
 ## Regression analysis
 
-We use a logistic regression model to explore the willingness to obey a possible curfew (full lockdown) is predicted by mean trust in (selected) institutions and the perceived personal risk of getting infected with the Coronavirus.
+We use a logistic regression model to explore how the willingness to obey a possible curfew (full lockdown) is predicted by mean trust in (selected) institutions and the perceived personal risk of getting infected with the Coronavirus.
 
 ```{r regression}
 library(broom)

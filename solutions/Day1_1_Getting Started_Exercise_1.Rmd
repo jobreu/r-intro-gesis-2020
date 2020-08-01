@@ -30,6 +30,7 @@ As this is the very first exercise in this workshop it is quite easy and short. 
 The first thing we would like you to do in this exercise is to explore the *RStudio* interface a bit. Just "have a look around" and see, if you can find the elements and options we have discussed so far.
 
 After you have made yourself a bit familiar with the *RStudio* interface, start using the console interactively by entering and executing the following simple calculations:
+
 21 * 2
 
 2^3
@@ -37,8 +38,6 @@ After you have made yourself a bit familiar with the *RStudio* interface, start 
 15/3
 
 Feel free to play around a bit and try a few things out.
-
-After that, assign the number 42 to an object named `the_answer`.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
 The first simple task in this exercise is to assign the number 42 to an object named `the_answer` and then print the object to the console.

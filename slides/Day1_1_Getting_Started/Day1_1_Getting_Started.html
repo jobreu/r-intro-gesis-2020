@@ -59,7 +59,7 @@ By the end of this course you should...
 
 **Note**: This is not a statistics workshop. Our focus will be on learning how to use *R*.
 
-Of course, we want to show you *how to do stuff with `R`* but we also want to spend some time on covering *how things work in `R`*. This is important for understanding where/how things can go wrong and also prepares you for some more advanced use cases. 
+Of course, we want to show you *how to do stuff with `R`*, but we also want to spend some time on covering *how things work in `R`*. This is important for understanding where/how things can go wrong and also prepares you for some more advanced use cases. 
 
 Our general aim is to provide you with the knowledge about `R` and using it for data analysis that we wish we had when we started using `R`.
 
@@ -167,7 +167,7 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 - What is your experience with `R` or other programming languages?
 
-- What statistical software package(s) do typically use?
+- What statistical software package(s) do you typically use?
 
 - What do you want to use `R` for?
 
@@ -179,12 +179,10 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 - The workshop consists of a combination of lectures and hands-on exercises
 
-- We want to make this workshop as interactive as possible
-
 - Feel free to ask questions at any time
-  - if it is a question that everybody can/should hear, use "raise hand" function in *Zoom* and then ask via audio/video
+  - if it is a question that everybody can/should hear, use the "raise hand" function in *Zoom* and then ask via audio/video
   - you can also use the text chat to ask questions
-    - you can send text messages only to us, if others should not be able to read them
+    - you can send text chat messages only to us, if others should not be able to read them
 
 - Please mute your microphones unless you are asking a question
 
@@ -232,7 +230,7 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 
 - today we are at version `4.0.2`
 
-If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science*](https://bookdown.org/rdpeng/rprogdatascience/) by Roger D.Peng provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html). Alternatively, you can also watch this [*YouTube* video in which David Smith talks about *Twenty Years of R*](https://youtu.be/iq_biXEIx-U).
+If you want to know a bit more about the origins and history of `R` as well as the philosophy behind it, the book [*R Programming for Data Science*](https://bookdown.org/rdpeng/rprogdatascience/) by Roger D. Peng provides a [good summary](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html). Alternatively, you can also watch this [*YouTube* video in which David Smith talks about *Twenty Years of R*](https://youtu.be/iq_biXEIx-U).
 
 ---
 
@@ -345,6 +343,7 @@ batman &lt;- function() {
 - websites with [blogdown](https://bookdown.org/yihui/blogdown/)
 - books with [bookdown](https://bookdown.org/)
 - presentations with [xaringan](https://github.com/yihui/xaringan)
+- ...
 
 ---
 
@@ -352,7 +351,7 @@ batman &lt;- function() {
 
 - both are great
 
-- `Python` is more powerful for data collection and offer more (advanced) options for machine learning
+- `Python` is more powerful for data collection and offers more (advanced) options for machine learning
 
 - `R` is more powerful for data visualization and statistics
 
@@ -427,7 +426,7 @@ The most easy-to-use IDE that is specifically tailored to `R` is [*RStudio*](htt
 
 - possibility to install and use [addins](https://rstudio.github.io/rstudioaddins/) that extend the functionalities of the *RStudio* GUI
 
-- now also includes spellchecking features
+- now also includes (live) spellchecking features
 
 ---
 
@@ -455,7 +454,7 @@ If you see the **`&gt;`** in the console, it means that it is ready to receive c
 
 If you see a **`+`** at the beginning of the console input line, this means that the command is incomplete. A common reason for this is a missing `)` or `"`. If you see the `+` at the beginning of the console input line, you can either complete the command (and then run it by pressing &lt;kbd&gt;Enter&lt;/kbd&gt;/&lt;kbd&gt;Return&lt;/kbd&gt;) or abort entering the command by pressing &lt;kbd&gt;Esc&lt;/kbd&gt;.
 
-Once you have executed at least one command in the console you can cycle through previous using ↑ and ↓ on your keyboard.
+Once you have executed at least one command in the console you can cycle through previous ones using ↑ and ↓ on your keyboard.
 
 ---
 
@@ -559,7 +558,7 @@ y
 ## [1] "This is a character string"
 ```
 
-What is important to know and keep in mind is that all of your workspace (including all objects you loaded or created) in `R` is stored in your computer's working memory (RAM). This can become problematic if you work with "big data". However, there are solutions for working with larger-than-RAM data in `R`.
+What is important to know and keep in mind is that all of your workspace (including all objects you loaded or created) in `R` is stored in your computer's working memory (RAM). This can become problematic if you work with "big data". However, there are solutions for working with larger-than-RAM data in `R` (such as [`disk.frame`](https://diskframe.com/)).
 
 ---
 
@@ -573,7 +572,7 @@ Once one or more objects have been assigned values they also appear in the `Envi
 
 ## Functions
 
-Put simply, a function takes an input, does something with it, and produces some sort of output. Functions typically have arguments. In the simplest case, a function only requires an input (a value or object) as a single argument. 
+Put simply, a function takes an input, does something with it, and produces some sort of output. Functions typically have arguments. In the simplest case, a function only requires an input (a value or object) as a single argument (some functions even require no argument). 
 
 
 ```r
@@ -644,7 +643,7 @@ This will open a file in the `Help` tab in *RStudio*.
 
 ## Functions
 
-Arguments can have required and optional arguments. Required arguments need to be specified for a function to run, whereas optional arguments have defaults and, hence, do not have to be provided in a function call.
+Functions can have required and optional arguments. Required arguments need to be specified for a function to run, whereas optional arguments have defaults and, hence, do not have to be provided in a function call.
 You can easily identify required and optional arguments in the `Usage` section of the help file for a function: If the argument is in the format `argument = value` it is optional. If only the argument name is provided `function(argument_1)`, this means that this argument is required. 
 
 &lt;img src="./pics/help_example.png" width="55%" style="display: block; margin: auto;" /&gt;
@@ -680,15 +679,15 @@ Typing the argument names is more work but it increases the comprehensibility of
 
 class: center, middle
 
-# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/A5_DataWrangling1_exercises_question.html) time 💪🏃
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
 
-## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/A5_DataWrangling1_exercises_solution.html)
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
 
 ---
 
 ## `R` packages
 
-They element part of the `R` universe are its packages. They essentially are collections of functions (and sometimes also datasets) and provide some form of documentation for those.
+The key element part of the `R` universe are its packages. They essentially are collections of functions (and sometimes also datasets) and provide some form of documentation for those.
 
 The basic `R` system as well as a huge number of additional packages that extend its functionalities are available via [*The Comprehensive R Archive Network* (CRAN)](https://cran.r-project.org/).
 
@@ -906,7 +905,7 @@ In *RStudio*, you can create a new script via the menu (`File` -&gt; `New File` 
 
 ## *RStudio* interface: Scripts
 
-When you open or create a script in *RStudio* this will be displayed in a fourth pane (which will have multiple tabs if you open/create more than one `R` script).
+When you open or create a script in *RStudio* this will be displayed in a fourth pane (which will have multiple tabs if you open/create more than one `R` script or other types of source files).
 
 &lt;img src="./pics/r_studio_script.png" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -954,21 +953,9 @@ A neat trick in *RStudio* is that if you end a comment preceding a block of code
 
 ---
 
-## Coding in style 😎
-
-- [Google's R Style Guide](https://google.github.io/styleguide/Rguide.html)
-
-- [The `tidyverse` style guide](https://style.tidyverse.org/) by Hadley Wickham  
-  
-- [`styler`](http://styler.r-lib.org/) package (incl. RStudio add-in) that can be used to "automagically" style single files or even all files in a directory according to the tidyverse style guide
-
-&lt;img src="./pics/styler_addin.png" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
 ## Keyboard shortcuts in *RStudio*
 
-*RStudio* offers a wide range of useful [keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts). You can access a *Keyboard Shortcut Quick Reference* in *RStudio* via `Help`-&gt; `Keyboard Shortcuts Help`. There even is a keyboard shortcut for accessing the keyboard shortcuts help (very meta): &lt;kbd&gt;Alt + Shift + K&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Option + Shift + K&lt;/kbd&gt; (*Mac*).
+*RStudio* offers a wide range of useful [keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts). You can access a *Keyboard Shortcut Quick Reference* in *RStudio* via `Help` -&gt; `Keyboard Shortcuts Help`. There even is a keyboard shortcut for accessing the keyboard shortcuts help (very meta): &lt;kbd&gt;Alt + Shift + K&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Option + Shift + K&lt;/kbd&gt; (*Mac*).
 
 One *RStudio* keyboard shortcut that is particularly helpful for writing `R` code is the one for the assignment operator: &lt;kbd&gt;Alt + -&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Option + -&lt;/kbd&gt; (*Mac*). 
 
@@ -984,7 +971,7 @@ Once you start typing a command in *RStudio* (in the console or a script), *RStu
 
 ## Customization options in *RStudio*
 
-*RStudio* offers a wide range of [customization options](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). In the following, we will discuss three of them:
+*RStudio* offers a wide range of [customization options](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). In the following, we will briefly discuss three of them:
 
 - pane layout
 
@@ -1017,7 +1004,13 @@ Via `Tools` -&gt; `Global Options` -&gt; `Appearance` you can change the looks o
 
 Personally, I think dark themes are easier on the eyes. Also, themes can highlight specific code parts (in different colors). If you want more themes than the ones offered by default in *RStudio*, the package [`rsthemes`](https://github.com/gadenbuie/rsthemes) has a good selection. There also is a [colorblind-safe *RStudio* theme with code highlighting](https://github.com/DesiQuintans/Pebble-safe).
 
+--
+
 I also like monospaced programming fonts with ligatures. I currently use [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/) but am also fond of the [`Fira Code`](https://github.com/tonsky/FiraCode) font (pun intended).
+
+--
+
+Of course, this is all a matter of personal taste/preferences. Stefan, for example, is not a huge fan of dark themes or programming fonts with ligatures.
 
 ---
 
@@ -1032,7 +1025,7 @@ I will explain the reason for these suggested settings in the following.
 
 ## Workflows for `R` and *RStudio*
 
-The suggestions for regarding the general settings in *RStudio*  and many of the recommendations in the following are based on the freely available online book [What They Forgot to Teach You About R](https://rstats.wtf/).
+The suggestions regarding the general settings in *RStudio*  and many of the recommendations in the following are based on the freely available online book [What They Forgot to Teach You About R](https://rstats.wtf/).
 
 The general idea behind this book as well as the following slides here is to develop and implement workflows for `R` and *RStudio* that minimize mess and increase reproducibility. 
 
@@ -1076,7 +1069,7 @@ The *RStudio* menu `Session` -&gt; `Set Working Directory` which provides differ
 
 - "To Project Directory": can be used if you have an `.Rproj` file (more on that later)
 
-- "To Source File Location": sets the working directory to the location where the currently active source file - typically an `R` script - is stored) 
+- "To Source File Location": sets the working directory to the location where the currently active source file - typically an `R` script - is stored 
 
 - "To FilesPane Location": sets the working directory to the directory that is currently visible in the `Files` tab
 
@@ -1116,9 +1109,9 @@ Unless you change the default settings in *RStudio* as suggested on the previous
 
 ## `R` workspace
 
-While saving your workspace can be useful, this should not be your main (or default) way of saving your work. Instead, you should use scripts to store your code (including any functions you define) and save any output (including relevant intermediary results; especially if they take a substantial amount of time to produce) in files of an appropriate format (we will discuss this in more detail in the sections on importing and exporting data and). This increases reproducibility and also makes it easier to share your work (or collaborate on it) with others. Also, you will eventually probably work on more than one project, so you would need to use multiple workspaces which can get messy quite quickly.
+While saving your workspace can be useful, this should not be your main (or default) way of saving your work. Instead, you should use scripts to store your code (including any functions you define) and save any output (including relevant intermediary results; especially if they take a substantial amount of time to produce) in files with an appropriate format (we will discuss this in more detail in the sections on importing and exporting data and). This increases reproducibility and also makes it easier to share your work (or collaborate on it) with others. Also, you will eventually probably work on more than one project, so you would need to use multiple workspaces which can get messy quite quickly.
 
-If you explicitly want to save your whole workspace (e.g., because you notice that your computer is about to crash or your battery will be depleted and you have no time left to save/export individual files), you can do so with the `save.image()` command.
+If you explicitly want to save your whole workspace (e.g., because you notice that your computer is about to crash or your battery will be depleted and you have no time left to save/export individual files), you can do so by clicking the small blue disk icon in the `Environment` tab in *RStudio* or with the `save.image()` command.
 
 ---
 
@@ -1132,6 +1125,7 @@ rm(list = ls())
 ```
 
 This removes all user-created objects from the (global) workspace. Now, imagine you have not saved/exported all relevant objects from your workspace and you run a script that contains this command...
+
 Also, this command does not affect what packages have been loaded, the working directory, or any other options for `R` that may have been set to non-default values.
 
 Hence, `rm(list = ls())` (and the need to use it) should be avoided if possible. A much better way of ensuring that you start with a blank slate at the beginning of your `R` session is to use the *RStudio* settings mentioned earlier. If you need a reminder, you can also use the function `use_blank_slate()` from the [`usethis` package](https://usethis.r-lib.org/index.html).
@@ -1150,7 +1144,9 @@ The command history contains all commands you have executed in the current sessi
 
 You can also view your command history with the `history()` function (in *RStudio* this will activate the `History` tab).
 
-By default, *R* saves the command history in a `.Rhistory` file in your current working directory upon exiting. You can also manually save and restore the command history using `savehistory()` and `loadhistory()`. You can also open the `.Rhistory` file with any text editor.
+By default, *R* saves the command history in a `.Rhistory` file in your current working directory upon exiting. You can also manually save and restore the command history using `savehistory()` and `loadhistory()`. 
+
+*Note*: You can open the `.Rhistory` file with any text editor.
 
 Similar to the workspace, the command history should not be the main/default way of saving your work. This should be done via scripts.
 
@@ -1366,9 +1362,9 @@ The following ones are of particular interest for this workshop:
 
 class: center, middle
 
-# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/A5_DataWrangling1_exercises_question.html) time 💪🏃
+# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time 🏋️‍♀️💪🏃🚴
 
-## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/A5_DataWrangling1_exercises_solution.html)
+## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
 
 ---
 

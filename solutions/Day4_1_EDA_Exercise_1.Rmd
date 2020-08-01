@@ -25,12 +25,21 @@ klippy::klippy()
 
 For this exercise, we will use the same subset of the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* data as in the presentation. Just run the following code to go through the wrangling pipeline. Remember that the `.csv` file should be stored in the `data` folder in the directory with the course materials.
 
-```{r load-gapminder, message = F}
+```{r load, echo = F, message = F}
 library(tidyverse)
 library(naniar)
 
 gesis_panel_corona <- read_csv2("../../../data/ZA5667_v1-1-0.csv")
+```
 
+```{r load-gapminder, eval = F}
+library(tidyverse)
+library(naniar)
+
+gesis_panel_corona <- read_csv2("../data/ZA5667_v1-1-0.csv")
+```
+
+```{r wrangle data}
 missings <- c(-111, -99, -77, -33, -22)
 
 corona_survey <- gesis_panel_corona %>% 
@@ -140,10 +149,6 @@ You can use the `table()` function from `base R` for this.
 table(corona_survey$age_cat, useNA = "always")
 ```
 
-In the following, we will use different joins to create datasets that contain the same set of variables. We will create two versions of the combined dataset.  
-
-Before we do this, however, we want to explore the overlap and discrepancies between the individual datasets. This is somewhat easier to do with the datasets in wide format (as each country name only appears in one row in those).
-
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
 Use a function from the `summarytools` package to get summary statistics for the following variables in your dataset: `left_right`, `sum_measures`, `mean_trust`.
 ```
@@ -191,7 +196,7 @@ Use the `correlation` package to calculate and print correlations between the fo
 ```
 
 ```{block, opts.label = "clues"}
-You need to use `select` from `dplyr` and `correlation()` from the package with the same name.
+You need to use `select()` from `dplyr` and `correlation()` from the package with the same name.
 ```
 
 ```{r fifth-exercise, solution = TRUE}

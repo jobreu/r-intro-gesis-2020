@@ -23,16 +23,22 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-As in the presentation, we will use data from the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You should (have) download(ed) the dataset in `.csv` format in a folder caller `data` within the folder containing the materials for this workshop. Also remember that it is helpful to consult the [codebook for the dataset](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
+As in the presentation, we will use data from the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf) for this exercise. You should (have) download(ed) the dataset in `.csv` format in a folder caller `data` within the folder containing the materials for this workshop. Also remember that it is helpful to consult the [codebook for the dataset](https://dbk.gesis.org/dbksearch/download.asp?id=67378).
 
 That being sad, let's get wrangling...
 
 ...but before we can do that, we need to load the `tidyverse` package(s) and import the data.
 
-```{r read-data, message = F}
+```{r load-data, echo = F, message = F}
 library(tidyverse)
 
 gesis_panel_corona <- read_csv2("../../../data/ZA5667_v1-1-0.csv")
+```
+
+```{r read-data, eval = F}
+library(tidyverse)
+
+gesis_panel_corona <- read_csv2("../data/ZA5667_v1-1-0.csv")
 ```
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
@@ -111,7 +117,7 @@ Filter the `demo` dataset, so that it only contains married men.
 ```
 
 ```{block, opts.label = "clues"}
-You should probably consult the [codebook for the dataset](https://dbk.gesis.org/dbksearch/download.asp?id=67378)]. If you do that, you will see that the code for men is 1 and the one for married is also 1.
+You should probably consult the [codebook for the dataset](https://dbk.gesis.org/dbksearch/download.asp?id=67378). If you do that, you will see that the code for men is 1 and the one for married is also 1.
 ```
 
 ```{r sixth-exercise, solution = TRUE, eval = FALSE}
