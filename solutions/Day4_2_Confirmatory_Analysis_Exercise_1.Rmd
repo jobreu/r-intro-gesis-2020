@@ -1,11 +1,11 @@
 ---
-title: 'Exercise 1 Confirmatory Analysis - Solutions'
-# title: 'Exercise 1 Confirmatory Analysis'
+# title: 'Exercise 1 Confirmatory Analysis - Solutions'
+title: 'Exercise 1 Confirmatory Analysis'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
-  # unilur::tutorial_html: default
-  unilur::tutorial_html_solution: default
+  unilur::tutorial_html: default
+  # unilur::tutorial_html_solution: default
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
@@ -17,29 +17,24 @@ knitr::opts_template$set(
                box.icon = "fa-search",
                box.collapse = TRUE)
 )
-
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(gapminder)
 ```
 
 ```{r klippy, echo=FALSE, include=TRUE}
 klippy::klippy()
 ```
 
-We are now entering the phase of doing serious statistics: we run regression models, inspect them, plot and tabulate them.
+We are now entering the phase of doing serious statistics: we run regression models, inspect them, plot, and tabulate them.
 
-For this exercise, let's again pretent to be researchers who are interested in the determinants of the subjective likelihood estimation of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the GESIS Panel COVID-19 data again:
+For this exercise, let's again pretend to be researchers interested in the determinants of the subjective likelihood estimation of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the GESIS Panel COVID-19 data again:
 
-```{r loadgpcovid, message=FALSE, eval=FALSE}
+```{r loadgpcovid, message=FALSE,}
 library(dplyr)
 library(haven)
 library(sjlabelled)
 
 gp_covid <-
   read_sav(
-    "../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+    "../data/ZA5667_v1-1-0.sav"
   ) %>% 
   set_na(na = c(-1:-99, 97)) %>% 
   mutate(
@@ -52,7 +47,7 @@ gp_covid <-
 We start our analysis by checking the relationship with an ANOVA. We also include some very essential covariates: gender, political orientation, and marital status. 
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Run an ANOVA on the proposed relationship between subjective likelihood of a treatment in a hospital and age. Also, include all the covariates
+Run an ANOVA on the proposed relationship between the subjective likelihood of treatment in a hospital and age. Also, include all the covariates.
 ```
 
 ```{block, opts.label = "clues"}
@@ -69,7 +64,7 @@ serious_anova <-
 summary(serious_anova)
 ```
 
-Alright, there's definitely something in the data we should investigate. Sometimes it is considered as bad practice, but we could try to make a median cut for the dependent variable and run a logistic regression first.
+Alright, there's definitely something in the data we should investigate. Sometimes, it is considered bad practice, but we could try to make a median cut for the dependent variable and run logistic regression.
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
 Make a median cut for the variable "likelihood_hospital" and run a logistic regression with all variables. What do you see in the results?
@@ -101,14 +96,14 @@ serious_logistic_regression <-
 summary(serious_logistic_regression)
 
 # Interpretation:
-# With increasing age the probability of thinking it's likely to be hospitalized 
-# because of COVID-19 increases. But really?
+# With increasing age, the probability of thinking it's likely to be 
+# hospitalized because of COVID-19 increases. But really?
 ```
 
-Running one model is not enough. It may be that the assumptions for a logistic regression are not fulfilled or a reviewer simply doesn't like these types of regressions. Instead, she proposes to run a binomial regression but with cauchit link.
+Running one model is not enough. It may be that the assumptions for logistic regression are not fulfilled, or a reviewer simply doesn't like these types of regressions. Instead, she proposes to run a binomial regression but with a cauchit link.
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-Run the same model with the sole difference of using a cauchit link. How would interpret the different regression coefficients?
+Run the same model with the sole difference of using a cauchit link. How would you interpret the different regression coefficients?
 ```
 
 ```{block, opts.label = "clues"}
@@ -132,14 +127,14 @@ summary(serious_cauchit_regression)
 Ok, using different link functions is sometimes done as they provide different model fits. That's definitely something we should investigate as well.
 
 ```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
-Compare both regression models with an ANOVA. Use the option `test = "LRT" to perform a likelihood ratio test. What's your interpretation?
+Compare both regression models with an ANOVA. Use the option `test = "LRT"` to perform a likelihood ratio test. What's your interpretation?
 ```
 
 ```{block, opts.label = "clues"}
-Have a look at the help page `?family` to see how you can include a cauchit link.
+A p-value considered as statistically significant would indicate a difference between the models.
 ```
 
-```{r cauchit, solution = TRUE}
+```{r anovalrt, solution = TRUE}
 anova(
   serious_logistic_regression, 
   serious_cauchit_regression,
@@ -148,7 +143,7 @@ anova(
 
 # Interpretation of difference:
 # It seems there is no big difference. We can make the reviewer happy with the
-# cauchit models and still keep our results
+# cauchit models and still keep our results.
 ```
 
 
