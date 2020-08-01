@@ -19,6 +19,7 @@ layout: true
 
 ```{r setup, include = FALSE}
 source("../xaringan_r_setup.R") 
+options(warn=-1)
 xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
 xaringanExtra::use_extra_styles(
   hover_code_line = TRUE,         #<<
@@ -35,6 +36,10 @@ xaringanExtra::use_extra_styles(
 ```{css, echo = FALSE}
 .tinyish .remark-code { /*Change made here*/
   font-size: 70% !important;
+}
+
+.tinyisher .remark-code { /*Change made here*/
+  font-size: 50% !important;
 }
 ```
 
@@ -100,7 +105,7 @@ knitr::include_graphics("./pics/328_Hexbin_map_USA_4.png")
 ```{r echo = FALSE}
 gp_covid <- 
   haven::read_sav(
-    "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+    "../../data/ZA5667_v1-1-0.sav"
   ) %>% 
   sjlabelled::set_na(na = c(-1:-99, 97))
 ```
@@ -186,11 +191,11 @@ knitr::include_graphics("./pics/long.png")
 ---
 
 ## Before we start some more examples
-The architecture of building plots in `ggplot` is similar as in base R graphics. There is some additional call and subsequently more stuff is added to the plot. 
+The architecture of building plots in `ggplot` is similar to standard R graphics. There is an initial plotting call, and subsequently, more stuff is added to the plot. 
 
-However, in base R, it is sometimes difficult where to add your stuff. For example, think of removing the axis ticks in the scatter plot.
+However, in standard R, it is sometimes tricky where to add your stuff. For example, think of removing the axis ticks in the scatter plot.
 
-We will systematically explore which elements are used in ggplot in this session. To get an idea how easy it is to create figures in `ggplot`, in the following slides we will have a look at some of the basic plot types you can choose from.
+We will systematically explore which elements are used in `ggplot` in this session. To get an idea of how easy it is to create figures in `ggplot`, in the following slides, we will look at some of the basic plot types you can choose from.
 
 ---
 
@@ -199,7 +204,7 @@ We will systematically explore which elements are used in ggplot in this session
 ```{r load_gp_covid, include = FALSE}
 gp_covid <- 
   haven::read_sav(
-    "../../data/gesis_panel_covid19/ZA5667_v1-1-0.sav"
+    "../../data/ZA5667_v1-1-0.sav"
   ) %>% 
   sjlabelled::set_na(na = c(-1:-99, 97))
 ```
@@ -298,7 +303,6 @@ ggplot(
 ---
 
 ## Creating your own plot
-
 We do not want to give a lecture on the theory behind data visualization.
 - creating plots is all about practice
 - ...and 'borrowing' code from others
@@ -346,14 +350,16 @@ ggplot()
 
 ## Data input
 
-.tinyish[
 .pull-left[
-As we've already learned `ggplot()` expects data as input
+As we've already learned `ggplot()` expects data as input. We create some interesting data from the gapminder.
+]
 
+.tinyish[
+.pull-right[
 ```{r load_gapminder_data, echo = TRUE}
 gapminder_children <- 
   readr::read_csv(
-    "../../data/gapminder/children_per_woman_total_fertility.csv"
+    "../../data/children_per_woman_total_fertility.csv"
     ) %>% 
   tidyr::pivot_longer(
     -country, 
@@ -362,7 +368,7 @@ gapminder_children <-
   ) %>% 
   dplyr::left_join(
       readr::read_csv(
-    "../../data/gapminder/countries_continent.csv"
+    "../../data/countries_continent.csv"
       )
   ) %>% 
   dplyr::filter(year >= 1950) %>% 
@@ -372,11 +378,17 @@ gapminder_children <-
     ) %>% 
   tidyr::drop_na()
 ```
+]
+]
 
+---
+
+## What now?
+
+.pull-left[
 ```{r ggplot_data, eval = FALSE}
 ggplot(data = gapminder_children)
 ```
-]
 ]
 
 .pull-right[
@@ -391,7 +403,7 @@ ggplot(data = gapminder_children)
 ## `aes`thetics! 
 
 .pull-left[
-`ggplot` requires information about the variables to plot
+`ggplot` requires information about the variables to plot.
 
 ```{r ggplot_aes, eval = FALSE}
 ggplot(data = gapminder_children) +
@@ -410,7 +422,7 @@ ggplot(data = gapminder_children) +
 
 ## `geom`s!
 .pull-left[
-Finally, `ggplot` needs information *how* to plot the variables
+Finally, `ggplot` needs information *how* to plot the variables.
 
 ```{r ggplot_geom, eval = FALSE}
 ggplot(data = gapminder_children) +
@@ -430,7 +442,7 @@ ggplot(data = gapminder_children) +
 
 ## Add a fancy `geom`
 .pull-left[
-We can also add more than one `geom`
+We can also add more than one `geom`.
 
 ```{r ggplot_line, eval = FALSE}
 ggplot(data = gapminder_children) +
@@ -453,7 +465,7 @@ ggplot(data = gapminder_children) +
 ## Going further: adding group `aes`thetics
 
 .pull-left[
-We can add different colors for different groups in our data
+We can add different colors for different groups in our data.
 
 ```{r ggplot_group, eval = FALSE}
 ggplot(
@@ -478,7 +490,7 @@ ggplot(
 ## Manipulating group `aes`thetics
 
 .pull-left[
-We can also change the colors that are used in the plot
+We can also change the colors that are used in the plot.
 
 ```{r ggplot_group_man, eval = FALSE}
 ggplot(
@@ -529,12 +541,12 @@ ggplot(
 
 ---
 
-## Difference betwenn `color` and `fill`
-When you work with `ggplot`, at least after some time you will be faced by two components of plot or `geom` which are associated with colors: `color` and `fill`.
+## Difference between `color` and `fill`
+When you work with `ggplot2`, at least after some time, you will be faced with two components of plot or `geom` associated with colors: `color` and `fill`.
 
-Generally, `color` refers to the borders of a geometry, such as a line. `fill` refers to an area of a geometry, such as a polygon.
+Generally, `color` refers to the geometry borders, such as a line. `fill` refers to a geometry area, such as a polygon.
 
-Have this difference in mind when you use `scale_color_brewer` or `scale_fill_brewer` in your plots. Manipulating these colors and their corresponding legends in a complex plot can get really tedious, to be honest. 
+Have this difference in mind when you use `scale_color_brewer` or `scale_fill_brewer` in your plots. Manipulating these colors and their corresponding legends in an elaborate plot can get really tedious, to be honest. 
 
 ---
 
@@ -605,7 +617,7 @@ ggplot(
 ---
 
 ## The `theme()` argument in general
-The most direct interface for manipulating your theme is the `theme()` argument. Here you can change the appearance of
+The most direct interface for manipulating your theme is the `theme()` argument. Here you can change the appearance of:
 - axis labels
 - captions and titles
 - legend
@@ -699,7 +711,7 @@ knitr::include_graphics("./pics/800px-The_Scream.jpg")
 ---
 
 ## `ggplot` plots are 'simple' objects
-In difference to standard `R` plots `ggplot` are standard objects as any other object in `R` (they are lists). So there is no graphics device involved from which we have record our plot in order to re-use it later. We can just use it like that.
+In contrast to standard `R` plots `ggplot2` are standard objects like any other object in `R` (they are lists). So there is no graphics device involved from which we have recorded our plot to re-use it later. We can just use it directly.
 
 ```{r eval = FALSE}
 my_fancy_plot <- 
@@ -717,9 +729,9 @@ Additionally, there is also no need to call `dev.off()`
 ---
 
 ## It makes combining plots easy
-As of today, there are now a lot of packages that help combining `ggplot`s fairly easy. For example, the [`cowplot` package](https://cran.r-project.org/web/packages/cowplot/index.html) provides a really flexible framework. I have used `cowplot` to create the map in the previous session.
+As of today, there are now a lot of packages that help to combine `ggplot2`s fairly easily. For example, the [`cowplot` package](https://cran.r-project.org/web/packages/cowplot/index.html) provides a really flexible framework. I have used `cowplot` to create the map in the previous session.
 
-Yet, fiddeling with this package can be become quite complex. One of my favorite packages at the moment is, therefore, the [`patchwork` package](https://cran.r-project.org/web/packages/patchwork/index.html) because of its easy to use syntax. It's really really easy.
+Yet, fiddling with this package can become quite complicated. One of my favorite packages at the moment is, therefore, the [`patchwork` package](https://cran.r-project.org/web/packages/patchwork/index.html) because of its easy to use syntax. It's really, really easy.
 
 ---
 
@@ -787,7 +799,7 @@ You can also annotate plots with titles, subtitles, captions, and tags.
 
 You can nest plots and introduce more complex layouts.
 
-I'd recommend, if you're interested, to check out the [`patchwork` repository on Github](https://github.com/thomasp85/patchwork) since everything's really good documented.
+I'd recommend, if you're interested, to check out the [`patchwork` repository on Github](https://github.com/thomasp85/patchwork) since everything's excellently documented.
 
 ---
 
@@ -843,7 +855,7 @@ qplot(
 ---
 
 ## Exporting ggplot graphics
-Exporting ggplot graphics is fairly easy with the `ggsave()` function. It automatically detects the file format. Also, you can define the plot height, with and dpi, which is particularly useful to get high-class graphics for publication.
+Exporting `ggplot2` graphics is fairly easy with the `ggsave()` function. It automatically detects the file format. You can also define the plot height, width, and dpi, which is particularly useful to get high-class graphics for publication.
 
 ```{r eval = FALSE}
 nice_plot <- 
@@ -886,6 +898,6 @@ ggsave("nice_plot.tiff", nice_plot, dpi = 300)
 
 class: center, middle
 
-# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B4_ggplot2Basics_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](XXX) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B4_ggplot2Basics_exercises_solution.html)
+## [Solutions](XXX)
