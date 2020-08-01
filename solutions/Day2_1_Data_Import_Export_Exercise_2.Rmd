@@ -1,11 +1,11 @@
 ---
-title: 'Exercise 2 Data Import & Export - Solutions'
-# title: 'Exercise 2 Data Import & Export'
+# title: 'Exercise 2 Data Import & Export - Solutions'
+title: 'Exercise 2 Data Import & Export'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
-  # unilur::tutorial_html: default
-  unilur::tutorial_html_solution: default
+  unilur::tutorial_html: default
+  # unilur::tutorial_html_solution: default
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
@@ -99,6 +99,6 @@ Export your data as a Stata file.
 Like in the case of importing, you again need the `haven` package.
 ```
 
-```{r exportstata, solution = TRUE}
+```{r exportstata, solution = TRUE, eval = FALSE}
 write_stata(gp_covid, "gesis_panel_corona_fancy_panels_final_final.dta")
 ```
