@@ -618,10 +618,9 @@ Typing the argument names is more work but it increases the comprehensibility of
 
 class: center, middle
 
-# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day1_1_Getting-Started_Exercise_1_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
-
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day1_1_Getting-Started_Exercise_1_solution.html)
 ---
 
 ## `R` packages
@@ -1291,9 +1290,9 @@ The following ones are of particular interest for this workshop:
 
 class: center, middle
 
-# [Exercise](https://jobreu.github.io/tidyverse-workshop-gesis-2019/exercises/B2_RelationalData_exercises_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day1_1_Getting-Started_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
-## [Solutions](https://jobreu.github.io/tidyverse-workshop-gesis-2019/solutions/B2_RelationalData_exercises_solution.html)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day1_1_Getting-Started_Exercise_2_solution.html)
 
 ---
 
