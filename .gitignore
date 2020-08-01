@@ -46,3 +46,6 @@ vignettes/*.pdf
 
 # GESIS Panel Data
 *ZA5667*
+
+# geospatial data
+**/session_specific_data/*
