@@ -1,11 +1,11 @@
 ---
-# title: 'Exercise 1 Data Visualization Part 1 - Solutions'
-title: 'Exercise 1 Data Visualization Part 1'
+title: 'Exercise 1 Data Visualization Part 1 - Solutions'
+# title: 'Exercise 1 Data Visualization Part 1'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
-  unilur::tutorial_html: default
-  # unilur::tutorial_html_solution: default
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
@@ -23,9 +23,9 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-Plotting data is fun. We also do it for data exploration (see the session tomorrow). Still, at least in this slot of exercise, we just want to familiarize ourselves with some of the graphic facilities in R.
+Plotting data is fun. We also do it for data exploration (see the section on *Exploratory Data Analysis*). Still, at least in this slot of exercise, we just want to familiarize ourselves with some of the graphic facilities in R.
 
-So let's start with a simple task: creating a simple scatter plot. For this purpose, we first load the GESIS Panel COVID-19 data.
+So let's start with a simple task: creating a simple scatter plot. For this purpose, we first load the *GESIS Panel* COVID-19 survey data.
 
 ```{r loadgpcovid, message=FALSE, eval=TRUE}
 library(dplyr)
@@ -41,11 +41,11 @@ gp_covid <-
 Now let's plot an actual variable from the dataset.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Create a scatter plot between the variable "political_orientation" and "hzcy001a".
+Create a scatter plot for the variablea `political_orientation` and `hzcy001a`.
 ```
 
 ```{block, opts.label = "clues"}
-You may want to consider to add some jitter with the function `jitter()`.
+You may want to consider adding some jitter with the function `jitter()`.
 ```
 
 ```{r scatter, solution = TRUE}
@@ -76,7 +76,7 @@ plot(
 )
 ```
 
-These scatterplots can get boring. What do you think about some bar plots? However, creating only one bar plot is for beginners, we can do more and plot more than once.
+These scatter plots can get boring. So how about some bar plots? However, creating only one bar plot is also not that exciting. Luckily, we can do more and plot more than one.
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
 Plot 4 bar plots of 4 variables of your choice in two rows and two columns.

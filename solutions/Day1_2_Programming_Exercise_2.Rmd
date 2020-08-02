@@ -23,7 +23,7 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-In the last exercise, we already have created our first loop using an if-else statement. Here we want to deepen our understanding of loops and apply some more of them.
+In the previous exercise, we already have created our first loop using an if-else statement. Here we want to deepen our understanding of loops and apply some more of them.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
 Take the list you have created in the previous exercise. Use your fancy function to check whether an object is numeric and apply it to each of the list elements. Use a `for()` loop for this purpose.
@@ -97,11 +97,11 @@ mean(sqrt(as.numeric(data.frame(id = 1, age = "20")$age)))
 ```
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-What do you think is the command doing?
+What do you think the command does?
 ```
 
 ```{block, opts.label = "clues"}
-It's always an excellent approach to start reading/interpreting code from the central command and continue to the outer ones.
+It's always an excellent approach to start reading/interpreting code from the central/inner command and continue to the outer ones.
 ```
 
 ```{block to_pipe_purpose_solution, solution = TRUE, message = FALSE}
@@ -119,7 +119,7 @@ Create a pipe from this nested command.
 ```
 
 ```{block, opts.label = "clues"}
-You can call individual columns of a piped object with `.$col_name`.
+You can call individual columns of a piped object with `.$col_name` here.
 ```
 
 ```{r to_pipe_solution, solution = TRUE}

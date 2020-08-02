@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-03" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -78,7 +77,7 @@ layout: true
 So, the all-knowing Wikipedia says programming involves:
 - analysis
 - generating algorithms
-- profiling algorithms accuracy and resource consumption
+- profiling the accuracy and resource consumption of algorithms
 - implementation of algorithms in a chosen programming language
 
 ☝️: 
@@ -89,15 +88,15 @@ So, the all-knowing Wikipedia says programming involves:
 
 ---
 
-## R is/as a programming language
-Initially, R was created for statistical analysis in 1992. It reaches back to the language `S` from 1976. Here are the caveats we usually find when people talk about R as a programming language:
-- R package designers are no computer scientists
+## `R` is/as a programming language
+Initially, `R` was created for statistical analysis in 1992. It reaches back to the language `S` from 1976. Here are the caveats we usually find when people talk about `R` as a programming language:
+- `R` package designers are no computer scientists
   - They are statisticians, often working on cutting-edge stuff
-- However, because of that R is known as not being as efficient as other languages
+- However, because of that `R` is known as not being as efficient as other languages
   - I recommend: judge by yourself, often this is a prejudice
   - It also depends on the **programming**
 
-Generally, many ways to interact with the language are similar to using mathematical notation. Please don't get scared of that, yet this is why we deal with vectors, matrices, and so forth. So be prepared.
+Generally, many ways to interact with the language are similar to using mathematical notation. Please don't get scared by that, yet this is why we deal with vectors, matrices, and so forth. So be prepared.
 
 ---
 
@@ -109,7 +108,7 @@ Generally, many ways to interact with the language are similar to using mathemat
 - Logical
 - Factors
 - ...
-- There's more, e.g., expressions, but let's leave it that way
+- There's more, e.g., expressions, but let's leave it at that
 ]
 
 .pull-right[
@@ -121,7 +120,7 @@ Generally, many ways to interact with the language are similar to using mathemat
 - Lists
 ]
 
-Admittedly, data types and data formats are not an exciting topic. They seem to be a necessary inconvenience rather than something you want to talk about on the Summer School's rooftop party (hopefully) next year. But maybe you want to think about them as containers comprising the intriguing information you aim to analyze. Everybody likes snacks, but nobody is too fond of the Tupperware container for the (vegetarian) gummi bears, right?
+Admittedly, data types and data formats are not an exciting topic. They seem to be a necessary inconvenience rather than something you want to talk about during the Summer School rooftop party (hopefully) next year. But maybe you want to think about them as containers comprising the intriguing information you aim to analyze. Everybody likes snacks, but nobody is too fond of the Tupperware container for the (vegetarian) gummi bears, right?
 
 .footnote[https://www.stat.berkeley.edu/~nolan/stat133/Fall05/lectures/DataTypes4.pdf]
 
@@ -129,7 +128,7 @@ Admittedly, data types and data formats are not an exciting topic. They seem to 
 
 ## Numeric data
 .small[
-*Integers* are values without a decimal value. To be explicit in R in using them, you have to place an `L` behind the actual value, just like that:
+*Integers* are values without a decimal value. To be explicit in `R` in using them, you have to place an `L` behind the actual value, just like that:
 
 
 ```r
@@ -140,7 +139,7 @@ Admittedly, data types and data formats are not an exciting topic. They seem to 
 ## [1] 1
 ```
 
-In contrast, *doubles* are values with a decimal value.
+By contrast, *doubles* are values with a decimal value.
 
 
 ```r
@@ -174,7 +173,7 @@ typeof(1.1)
 ---
 
 ## Character strings
-At first glance, a *character* is a letter somewhere between a-z. *String* in this context might mean that we have a series of characters. However, numbers and other symbols can be part of a *character string*, which can then be, e.g., part of a text. In R, character strings are wrapped in quotation marks.
+At first glance, a *character* is a letter somewhere between a-z. *String* in this context might mean that we have a series of characters. However, numbers and other symbols can be part of a *character string*, which can then be, e.g., part of a text. In `R`, character strings are wrapped in quotation marks.
 
 
 ```r
@@ -190,7 +189,7 @@ So character strings are meaningless, which means that there are no values assoc
 ---
 
 ## Factors
-If you're a Stata user, you may already be quite familiar with factors. Factors are data types that assume that their values are not continuous, e.g., as in ordinal or nominal data. They are useful when inserted into regression models, as we will see later in this course.
+If you're a *Stata* (or *SPSS*) user, you may already be quite familiar with factors. Factors are data types that assume that their values are not continuous, e.g., as in ordinal or nominal data. They are useful when inserted into regression models, as we will see later in this course.
 
 
 ```r
@@ -211,7 +210,7 @@ factor("Hi. I am a character string, the 1st of its kind!")
 ## Levels: Hi. I am a character string, the 1st of its kind!
 ```
 
-Factors take numeric data or character strings as input as they simply convert them into so-called levels. This concept may be a little bit abstract for the time being. It's just essential to have heard about them when you learn more about them in the data wrangling session.
+Factors take numeric data or character strings as input as they simply convert them into so-called levels. This concept may be a little bit abstract for the time being. It's just essential to have heard about them before you learn more about them in the data wrangling session.
 
 ---
 
@@ -240,7 +239,7 @@ I'd say that logical values are at the heart of creating loops. For this purpose
 ---
 
 ## Logical operators
-Here are all (?) logical operators in R:
+Here are all (?) logical operators in `R`:
 - `&lt;` 	less than
 - `&lt;=` 	less than or equal to
 - `&gt;` 	greater than
@@ -255,7 +254,7 @@ Here are all (?) logical operators in R:
 
 .footnote[https://www.statmethods.net/management/operators.html]
 
-Moreover, there are some more `is.PROPERTY_ASKED_FOR()` functions, such as `is.numeric()`, which also return`TRUE` or `FALSE` values.
+Moreover, there are some more `is.PROPERTY_ASKED_FOR()` functions, such as `is.numeric()`, which also return `TRUE` or `FALSE` values.
 
 ---
 
@@ -266,7 +265,7 @@ So now, here are the Tupperware containers:
 
 .footnote[https://devopedia.org/r-data-structures]
 
-Like the Tupperware, you can put in your microwave, R data formats can also get quite complicated.
+Like the Tupperware you can put in your microwave, R data formats can also get quite complicated.
 
 ---
 
@@ -298,7 +297,7 @@ Vectors are really like vectors in mathematics. Initially, it doesn't matter if 
 ---
 
 ## ...but it matters when you combine vectors
-Using the function `cbind()` or `rbind()` you can either combine vector  column-wise or row-wise, respectively.
+Using the function `cbind()` or `rbind()` you can either combine vectors column-wise or row-wise, respectively.
 
 
 ```r
@@ -323,7 +322,7 @@ rbind(numeric_vector, character_vector)
 ## character_vector "a"  "b"  "c"  "d"
 ```
 
-They are now matrices! (also numeric values are coerced into strings)
+They are now matrices (also numeric values are coerced into strings).
 
 ---
 
@@ -345,7 +344,7 @@ fancy_matrix
 ## [4,]    4    8   12   16
 ```
 
-You cannot store multiple data types, such as strings or numeric values.  Otherwise, your data is getting coerced in a common type, as seen in the previous slide.
+You cannot store multiple data types, such as strings and numeric values in the same matrix.  Otherwise, your data will get coerced to a common type, as seen in the previous slide.
 - In fact, this is something that happens already within vectors.
 
 
@@ -360,7 +359,7 @@ c(1, 2, "evil string")
 ---
 
 ## Arrays
-Arrays are stacked vectors, as shown in the figure. I haven't seen too many applications with them, to be honest. But there's definitely a use, probably when implementing estimation methods.
+Arrays are stacked vectors, as shown in the figure. I haven't seen too many applications with them in `R`, to be honest. But there's definitely a use, probably when implementing estimation methods.
 
 .pull-left[
 
@@ -398,7 +397,7 @@ It repeatedly goes over the input vectors.
 ---
 
 ## Data frames
-While matrices are used, e.g.,--\*drumroll\*-- for matrix operations, data frames resemble more what we know of data we usually use. We can build data frames by hand as here:
+While matrices are used, e.g.,--\*drumroll\*-- for matrix operations, data frames resemble more the data formats most of you are probably already familiar with. We can build data frames by hand as here:
 
 .tinyish[
 
@@ -429,23 +428,23 @@ fancy_data
 class: middle
 
 ```
-##         who age salary_2018 salary_2019 eggs_available
-## 1     Paige  16          51          25           TRUE
-## 2      Lynn  36          99          49           TRUE
-## 3   Annnees  23          68          58          FALSE
-## 4     Sarah  38          99          70           TRUE
-## 5     Amjad  20          97          97           TRUE
-## 6   Demario  14          17          27           TRUE
-## 7  Danielle  36          98          32           TRUE
-## 8     Dylan  39          80          43           TRUE
-## 9    Ashley  42          64          35           TRUE
-## 10 Khadejah  28          15          31           TRUE
+##        who age salary_2018 salary_2019 eggs_available
+## 1   Travis  40          51          68          FALSE
+## 2       An  22          44          56           TRUE
+## 3     Nely  18          40          56          FALSE
+## 4   Shante  15          16          62           TRUE
+## 5  Labeeba  19          24          76           TRUE
+## 6   Billye  38          21          27          FALSE
+## 7    April  45          23          46           TRUE
+## 8    Karen  46          94          58          FALSE
+## 9     Tina  17          64          17          FALSE
+## 10   Jacob  23          46          20           TRUE
 ```
 
 ---
 
 ## tibbles
-`data.frames` tend to be pretty large, and printing them on your screen can get difficult. As part of the Tidyverse, tibbles facilitate printing (and adding more metadata to the columns of a `data.frame`). Instead of using `data.frame()` for our data creation we could have been using `tibble()`. Or we convert an existing `data.frame`, which looks like that:
+`data.frames` tend to be pretty large, and printing them on your screen can get difficult. As part of the `tidyverse`(we will talk about what this is in the session on *Data Wrangling*), tibbles facilitate printing (and adding more metadata to the columns of a `data.frame`). Instead of using `data.frame()` for our data creation we could have been using `tibble()`. Or we convert an existing `data.frame`, which looks like that:
 
 
 ```r
@@ -460,18 +459,18 @@ class: middle
 
 ```
 ## # A tibble: 10 x 5
-##    who        age salary_2018 salary_2019 eggs_available
-##    &lt;chr&gt;    &lt;int&gt;       &lt;int&gt;       &lt;int&gt; &lt;lgl&gt;         
-##  1 Paige       16          51          25 TRUE          
-##  2 Lynn        36          99          49 TRUE          
-##  3 Annnees     23          68          58 FALSE         
-##  4 Sarah       38          99          70 TRUE          
-##  5 Amjad       20          97          97 TRUE          
-##  6 Demario     14          17          27 TRUE          
-##  7 Danielle    36          98          32 TRUE          
-##  8 Dylan       39          80          43 TRUE          
-##  9 Ashley      42          64          35 TRUE          
-## 10 Khadejah    28          15          31 TRUE
+##    who       age salary_2018 salary_2019 eggs_available
+##    &lt;chr&gt;   &lt;int&gt;       &lt;int&gt;       &lt;int&gt; &lt;lgl&gt;         
+##  1 Travis     40          51          68 FALSE         
+##  2 An         22          44          56 TRUE          
+##  3 Nely       18          40          56 FALSE         
+##  4 Shante     15          16          62 TRUE          
+##  5 Labeeba    19          24          76 TRUE          
+##  6 Billye     38          21          27 FALSE         
+##  7 April      45          23          46 TRUE          
+##  8 Karen      46          94          58 FALSE         
+##  9 Tina       17          64          17 FALSE         
+## 10 Jacob      23          46          20 TRUE
 ```
 
 ---
@@ -513,17 +512,17 @@ class: middle
 ## [4,]    4    8   12   16
 ## 
 ## [[4]]
-##         who age salary_2018 salary_2019 eggs_available
-## 1     Paige  16          51          25           TRUE
-## 2      Lynn  36          99          49           TRUE
-## 3   Annnees  23          68          58          FALSE
-## 4     Sarah  38          99          70           TRUE
-## 5     Amjad  20          97          97           TRUE
-## 6   Demario  14          17          27           TRUE
-## 7  Danielle  36          98          32           TRUE
-## 8     Dylan  39          80          43           TRUE
-## 9    Ashley  42          64          35           TRUE
-## 10 Khadejah  28          15          31           TRUE
+##        who age salary_2018 salary_2019 eggs_available
+## 1   Travis  40          51          68          FALSE
+## 2       An  22          44          56           TRUE
+## 3     Nely  18          40          56          FALSE
+## 4   Shante  15          16          62           TRUE
+## 5  Labeeba  19          24          76           TRUE
+## 6   Billye  38          21          27          FALSE
+## 7    April  45          23          46           TRUE
+## 8    Karen  46          94          58          FALSE
+## 9     Tina  17          64          17          FALSE
+## 10   Jacob  23          46          20           TRUE
 ```
 ]
 
@@ -565,26 +564,26 @@ class: middle
 ## [4,]    4    8   12   16
 ## 
 ## $data_stuff[[2]]
-##         who age salary_2018 salary_2019 eggs_available
-## 1     Paige  16          51          25           TRUE
-## 2      Lynn  36          99          49           TRUE
-## 3   Annnees  23          68          58          FALSE
-## 4     Sarah  38          99          70           TRUE
-## 5     Amjad  20          97          97           TRUE
-## 6   Demario  14          17          27           TRUE
-## 7  Danielle  36          98          32           TRUE
-## 8     Dylan  39          80          43           TRUE
-## 9    Ashley  42          64          35           TRUE
-## 10 Khadejah  28          15          31           TRUE
+##        who age salary_2018 salary_2019 eggs_available
+## 1   Travis  40          51          68          FALSE
+## 2       An  22          44          56           TRUE
+## 3     Nely  18          40          56          FALSE
+## 4   Shante  15          16          62           TRUE
+## 5  Labeeba  19          24          76           TRUE
+## 6   Billye  38          21          27          FALSE
+## 7    April  45          23          46           TRUE
+## 8    Karen  46          94          58          FALSE
+## 9     Tina  17          64          17          FALSE
+## 10   Jacob  23          46          20           TRUE
 ```
 ]
 
 ---
 
 ## Accessing elements by index
-Generally, there is this use of `[index_number]`-logic in R to access only a subset of information in data, no matter if we had vectors or data frames.
+Generally, there is this use of `[index_number]`-logic in `R` to access only a subset of information in data, no matter if we have vectors or data frames.
 
-Say, we want to extract the second element of our `character_vector`object, we  could do that like this:
+Say, we want to extract the second element of our `character_vector` object, we could do that like this:
 
 
 ```r
@@ -605,11 +604,11 @@ Matrices can have more dimensions, often you want information from a specific ro
 a_wonderful_matrix[number_of_row, number_of_column]
 ```
 
-(You can do the same indexing with `data.frame`s)
+*Note*: You can do the same indexing with `data.frame`s
 
 ---
 
-## Matrices and subscripts (as in mathematical annotation)
+## Matrices and subscripts (as in mathematical notation)
 Identify rows, columns, or elements using subscripts is similar to matrix  notation:
 
 
@@ -644,16 +643,16 @@ fancy_data$who
 ```
 
 ```
-##  [1] "Paige"    "Lynn"     "Annnees"  "Sarah"    "Amjad"    "Demario" 
-##  [7] "Danielle" "Dylan"    "Ashley"   "Khadejah"
+##  [1] "Travis"  "An"      "Nely"    "Shante"  "Labeeba" "Billye"  "April"  
+##  [8] "Karen"   "Tina"    "Jacob"
 ```
 
-Just place a `$`-sign between the data object's and the variable's name.
+Just place a `$`-sign between the data object and the variable name.
 
 ---
 
 ## `[]` in data frames
-In programming, as you will learn, we often have to rely on character strings as input information, e.g., for iterating over data. Therefore, we can use also `[]` to access variables. 
+In programming, as you will learn, we often have to rely on character strings as input information, e.g., for iterating over data. We can use also `[]` to access variables by name. 
 
 .pull-left[ 
 Not only this way:
@@ -664,17 +663,17 @@ fancy_data[1]
 ```
 
 ```
-##         who
-## 1     Paige
-## 2      Lynn
-## 3   Annnees
-## 4     Sarah
-## 5     Amjad
-## 6   Demario
-## 7  Danielle
-## 8     Dylan
-## 9    Ashley
-## 10 Khadejah
+##        who
+## 1   Travis
+## 2       An
+## 3     Nely
+## 4   Shante
+## 5  Labeeba
+## 6   Billye
+## 7    April
+## 8    Karen
+## 9     Tina
+## 10   Jacob
 ```
 ]
 
@@ -687,17 +686,17 @@ fancy_data["who"]
 ```
 
 ```
-##         who
-## 1     Paige
-## 2      Lynn
-## 3   Annnees
-## 4     Sarah
-## 5     Amjad
-## 6   Demario
-## 7  Danielle
-## 8     Dylan
-## 9    Ashley
-## 10 Khadejah
+##        who
+## 1   Travis
+## 2       An
+## 3     Nely
+## 4   Shante
+## 5  Labeeba
+## 6   Billye
+## 7    April
+## 8    Karen
+## 9     Tina
+## 10   Jacob
 ```
 ]
 
@@ -711,8 +710,8 @@ fancy_data["who"]
 
 ---
 
-## Object orientation in R
-R is an object-orientated language
+## Object orientation in `R`
+`R` is an object-orientated language
 - That's more than just assigning, e.g., a number to an object and working on it like: 
 
 
@@ -747,12 +746,12 @@ class(character_vector)
 ## [1] "character"
 ```
   
-But we'll leave it now, so don't worry too much about this topic.
+But we'll leave it at that now, so don't worry too much about this topic.
 
 ---
 
-## Functional Programming: In R, everything's a function (more or less)
-So you might already be familiar with using functions in R (at least we have used them heavily in the previous slides). Functions are applied as shown here:
+## Functional Programming: In `R`, everything's a function (more or less)
+So you might already be familiar with using functions in `R` (at least we have used them heavily on the previous slides). Functions are applied as shown here:
 
 
 ```r
@@ -770,7 +769,7 @@ log(sum(c(1, 2, 3)))
 ## [1] 1.791759
 ```
 
-Later on, we will learn about pipes `%&gt;%`, which help navigate some issues with too many nesting levels.
+Later on, we will learn about pipes `%&gt;%` which help navigate some issues with too many nesting levels.
 
 ---
 
@@ -789,7 +788,7 @@ milk_bought &lt;- function (n_bottles) {
 }
 ```
 
-Now, we can simply apply it to some data as in any other R function.
+Now, we can simply apply it to some data as in any other `R` function.
 
 
 ```r
@@ -809,7 +808,7 @@ We can use loops to iterate through data, applying a function. The loop types we
 - iteration with
   - `for()` 
   - `while()`
-  - and the apply family
+  - and the `apply` family
 ]
 
 .pull-right[
@@ -832,16 +831,16 @@ There's this silly programmer joke:
 
 ## Architecture of the joke
 
-<div id="htmlwidget-1bfb92418855ce70c169" style="width:504px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1bfb92418855ce70c169">{"x":{"diagram":"digraph flowchart {\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Room mate is asked to buy a bottle of milk\"]\n      tab2 [label = \"Do they have eggs?\"]\n      tab3 [label = \"Yes\", shape = diamond]\n      tab4 [label = \"No\", shape = diamond]\n      tab5 [label = \"Room mate is buying 12 bottles of milk\"]\n      tab6 [label = \"Room mate is buying 1 bottle of milk\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab2 -> tab4;\n      tab3 -> tab5;\n      tab4 -> tab6;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-983f76606b831742c765" style="width:504px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-983f76606b831742c765">{"x":{"diagram":"digraph flowchart {\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Room mate is asked to buy a bottle of milk\"]\n      tab2 [label = \"Do they have eggs?\"]\n      tab3 [label = \"Yes\", shape = diamond]\n      tab4 [label = \"No\", shape = diamond]\n      tab5 [label = \"Room mate buys 12 bottles of milk\"]\n      tab6 [label = \"Room mate buys 1 bottle of milk\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab2 -> tab4;\n      tab3 -> tab5;\n      tab4 -> tab6;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-## if else architecture in R
-Using if-else statements in R requires at least 3 steps:
+## if else architecture in `R`
+Using if-else statements in `R` requires at least 3 steps:
 1. Starting the loop with `if()`
-2. Add the condition to be tested in the brackets of `if(condition)`
-3. Write a function or procedure on data in the curly brackets of `if(condition){ ... }`
+2. Add the condition to be tested in the parentheses of the `if(condition)`
+3. Write a function or procedure on data in the curly brackets of the `if(condition){ ... }`
 
 For example:
 
@@ -874,7 +873,7 @@ if (1 &gt; 2) {
 ## [1] 7
 ```
 
-So, the general architecture is like that:
+So, the general architecture is like this:
 
 ```r
 if (condition) {
@@ -987,7 +986,7 @@ But be aware that `if()` and `ifelse()` [were designed for different purposes](h
 
 ---
 
-## And now blend it all together: function in a function
+## And now put it all together: function in a function
 .tinyisher[
 
 ```r
@@ -1058,10 +1057,11 @@ class: center, middle
 ## `for()` loops
 In my opinion, loops using the `for()` function are some of the most useful tools in functional programming.
 
-They enable iterating through input data and applying functions to each element of the data
-- it depends on specific purpose what defines this element
-  - they can be rows, columns, list elements, etc.
-- thus, it is crucial to think about the iterator of the specific call
+They, e.g., enable iterating through input data and applying functions to each element of the data
+- it depends on the specific purpose what defines this element
+  - the elements can be rows, columns, list elements, etc.
+  
+- hence, it is crucial to think about the iterator of the specific call
 
 ---
 
@@ -1074,7 +1074,7 @@ for (iterator_name in data) {
 }
 ```
 
-If we had data about a whole programmer gang buying milk but who experienced varying availability of eggs, we could apply our function to each of them. Let's try that out!
+If we had data about a whole gang of programmers buying milk experiencing varying availability of eggs, we could apply our function to each of them. Let's try that out!
 
 ---
 
@@ -1093,20 +1093,20 @@ for (row_number in 1:nrow(fancy_data)) {
 ```
 
 ```
-## [1] "Paige has bought 12 bottles of milk"
-## [1] "Lynn has bought 12 bottles of milk"
-## [1] "Annnees has bought 1 bottle of milk"
-## [1] "Sarah has bought 12 bottles of milk"
-## [1] "Amjad has bought 12 bottles of milk"
-## [1] "Demario has bought 12 bottles of milk"
-## [1] "Danielle has bought 12 bottles of milk"
-## [1] "Dylan has bought 12 bottles of milk"
-## [1] "Ashley has bought 12 bottles of milk"
-## [1] "Khadejah has bought 12 bottles of milk"
+## [1] "Travis has bought 1 bottle of milk"
+## [1] "An has bought 12 bottles of milk"
+## [1] "Nely has bought 1 bottle of milk"
+## [1] "Shante has bought 12 bottles of milk"
+## [1] "Labeeba has bought 12 bottles of milk"
+## [1] "Billye has bought 1 bottle of milk"
+## [1] "April has bought 12 bottles of milk"
+## [1] "Karen has bought 1 bottle of milk"
+## [1] "Tina has bought 1 bottle of milk"
+## [1] "Jacob has bought 12 bottles of milk"
 ```
 
 ---
-class: middle
+
 ## `while()` loops
 
 &gt; The next day, the same programmer's roommate calls him to ask where he is. "I'm back at the grocery," says the programmer. "While you're there, pick up some bread. Thanks!" says the roommate. The programmer never comes home.
@@ -1167,7 +1167,7 @@ while (still_there) {
 --
 
 What have we learned so far?
-- R a is a proper programming language supporting a lot of data types and a multitude of functions
+- `R` a is a proper programming language that supports a lot of data types and a multitude of functions
 - You can build your own functions and even nest them
 - If-else-statements enable creating algorithms
 - for-loops can be used to iterate through data
@@ -1191,12 +1191,12 @@ However, we won't cover all functions of this precious family
 - **`lapply()`**
 - **`sapply()`**
 - **`tapply()`**
-- `mapply()`, `rapply()`, &amp; `vapply()` is left out
+- `mapply()`, `rapply()`, &amp; `vapply()` are left out
 
 ---
 
 ## apply()
-The `apply()` function is useful when you want to fire up a short command across either all columns (option `MARGIN = 2`) _or_ rows (option `MARGIN = 2`).
+The `apply()` function is useful when you want to fire up a short command across either all columns (option `MARGIN = 2`) _or_ rows (option `MARGIN = 1`).
 
 
 ```r
@@ -1206,7 +1206,7 @@ apply(fancy_data[,3:4], 2, mean)
 
 ```
 ## salary_2018 salary_2019 
-##        68.8        46.7
+##        42.3        48.6
 ```
 
 ```r
@@ -1215,15 +1215,15 @@ apply(fancy_data[,3:4], 1, mean)
 ```
 
 ```
-##  [1] 38.0 74.0 63.0 84.5 97.0 22.0 65.0 61.5 49.5 23.0
+##  [1] 59.5 50.0 48.0 39.0 50.0 24.0 34.5 76.0 40.5 33.0
 ```
 
-While there are packages for building descriptive table already out there (e.g., `psych::describe` ), this becomes handy when you want to create them yourself.
+While there are plenty of functions for building descriptive tables already out there (e.g., `psych::describe` ), this becomes handy when you want to create them yourself.
 
 ---
 
 ## lapply()
-`lapply()` is for more elaborated operations. However, there are no `MARGIN`  options, so let's see what happens when we use it similarly as before:
+`lapply()` is for more elaborated operations. However, there are no `MARGIN`  options, so let's see what happens when we use similar to what we did before:
 
 
 ```r
@@ -1246,16 +1246,16 @@ class: middle
 ## [1] NA
 ## 
 ## $age
-## [1] 29.2
+## [1] 28.3
 ## 
 ## $salary_2018
-## [1] 68.8
+## [1] 42.3
 ## 
 ## $salary_2019
-## [1] 46.7
+## [1] 48.6
 ## 
 ## $eggs_available
-## [1] 0.9
+## [1] 0.5
 ```
 ]
 
@@ -1292,7 +1292,7 @@ lapply(1:nrow(fancy_data), function (i) {
 
 ```
 ## [[1]]
-## [1] 0
+## [1] 1
 ## 
 ## [[2]]
 ## [1] 1
@@ -1313,7 +1313,7 @@ lapply(1:nrow(fancy_data), function (i) {
 ## [1] 0
 ## 
 ## [[8]]
-## [1] 0
+## [1] 1
 ## 
 ## [[9]]
 ## [1] 0
@@ -1326,7 +1326,7 @@ lapply(1:nrow(fancy_data), function (i) {
 
 ---
 ## sapply()
-`sapply()` is similar to `lapply()`. The minor but significant difference is that it returns vectors instead of lists. When you want to add the results of this function as a new column to your existing data, this comes handy.
+`sapply()` is similar to `lapply()`. The minor but significant difference is that it returns vectors instead of lists. When you want to add the results of this function as a new column to your existing data, this comes in handy.
 
 
 ```r
@@ -1349,17 +1349,17 @@ class: middle
 .tinyish[
 
 ```
-##         who age salary_2018 salary_2019 eggs_available poverty_indicator
-## 1     Paige  16          51          25           TRUE                 0
-## 2      Lynn  36          99          49           TRUE                 1
-## 3   Annnees  23          68          58          FALSE                 1
-## 4     Sarah  38          99          70           TRUE                 1
-## 5     Amjad  20          97          97           TRUE                 1
-## 6   Demario  14          17          27           TRUE                 0
-## 7  Danielle  36          98          32           TRUE                 0
-## 8     Dylan  39          80          43           TRUE                 0
-## 9    Ashley  42          64          35           TRUE                 0
-## 10 Khadejah  28          15          31           TRUE                 0
+##        who age salary_2018 salary_2019 eggs_available poverty_indicator
+## 1   Travis  40          51          68          FALSE                 1
+## 2       An  22          44          56           TRUE                 1
+## 3     Nely  18          40          56          FALSE                 1
+## 4   Shante  15          16          62           TRUE                 1
+## 5  Labeeba  19          24          76           TRUE                 1
+## 6   Billye  38          21          27          FALSE                 0
+## 7    April  45          23          46           TRUE                 0
+## 8    Karen  46          94          58          FALSE                 1
+## 9     Tina  17          64          17          FALSE                 0
+## 10   Jacob  23          46          20           TRUE                 0
 ```
 ]
 
@@ -1374,17 +1374,17 @@ tapply(fancy_data$salary_2019, fancy_data$eggs_available, mean)
 ```
 
 ```
-##    FALSE     TRUE 
-## 58.00000 45.44444
+## FALSE  TRUE 
+##  45.2  52.0
 ```
 
 
 ---
 
 ## Let's end this loop
-At this point, we stop adding more looping functions to our inventory. In `R`, there are definitely more functions that at least implicitly use loops and apply-like functions (for a nice overview, please refer to http://uc-r.github.io/apply_family). 
+At this point, we stop adding more looping functions to our inventory. In `R`, there are definitely more functions that at least implicitly use loops and apply-like functions (for a nice overview, you can, e.g., have a look at http://uc-r.github.io/apply_family). 
 
-We have left out some newer `tidyverse` functions, e.g., from the `purrr` package. If you have any more questions on that, please let us know. But for now we will turn to another feature of modern programming in `R`. It will be way more supportive for your daily actions after you have converted to a full-time R-user after this course:
+We have left out some newer `tidyverse` functions, e.g., from the [`purrr`](https://purrr.tidyverse.org/) package. If you have any more questions about that, please let us know. But for now, we will turn to another feature of modern programming in `R`. It will be way more supportive for your daily actions after you have converted to a full-time `R`-user after this course:
 
 .center[**pipes**]
 
@@ -1620,7 +1620,7 @@ While this is cool, it can get cumbersome to read.
 
 # Don't overthink pipes
 .column-left-half[
-Pipes are so nice, you may be tempted to use them all the time. Some of you may even spend hours to create one single data preparation workflow in one single pipe. This is awesome. However, it's not very efficient and also misses the whole purpose of applying pipes which are:
+Pipes are so nice, you may be tempted to use them all the time. Some of you may even spend hours to create one single data preparation workflow in one single pipe. This is awesome. However, it's not very efficient and also misses the main purposes of applying pipes which are:
 - readability
 - reproducibility
 ]
@@ -1653,8 +1653,8 @@ These are only some of the topics you will face when researching for styling you
 - comments
 - assignment rules
 
-R is pretty flexible in styling which is why it is necessary to think about these topics
-- compare that to Python which has strict indention rules
+`R` is pretty flexible in styling which is why it is necessary to think about these topics
+- compare that to `Python` which has strict indention rules
 
 ---
 
@@ -1663,7 +1663,7 @@ It's really not uncommon to follow a specific style guide that already exists.
 
 Many institutions define styles for several different programming languages, such as [Google's style guide for `R`](https://google.github.io/styleguide/Rguide.html)
 
-It really doesn't matter what style you use as long as you are concise (at least in one single `R`-file, right?).
+It really doesn't matter what style you use as long as you are consistent (at least in one single `R`-file, right?).
 
 ---
 
@@ -1696,9 +1696,9 @@ class: center, middle
 ---
 
 # Extracurricular activities
-`R` can also be used for creating text-based adventure games. Look at the tremendous ["Castle of R"](https://github.com/gsimchoni/CastleOfR), which was designed to test your programming skills using base `R`.
+`R` can also be used for creating text-based adventure games. Play the fun short text adventure ["Castle of R"](https://github.com/gsimchoni/CastleOfR) which was designed to test your programming skills using `base R`.
 
-Make sure to check out the [background](http://giorasimchoni.com/2017/09/10/2017-09-10-you-re-in-a-room-the-castleofr-package/) of the programming of the package as well.
+Also check out the [background](http://giorasimchoni.com/2017/09/10/2017-09-10-you-re-in-a-room-the-castleofr-package/) of the programming of the game/package.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
