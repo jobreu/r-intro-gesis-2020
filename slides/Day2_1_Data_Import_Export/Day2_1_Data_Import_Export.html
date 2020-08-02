@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-03" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -60,7 +59,7 @@ Thus far, we've already learned what `R` and `RStudio` are. We also know how we 
 ---
 
 ## Data we use in this course
-During the course, we use several different datasets. Mainly in this session, where we apply different importing functions, we use a large variety ranging from the classic titanic datasets to the one about unicorns.
+During the course, we use several different datasets. Mainly in this session, where we apply different importing functions, we use a large variety ranging from data bout the Titanic to data about unicorns. However, we will also use data that are (presumably) more interesting for social and behavioral scientists.
 
 ---
 
@@ -83,21 +82,21 @@ The *GESIS Panel* website provides [detailed documentation](https://www.gesis.or
 ]
 
 .right-column[
-Another often uses dataset is the [Gapminder Data](https://www.gapminder.org/data/). During the course and the exercises, we work with data we have downloaded from their website. You can also install some of the data directly in `R` for using it with the command `install.packages("gapminder")`.
+We will also use [data from *Gapminder* ](https://www.gapminder.org/data/). During the course and the exercises, we work with data we have downloaded from their website. There also is an `R` package that bundles some of the *Gapminder* data: `install.packages("gapminder")`.
 
-The R package provides ["[a]n excerpt of the data available at Gapminder.org. For each of 142 countries, the package provides values for life expectancy, GDP per capita, and population, every five years, from 1952 to 2007."](https://cran.r-project.org/web/packages/gapminder/index.html)
+This `R` package provides ["[a]n excerpt of the data available at Gapminder.org. For each of 142 countries, the package provides values for life expectancy, GDP per capita, and population, every five years, from 1952 to 2007."](https://cran.r-project.org/web/packages/gapminder/index.html)
 ]
 
 ---
 
 ## How to use the data in general
-To code along and be able to do the exercises, you should store the files (at least from the GESIS Panel) in a folder called `data` in the same folder as the other materials for this course.
+To code along and be able to do the exercises, you should store the data files for the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* in a folder called `data` in the same folder as the other materials for this course.
 
-&lt;img src="./pics/data_folder.png" width="50%" style="display: block; margin: auto;" /&gt;
+The *Gapminder* data (as well as the Titanic and unicorn) should already be in the `data` folder (if you downloaded/cloned the materials from the [*GitHub* repo for this course](https://github.com/jobreu/r-intro-gesis-2020)).
 
 ---
 
-## What's great about R is that it's data-agnostic
+## What's great about `R` is that it's data-agnostic
 &lt;img src="./pics/Datenimport.PNG" width="1324" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -105,22 +104,24 @@ To code along and be able to do the exercises, you should store the files (at le
 ## What's intimidating: the choice of packages
 .pull-left[
 **What you will learn**
-- Getting the most common data formats into R
-  - e.g., CSV, Stata, SPSS, or Excel spreadsheets
+- Getting the most common data formats into `R`
+  - e.g., CSV, *Stata*, *SPSS*, or *Excel* spreadsheets
+  
 - Using the most recent methods of doing that
-- We will rely a lot on the procedures of the `tidyverse` instead of standard R
+
+- We will rely a lot on packages and functions from the `tidyverse` instead of using `base R`
 ]
 
 .pull-right[
 **What you won't learn**
-- Getting old &amp; obscure binary data formats in R
-  - [it's possible](https://cran.r-project.org/doc/manuals/r-release/R-data.html)
+- Getting old &amp; obscure binary data formats into `R`
+  - ... although [it's possible](https://cran.r-project.org/doc/manuals/r-release/R-data.html)
 ]
 
 ---
 
-## Before writing any code: Rstudio functionality to import data
-R is no longer just for command line heroes. In the powerful GUI menu, you can also select and load your data using the mouse. It's under "Environment - Import Dataset - choose file type".
+## Before writing any code: *RStudio* functionality to import data
+`R` is no longer just for command line heroes. In the *RStudio* IDE menu, you can also select and load your data using the mouse. It's under `Environment - Import Dataset - Choose file type`.
 
 &lt;img src="./pics/rstudio_import.PNG" width="716" style="display: block; margin: auto;" /&gt;
 
@@ -128,10 +129,10 @@ R is no longer just for command line heroes. In the powerful GUI menu, you can a
 
 ## Where to find data
 
-### Browse Button in RStudio
+### Browse Button in *RStudio*
 &lt;img src="./pics/importBrowse.PNG" width="435" style="display: block; margin: auto;" /&gt;
 
-### Code preview in Rstudio
+### Code preview in *Rstudio*
 &lt;img src="./pics/codepreview.PNG" width="1429" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -147,14 +148,14 @@ R is no longer just for command line heroes. In the powerful GUI menu, you can a
 
 ## Simple vs. not so simple file formats
 
-Basic file formats, such as CSV (comma-separated value file), can directly be imported into R
+Basic file formats, such as CSV (comma-separated value file), can directly be imported into `R`
 - they are 'flat'
 - few metadata
 - basically text files
 
 Other file formats, particularly the proprietary ones, require the use of additional packages
 - they are complex
-- a lot of metadata (think of all the labels in an SPSS file)
+- a lot of metadata (think of all the labels in an *SPSS* file)
 - they are binary (1110101)
 
 
@@ -168,30 +169,35 @@ https://xkcd.com/2116/
 ---
 
 ## Personal sidenote: why `tidyverse` for importing?
-For simple files, base-`R` provides proper tools for importing.
+For simple files, `base R` provides proper tools for importing.
 
 Yet, for importing other files, we have to rely on additional packages anyway.
-- `tidyverse` and its friends help to get an order in all the different tools
+- the `tidyverse` packages (and its "friends") allow us to import and export all kinds of different data formats in a coherent way
+
 - the tidy data format also facilitates adding metadata to imported data
   - they are tibbles
-  - a specific kind are labelled data (see below)
-- provides some sane defaults, e.g., by automatic data type detection
-
----
-class: middle
-
-**In the following slides, we'll jump right into importing data. We use a lot of different packages for this purpose, and you don't have to remember everything. It's just for making a point of how agnostic `R` actually is regarding the file type. Later on, we will dive into the specifics of importing.**
+  - a specific kind are labelled data (more on that in a bit)
+  
+- the `tidyverse` provides some sane defaults, e.g., by automatic data type detection
 
 ---
 
-## Ok now, for starters: Importing a CSV file in standard `R` using `utils`
+## Disclaimer
+
+**In the following slides, we'll jump right into importing data. We use a lot of different packages for this purpose, and you don't have to remember everything. It's just for making a point of how agnostic `R` actually is regarding the file type. Later on, we will dive more into the specifics of importing.**
+
+---
+
+## Ok now, for starters: Importing a CSV file in `R` using `utils`
 
 
 ```r
-titanic &lt;- read.csv("../../data/titanic.csv")
+titanic &lt;- read.csv("./data/titanic.csv")
 
 titanic
 ```
+
+
 
 .right[↪️]
 
@@ -3778,8 +3784,10 @@ class: middle
 ```r
 library(readr)
 
-titanic &lt;- read_csv("../../data/titanic.csv")
+titanic &lt;- read_csv("./data/titanic.csv")
 ```
+
+
 
 Please note the column specifications. `readr` 'guesses' them based on the first 1000 observations (we will come back to this later).
 
@@ -3818,8 +3826,10 @@ It's that easy!
 ```r
 library(readxl)
 
-unicorns &lt;- read_xlsx("../../data/observations.xlsx")
+unicorns &lt;- read_xlsx("./data/observations.xlsx")
 ```
+
+
 
 No output ☹️
 
@@ -3855,10 +3865,10 @@ unicorns
 library(haven)
 
 gp_covid &lt;- 
-  read_stata("../../data/ZA5667_v1-1-0_Stata14.dta")
+  read_stata("./data/ZA5667_v1-1-0_Stata14.dta")
 ```
 
-Note: The [`gesis` package](https://github.com/expersso/gesis) allows direct access to the *GESIS* Data Catalogue (DBK) in `R`, given that you have a DBK account.
+
 
 ---
 
@@ -3921,11 +3931,11 @@ gp_covid
 ---
 
 ## `read_stata()`'s sister: `read_spss()`
-Indeed, there's also the function `read_spss()` to import SPSS files.
+Indeed, there's also the function `read_spss()` to import *SPSS* files.
 
-It also provides capabilities to handle SPSS-defined missing values by setting the option `user_na = TRUE` (default is `FALSE`).
+It also provides capabilities to handle *SPSS*-defined missing values by setting the option `user_na = TRUE` (default is `FALSE`).
 
-The [`sjlabelled` package](https://cran.r-project.org/web/packages/sjlabelled/index.html) can also be used to choose a more elaborated approach for missing values: https://cran.r-project.org/web/packages/sjlabelled/vignettes/intro_sjlabelled.html
+*Note*: The [`sjlabelled` package](https://cran.r-project.org/web/packages/sjlabelled/index.html) can also be used to choose a more elaborated approach for missing values: https://cran.r-project.org/web/packages/sjlabelled/vignettes/intro_sjlabelled.html
 
 **We will come back to Stata and SPSS files since they depict a specific file format in `R`: labelled data.**
 
@@ -3934,19 +3944,19 @@ The [`sjlabelled` package](https://cran.r-project.org/web/packages/sjlabelled/in
 ## There's more
 These were just some very first examples of applying functions from each package. They comprise even more functions for different data types.
 
-- readr
+- `readr`
   - `read_csv()`
   - `read_tsv()`
   - `read_delim()`
   - `read_fwf()`
   - `read_table()`
   - `read_log()`
-- haven
+- `haven`
   - `read_sas()`
   - `read_spss()`
   - `read_stata()`
 
-Not to mention all the helper functions and options. For example, we can define the cells to read from an Excel file by specifying the option `range = "C1:E4"` in `read_excel()`
+Not to mention all the helper functions and options. For example, we can define the cells to read from an *Excel* file by specifying the option `range = "C1:E4"` in `read_excel()`
 
 ---
 
@@ -3972,7 +3982,7 @@ Not to mention all the helper functions and options. For example, we can define 
 ---
 
 ## Changing variable types, e.g., in CSV files
-As mentioned before, `read_csv` 'guesses' the variable types by scanning the first 1000 observations. NB: **This can go wrong!**
+As mentioned before, `read_csv` 'guesses' the variable types by scanning the first 1000 observations. **NB**: This can go wrong!
 
 Luckily, we can change the variable type...
 - before/while loading the data
@@ -3986,7 +3996,7 @@ Luckily, we can change the variable type...
 ```r
 titanic &lt;-
   read_csv(
-    "../../data/titanic.csv",
+    "./data/titanic.csv",
     col_types = cols(
       PassengerId = col_double(),
       Survived = col_double(),
@@ -4006,6 +4016,8 @@ titanic &lt;-
 titanic
 ```
 ]
+
+
 
 .right[↪️]
 
@@ -4038,7 +4050,7 @@ titanic
 ```r
 titanic &lt;-
   read_csv(
-    "../../data/titanic.csv",
+    "./data/titanic.csv",
     col_types = cols(
       PassengerId = col_double(),
       Survived = col_double(),
@@ -4058,6 +4070,8 @@ titanic &lt;-
 titanic
 ```
 ]
+
+
 
 .right[↪️]
 
@@ -4111,11 +4125,11 @@ titanic &lt;-
 ---
 
 ## Beyond flat files: labelled data
-A lot of data you get and find or even collect comes in some flat file, such as CSV. In the social sciences, however, we often deal with proprietary file formats, such as SPSS's .sav or Stata's .dta files. 
+A lot of data you get and find or even collect comes in some sort of flat file format, such as CSV. In the social sciences, however, we often deal with proprietary file formats, such as *SPSS*'s `.sav` or *Stata*'s `.dta` files. 
 
 What we often find in these data are labels. These labels are used to describe variables or variable values. They comprise some specific metadata inherent in these proprietary file formats. 
 
-*If you were able to travel ten years back in time and ask an `R` geek, she'd say that you cannot use labels in R. You'd either have to import, e.g., value labels as character strings or use their codes as factors.*
+*If you were able to travel ten years back in time and ask an `R` geek, she'd say that you cannot use labels in R. You'd either have to import, e.g., value labels as character strings or use their codes as factors. However, these days...*
 
 ---
 
@@ -4147,27 +4161,29 @@ gp_covid["age_cat"]
 ---
 
 ## Advantages of using labelled data
-One could rejoice not having to use a codebook any more, just like in SPSS. And I think by and large this is true, although just looking at code output for glimpsing at data is somewhat... geeky. 
+One could rejoice in not having to use a codebook any more, just like in *SPSS*. And I think by and large this is true, although just looking at code output for glimpsing at data is somewhat... geeky. 
 
-An advantage definitely is that you could re-use the labels in figures and plots, some packages do that automatically, such as the `sjPlot` package.
+An advantage definitely is that you could re-use the labels in figures and plots, some packages do that automatically, such as the [`sjPlot`](https://strengejacke.github.io/sjPlot/) package.
 
-Yet, primarily when you exchange your data with colleagues who do not use `R` or when you plan to publish your data (what you should always consider), being able to export data you have manipulated in `R` is great.
-- yes, you can do that with labelled data.
+Yet, primarily when you exchange your data with colleagues who do not use `R` or when you plan to publish your data (which you always should if that is possible), being able to export data you have manipulated in `R` is great.
+- ... and, yes, you can do that with labelled data as well.
 
-**However, be aware of the missing values hell originating in SPSS's and Stata's different missing values definitions**
+**However, be aware of the missing values hell that you may have to enter due to different missing values definitions in Stata and SPSS.**
 
 ---
 
 ## Manipulating labels
-I used to be a data ingest and preparation guy at the GESIS Data Archive. For this job, I had to use SPSS or Stata for my work, albeit 'privately' I worked with `R` all the time for my dissertation. I would have let Elon Musk name my firstborn child if I could have been able to perform all these tasks in `R`.
+I used to be a data ingest and preparation guy at the *GESIS* Data Archive. For this job, I had to use *SPSS* or *Stata* for my work, albeit 'privately' I worked with `R` all the time for my dissertation. I would have let Elon Musk name my firstborn child&lt;sup&gt;1&lt;/sup&gt;, if I could have been able to perform all these tasks in `R`.
 
 Luckily, the generation after me at least could start to use `R` now for labeling or relabelling data with additional packages. One of those is the `sjlabelled` package from Daniel Lüdecke.
 
-.footnote[The name of his child is X Æ A-12]
+.footnote[
+[1]The name of his child is X Æ A-12
+]
 
 ---
 
-## Again getting labels
+## Getting labels
 
 ### Variables 
 
@@ -4220,9 +4236,9 @@ gp_covid$age_cat &lt;-
     gp_covid$age_cat,
     labels = 
       c(
-        "&lt;=25 Years", "26 bis 30 Years", "31 bis 35 Years", "36 bis 40 Years",
-        "41 bis 45 Years", "46 bis 50 Years", "51 bis 60 Years", 
-        "61 bis 65 Years", "66 bis 70 Years", "&gt;=71 Years"
+        "&lt;=25 years", "26 to 30 years", "31 to 35 years", "36 to 40 years",
+        "41 to 45 years", "46 to 50 years", "51 to 60 years", 
+        "61 to 65 years", "66 to 70 years", "&gt;=71 years"
       )
   )
 
@@ -4230,16 +4246,16 @@ sjlabelled::get_labels(gp_covid$age_cat)
 ```
 
 ```
-##  [1] "&lt;=25 Years"      "26 bis 30 Years" "31 bis 35 Years" "36 bis 40 Years"
-##  [5] "41 bis 45 Years" "46 bis 50 Years" "51 bis 60 Years" "61 bis 65 Years"
-##  [9] "66 bis 70 Years" "&gt;=71 Years"
+##  [1] "&lt;=25 years"     "26 to 30 years" "31 to 35 years" "36 to 40 years"
+##  [5] "41 to 45 years" "46 to 50 years" "51 to 60 years" "61 to 65 years"
+##  [9] "66 to 70 years" "&gt;=71 years"
 ```
 ]
 
 ---
 
 ## That's a lot of manual work
-Yeah, this requires some tedious manual work that has to be done, at least by somebody. But that's just how it is, even in SPSS or Stata. Indeed, we may want to wait until using it in `R` scales a bit more. Integrating basic labelling of variables in a pipe workflow, however, is already straightforward:
+Yeah, this requires some tedious manual work that has to be done, at least by somebody. But that's just how it is, even in *SPSS* or *Stata*. Indeed, we may want to wait until using it in `R` scales a bit more. Integrating basic labelling of variables in a pipe workflow, however, is already straightforward:
 
 
 ```r
@@ -4265,9 +4281,9 @@ Ok, but that's already data wrangling, a topic for this afternoon.
 
 class: center, middle
 
-# [Exercise](XXX) time 🏋️‍♀️💪🏃🚴
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day2_1_Data_Import_Export_Exercise_1_question.html) time 🏋️‍♀️💪🏃🚴
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day2_1_Data_Import_Export_Exercise_1_solution.html)
 
 ---
 
@@ -4275,7 +4291,7 @@ class: center, middle
 Sometimes our data have to leave `R`, for example, if we....
 - share data with colleagues who do not use `R`
 - want to continue where we left off
-  - particularly, if data wrangling took a long time
+  - particularly if data wrangling took a long time
   
 For such purposes we also need a way to export our data.
 
@@ -4311,7 +4327,7 @@ list.files()
 ---
 
 ## `R`'s native file formats
-If you plan to continue to work with R (something we would always recommend 😜), there are at least two native 'file formats' to choose from. The advantage of using them is that they are compressed files so that they don't occupy unnecessary large disk space. Moreover, they are already prepared as you left them, and they take less time to be loaded (not a big deal in a small data world).
+If you plan to continue to work with R (something we would always recommend 😜), there are at least two native 'file formats' to choose from. The advantage of using them is that they are compressed files, so that they don't occupy unnecessarily large disk space. Moreover, they are already prepared as you left them, and they take less time to be loaded (not a big deal in a small data world but relevant for big(ger) data).
 
 `.Rdata` files saving and loading:
 
@@ -4330,16 +4346,16 @@ mydata &lt;- readRDS("mydata.rds")
 ```
 
 
-`saveRDS()` just save a representation of the object, which means you can name whatever you want when loading. That's great!
+`saveRDS()` just saves a representation of the object, which means you can name it whatever you want when loading.
 
 ---
 
 ## Saving just everything
-You may already have noticed that: When closing Rstudio, by default, the programs asks you whether you want to save the workspace image. 
+If you have not changed the General Global Options in *RStudio* as suggested in the *Getting Started* session, you may have noticed that, when closing *Rstudio*, by default, the programs asks you whether you want to save the workspace image. 
 
 &lt;img src="./pics/save_image.png" width="50%" style="display: block; margin: auto;" /&gt;
 
-You can do that by your own using the `save.image()` function:
+You can also do that whenever you want using the `save.image()` function:
 
 
 ```r
@@ -4354,23 +4370,23 @@ The great benefit of `tidyverse` import functions is the import of the data as t
 Several other non-tidyverse packages provide similar benefits as they make use of this universal data format:
 - [`sf`](https://github.com/r-spatial/sf) for geospatial data
 
-- [`sjlabelled`](https://cran.r-project.org/web/packages/sjlabelled/index.html) to work with labelled data, e.g., from SPSS or Stata
+- [`sjlabelled`](https://cran.r-project.org/web/packages/sjlabelled/index.html) to work with labelled data, e.g., from *SPSS* or *Stata*
 
 ---
 
 ## Other packages for data import
 
 - `base` R
-- the [`foreign` package](https://cran.r-project.org/web/packages/foreign/index.html) for SPSS and Stata files
+- the [`foreign` package](https://cran.r-project.org/web/packages/foreign/index.html) for *SPSS* and *Stata* files
 - [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) or [`fst`](https://www.fstpackage.org/) for large datasets
-- [`jsonlite`](https://cran.r-project.org/web/packages/jsonlite/index.html) for json files
-- [`datapasta`](https://github.com/MilesMcBain/datapasta) for copying and pasting data into tribbles (e.g., from websites, Excel or Word files)
+- [`jsonlite`](https://cran.r-project.org/web/packages/jsonlite/index.html) for `.json` files
+- [`datapasta`](https://github.com/MilesMcBain/datapasta) for copying and pasting data into tribbles (e.g., from websites, *Excel* or *Word* files)
 
 
 ---
 
 ## Final note on file paths
-There is this simple rule of never using absolute file paths to maintain your code reproducibly and future-proof. We already had this in the introduction, it's just to remind you as this is particularly important for data importing and exporting.
+There is this simple rule of never using absolute file paths to maintain your code reproducibly and future-proof. We already talked about this in the introduction, so it's just to remind you as this is particularly important for data importing and exporting.
 
 
 ```r
@@ -4387,7 +4403,7 @@ load("/home/cool_user/data/fancy_data.Rdata")
 ---
 
 ## Use relative paths
-Instead of using absolute paths, it is recommended to use relative file paths. The idea is from starting where your current script currently exists and navigate to your target location. Say we are in the "C:/Users/cool_user/" location on a Windows machine. To load your data, we would use:
+Instead of using absolute paths, it is recommended to use relative file paths. The general principle here is to start from a directory where your current script currently exists and navigate to your target location. Say we are in the "C:/Users/cool_user/" location on a Windows machine. To load your data, we would use:
 
 
 ```r
@@ -4405,9 +4421,9 @@ load("../../data/fancy_data.Rdata")
 
 class: center, middle
 
-# [Exercise](XXX) time 🏋️‍♀️💪🏃🚴
+# [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day2_1_Data_Import_Export_Exercise_2_question.html) time 🏋️‍♀️💪🏃🚴
 
-## [Solutions](XXX)
+## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day2_1_Data_Import_Export_Exercise_2_solution.html)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

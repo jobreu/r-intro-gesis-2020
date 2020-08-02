@@ -1,11 +1,11 @@
 ---
-# title: 'Exercise 2 Data Visualization Part 1 - Solutions'
-title: 'Exercise 2 Data Visualization Part 1'
+title: 'Exercise 2 Data Visualization Part 1 - Solutions'
+# title: 'Exercise 2 Data Visualization Part 1'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
-  unilur::tutorial_html: default
-  # unilur::tutorial_html_solution: default
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
@@ -23,9 +23,9 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-After we have tinkered with general plotting in R, and before we learn from other plotting methods using `ggplot2`, we now conclude our session with programmatically playing with plots. In the previous exercise, we had some repeated tasks to perform. Maybe we can find a more elegant way of creating multiple plots.
+After we have tinkered with general plotting in `base R`, and before we learn about alternative plotting methods using `ggplot2`, we want to use this exercise to programmatically play with some `base R` plots. In the previous exercise, we had some repeated tasks to perform. Maybe we can find a more elegant way of creating multiple plots.
 
-Make sure our GESIS Panel COVID-19 data are loaded:
+Make sure our *GESIS Panel* COVID-19 survey data are loaded:
 
 ```{r loadgpcovid, message=FALSE, eval=TRUE}
 library(dplyr)
@@ -54,7 +54,7 @@ barplotter <- function (variable, data) {
 barplotter("hzcy001a", gp_covid)
 ```
 
-Pew, that was not about plotting but rather about programming (sorry!). But now you can use this function and include it in a loop!
+Alas, that was not about plotting but rather about programming (sorry!). But now you can use this function and include it in a loop to actually plot stuff!
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
 Take all four variables from the previous exercise session and feed them in a loop that calls the plotting function. You may want again call `par()` before the loop to have all variables nicely plotted in one graph.

@@ -23,14 +23,14 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-This first part of the exercises only deals with importing data. Later, in the second exercise, we will turn more to non-flat data files and label them before exporting.
+This first part of the exercises only deals with importing data. Later, in the second exercise, we will turn to non-flat data files and label them before exporting.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
 Load the titanic data.
 ```
 
 ```{block, opts.label = "clues"}
-The file format is CSV. Accordingly, you may want to use the `readr` library and a function that starts with `read_...` if you are not aiming at using base R.
+The file format is CSV. Accordingly, you may want to use the `readr` library and a function that starts with `read_...` (of course, you could also use the `base R` equivalent if you want to).
 ```
 
 ```{r load_titanic, solution = TRUE}
