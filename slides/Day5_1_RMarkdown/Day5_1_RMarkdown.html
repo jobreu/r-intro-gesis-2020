@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-07" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -466,6 +467,7 @@ The knitting process happens in a new environment. The working directory for thi
 
 When you are new to `R Markdown` it makes sense to knit early and knit often to see if everything works and produces the results you expected (unless your document is computationally intensive and, hence, takes a long time to compile).
 
+However, for computationally intensive tasks, you could consider setting the option `opts_chunk$set(cache = TRUE)`. It will cache chunk calls and their results as long as you do not edit them (but beware that potentially sensitive data could be stored in the cache).
 ---
 
 ## How `R Markdown` works
@@ -627,7 +629,7 @@ class: center, middle
 
 Watch some of the short (~ 10 mins each) [tutorial videos on *YouTube* by Nick Fox](https://www.youtube.com/playlist?list=PLmvNihjFsoM5hpQdqoI7onL4oXDSQ0ym8) on *Writing Reproducible Scientific Papers in `R`* and code along.
 
-Watch the short (~ 20 mins) [tutorial video on *YouTube* by Dan Quintana](https://www.youtube.com/watch?v=ox_Ue9yzf-0) on *How to make a personal academic website for free using R and the blogdown package* and start making your personal website (or blog) with `R Markdown`.
+Watch the short (~ 20 mins) [tutorial video on *YouTube* by Dan Quintana](https://www.youtube.com/watch?v=ox_Ue9yzf-0) on *How to make a personal academic website for free using R and the blogdown package* and start making your personal website (or blog) with `R Markdown`. 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
