@@ -1,11 +1,11 @@
 ---
-# title: 'Exercise 1 Confirmatory Analysis - Solutions'
-title: 'Exercise 1 Confirmatory Analysis'
+title: 'Exercise 1 Confirmatory Analysis - Solutions'
+# title: 'Exercise 1 Confirmatory Analysis'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
-  unilur::tutorial_html: default
-  # unilur::tutorial_html_solution: default
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
@@ -25,7 +25,7 @@ klippy::klippy()
 
 We are now entering the phase of doing serious statistics: we run regression models, inspect them, plot, and tabulate them.
 
-For this exercise, let's again pretend to be researchers interested in the determinants of the subjective likelihood estimation of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the GESIS Panel COVID-19 data again:
+For this exercise, let's pretend to be researchers interested in the determinants of the subjective risk of being treated for COVID-19 in a hospital. We suspect that age plays an important role, something we have already assessed by visualizing a similar relationship. So... we need the *GESIS Panel* COVID-19 survey data again:
 
 ```{r loadgpcovid, message=FALSE,}
 library(dplyr)
@@ -64,10 +64,10 @@ serious_anova <-
 summary(serious_anova)
 ```
 
-Alright, there's definitely something in the data we should investigate. Sometimes, it is considered bad practice, but we could try to make a median cut for the dependent variable and run logistic regression.
+Alright, there's definitely something in the data we should investigate. Oftentimes this is considered bad practice, but we could try to create a median split for the dependent variable and run a logistic regression.
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-Make a median cut for the variable "likelihood_hospital" and run a logistic regression with all variables. What do you see in the results?
+Create a median split for the variable `likelihood_hospital` and run a logistic regression with all variables. What do you see in the results?
 ```
 
 ```{block, opts.label = "clues"}
@@ -124,7 +124,7 @@ summary(serious_cauchit_regression)
 # I don't know...
 ```
 
-Ok, using different link functions is sometimes done as they provide different model fits. That's definitely something we should investigate as well.
+Using different link functions is sometimes done as they provide different model fits. That's definitely something we should investigate as well.
 
 ```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
 Compare both regression models with an ANOVA. Use the option `test = "LRT"` to perform a likelihood ratio test. What's your interpretation?

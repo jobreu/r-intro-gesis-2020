@@ -1,11 +1,11 @@
 ---
-# title: 'Exercise 2 Confirmatory Analysis - Solutions'
-title: 'Exercise 2 Confirmatory Analysis'
+title: 'Exercise 2 Confirmatory Analysis - Solutions'
+# title: 'Exercise 2 Confirmatory Analysis'
 author: 'Johannes Breuer, Stefan Jünger'
 date: 'Introduction to R for Data Analysis'
 output:
-  unilur::tutorial_html: default
-  # unilur::tutorial_html_solution: default
+  # unilur::tutorial_html: default
+  unilur::tutorial_html_solution: default
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
@@ -23,9 +23,9 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-In the last exercise, we exploited some regression models for our analysis. That was a good start, but publications need tables of results and fancy visualizations, e.g., predictions.
+In the last exercise, we made use of some regression models for our analysis. That was a good start, but publications need tables of results and fancy visualizations (e.g., for model predictions).
 
-Again, we load our GESIS Panel COVID-19 data and also - just to make sure - re-run the regression models:
+Again, we need to load the *GESIS Panel* COVID-19 survey data and also - just to make sure - re-run the regression models:
 
 ```{r loadgpcovid, message=FALSE}
 library(dplyr)
@@ -66,14 +66,12 @@ serious_cauchit_regression <-
 
 In the lecture, we started with the visualization of predictions. However, it is good practice to first build a regression table that shows, for example, the statistical significance of regression coefficients.
 
-... 
-
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Build a stargazer regression table of both models to compare them. Use the option `type = "text"` to have it printed in the console. Moreover, choose a table style for the journal where you want to publish.
+Build a `stargazer` regression table of both models to compare them. Use the option `type = "text"` to have it printed to the console. Moreover, choose a table style for a journal of your choice.
 ```
 
 ```{block, opts.label = "clues"}
-You can find an overview of all supported style with ``?stargazer::`list of supported styles` ``.
+You can find an overview of all supported styles with ``?stargazer::`list of supported styles` ``.
 ```
 
 ```{r stargazer, solution = TRUE}
@@ -87,14 +85,14 @@ stargazer(
 )
 ```
 
-You know what: reviewer 2 is post-significant, at least a little. He requested that you should please use confidence intervals at a level of `.93`.
+You know what: reviewer 2 is "post-significant" (at least a little bit). He requests that you should please use confidence intervals at a level of `.93` (which is now all the rage in his field).
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
 Rebuild your regression table and add the confidence intervals with the requested level.
 ```
 
 ```{block, opts.label = "clues"}
-Have a look at the help page for all possible options `?stargazer?`. Moreover, it may be that CIs are still not shown due to the custom style.
+Have a look at the help page for all possible options `??stargazer`. Note that it is possible be that CIs are not shown because of the custom style you choose.
 ```
 
 ```{r stargazer2, solution = TRUE}
@@ -109,16 +107,16 @@ stargazer(
 )
 ```
 
-The previous exercise might also show that such integrated packages like `stargazer` have limits. Because of these limits, standardized procedures of gathering results like `broom` are quite attractive as packages like `huxtable` 'understand' this standard format.
+The previous exercise might also show that integrated packages like `stargazer` have limits. Because of these limits, standardized procedures of gathering results as offered by the `broom` package are quite attractive since packages like, e.g., [`huxtable`](https://hughjonesd.github.io/huxtable/) 'understand' this standard format.
 
-We'll leave regression tables now and turn to the plotting of the results. You should know that reviewer 2 wants you to do that after the third review round...
+We'll leave regression tables now and turn to plotting the results (as reviewer 2 wants you to do that after the third review round)...
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-Draw a prediction plot of the variable "age_cat" for both models using the `sjPlot` package. Also, try to draw them side by side.
+Draw a prediction plot of the variable `age_cat` for both models using the `sjPlot` package. Also, try to plot them side by side.
 ```
 
 ```{block, opts.label = "clues"}
-You can use the `patchwork` package for creating the joined plot.
+You can use the `patchwork` package for creating the combined plot.
 ```
 
 ```{r predictionplot, solution = TRUE}
@@ -145,11 +143,11 @@ logit_plot | cauchit_plot
 Reviewer 2 is happy now. But Reviewer 1, who is more trusted by the editor, thinks estimating predictions based on 'real' average marginal effects (AME) is more cutting-edge. She also feels that you have proven that choosing a logit or a cauchit link doesn't make a difference. Therefore she'd prefer to see only one plot for the cauchit model as this is not a methodological paper.
 
 ```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
-Draw a prediction plot of the variable "age_cat" only for the cauchit model, but this time base on AME.
+Draw a prediction plot of the variable `age_cat` only for the cauchit model, but this time based on AME.
 ```
 
 ```{block, opts.label = "clues"}
-The `margins` package and its `cplot()` function are your friend.
+The `margins` package and its `cplot()` function are your friends here.
 ```
 
 ```{r predictionplot2, solution = TRUE}
@@ -162,14 +160,14 @@ cplot(
 )
 ```
 
-Bonus: You may have seen that `cplot()` outputs the actual prediction data automatically. This was annoying in the slides, but you could use this output to draw a plot in `ggplot2`. Moreover, when you toggle the option `draw = FALSE`, then only the data are created.
+Bonus: You may have seen that `cplot()` outputs the actual prediction data automatically. This was annoying in the slides, but you could use this output to create a plot with `ggplot2`. *Note*: When you set the argument `draw = FALSE` only the data are created.
 
 ```{block, box.title = "BONUS", box.body = list(fill = "white"), box.icon = "fa-star"}
-Draw a prediction plot of the variable "age_cat" only for the cauchit model based on AME in `ggplot2`.
+Draw a prediction plot of the variable `age_cat` only for the cauchit model based on AME using `ggplot2`.
 ```
 
 ```{block, opts.label = "clues"}
-1. The column "xvals" is stored as character. You should convert it into numeric.
+1. The column `xvals` is stored as character. You should convert it to numeric.
 2. There's a `geom` called `geom_errorbar` which you can use for the confidence intervals
 ```
 

@@ -57,27 +57,32 @@ xaringanExtra::use_extra_styles(
 .pull-left[
 **What we will cover**
 - Bivariate hypothesis testing
-- Using more or less simple regression models in R
-  - OLS, GLM and the like
+
+- Using more or less simple regression models in `R`
+  - OLS, GLM, and the like
+  
 - How to re-use the results of these models
-- How to feed these results into tables and beautiful plots
+
+- How to feed these results into tables and pretty plots
 ]
 
 .pull-right[
 **What we won't cover**
 - Theory (and history) of hypothesis testing
+
 - Crazy complex models with elaborated estimators
   - e.g., no multilevel models
   - also no clustered standard errors
+  
 - Bayesian statistics
 ]
 
 ---
 
 ## Data in this session
-In this session, we again use the data from the COVID-19 GESIS Panel Data:
+In this session, we, again, use the data from *GESIS Panel* COVID-19 survey:
 
-```{r}
+```{r load-gp-data, echo = FALSE}
 gp_covid <-
   haven::read_sav(
     "../../data/ZA5667_v1-1-0.sav"
@@ -90,50 +95,61 @@ gp_covid <-
   sjlabelled::remove_all_labels()
 ```
 
+```{r load-gp-data-display, eval = FALSE}
+gp_covid <-
+  haven::read_sav(
+    "./data/ZA5667_v1-1-0.sav"
+  ) %>% 
+  sjlabelled::set_na(na = c(-1:-99, 97)) %>% 
+  dplyr::mutate(
+    likelihood_infection = hzcy001a,
+    age_cat = as.factor(age_cat)
+  ) %>% 
+  sjlabelled::remove_all_labels()
+```
+
 ---
 
-## R is rich in statistical procedures you could use
-Generally, if you seek to use a specific statistical method in R, chances are good that you can easily do that. 
-- There's an app... package for that
-  - Either directly on CRAN or, for example, on Github
+## `R` is rich in statistical procedures
+Generally, if you seek to use a specific statistical method in `R`, chances are quite high that you can easily do that. 
+- As we said before: There's ~~an app~~a package for that
+  - Either directly on *CRAN* or, for example, on *GitHub*
   
-For my use cases, I seldom have observed that I cannot use a specific  procedure in R. Here's my small collection:
+For my use cases, I have only vers rarely encountered situations in which I cannot use a specific  procedure in `R`. Here's my small collection:
 - Structural Equation Models (SEM) using categorical latent variables
 - Hypothesis testing of marginal effects across different models
 - ...
 
-In principle, you could program everything by yourself...
+In principle, you could, of course, program these things yourself...
 
 ---
 
-## A lot can be done
-A lot can be done in R as it is the number one language for statisticians who develop cutting-edge methods. And we are convinced that other points speak to use R in the first place:
-- The data format of the results
-- Related to that, plotting facilities using standard `R` or `ggplot2`
+## Plenty of options
+A lot can be done in `R` with regard to statistical analysis as it is the number one language for statisticians who develop cutting-edge methods.
 
-Okay, before we start, we have to make ourselves familiar with some more terminology in R.
+Before we start analyzing data, however, we have to make ourselves familiar with some more terminology in `R`.
 
 ---
 
 ## Formulas in statistical software
-We have seen that before. As in other statistical languages, e.g., regression models require you to define your dependent variable and your independent ones. For example, in `Stata`, you have to write:
+We have seen this before. As in other statistical languages, e.g., regression models require you to define your dependent variable and your independent ones. For example, in *Stata* you have to write:
 
 ```{r eval = FALSE}
 y x1 x2 x3
 ```
 
-`SPSS` is more literate by requiring you to state what your dependent variables are with the `/DEPENDENT` parameter.
+*SPSS* is more literate by requiring you to state what your dependent variables are with the `/DEPENDENT` parameter.
 
 ---
 
 ## `R` is straightforward and literate
-`R` combines the best out of two worlds. It is straightforward to write formulas. It is quite literate regarding what role a specific element of a formula plays.
+`R` combines the best of two worlds: It is straightforward to write formulas and it is quite literate regarding what role a specific element of a formula plays.
 
 ```{r eval = FALSE}
 y ~ x1 + x2 + x3
 ```
 
-Please note that formulas denote a specific object class in R.
+*Note*: Formulas represent a specific object class in `R`.
 
 ```{r}
 class(y ~ x1 + x2 + x3)
@@ -176,7 +192,7 @@ y ~ 1
 ---
 
 ## Adding predictors with `+`
-This should already be clear. You can add as many predictors/covariates as you want with the simple `+` operator. See:
+You can add as many predictors/covariates as you want with the simple `+` operator. See:
 
 ```{r eval = FALSE}
 y ~ 1 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 +
@@ -206,7 +222,7 @@ This creates a model formula, including both the main effects of `x1` and `x2`, 
 y ~ x1 + x2 + x1:x2
 ```
 
-Later, we will see how all look like when we actually feed regression models with these formulas. For the time being, it may seem to be a little bit abstract.
+Later, we will see how all of this looks when we actually feed regression models with these formulas. For the time being, it may seem to be a little bit abstract.
 
 ---
 
@@ -224,19 +240,19 @@ If your variable is not enclosed by a specific function, you have to wrap the op
 y ~ x + I(x^2) # add a quadratic term of x
 ```
 
-So it should be clear that we could also change the data type of variables within a function, e.g., by converting a numeric variable to a factor using `as.factor(x)`.
+This should show that we could also change the data type of variables within a function, e.g., by converting a numeric variable to a factor using `as.factor(x)`.
 
 ---
 
 ## Where to use formulas?
-The previous description refers a lot to formulas used in regression models. Where we also use the concept of formulas with dependent variables is simple hypothesis testing. Most prominently methods, such as t-tests or ANOVA, belong to this group of analysis.
+The previous description refers a lot to formulas used in regression models. Where we also use the concept of formulas with dependent variables is simple hypothesis testing as in t-tests or ANOVA.
 
-These 'basic' statistical models can be used in `R` too, as in any other statistical language. Let's try them out!
+These 'basic' statistical models can be easily used in `R`, too, as in any other statistical language. Let's try them out!
 
 ---
 
 ## Testing group differences in the distribution
-As said, one of the most prominent methods to analyze group differences are t-tests. You can use the `t.test()` to easily perform such a test. However, our dependent variable may not be distributed normally between groups, such as the gender of our respondents.
+A very common methods for analyzing group differences are t-tests. You can use the `t.test()` function to easily perform such a test. However, our dependent variable may not be distributed normally between groups, such as the gender of our respondents.
 
 ```{r notnormaldata, eval = FALSE}
 barplot(
@@ -259,7 +275,7 @@ barplot(
 ---
 
 ## Apply a t-test
-If you think about hypothesis testing, t-tests may be the first method that comes to your mind. First and foremost, `R` is a statistical language. Indeed, you could thus perform t-tests rather straightforward.
+If you think about hypothesis testing, t-tests may be the first method that comes to mind. First and foremost, `R` is a statistical language. Indeed, the way to perform t-tests with `base R` is rather straightforward.
 
 ```{r}
 t.test(
@@ -271,7 +287,7 @@ t.test(
 ---
 
 ## Test of normality
-Ok, t-tests are nice, but what if our data is not normally distributed in the first place, one of the basic assumptions of performing t-tests? We can use a Shapiro-Wilk test of normality!
+Ok, t-tests are nice, but what if our data is not normally distributed in the first place, thus, violating one of the basic assumptions of performing t-tests? As we have seen in the session on *Exploratory Data Analysis*, to check this we can use a Shapiro-Wilk test of normality.
 
 ```{r}
 shapiro.test(gp_covid$likelihood_infection)
@@ -280,6 +296,8 @@ shapiro.test(gp_covid$likelihood_infection)
 ---
 
 ## Alternative: Wilcoxon/Mann-Whitney test
+
+If the data are not normally distributed, the Wilcoxon/Mann-Whitney test can be a suitable alternative.
 
 ```{r}
 wilcox.test(
@@ -291,7 +309,7 @@ wilcox.test(
 ---
 
 ## Testing multiple groups with an ANOVA
-There are occasions where we want to test differences across multiple groups. The classic method to use is an analysis of variance (ANOVA) test. Again, you can easily do that in `R`.
+There are situations in which we want to test differences across multiple groups. The classic method to use is an analysis of variance (ANOVA) and its many variants (ANCOA, MANOVA, etc.). Again, you can easily do that in `R`.
 
 ```{r}
 nice_anova <- 
@@ -306,7 +324,9 @@ summary(nice_anova)
 ---
 
 ## Simple linear regressions
-We will now turn to the context of regression models. These models are also easy to perform in `R`. Disclaimer: We won't do many regression diagnostics and assume that our dependent variable is continuous for the OLS regression context.
+This may not come as a surprise at this point, but regression models are also easy to perform in `R`.
+
+*Disclaimer*: We won't do many regression diagnostics and assume that our dependent variable is continuous for the OLS regression context here.
 
 .tinyish[
 ```{r linmodel, eval = FALSE}
@@ -350,7 +370,7 @@ summary(simple_linear_model)
 ---
 
 ## Inspecting models with `plot()`
-In the visualization session, we have already learned from the built-in function to visually inspect the modeling of regressions in `R`.
+In the visualization session, we have already learned about the built-in `base R` functions for visually inspecting the modeling of regressions in `R`.
 
 .pull-left[
 ```{r lm_summary_plot, eval = FALSE}
@@ -367,7 +387,7 @@ plot(simple_linear_model)
 ---
 
 ## Dummy coding is done automatically
-As you can see, `R` converts factors in a regression model automatically to classic dummy-coded variables, with the reference being the first value level. There is no need to create several variables with dummy codes and add them one by one to the regression formula. 
+As you can see, `R` automatically converts factors in a regression model to classic dummy-coded variables, with the reference being the first value level. Hence, there is no need to create several variables with dummy codes and add them one by one to the regression formula. 
 
 You can inspect the contrast matrix using:
 
@@ -384,10 +404,10 @@ contrasts(gp_covid$age_cat)
 
 ---
 
-## Different Coding Example: Effect Coding
-How to include a factor variable in regression can be changed. Have a look, for example, [here](https://stats.idre.ucla.edu/r/library/r-library-contrast-coding-systems-for-categorical-variables) to get a comprehensive overview.
+## Different coding example: Effect coding
+How to include a factor variable in a regression model can, of course, be changed in `R`. For a full overview, you can, e.g., have a look at this [tutorial](https://stats.idre.ucla.edu/r/library/r-library-contrast-coding-systems-for-categorical-variables).
 
-Let's try one out by ourselves just very briefly. I like the so-called effect coding or deviation coding, which compares the mean at a given level to the overall mean. You can create effect-coded dummies by changing the contrasts this way:
+Let's try one alternative option out ourselves (just very briefly). I like the so-called effect coding or deviation coding, which compares the mean at a given level to the overall mean. You can create effect-coded dummies by changing the contrasts this way:
 
 ```{r}
 contrasts(gp_covid$age_cat) <- contr.sum(10)
@@ -395,7 +415,7 @@ contrasts(gp_covid$age_cat) <- contr.sum(10)
 
 ---
 
-## Effect Coding Contrast Matrix
+## Effect coding contrast matrix
 
 ```{r}
 contrasts(gp_covid$age_cat)
@@ -403,7 +423,7 @@ contrasts(gp_covid$age_cat)
 
 ---
 
-## Effect Coding Regression
+## Effect coding regression
 ```{r effect_coded_regression, eval = FALSE}
 simple_linear_model_effect_coded <-
   lm(
@@ -431,7 +451,7 @@ summary(simple_linear_model_effect_coded)
 ## Generalized linear regression
 What we have seen so far are estimates for linear OLS regression models. A  standard `R` installation provides a multitude of other estimators/link functions, so-called family objects, e.g., binomial logistic or Poisson regression models. See `?family` for an overview.
 
-In this session, we only show the example of logistic regression. For this  purpose, we recode our subjective likelihood of infection variable:
+In this session, we only show the example of logistic regression. For this  purpose, we recode our subjective risk of infection variable:
 
 .tinyish[
 ```{r}
@@ -504,14 +524,14 @@ summary(simple_linear_model_probit)
 ---
 
 ## Handling regression results (a note probably nobody wants to hear...)
-I have to admit I am not a huge fan of running regressions, searching for 'significant' p-values, and pasting the results in a table without interpreting them substantially. Later, you _will_ learn how to create nice tables, but you will also see how we can apply some other techniques to gain more substantial insights into your data.
+I have to admit I am not a huge fan of running regressions, searching for 'significant' p-values, and pasting the results into a table without interpreting them substantially. We _will_ (briefly) discuss how to create nice tables later on, but we will also talk about how we can apply some other techniques to gain more substantial insights into your data.
 
-Before we do that, we will learn how to work with a readily estimated regression object in R. This exercise is to understand the mechanics of what is actually happening in the background.
+Before we do that, we will look at how to work with a readily estimated regression object in `R`. This is meant to show some of the mechanics of what is actually happening in the background when a regression is run in `R`.
 
 ---
 
 ## Accessing model results I: base `R`
-Regression results are a specific type/class of objects in `R`. You could use the `str()` function to retrieve an overview of the whole structure of the object (it's a list of different information). For starters, we may want to see what the first level of this list may provide for us by asking for their names:
+Regression results are a specific type/class of objects in `R`. You can use the `str()` function to retrieve an overview of the whole structure of the object (it's a list of different information). For starters, we may want to see what the first level of this list may provide by asking for the names of the included pieces of information:
 
 ```{r}
 names(simple_linear_model)
@@ -567,7 +587,7 @@ anova(simple_linear_model_logistic, simple_linear_model_probit)
 ---
 
 ## There are easier ways
-Addon-packages, e.g., for creating tables, usually gather such information automatically, so that we don't need to apply everything by ourselves. However, we think it makes sense to at least know there are always some ways to that.
+Addon-packages, e.g., for creating tables, usually gather such information automatically, so that we don't need to apply everything by ourselves. However, we think it makes sense to at least know there are always some ways to that yourself.
 
 ```{r echo = FALSE}
 DiagrammeR::grViz("digraph flowchart {
@@ -591,7 +611,7 @@ DiagrammeR::grViz("digraph flowchart {
       height = 100)
 ```
 
-Later in this session, we will also learn from some `tidy` functions that make accessing results even more straightforward.
+Later in this session, we will also learn about some `tidy` functions that make accessing results even more straightforward.
 
 ```{r echo = FALSE}
 DiagrammeR::grViz("digraph flowchart {
@@ -626,7 +646,7 @@ class: center, middle
 ---
 
 ## (Simple) model predictions
-However, what is relatively easy is doing simple predictions from an estimated model using the `predict()` function.
+It is also quite straightforward to do simple predictions from an estimated model using the `predict()` function in `R`.
 
 .tinyish[
 .pull-left[
@@ -649,7 +669,7 @@ hist(
 ---
 
 ## Feed `predict()` with your own data
-We can feed the `predict()` function with our own data, to figure out what our model actually predicts when we change scenarios. Such efforts provide much more substantially insights into our models:
+We can feed the `predict()` function with our own data to figure out what our model actually predicts when something changes. This can provide additional insights into our models:
 
 .tinyish[
 ```{r}
@@ -709,7 +729,7 @@ sjPlot::plot_model(
 ```
 ]
 
-These are simple predictions by holding all other variables at their mean value. If you're a vivid `Stata` user, you may be familiar with using average marginal effects. You can also use them in `R` with the `margins` package!
+These are simple predictions by holding all other variables at their mean value. If you're an avid *Stata* user, you may be familiar with using average marginal effects. You can also use them in `R` with the `margins` package!
 
 ---
 
@@ -724,7 +744,7 @@ margins::margins(simple_linear_model_logistic)
 
 ---
 
-## Proof: It's the same in OLS context
+## Proof: It's the same in the OLS context
 
 .tinyish[
 ```{r}
@@ -755,20 +775,20 @@ invisible(
 
 ## Tables of analyses
 The number of packages to create tables in R is infinite - at least almost. While some provide more or less the same functionality, the usual difference is what their output format is.
-- LaTeX tables
-- HTML tables
-- .doc-files
+- `LaTeX` tables
+- `HTML` tables
+- `.doc`-files
 - ...
-- Excel anyone?
+- *Excel* anyone?
 
-Generally, you are flexible. You can gather the statistics that you want, put everything in a `data.frame`, and just use the table package of your choice.
+`R` allows you to be very flexible here. You can gather the statistics that you want, put everything into a `data.frame`, and just use the table package of your choice.
 
-But this requires a lot of manual work.
+However, this approach typically requires a lot of manual work.
 
 ---
 
 ## The `stargazer` package
-In order to navigate the challenges of too much manual work, the `stargazer` package is a popular choice. It provides LaTeX tables by default but can also output text, markdown, and HTML tables, or even .doc documents, including your table. Here's an example:
+To avoid the hassle of too much manual work in table creation with `R`, the [`stargazer`](https://cran.r-project.org/web/packages/stargazer/index.html) package is a popular choice. It provides `LaTeX` tables by default but can also output text, `Markdown`, and `HTML` tables, or even `.doc` documents. Here's an example:
 
 ```{r stargazer, eval = FALSE}
 stargazer::stargazer(
@@ -789,17 +809,17 @@ knitr::include_graphics("./pics/stargazer_output.png")
 ---
 
 ## Different table styles & other toggles
-`stargazer` provides different table styles, which can format your table after the guidelines of popular journals. That's a great feature. 
+`stargazer` provides different table styles which you can use to format your table in accordance with the guidelines of many journals.
 
 You can also define which statistics should be printed, how `stargazer` should deal with standard errors, and much more.
 
-I'd recommend checking it out, but be aware that creating tables is now a really trendy topic in `R`. So it may be that other table packages provide similar functionality as `stargazer` in the future. Likewise, `stargazer` does not support modern formats of statistical results, such as the output from `broom` where we will have a look next.
+I recommend checking out the `stargazer` package, but be aware that creating tables is now a really "hot" topic in `R`. Hence, there are many packages that provide similar and, for some cases, also additional options for creating tables (we will mention some of them in the session on `R Markdown`). For example, `stargazer` does not support modern formats of statistical results, such as the output from `broom` which we will have a look next.
 
 ---
 
 ## Standardizing your results: tidy models with `broom`
 .pull-left[
-We have already entered the area of reporting statistical results. We will have a separate session on reporting on Friday. You should know that more and more developers in `R` were unsatisfied with the diverse output some of the standard regression procedures provide. The outputs may be helpful to look at, but it's not great for further processing. For this purpose, we need tables.
+We have already entered the area of reporting statistical results. We will have a separate session on reporting on with `R Markdown`. One thing to note at this point is that more and more developers in `R` were unsatisfied with the diverse output some of the standard regression procedures provide. The outputs may be helpful to look at, but it's not great for further processing. For this purpose, we need tables.
 ]
 
 .pull-right[
@@ -860,7 +880,7 @@ my_fancy_models <-
   )
 ```
 
-This may seem like an unnecessary effort having packages, such as `stargazer`, at hand. But believe me, the more you fiddle in `R`, the more you will face situations where using such procedures does not work anymore (I think this might be true for `Stata` or `SPSS`). Or think about possible reviewers who want to have something added. With packages, such as `broom` you can also create a  standardized output of non-regression models such as Latent Class Analysis (LCA) from the package [`poLCA`](https://cran.r-project.org/web/packages/poLCA/index.html) 
+This may seem like an unnecessary effort if we can use packages like `stargazer`. But believe me, the more you fiddle in `R`, the more you will face situations where using such procedures does not work anymore (I think this might be true for *Stata* or *SPSS* as well). Or think about possible reviewers who want to have something added. With packages like `broom` you can also create a standardized output of other types of models, such as Latent Class Analysis (LCA) (with the package [`poLCA`](https://cran.r-project.org/web/packages/poLCA/index.html)). 
 
 ---
 
@@ -873,4 +893,4 @@ class: center, middle
 ---
 
 # Extracurricular activities
-We'd again like to invite you to learn more about `broom` and related developments. Last year, Alex Hayes, one author of the package, [gave an excellent talk at the RStudio Conference](https://rstudio.com/resources/rstudioconf-2019/solving-the-model-representation-problem-with-broom/), which is worthwhile to watch.
+As it is such a handy package, we recommend to explore the `broom` package a bit further. Last year, Alex Hayes, one authors of the package, [gave an excellent talk at the RStudio Conference](https://rstudio.com/resources/rstudioconf-2019/solving-the-model-representation-problem-with-broom/) that is quite worthwhile to watch.
