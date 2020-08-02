@@ -429,17 +429,17 @@ fancy_data
 class: middle
 
 ```
-##        who age salary_2018 salary_2019 eggs_available
-## 1    Samir  43          45          47          FALSE
-## 2  Brenden  41          26          73          FALSE
-## 3   Saadiq  16          50          59           TRUE
-## 4    Keith  36          70         100          FALSE
-## 5    Riley  43          30          83           TRUE
-## 6   Patrek  25          90          69          FALSE
-## 7     Kyja  24          31          42          FALSE
-## 8   Shriya  46          82          77           TRUE
-## 9  Michael  22          94          98           TRUE
-## 10  Ashley  41          30          41          FALSE
+##         who age salary_2018 salary_2019 eggs_available
+## 1     Paige  16          51          25           TRUE
+## 2      Lynn  36          99          49           TRUE
+## 3   Annnees  23          68          58          FALSE
+## 4     Sarah  38          99          70           TRUE
+## 5     Amjad  20          97          97           TRUE
+## 6   Demario  14          17          27           TRUE
+## 7  Danielle  36          98          32           TRUE
+## 8     Dylan  39          80          43           TRUE
+## 9    Ashley  42          64          35           TRUE
+## 10 Khadejah  28          15          31           TRUE
 ```
 
 ---
@@ -460,18 +460,18 @@ class: middle
 
 ```
 ## # A tibble: 10 x 5
-##    who       age salary_2018 salary_2019 eggs_available
-##    &lt;chr&gt;   &lt;int&gt;       &lt;int&gt;       &lt;int&gt; &lt;lgl&gt;         
-##  1 Samir      43          45          47 FALSE         
-##  2 Brenden    41          26          73 FALSE         
-##  3 Saadiq     16          50          59 TRUE          
-##  4 Keith      36          70         100 FALSE         
-##  5 Riley      43          30          83 TRUE          
-##  6 Patrek     25          90          69 FALSE         
-##  7 Kyja       24          31          42 FALSE         
-##  8 Shriya     46          82          77 TRUE          
-##  9 Michael    22          94          98 TRUE          
-## 10 Ashley     41          30          41 FALSE
+##    who        age salary_2018 salary_2019 eggs_available
+##    &lt;chr&gt;    &lt;int&gt;       &lt;int&gt;       &lt;int&gt; &lt;lgl&gt;         
+##  1 Paige       16          51          25 TRUE          
+##  2 Lynn        36          99          49 TRUE          
+##  3 Annnees     23          68          58 FALSE         
+##  4 Sarah       38          99          70 TRUE          
+##  5 Amjad       20          97          97 TRUE          
+##  6 Demario     14          17          27 TRUE          
+##  7 Danielle    36          98          32 TRUE          
+##  8 Dylan       39          80          43 TRUE          
+##  9 Ashley      42          64          35 TRUE          
+## 10 Khadejah    28          15          31 TRUE
 ```
 
 ---
@@ -513,17 +513,17 @@ class: middle
 ## [4,]    4    8   12   16
 ## 
 ## [[4]]
-##        who age salary_2018 salary_2019 eggs_available
-## 1    Samir  43          45          47          FALSE
-## 2  Brenden  41          26          73          FALSE
-## 3   Saadiq  16          50          59           TRUE
-## 4    Keith  36          70         100          FALSE
-## 5    Riley  43          30          83           TRUE
-## 6   Patrek  25          90          69          FALSE
-## 7     Kyja  24          31          42          FALSE
-## 8   Shriya  46          82          77           TRUE
-## 9  Michael  22          94          98           TRUE
-## 10  Ashley  41          30          41          FALSE
+##         who age salary_2018 salary_2019 eggs_available
+## 1     Paige  16          51          25           TRUE
+## 2      Lynn  36          99          49           TRUE
+## 3   Annnees  23          68          58          FALSE
+## 4     Sarah  38          99          70           TRUE
+## 5     Amjad  20          97          97           TRUE
+## 6   Demario  14          17          27           TRUE
+## 7  Danielle  36          98          32           TRUE
+## 8     Dylan  39          80          43           TRUE
+## 9    Ashley  42          64          35           TRUE
+## 10 Khadejah  28          15          31           TRUE
 ```
 ]
 
@@ -565,17 +565,17 @@ class: middle
 ## [4,]    4    8   12   16
 ## 
 ## $data_stuff[[2]]
-##        who age salary_2018 salary_2019 eggs_available
-## 1    Samir  43          45          47          FALSE
-## 2  Brenden  41          26          73          FALSE
-## 3   Saadiq  16          50          59           TRUE
-## 4    Keith  36          70         100          FALSE
-## 5    Riley  43          30          83           TRUE
-## 6   Patrek  25          90          69          FALSE
-## 7     Kyja  24          31          42          FALSE
-## 8   Shriya  46          82          77           TRUE
-## 9  Michael  22          94          98           TRUE
-## 10  Ashley  41          30          41          FALSE
+##         who age salary_2018 salary_2019 eggs_available
+## 1     Paige  16          51          25           TRUE
+## 2      Lynn  36          99          49           TRUE
+## 3   Annnees  23          68          58          FALSE
+## 4     Sarah  38          99          70           TRUE
+## 5     Amjad  20          97          97           TRUE
+## 6   Demario  14          17          27           TRUE
+## 7  Danielle  36          98          32           TRUE
+## 8     Dylan  39          80          43           TRUE
+## 9    Ashley  42          64          35           TRUE
+## 10 Khadejah  28          15          31           TRUE
 ```
 ]
 
@@ -644,8 +644,8 @@ fancy_data$who
 ```
 
 ```
-##  [1] "Samir"   "Brenden" "Saadiq"  "Keith"   "Riley"   "Patrek"  "Kyja"   
-##  [8] "Shriya"  "Michael" "Ashley"
+##  [1] "Paige"    "Lynn"     "Annnees"  "Sarah"    "Amjad"    "Demario" 
+##  [7] "Danielle" "Dylan"    "Ashley"   "Khadejah"
 ```
 
 Just place a `$`-sign between the data object's and the variable's name.
@@ -664,17 +664,17 @@ fancy_data[1]
 ```
 
 ```
-##        who
-## 1    Samir
-## 2  Brenden
-## 3   Saadiq
-## 4    Keith
-## 5    Riley
-## 6   Patrek
-## 7     Kyja
-## 8   Shriya
-## 9  Michael
-## 10  Ashley
+##         who
+## 1     Paige
+## 2      Lynn
+## 3   Annnees
+## 4     Sarah
+## 5     Amjad
+## 6   Demario
+## 7  Danielle
+## 8     Dylan
+## 9    Ashley
+## 10 Khadejah
 ```
 ]
 
@@ -687,17 +687,17 @@ fancy_data["who"]
 ```
 
 ```
-##        who
-## 1    Samir
-## 2  Brenden
-## 3   Saadiq
-## 4    Keith
-## 5    Riley
-## 6   Patrek
-## 7     Kyja
-## 8   Shriya
-## 9  Michael
-## 10  Ashley
+##         who
+## 1     Paige
+## 2      Lynn
+## 3   Annnees
+## 4     Sarah
+## 5     Amjad
+## 6   Demario
+## 7  Danielle
+## 8     Dylan
+## 9    Ashley
+## 10 Khadejah
 ```
 ]
 
@@ -832,8 +832,8 @@ There's this silly programmer joke:
 
 ## Architecture of the joke
 
-<div id="htmlwidget-d232356c7335473f814e" style="width:504px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d232356c7335473f814e">{"x":{"diagram":"digraph flowchart {\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Room mate is asked to buy a bottle of milk\"]\n      tab2 [label = \"Do they have eggs?\"]\n      tab3 [label = \"Yes\", shape = diamond]\n      tab4 [label = \"No\", shape = diamond]\n      tab5 [label = \"Room mate is buying 12 bottles of milk\"]\n      tab6 [label = \"Room mate is buying 1 bottle of milk\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab2 -> tab4;\n      tab3 -> tab5;\n      tab4 -> tab6;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1bfb92418855ce70c169" style="width:504px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1bfb92418855ce70c169">{"x":{"diagram":"digraph flowchart {\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Room mate is asked to buy a bottle of milk\"]\n      tab2 [label = \"Do they have eggs?\"]\n      tab3 [label = \"Yes\", shape = diamond]\n      tab4 [label = \"No\", shape = diamond]\n      tab5 [label = \"Room mate is buying 12 bottles of milk\"]\n      tab6 [label = \"Room mate is buying 1 bottle of milk\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab2 -> tab4;\n      tab3 -> tab5;\n      tab4 -> tab6;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1093,16 +1093,16 @@ for (row_number in 1:nrow(fancy_data)) {
 ```
 
 ```
-## [1] "Samir has bought 1 bottle of milk"
-## [1] "Brenden has bought 1 bottle of milk"
-## [1] "Saadiq has bought 12 bottles of milk"
-## [1] "Keith has bought 1 bottle of milk"
-## [1] "Riley has bought 12 bottles of milk"
-## [1] "Patrek has bought 1 bottle of milk"
-## [1] "Kyja has bought 1 bottle of milk"
-## [1] "Shriya has bought 12 bottles of milk"
-## [1] "Michael has bought 12 bottles of milk"
-## [1] "Ashley has bought 1 bottle of milk"
+## [1] "Paige has bought 12 bottles of milk"
+## [1] "Lynn has bought 12 bottles of milk"
+## [1] "Annnees has bought 1 bottle of milk"
+## [1] "Sarah has bought 12 bottles of milk"
+## [1] "Amjad has bought 12 bottles of milk"
+## [1] "Demario has bought 12 bottles of milk"
+## [1] "Danielle has bought 12 bottles of milk"
+## [1] "Dylan has bought 12 bottles of milk"
+## [1] "Ashley has bought 12 bottles of milk"
+## [1] "Khadejah has bought 12 bottles of milk"
 ```
 
 ---
@@ -1206,7 +1206,7 @@ apply(fancy_data[,3:4], 2, mean)
 
 ```
 ## salary_2018 salary_2019 
-##        54.8        68.9
+##        68.8        46.7
 ```
 
 ```r
@@ -1215,7 +1215,7 @@ apply(fancy_data[,3:4], 1, mean)
 ```
 
 ```
-##  [1] 46.0 49.5 54.5 85.0 56.5 79.5 36.5 79.5 96.0 35.5
+##  [1] 38.0 74.0 63.0 84.5 97.0 22.0 65.0 61.5 49.5 23.0
 ```
 
 While there are packages for building descriptive table already out there (e.g., `psych::describe` ), this becomes handy when you want to create them yourself.
@@ -1246,16 +1246,16 @@ class: middle
 ## [1] NA
 ## 
 ## $age
-## [1] 33.7
+## [1] 29.2
 ## 
 ## $salary_2018
-## [1] 54.8
+## [1] 68.8
 ## 
 ## $salary_2019
-## [1] 68.9
+## [1] 46.7
 ## 
 ## $eggs_available
-## [1] 0.4
+## [1] 0.9
 ```
 ]
 
@@ -1298,7 +1298,7 @@ lapply(1:nrow(fancy_data), function (i) {
 ## [1] 1
 ## 
 ## [[3]]
-## [1] 0
+## [1] 1
 ## 
 ## [[4]]
 ## [1] 1
@@ -1307,16 +1307,16 @@ lapply(1:nrow(fancy_data), function (i) {
 ## [1] 1
 ## 
 ## [[6]]
-## [1] 1
+## [1] 0
 ## 
 ## [[7]]
 ## [1] 0
 ## 
 ## [[8]]
-## [1] 1
+## [1] 0
 ## 
 ## [[9]]
-## [1] 1
+## [1] 0
 ## 
 ## [[10]]
 ## [1] 0
@@ -1349,17 +1349,17 @@ class: middle
 .tinyish[
 
 ```
-##        who age salary_2018 salary_2019 eggs_available poverty_indicator
-## 1    Samir  43          45          47          FALSE                 0
-## 2  Brenden  41          26          73          FALSE                 1
-## 3   Saadiq  16          50          59           TRUE                 0
-## 4    Keith  36          70         100          FALSE                 1
-## 5    Riley  43          30          83           TRUE                 1
-## 6   Patrek  25          90          69          FALSE                 1
-## 7     Kyja  24          31          42          FALSE                 0
-## 8   Shriya  46          82          77           TRUE                 1
-## 9  Michael  22          94          98           TRUE                 1
-## 10  Ashley  41          30          41          FALSE                 0
+##         who age salary_2018 salary_2019 eggs_available poverty_indicator
+## 1     Paige  16          51          25           TRUE                 0
+## 2      Lynn  36          99          49           TRUE                 1
+## 3   Annnees  23          68          58          FALSE                 1
+## 4     Sarah  38          99          70           TRUE                 1
+## 5     Amjad  20          97          97           TRUE                 1
+## 6   Demario  14          17          27           TRUE                 0
+## 7  Danielle  36          98          32           TRUE                 0
+## 8     Dylan  39          80          43           TRUE                 0
+## 9    Ashley  42          64          35           TRUE                 0
+## 10 Khadejah  28          15          31           TRUE                 0
 ```
 ]
 
@@ -1374,8 +1374,8 @@ tapply(fancy_data$salary_2019, fancy_data$eggs_available, mean)
 ```
 
 ```
-## FALSE  TRUE 
-## 62.00 79.25
+##    FALSE     TRUE 
+## 58.00000 45.44444
 ```
 
 
@@ -1692,6 +1692,13 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day1_2_Programming_Exercise_2_question.html) time 🏋️‍♀️💪🏃🚴
 
 ## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day1_2_Programming_Exercise_2_solution.html)
+
+---
+
+# Extracurricular activities
+`R` can also be used for creating text-based adventure games. Look at the tremendous ["Castle of R"](https://github.com/gsimchoni/CastleOfR), which was designed to test your programming skills using base `R`.
+
+Make sure to check out the [background](http://giorasimchoni.com/2017/09/10/2017-09-10-you-re-in-a-room-the-castleofr-package/) of the programming of the package as well.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

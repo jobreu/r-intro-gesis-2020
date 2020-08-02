@@ -1266,3 +1266,10 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day1_2_Programming_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
 ## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day1_2_Programming_Exercise_2_solution.html)
+
+---
+
+# Extracurricular activities
+`R` can also be used for creating text-based adventure games. Look at the tremendous ["Castle of R"](https://github.com/gsimchoni/CastleOfR), which was designed to test your programming skills using base `R`.
+
+Make sure to check out the [background](http://giorasimchoni.com/2017/09/10/2017-09-10-you-re-in-a-room-the-castleofr-package/) of the programming of the package as well.
