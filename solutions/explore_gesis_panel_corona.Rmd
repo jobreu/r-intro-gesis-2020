@@ -1,7 +1,7 @@
 ---
 title: "Exploring data from the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany"
 author: "R User"
-date: "30 7 2020"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
     toc: true
@@ -30,7 +30,7 @@ inverter <- function (var) {
   (var * -1) + max(var, na.rm = TRUE) + 1
 }
 
-gesis_panel_corona <- read_csv2("../../../data/ZA5667_v1-1-0.csv")
+gesis_panel_corona <- read_csv2("../data/ZA5667_v1-1-0.csv")
 # you need to change the file path to "../data/ZA5667_v1-1-0.csv"
 
 missings <- c(-111, -99, -77, -33, -22)
