@@ -34,7 +34,7 @@ inverter <- function (var) {
   (var * -1) + max(var, na.rm = TRUE) + 1
 }
 
-gesis_panel_corona <- read_csv2("../../../data/ZA5667_v1-1-0.csv")
+gesis_panel_corona <- read_csv2("../data/ZA5667_v1-1-0.csv")
 
 missings <- c(-111, -99, -77, -33, -22)
 
