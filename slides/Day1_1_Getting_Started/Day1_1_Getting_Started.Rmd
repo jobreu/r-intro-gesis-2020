@@ -185,7 +185,7 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 - The workshop consists of a combination of lectures and hands-on exercises
 
 - Feel free to ask questions at any time
-  - if it is a question that everybody can/should hear, use the "raise hand" function in *Zoom* and then ask via audio/video
+  - if it is a question that everybody can/should hear, use the "raise hand" function in *Zoom*, wait until we call you and then ask via audio/video
   - you can also use the text chat to ask questions
     - you can send text chat messages only to us, if others should not be able to read them
 
