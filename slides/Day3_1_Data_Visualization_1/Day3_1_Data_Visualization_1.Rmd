@@ -903,4 +903,7 @@ class: center, middle
 
 ## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day3_1_Data_Visualization_1_Exercise_2_solution.html)
 
+---
 
+# Extracurricular activities
+Alright, so you may have gotten the feeling that standard `R` graphics are somewhat antiquated. But this need not be true. Have a look at [this excellent and also short blog post](https://www.jumpingrivers.com/blog/styling-base-r-graphics/). The post shows that even with standard `R` you can create great and publication-ready graphics.
