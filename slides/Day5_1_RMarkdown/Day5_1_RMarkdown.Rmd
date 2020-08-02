@@ -88,7 +88,7 @@ In the previous sessions, we have seen that `R` offers plenty of options (and th
 ]
 ]
 
-TLDR of the Wikipedia article: `Markdown` is a lightweight language for text formatting.
+TL;DR of the Wikipedia article: `Markdown` is a lightweight language for text formatting.
 
 ---
 
@@ -648,3 +648,13 @@ class: center, middle
 Watch some of the short (~ 10 mins each) [tutorial videos on *YouTube* by Nick Fox](https://www.youtube.com/playlist?list=PLmvNihjFsoM5hpQdqoI7onL4oXDSQ0ym8) on *Writing Reproducible Scientific Papers in `R`* and code along.
 
 Watch the short (~ 20 mins) [tutorial video on *YouTube* by Dan Quintana](https://www.youtube.com/watch?v=ox_Ue9yzf-0) on *How to make a personal academic website for free using R and the blogdown package* and start making your personal website (or blog) with `R Markdown`. 
+
+---
+
+# Acknowledgements `r ji("heart")`
+
+All slides were created with the [`xaringan` package](https://github.com/yihui/xaringan) which builds on [`remark.js`](https://remarkjs.com), [`knitr`](http://yihui.name/knitr), and [`R Markdown`](https://rmarkdown.rstudio.com). The exercises were created with the [`unilur` package](https://github.com/koncina/unilur).  
+
+The `workshop.css` file we used for the layout of the slides includes elements from `CSS` files for `xaringan` presentations by [Frederik Aust](https://github.com/crsh) and [David Zimmer](https://github.com/DavZim).  
+
+We thank the *GESIS Training* team for taking good care of the organization of this course (and the whole summer school) and all of you for participating!

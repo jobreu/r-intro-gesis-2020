@@ -474,7 +474,7 @@ include_graphics("./pics/r_studio_noscript.png")
 
 ## *RStudio* interface
 
-```{r, rstudio-1st-explained, out.width = "130%"}
+```{r, rstudio-1st-explained, out.width = "200%"}
 include_graphics("./pics/rstudio_1st_explained.png")
 ```
 

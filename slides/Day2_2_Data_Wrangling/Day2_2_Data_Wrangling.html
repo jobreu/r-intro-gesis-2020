@@ -216,11 +216,9 @@ The easiest way to switch from wide to long format and vice versa are the functi
 
 ## Dataset
 
-For most of the examples and examples in this session (and the following sessions), we will use the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://www.gesis.org/gesis-panel/coronavirus-outbreak/public-use-file-puf). You can [download the dataset in different formats as well as the codebook and the questionnaire (in German) from the *GESIS* Data Archive](https://search.gesis.org/research_data/ZA5667) (note: you need to have/create a user account).
+For the examples and exercises in this session we will, again, use data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* and some of the data from *Gapminder*.
 
-In order to code along and to be able to do the exercises, you should store the files in a folder called `data` that is in the same folder as the other materials for this course.
-
-The *GESIS Panel* website provides [detailed documentation](https://www.gesis.org/gesis-panel/documentation), including a [cheatsheet](https://www.gesis.org/fileadmin/upload/forschung/programme_projekte/Drittmittelprojekte/GESIS_Panel/gesis_panel_cheatsheet.pdf).
+Remember that to code along and for the exercises the *GESIS Panel* files should be in a folder called `data` in the same folder as the other materials for this course.
 
 ---
 
@@ -970,6 +968,13 @@ As you can see, only a few of the variable names in the *GESIS Panel Special Sur
 It good practice to use consistent naming conventions. Since `R` is case-sensitive, we might, e.g., want to only use lowercase letters. As spaces in variable names can cause problems, we could, e.g., decide to use 🐍 *snake_case* (🐫 *camelCase* is a common alternative; for a good brief discussion of options for avoiding spaces in variable names, see this [Medium post by Patrick Divine](https://medium.com/@pddivine/string-case-styles-camel-pascal-snake-and-kebab-case-981407998841)).
 
 *Note*: The [`janitor` package](https://github.com/sfirke/janitor) (which is `tidyverse`-oriented) can be used to facilitate several common data cleaning tasks. Among other things, it contains the function `clean_names()` that takes a dataframe and creates column "names are unique and consist only of the _ character, numbers, and letters" (from the help file for this function), with the default being 🐍 snake_case (but support for many other types of cases).  
+
+---
+
+# Become an ace of case
+
+&lt;img src="./pics/coding_cases.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;small&gt;&lt;small&gt;Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) &lt;/small&gt;&lt;/small&gt;
 
 ---
 
@@ -2340,7 +2345,7 @@ If you have ever worked with (or at least seen) `SQL` code, many of the followin
 
 ## Superhero data 🦇⚡🕸🧜‍♂️
 
-As we cannot use the data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* to illustrate the different joins from `dlpyr`, we will instead use data from the Super Heroes dataset from [*Kaggle*](https://www.kaggle.com/claudiodavi/superhero-set).
+As we cannot use the data from the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* to illustrate the different joins from `dlpyr`, we will, instead, use data from the [Super Heroes dataset from *Kaggle*](https://www.kaggle.com/claudiodavi/superhero-set).
 
 
 
