@@ -1083,6 +1083,8 @@ include_graphics("./pics/rstudio_history.png")
 
 You can also view your command history with the `history()` function (in *RStudio* this will activate the `History` tab).
 
+Alternatively to using the `History` tab you can also use the shortcut <kbd>Ctrl + R</kbd> (*Windows* & *Linux*)/<kbd>Cmd + R</kbd> (*Mac*) and interactively search for past commands, and select them while typing.
+
 By default, *R* saves the command history in a `.Rhistory` file in your current working directory upon exiting. You can also manually save and restore the command history using `savehistory()` and `loadhistory()`. 
 
 *Note*: You can open the `.Rhistory` file with any text editor.
