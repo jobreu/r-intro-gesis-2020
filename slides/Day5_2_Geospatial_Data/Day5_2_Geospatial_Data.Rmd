@@ -89,7 +89,7 @@ These object types are rather complex and not easy to work with. For some time n
 knitr::include_graphics("./pics/sf.jpg")
 ```
 
-.footnote[https://r-spatial.github.io/sf/]
+<small><small>Illustration by [Allison Horst](https://github.com/allisonhorst/stats-illustrations) </small></small>
 ]
 
 ---
