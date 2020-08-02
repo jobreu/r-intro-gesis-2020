@@ -569,7 +569,10 @@ Also, the analysis proposed here is rather basic. In the geospatial analysis, re
 
 *I hope you had a lovely first insight into what I am doing all day long with `R`.*
 
+---
 
+# Extracurricular activities
+We may have talked about creating [shiny apps](https://shiny.rstudio.com/) during the course. It's a great way to provide an interactive interface to data and visualization. Check out [this shiny app](https://shiny.rstudio.com/gallery/map-twitter-sentiment.html), which lets you visualize the geographic distribution of Twitter conversations and sentiments.
 
 
 
