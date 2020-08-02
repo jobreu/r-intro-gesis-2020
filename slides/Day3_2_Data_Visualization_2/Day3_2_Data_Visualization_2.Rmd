@@ -901,3 +901,8 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day3_2_Data_Visualization_2_Exercise_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
 ## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day3_2_Data_Visualization_2_Exercise_solution.html)
+
+---
+
+# Extracurricular activities
+Plotting erroneous data in standard `R` often produces error messages. In `ggplot2` instead, you may produce funny graphics that you did not intend to create in the first place. It's a whole sport nowadays, and [this Twitter account](https://twitter.com/accidental__art?lang=en) collects a lot of these sometimes funny plots. You should definitely have a look!
