@@ -869,3 +869,8 @@ class: center, middle
 # [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day4_2_Confirmatory_Analysis_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 
 ## [Solutions](https://jobreu.github.io/r-intro-gesis-2020/solutions/Day4_2_Confirmatory_Analysis_Exercise_2_solution.html)
+
+---
+
+# Extracurricular activities
+We'd again like to invite you to learn more about `broom` and related developments. Last year, Alex Hayes, one author of the package, [gave an excellent talk at the RStudio Conference](https://rstudio.com/resources/rstudioconf-2019/solving-the-model-representation-problem-with-broom/), which is worthwhile to watch.
