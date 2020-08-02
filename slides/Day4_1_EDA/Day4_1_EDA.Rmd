@@ -82,7 +82,7 @@ gesis_panel_corona <- read_csv2("./data/ZA5667_v1-1-0.csv")
 ```
 
 ```{r load-gesis-panel-data, echo = F, message = F}
-gesis_panel_corona <- read_csv2("../../../../data/ZA5667_v1-1-0.csv")
+gesis_panel_corona <- read_csv2("../../data/ZA5667_v1-1-0.csv")
 ```
 
 ```{r select-rename}
