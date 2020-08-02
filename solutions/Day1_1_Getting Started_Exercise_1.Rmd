@@ -69,4 +69,6 @@ Check out the help file for the `grep()` function. How many required arguments d
 
 ```{r third-exercise, solution = TRUE, eval = FALSE}
 ?grep
+
+# It has two required arguments.
 ```
