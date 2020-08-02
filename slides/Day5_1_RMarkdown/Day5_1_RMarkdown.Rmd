@@ -480,7 +480,7 @@ The knitting process happens in a new environment. The working directory for thi
 
 When you are new to `R Markdown` it makes sense to knit early and knit often to see if everything works and produces the results you expected (unless your document is computationally intensive and, hence, takes a long time to compile).
 
-However, for computationally intensive tasks, you could consider setting the option `opts_chunk$set(cache = TRUE)`. It will cache chunk calls and their results as long as you do not edit them (but beware that potentially sensitive data could be stored in the cache).
+However, for computationally intensive tasks, you could consider setting the option `opts_chunk$set(cache = TRUE)`. It will cache chunk calls and their results as long as you do not edit them (but be aware that potentially sensitive data could be stored in the cache).
 ---
 
 ## How `R Markdown` works
@@ -616,6 +616,10 @@ As this session should have illustrated, you can do a lot of things and produce 
 - "`redoc` is a package to enable a two-way `R Markdown`-*Microsoft Word* workflow. It generates Word documents that can be de-rendered back into `R Markdown`, retaining edits on the *Word* document, including tracked changes".
 
 - "`rmdrive` provides convenience functions to copy `.Rmd` files to *Google Drive* for synchronous collaborative editing, then return them back to a local `.Rmd` file for rendering."
+
+.small[
+*Note*: The [development version of *RStudio* includes an experimental visual editor for `R Markdown`](https://bookdown.org/yihui/rmarkdown-cookbook/rstudio-visual.html) and this feature will likely be integrated into future releases of *RStudio*.
+]
 
 ---
 

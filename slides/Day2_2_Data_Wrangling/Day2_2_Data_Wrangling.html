@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-04" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -133,7 +132,7 @@ As stated before, data wrangling can also be done with `base R`. However, the sy
 
 # (IMHO minor) Downsides of using the `tidyverse`
 
-The `tidyverse` is a collection of packages with quite a few dependencies. Hence, installing it can take time if you cannot use binary packages and need to install from source (e.g., on a *Linux* system or if you install development versions from *GitHub*). To avoid this (plus potential namespace conflicts), a good solution is installing and loading `tidyverse` packages individually.
+The `tidyverse` is a collection of packages with quite a few dependencies. Hence, installing it can take time if you [cannot use binary packages and need to install from source](http://r-pkgs.had.co.nz/package.html#package) (e.g., on a *Linux* system or if you install development versions from *GitHub*). To avoid this (plus potential namespace conflicts), a good solution is installing and loading `tidyverse` packages individually.
 
 The `tidyverse` is being continuously developed by a big team of people. This means that, unlike for `base R` functions, there can be major changes to how stuff works. Two recent examples are the [change from `spread()` and `gather()` to `pivot_longer()` and `pivot_wider()`](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/#pivoting) and the [replacement of scoped variants of some `dplyr` functions with the `across()` function](https://dplyr.tidyverse.org/reference/across.html). However, `tidyverse` developers generally make sure that there is backwards compatibility with previous versions (so that superseded functions can still be used; although this typically leads to warnings being displayed and this backwards compatibility may end some time with some future version). 
 
@@ -152,18 +151,18 @@ library("tidyverse")
 ```
 
 ```
-## -- Attaching packages --------------------------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
 ## v ggplot2 3.3.2     v purrr   0.3.4
-## v tibble  3.0.3     v dplyr   1.0.0
+## v tibble  3.0.0     v dplyr   1.0.0
 ## v tidyr   1.1.0     v stringr 1.4.0
 ## v readr   1.3.1     v forcats 0.5.0
 ```
 
 ```
-## -- Conflicts ------------------------------------------------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter()     masks stats::filter()
 ## x dplyr::group_rows() masks kableExtra::group_rows()
 ## x dplyr::lag()        masks stats::lag()

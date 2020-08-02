@@ -134,7 +134,7 @@ As stated before, data wrangling can also be done with `base R`. However, the sy
 
 # (IMHO minor) Downsides of using the `tidyverse`
 
-The `tidyverse` is a collection of packages with quite a few dependencies. Hence, installing it can take time if you cannot use binary packages and need to install from source (e.g., on a *Linux* system or if you install development versions from *GitHub*). To avoid this (plus potential namespace conflicts), a good solution is installing and loading `tidyverse` packages individually.
+The `tidyverse` is a collection of packages with quite a few dependencies. Hence, installing it can take time if you [cannot use binary packages and need to install from source](http://r-pkgs.had.co.nz/package.html#package) (e.g., on a *Linux* system or if you install development versions from *GitHub*). To avoid this (plus potential namespace conflicts), a good solution is installing and loading `tidyverse` packages individually.
 
 The `tidyverse` is being continuously developed by a big team of people. This means that, unlike for `base R` functions, there can be major changes to how stuff works. Two recent examples are the [change from `spread()` and `gather()` to `pivot_longer()` and `pivot_wider()`](https://www.tidyverse.org/blog/2019/09/tidyr-1-0-0/#pivoting) and the [replacement of scoped variants of some `dplyr` functions with the `across()` function](https://dplyr.tidyverse.org/reference/across.html). However, `tidyverse` developers generally make sure that there is backwards compatibility with previous versions (so that superseded functions can still be used; although this typically leads to warnings being displayed and this backwards compatibility may end some time with some future version). 
 

@@ -81,7 +81,7 @@ Traditionally, there has been the `sp` package to represent vector data in R. Fo
 - `SpatialLinesDataFrames`for lines
 - `SpatialPolygonDataFrames` for polygons
 
-These object types are rather complex and not easy to work with. For some time now, and this is the cutting-edge development in spatial `R`, we can rely on one excellent `sf` package. It implemented the [ISO 19125](https://www.iso.org/standard/40114.html) standard for geospatial data, called "simple features".
+These object types are rather complex and not easy to work with. For some time now, and this is the cutting-edge development in spatial `R`, we can rely on one excellent `sf` package. It implements the [ISO 19125](https://www.iso.org/standard/40114.html) standard for geospatial data, called "simple features".
 ]
 
 .pull-right[
@@ -99,7 +99,7 @@ Features are observations in data:
 
 > [A feature is thought of as a thing, or an object in the real world, such as a building or a tree](https://r-spatial.github.io/sf/articles/sf1.html)
 
-We won't go in too much detail on all possible features or geometries that can be represented in the format of the simple features. What is most notably for working with such geospatial data is that simple features in R are simple data frames with observations in the rows and variables in the columns. One of the main differences to a plain `data.frame` or `tibble` is that they comprise a `geometry` column and some additional metadata, such as the coordinate reference system.
+We won't go into too much detail on all possible features or geometries that can be represented in the format of the simple features. What is important to know when working with such geospatial data, however, is that simple features in `R` are simple data frames with observations in the rows and variables in the columns. One of the main differences to a plain `data.frame` or `tibble` is that they comprise a `geometry` column and some additional metadata, such as the coordinate reference system.
 
 ---
 
@@ -112,13 +112,14 @@ knitr::include_graphics("./pics/crs.png")
 
 ---
 
-## That's all you have to know
-To start with geospatial data, this is all you have to know. Probably due to Google Maps and friends, we are so much used to look at maps all day, such that dealing with geospatial data is no big deal anymore.
+## Essential background knowledge
+To start with geospatial data, this is all you have to know. Probably because of *Google Maps* and similar services, we are so much used to looking at maps all day that dealing with geospatial data is no big deal anymore.
 
-The world of geospatial data gets complicated if we aim to some really fancy stuff:
+The world of geospatial data gets complicated, if we aim to do some really fancy stuff:
 - geometric operations, e.g., cropping, cutting, or dissolving data
+
 - spatial analysis as in spatial regression
-  - see the [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) package if you aim to that in `R`
+  - have a look at the [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) package if you want to do that in `R`
   
 ---
 
@@ -128,7 +129,8 @@ This session is about making yourself familiar with geospatial data.
 1. We will load two geospatial datasets, comprising different information, play with them, and create some maps.
   - [Muncipality boundaries data from the Federal Agency of Cartography and Geodesy (BKG)](https://gdz.bkg.bund.de/index.php/default/catalog/product/view/id/788/s/verwaltungsgebiete-1-250-000-ebenen-stand-01-01-vg250-ebenen-01-01/category/8/?___store=default)
   - [Land use data on soil sealing from the Monitor of Settlement and Open Space Development (IOER Monitor)](https://www.ioer-monitor.de/en/)
-2. We will then simulate some coordinates for our GESIS Panel data. After that, we do some geospatial operations and add information from our geospatial data as additional attributes to the survey data.
+  
+2. We will then simulate some coordinates for our *GESIS Panel* COVID-19 survey data. After that, we do some geospatial operations and add information from our geospatial data as additional attributes to the survey data.
 
 That's a lot, so let's get started.
 
@@ -148,7 +150,7 @@ unzip("vg250_01-01.tm32.shape.ebenen.zip")
 unlink("vg250_01-01.tm32.shape.ebenen.zip")
 ```
 
-Now we can load the file as so-called shapefile with this command:
+Now we can load the file as a so-called shapefile with this command:
 
 ```{r}
 municipalities <-
@@ -178,7 +180,7 @@ municipalities %>%
 
 ---
 
-## Second geospatial dataset: Soil Sealing
+## Second geospatial dataset: Soil sealing
 This is a raster dataset, things are a little bit different here. I have already prepared the data for importing, so it's a rather short command. 
 
 ```{r}
@@ -214,7 +216,7 @@ soil_sealing %>%
 ---
 
 ## Mapping interactively
-The `tmap` package is a great resource to create fast and good looking maps. You should definitely look at the [introductionary vignette](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html) of the package here. What's also great about the package is that you can also create excellent interactive maps using the [`leaflet` framework](https://leafletjs.com/).
+The `tmap` package is a great resource to create fast and good looking maps. You should definitely look at the [introductionary vignette](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html) of the package. What's also great about the package is that you can use it to create excellent interactive maps using the [`leaflet` framework](https://leafletjs.com/).
 
 ```{r eval = FALSE}
 library(tmap)
@@ -248,7 +250,7 @@ municipalities %>%
 ---
 
 ## Static mapping
-We can plot the same map as a static map. This is helpful if you prepare a map for a journal publication or something similar. Under the hood `tmap` creates a map with `ggplot2`, so that you can also use `ggplot2`-specific graphics manipulations.
+We can plot the same map as a static map. This is helpful, if you, e.g., prepare a map for a journal publication or something similar. Under the hood, `tmap` creates a map with `ggplot2`, so that you can also use `ggplot2`-specific graphics manipulations.
 
 ```{r  eval = FALSE}
 # set mode to "plot" for static maps
@@ -287,15 +289,15 @@ knitr::include_graphics("./pics/spatial_linking_workflow.png")
 .pull-right[
 Georeferenced survey data based on addresses are sensitive data. According to German data protection legislation, we are not allowed to store location information together with survey attributes.
 
-But we are allowed to jointly store them with information extracted from geospatial data. Usually, we thus apply a workflow, as shown on the left side.
+But we are allowed to jointly store them with information extracted from geospatial data. Hence, we usually apply a workflow as shown on the left side.
 ]
 
 ---
 
 ## Load GESIS Panel Data
-For our introduction of geospatial data, we again use the GESIS Panel COVID-19 dataset.
+For our introduction of geospatial data, we again use the *GESIS Panel* COVID-19 survey dataset.
 
-```{r}
+```{r load-gp-data, echo = FALSE}
 gp_covid <-
   haven::read_sav(
     "../../data/ZA5667_v1-1-0.sav"
@@ -308,16 +310,28 @@ gp_covid <-
   sjlabelled::remove_all_labels()
 ```
 
+```{r load-gp-data-display, eval = FALSE}
+gp_covid <-
+  haven::read_sav(
+    "./data/ZA5667_v1-1-0.sav"
+  ) %>% 
+  sjlabelled::set_na(na = c(-1:-99, 97)) %>% 
+  dplyr::mutate(
+    likelihood_infection = hzcy001a,
+    age_cat = as.factor(age_cat)
+  ) %>% 
+  sjlabelled::remove_all_labels()
+```
+
 ---
 
-## Sample points for GESIS Panel from municipalities
+## Sample points for *GESIS Panel* from municipalities
 
 .tinyish[
 .pull-left[
-We are not allowed to work with 'real' geocoordinates from the GESIS Panel. Solution: Make some up.
+We are not allowed to work with 'real' geocoordinates from the *GESIS Panel*. Solution (for this demonstration): Make some up.
 - sample 100 municipalities from the shapefile
 - sample `nrow(gp_covid)` geocoordinates
-- profit
 
 ```{r fake_addresses, eval = FALSE}
 fake_gp_coordinates <-
@@ -379,7 +393,7 @@ knitr::include_graphics("./pics/buffers.png")
 ]
 
 .pull-right[
-For the linking of soil sealing, we use a fancier method to add this information to the GESIS Panel. We draw circular buffers of 500 and 100 Meters around each geocoordinate. Subsequently, we extract the underlying mean values of soil sealing.
+For the linking of soil sealing, we use a fancier method to add this information to the *GESIS Panel* COVID-19 survey data: We draw circular buffers of 500 and 100 Meters around each geocoordinate. Subsequently, we extract the underlying mean values of soil sealing.
 ]
 
 ---
@@ -491,9 +505,9 @@ The result of all this effort is a simple dataset like our ordinary survey data.
 ---
 
 ## Running a cluster robust regression model
-We can think of several statistical models to analyze such data. In survey data, it's always the right choice to use cluster-robust standard errors, and we now could apply them for our municipality data.
+We can think of several statistical models to analyze such data. In survey data, it's always a good choice to use cluster-robust standard errors, and we now could apply them for our municipality data.
 
-The [`estimatr` package](https://cran.r-project.org/web/packages/estimatr/index.html) provides regression models for clustered data. It lets you choose from a large variety of different standard error calculation. It also resembles the one from `Stata`. Let's try it out!
+The [`estimatr` package](https://cran.r-project.org/web/packages/estimatr/index.html) provides regression models for clustered data. It lets you choose from a large variety of different standard error calculations. It also resembles the one from *Stata*. Let's try it out!
 
 ---
 
@@ -522,7 +536,7 @@ lm_robust_1000 <-
 ---
 
 ## Output of the models
-`estimatr` provides a nice output by default:
+`estimatr` provides some nice output by default:
 
 .tinyisher[
 ```{r echo = FALSE}
@@ -563,16 +577,17 @@ plot_model(
 ---
 
 ## Conclusion
-`R` can nowadays function as a full-blown Geographic Information System (GIS). There is a lot more to do, especially on the side of geospatial data. We could model way more complex relationships between individual geocoordinates in space and their relation to other geospatial attributes, e.g., distance relations.
+`R` can function as a full-blown Geographic Information System (GIS). There is a lot more to do, especially on the side of geospatial data. We could model way more complex relationships between individual geocoordinates in space and their relation to other geospatial attributes, e.g., distance relations.
 
-Also, the analysis proposed here is rather basic. In the geospatial analysis, researchers are often interested in the geographic interdependence of their observations. Therefore, a spatial regression model may sometimes be a better choice.
+Also, the analyses shown on the previous slides are rather basic. In geospatial analysis, researchers are often interested in the geographic interdependence of their observations. Therefore, a spatial regression model may sometimes be a better choice.
 
 *I hope you had a lovely first insight into what I am doing all day long with `R`.*
 
 ---
 
-# Extracurricular activities
-We may have talked about creating [shiny apps](https://shiny.rstudio.com/) during the course. It's a great way to provide an interactive interface to data and visualization. Check out [this shiny app](https://shiny.rstudio.com/gallery/map-twitter-sentiment.html), which lets you visualize the geographic distribution of Twitter conversations and sentiments.
+## Extracurricular activities
+
+Instead of doing serious geospatial analyses, you can also use `R` to generate beautiful maps that you can print on your poster and decorate your office (or living room) with. This [tutorial](https://ggplot2tutor.com/streetmaps/streetmaps/) shows you how to such maps in a matter of minutes.    
 
 
 

@@ -49,8 +49,8 @@ xaringanExtra::use_extra_styles(
 `ggplot2` is another `R` package for creating plots and is part of the `tidyverse`.
 
 
-It uses the *grammar of graphics*
-- well-suited for multi-dimensional data
+It uses the *grammar of graphics*. Some things to note about `ggplot2`:
+- it is well-suited for multi-dimensional data
 - it expects data (frames) as input
 - components of the plot are added as layers
 
@@ -100,7 +100,7 @@ knitr::include_graphics("./pics/328_Hexbin_map_USA_4.png")
 
 ---
 
-## Histograms as in base `R`
+## Histograms as in `base R`
 
 ```{r echo = FALSE}
 gp_covid <- 
@@ -169,7 +169,7 @@ However, this makes it difficult to add extra features to your plot.
 ---
 
 ## Why the long format? `r ji("horse")`
-`ggplot2` prefers data in the long data format (NB: Of course, only if this is possible and makes sense for the dataset at hand)
+`ggplot2` prefers data in the long data format (**NB**: of course, only if this is possible and makes sense for the dataset at hand)
 - in some scientific disciplines this format is only used for specialized analyses (e.g., time series analysis)
 
 .pull-left[
@@ -190,10 +190,10 @@ knitr::include_graphics("./pics/long.png")
 
 ---
 
-## Before we start some more examples
-The architecture of building plots in `ggplot` is similar to standard R graphics. There is an initial plotting call, and subsequently, more stuff is added to the plot. 
+## Before we start: some more examples
+The architecture of building plots in `ggplot` is similar to standard `R` graphics. There is an initial plotting call, and subsequently, more stuff is added to the plot. 
 
-However, in standard R, it is sometimes tricky where to add your stuff. For example, think of removing the axis ticks in the scatter plot.
+However, in `base R`, it is sometimes tricky to find out how to add (or remove) certain plot elements. For example, think of removing the axis ticks in the scatter plot.
 
 We will systematically explore which elements are used in `ggplot` in this session. To get an idea of how easy it is to create figures in `ggplot`, in the following slides, we will look at some of the basic plot types you can choose from.
 
@@ -303,7 +303,7 @@ ggplot(
 ---
 
 ## Creating your own plot
-We do not want to give a lecture on the theory behind data visualization.
+We do not want to give a lecture on the theory behind data visualization (if you want that, we suggest having a look at the excellent book [*Fundamentals of Data Visualization*](https://serialmentor.com/dataviz/) by Claus O. Wilke).
 - creating plots is all about practice
 - ...and 'borrowing' code from others
 
@@ -351,12 +351,35 @@ ggplot()
 ## Data input
 
 .pull-left[
-As we've already learned `ggplot()` expects data as input. We create some interesting data from the gapminder.
+As we've already learned `ggplot()` expects data as input. We create some interesting plots using data from *Gapminder*.
 ]
 
 .tinyish[
 .pull-right[
-```{r load_gapminder_data, echo = TRUE}
+```{r load-gapminder-data-display, eval = FALSE}
+gapminder_children <- 
+  readr::read_csv(
+    "./data/children_per_woman_total_fertility.csv"
+    ) %>% 
+  tidyr::pivot_longer(
+    -country, 
+    names_to = "year",
+    values_to = "children"
+  ) %>% 
+  dplyr::left_join(
+      readr::read_csv(
+    "./data/countries_continent.csv"
+      )
+  ) %>% 
+  dplyr::filter(year >= 1950) %>% 
+  dplyr::mutate(
+    year = as.numeric(year),
+    continent = as.factor(continent)
+    ) %>% 
+  tidyr::drop_na()
+```
+]
+```{r load-gapminder-data, echo = FALSE}
 gapminder_children <- 
   readr::read_csv(
     "../../data/children_per_woman_total_fertility.csv"
@@ -378,7 +401,6 @@ gapminder_children <-
     ) %>% 
   tidyr::drop_na()
 ```
-]
 ]
 
 ---
@@ -542,7 +564,7 @@ ggplot(
 ---
 
 ## Difference between `color` and `fill`
-When you work with `ggplot2`, at least after some time, you will be faced with two components of plot or `geom` associated with colors: `color` and `fill`.
+When you work with `ggplot2`, at least after some time, you will be faced with two components of the plot or `geom` associated with colors: `color` and `fill`.
 
 Generally, `color` refers to the geometry borders, such as a line. `fill` refers to a geometry area, such as a polygon.
 
@@ -578,7 +600,7 @@ ggplot(
 ---
 
 ## Colors and `theme`s
-One particular strength of `ggplot2` still lies in its theming capabilities. The package has some built-in theme functions that makes theming a plot fairly easy, e.g.,
+One particular strength of `ggplot2` lies in its immense theming capabilities. The package has some built-in theme functions that makes theming a plot fairly easy, e.g.,
 - `theme_bw()`
 - `theme_dark()`
 - `theme_void()`
@@ -589,7 +611,7 @@ See: https://ggplot2.tidyverse.org/reference/ggtheme.html
 
 If you want to, you can play around with some of those themes in the exercises for this session.
 
-In general, the [`r-color-palettes` repository by Emil Hvitfeldt](https://github.com/EmilHvitfeldt/r-color-palettes) is a good resource for choosing color palettes in `R`.
+In general, the [`r-color-palettes` repository by Emil Hvitfeldt](https://github.com/EmilHvitfeldt/r-color-palettes) is a good resource for choosing color palettes in `R` and there are many collections of full `ggplot2` themes out there (e.g., the [`hrbrthemes` package](https://github.com/hrbrmstr/hrbrthemes)).
 
 ---
 
@@ -685,7 +707,7 @@ ggplot(
 
 ---
 
-## Another remark on manipulations
+## Another remark on plotting options
 
 .pull-left[
 Working with combined aesthetics and different data inputs can become cumbersome.
@@ -711,7 +733,7 @@ knitr::include_graphics("./pics/800px-The_Scream.jpg")
 ---
 
 ## `ggplot` plots are 'simple' objects
-In contrast to standard `R` plots `ggplot2` are standard objects like any other object in `R` (they are lists). So there is no graphics device involved from which we have recorded our plot to re-use it later. We can just use it directly.
+In contrast to standard `R` plots, `ggplot2` are standard objects like any other object in `R` (they are lists). So there is no graphics device involved from which we have recorded our plot to re-use it later. We can just use it directly.
 
 ```{r eval = FALSE}
 my_fancy_plot <- 
@@ -731,7 +753,7 @@ Additionally, there is also no need to call `dev.off()`
 ## It makes combining plots easy
 As of today, there are now a lot of packages that help to combine `ggplot2`s fairly easily. For example, the [`cowplot` package](https://cran.r-project.org/web/packages/cowplot/index.html) provides a really flexible framework. I have used `cowplot` to create the map in the previous session.
 
-Yet, fiddling with this package can become quite complicated. One of my favorite packages at the moment is, therefore, the [`patchwork` package](https://cran.r-project.org/web/packages/patchwork/index.html) because of its easy to use syntax. It's really, really easy.
+Yet, fiddling with this package can become quite complicated. One of my favorite packages at the moment is the [`patchwork` package](https://cran.r-project.org/web/packages/patchwork/index.html) because of its easy to use syntax. It's really, really easy.
 
 ---
 
@@ -799,7 +821,7 @@ You can also annotate plots with titles, subtitles, captions, and tags.
 
 You can nest plots and introduce more complex layouts.
 
-I'd recommend, if you're interested, to check out the [`patchwork` repository on Github](https://github.com/thomasp85/patchwork) since everything's excellently documented.
+I'd recommend, if you're interested, to check out the [`patchwork` repository on *GitHub*](https://github.com/thomasp85/patchwork) since everything is really well-documented there.
 
 ---
 
@@ -855,7 +877,7 @@ qplot(
 ---
 
 ## Exporting ggplot graphics
-Exporting `ggplot2` graphics is fairly easy with the `ggsave()` function. It automatically detects the file format. You can also define the plot height, width, and dpi, which is particularly useful to get high-class graphics for publication.
+Exporting `ggplot2` graphics is fairly easy with the `ggsave()` function. It automatically detects the file format. You can also define the plot height, width, and dpi, which is particularly useful to produce high-class graphics for publications.
 
 ```{r eval = FALSE}
 nice_plot <- 
@@ -876,7 +898,7 @@ ggsave("nice_plot.tiff", nice_plot, dpi = 300)
 
 ---
 
-# Some additional resources
+## Some additional resources
 
 - [ggplot2 - Elegant Graphics for Data Analysis](https://www.springer.com/gp/book/9783319242750) by Hadley Wickham
 
@@ -904,5 +926,6 @@ class: center, middle
 
 ---
 
-# Extracurricular activities
-Plotting erroneous data in standard `R` often produces error messages. In `ggplot2` instead, you may produce funny graphics that you did not intend to create in the first place. It's a whole sport nowadays, and [this Twitter account](https://twitter.com/accidental__art?lang=en) collects a lot of these sometimes funny plots. You should definitely have a look!
+## Extracurricular activities
+
+Plotting erroneous data in standard `R` often produces error messages. In `ggplot2`, instead, you may produce funny graphics that you did not intend to create in the first place. It's a whole genre nowadays, and [this Twitter account](https://twitter.com/accidental__art?lang=en) collects a lot of these sometimes funny plots. You should definitely have a look!
