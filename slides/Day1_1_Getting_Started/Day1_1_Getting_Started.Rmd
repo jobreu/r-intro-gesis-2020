@@ -136,8 +136,8 @@ tweet_embed("https://twitter.com/hadleywickham/status/589068687669243905",
 
 ## Our jou`R`neys
 
+.small[
 **Johannes**
-
 - was socialized with *SPSS*
 - was annoyed with *AMOS* when learning structural equation modeling (around 2011)
 - decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
@@ -146,12 +146,12 @@ tweet_embed("https://twitter.com/hadleywickham/status/589068687669243905",
 - finally made the full transition to `R` when joining *GESIS* in 2017
 
 **Stefan**
-
 - learned statistical 'programming' when *SPSS* was still the major player in town
 - got hooked by `R` somewhere around 2008 or 2009 because of the plots
 - wrote horrible code and estimated multilevel models that took forever to be estimated
 - switched to `R` for geospatial data in 2015, wrote  his first (bad) [`R` package](https://github.com/StefanJuenger/georefum) for geo-stuff
 - tried *Python*, uses *Python* occasionally, but is forever in love with `R` `r emo::ji("heart")`
+]
 
 ---
 
