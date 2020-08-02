@@ -680,7 +680,7 @@ install.packages(c("correlation", "effectsize"))
 
 ```
 
-`R` packages are installed in specific directories on your computer. **NB** If you have multiple versions of `R` installed, there are directories for each version (with the exception of minor updates: e.g., 4.0.1 and 4.0.2 share the same folder for installed packages, whereas 3.6.0 and 3.7.0 do not).
+`R` packages are installed in specific directories on your computer. **NB**: If you have multiple versions of `R` installed, there are directories for each version (with the exception of minor updates: e.g., 4.0.1 and 4.0.2 share the same folder for installed packages, whereas 3.6.0 and 3.7.0 do not).
 To find where packages are installed on your machine you can use the following command:
 
 ```{r library-path, eval = F, echo = T}
@@ -1041,6 +1041,14 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 The workspace contains all objects (e.g., assigned values or functions) you have created. The contents of the workspace are stored in the working memory (RAM) of your computer until you exit `R` (or *RStudio*). You can view the content of your workspace via the `Environment` tab in *RStudio* or via the `ls()` command.
 
+You can remove objects from your workspace with the `rm()` function. Note, however, that this cannot be undone, so you have to create the object again in case you need it (again).
+
+```{r rm}
+x <- 7
+
+rm(x)
+```
+
 Unless you change the default settings in *RStudio* as suggested on the previous slide, it will save the workspace in a file called `.RData` in your current working directory and restore the workspace when you restart it. 
 
 ---
@@ -1082,8 +1090,6 @@ include_graphics("./pics/rstudio_history.png")
 ## Command history
 
 You can also view your command history with the `history()` function (in *RStudio* this will activate the `History` tab).
-
-Alternatively to using the `History` tab you can also use the shortcut <kbd>Ctrl + R</kbd> (*Windows* & *Linux*)/<kbd>Cmd + R</kbd> (*Mac*) and interactively search for past commands, and select them while typing.
 
 By default, *R* saves the command history in a `.Rhistory` file in your current working directory upon exiting. You can also manually save and restore the command history using `savehistory()` and `loadhistory()`. 
 
