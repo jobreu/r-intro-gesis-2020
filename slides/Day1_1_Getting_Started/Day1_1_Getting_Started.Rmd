@@ -324,7 +324,7 @@ You can use `R` to...
 
 The first (clumsy and silly) `R` function Johannes ever wrote...
 
-```{r dark-knight, echo = T}
+```{r darknight, eval = FALSE, echo = TRUE}
 batman <- function() {
   suppressWarnings (
     if (!require("cowsay")) {
@@ -335,6 +335,15 @@ batman <- function() {
   toString(x)
   say(paste(x, collapse = ", "), by = "bat2")
 }
+
+batman()
+```
+
+.right[`r emo::ji("left_arrow_curving_right")`]
+
+---
+class: middle
+```{r ref.label = "darknight", echo = FALSE}
 ```
 
 ---
