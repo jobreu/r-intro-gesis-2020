@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-03" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -116,17 +117,18 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 **Stefan Jünger**
 
-- postdoctoal researcher in the team Data Linking &amp; Data Security at the GESIS Data Archive
+- postdoctoral researcher in the team Data Linking &amp; Data Security at the GESIS Data Archive
     - main area: geospatial data/georeferencing  
     
 - Ph.D. in social sciences, University of Cologne
 
-- previously worked in the area of data ingest and as a curator of the data repository *datorium* and two DFG research projects on geospatial data
+- previously worked in the area of data ingest and as a curator of the data repository *datorium* as well as two DFG research projects on geospatial data/georeferenced survey data
 
 - other research interests:
     - quantitative methods
     - social inequalities &amp; attitudes towards minorities
     - data management &amp; data privacy
+    - reproducible research
 
 [stefan.juenger@gesis.org](mailto:stefan.juenger@gesis.org),
 [@StefanJuenger](https://twitter.com/StefanJuenger)
@@ -135,8 +137,8 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 
 ## Our jou`R`neys
 
+.small[
 **Johannes**
-
 - was socialized with *SPSS*
 - was annoyed with *AMOS* when learning structural equation modeling (around 2011)
 - decided to learn to use the [`lavaan`](https://lavaan.ugent.be/) package for `R` instead of *MPlus* to avoid being dependent on yet another proprietary software package
@@ -145,10 +147,12 @@ Our general aim is to provide you with the knowledge about `R` and using it for 
 - finally made the full transition to `R` when joining *GESIS* in 2017
 
 **Stefan**
-
-- a
-- b
-- c
+- learned statistical 'programming' when *SPSS* was still the major player in town
+- got hooked by `R` somewhere around 2008 or 2009 because of the plots
+- wrote horrible code and estimated multilevel models that took forever to be estimated
+- switched to `R` for geospatial data in 2015, wrote  his first (bad) [`R` package](https://github.com/StefanJuenger/georefum) for geo-stuff
+- tried *Python*, uses *Python* occasionally, but is forever in love with `R` ❤️
+]
 
 ---
 
@@ -180,7 +184,7 @@ Please try to keep it short (3 to 4 sentences or ~30 secs).
 - The workshop consists of a combination of lectures and hands-on exercises
 
 - Feel free to ask questions at any time
-  - if it is a question that everybody can/should hear, use the "raise hand" function in *Zoom* and then ask via audio/video
+  - if it is a question that everybody can/should hear, use the "raise hand" function in *Zoom*, wait until we call you and then ask via audio/video
   - you can also use the text chat to ask questions
     - you can send text chat messages only to us, if others should not be able to read them
 
@@ -320,6 +324,42 @@ batman &lt;- function() {
   toString(x)
   say(paste(x, collapse = ", "), by = "bat2")
 }
+
+batman()
+```
+
+.right[↪️]
+
+---
+class: middle
+
+```
+## Loading required package: cowsay
+```
+
+```
+## 
+##  ------------- 
+## NA, NA, NA, NA, NA, NA, NA, NA 
+##  -------------- 
+##               \   
+##                \  
+##                 \
+## _____________________                              _____________________
+## `-._                 \           |\__/|           /                 _.-'
+##     \                 \          |    |          /                 /
+##      \                 `-_______/      \_______-'                 /
+##       |                                                          |
+##       |                                                          |
+##       |                                                          |
+##       /                                                          \
+##      /_____________                                  _____________\
+##                    `----._                    _.----'
+##                           `--.            .--'
+##                               `-.      .-'
+##                                  \    / :F_P:
+##                                   \  /
+##                                    \/
 ```
 
 ---
@@ -1142,6 +1182,8 @@ The command history contains all commands you have executed in the current sessi
 ## Command history
 
 You can also view your command history with the `history()` function (in *RStudio* this will activate the `History` tab).
+
+Alternatively to using the `History` tab you can also use the shortcut &lt;kbd&gt;Ctrl + R&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + R&lt;/kbd&gt; (*Mac*) and interactively search for past commands, and select them while typing.
 
 By default, *R* saves the command history in a `.Rhistory` file in your current working directory upon exiting. You can also manually save and restore the command history using `savehistory()` and `loadhistory()`. 
 
