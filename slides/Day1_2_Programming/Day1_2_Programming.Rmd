@@ -78,6 +78,15 @@ So, the all-knowing Wikipedia says programming involves:
 .footnote[https://en.wikipedia.org/wiki/Computer_programming]
 
 ---
+class: middle
+
+```{r echo = FALSE, out.width = "60%"}
+knitr::include_graphics("./pics/i-love-programming.jpg")
+```
+
+.footnote[https://makeameme.org/meme/i-love-programming]
+
+---
 
 ## `R` is/as a programming language
 Initially, `R` was created for statistical analysis in 1992. It reaches back to the language `S` from 1976. Here are the caveats we usually find when people talk about `R` as a programming language:

@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-03" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -85,6 +86,13 @@ So, the all-knowing Wikipedia says programming involves:
 - **Are there any specific problems/issues that you solved?**
 
 .footnote[https://en.wikipedia.org/wiki/Computer_programming]
+
+---
+class: middle
+
+&lt;img src="./pics/i-love-programming.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+
+.footnote[https://makeameme.org/meme/i-love-programming]
 
 ---
 
@@ -428,17 +436,17 @@ fancy_data
 class: middle
 
 ```
-##        who age salary_2018 salary_2019 eggs_available
-## 1   Travis  40          51          68          FALSE
-## 2       An  22          44          56           TRUE
-## 3     Nely  18          40          56          FALSE
-## 4   Shante  15          16          62           TRUE
-## 5  Labeeba  19          24          76           TRUE
-## 6   Billye  38          21          27          FALSE
-## 7    April  45          23          46           TRUE
-## 8    Karen  46          94          58          FALSE
-## 9     Tina  17          64          17          FALSE
-## 10   Jacob  23          46          20           TRUE
+##         who age salary_2018 salary_2019 eggs_available
+## 1    Geneva  35          83          30          FALSE
+## 2      Mike  42          99          49           TRUE
+## 3    Lauren  26          62          85           TRUE
+## 4     Adria  34          81          95           TRUE
+## 5  Mushtaaq  21          42          18           TRUE
+## 6  Benjamin  39          90          73          FALSE
+## 7    Landry  42          50          77           TRUE
+## 8     Mehal  44          68          70          FALSE
+## 9     Suyin  44          34          19          FALSE
+## 10  Quinlyn  15          55          35          FALSE
 ```
 
 ---
@@ -459,18 +467,18 @@ class: middle
 
 ```
 ## # A tibble: 10 x 5
-##    who       age salary_2018 salary_2019 eggs_available
-##    &lt;chr&gt;   &lt;int&gt;       &lt;int&gt;       &lt;int&gt; &lt;lgl&gt;         
-##  1 Travis     40          51          68 FALSE         
-##  2 An         22          44          56 TRUE          
-##  3 Nely       18          40          56 FALSE         
-##  4 Shante     15          16          62 TRUE          
-##  5 Labeeba    19          24          76 TRUE          
-##  6 Billye     38          21          27 FALSE         
-##  7 April      45          23          46 TRUE          
-##  8 Karen      46          94          58 FALSE         
-##  9 Tina       17          64          17 FALSE         
-## 10 Jacob      23          46          20 TRUE
+##    who        age salary_2018 salary_2019 eggs_available
+##    &lt;chr&gt;    &lt;int&gt;       &lt;int&gt;       &lt;int&gt; &lt;lgl&gt;         
+##  1 Geneva      35          83          30 FALSE         
+##  2 Mike        42          99          49 TRUE          
+##  3 Lauren      26          62          85 TRUE          
+##  4 Adria       34          81          95 TRUE          
+##  5 Mushtaaq    21          42          18 TRUE          
+##  6 Benjamin    39          90          73 FALSE         
+##  7 Landry      42          50          77 TRUE          
+##  8 Mehal       44          68          70 FALSE         
+##  9 Suyin       44          34          19 FALSE         
+## 10 Quinlyn     15          55          35 FALSE
 ```
 
 ---
@@ -512,17 +520,17 @@ class: middle
 ## [4,]    4    8   12   16
 ## 
 ## [[4]]
-##        who age salary_2018 salary_2019 eggs_available
-## 1   Travis  40          51          68          FALSE
-## 2       An  22          44          56           TRUE
-## 3     Nely  18          40          56          FALSE
-## 4   Shante  15          16          62           TRUE
-## 5  Labeeba  19          24          76           TRUE
-## 6   Billye  38          21          27          FALSE
-## 7    April  45          23          46           TRUE
-## 8    Karen  46          94          58          FALSE
-## 9     Tina  17          64          17          FALSE
-## 10   Jacob  23          46          20           TRUE
+##         who age salary_2018 salary_2019 eggs_available
+## 1    Geneva  35          83          30          FALSE
+## 2      Mike  42          99          49           TRUE
+## 3    Lauren  26          62          85           TRUE
+## 4     Adria  34          81          95           TRUE
+## 5  Mushtaaq  21          42          18           TRUE
+## 6  Benjamin  39          90          73          FALSE
+## 7    Landry  42          50          77           TRUE
+## 8     Mehal  44          68          70          FALSE
+## 9     Suyin  44          34          19          FALSE
+## 10  Quinlyn  15          55          35          FALSE
 ```
 ]
 
@@ -564,17 +572,17 @@ class: middle
 ## [4,]    4    8   12   16
 ## 
 ## $data_stuff[[2]]
-##        who age salary_2018 salary_2019 eggs_available
-## 1   Travis  40          51          68          FALSE
-## 2       An  22          44          56           TRUE
-## 3     Nely  18          40          56          FALSE
-## 4   Shante  15          16          62           TRUE
-## 5  Labeeba  19          24          76           TRUE
-## 6   Billye  38          21          27          FALSE
-## 7    April  45          23          46           TRUE
-## 8    Karen  46          94          58          FALSE
-## 9     Tina  17          64          17          FALSE
-## 10   Jacob  23          46          20           TRUE
+##         who age salary_2018 salary_2019 eggs_available
+## 1    Geneva  35          83          30          FALSE
+## 2      Mike  42          99          49           TRUE
+## 3    Lauren  26          62          85           TRUE
+## 4     Adria  34          81          95           TRUE
+## 5  Mushtaaq  21          42          18           TRUE
+## 6  Benjamin  39          90          73          FALSE
+## 7    Landry  42          50          77           TRUE
+## 8     Mehal  44          68          70          FALSE
+## 9     Suyin  44          34          19          FALSE
+## 10  Quinlyn  15          55          35          FALSE
 ```
 ]
 
@@ -643,8 +651,8 @@ fancy_data$who
 ```
 
 ```
-##  [1] "Travis"  "An"      "Nely"    "Shante"  "Labeeba" "Billye"  "April"  
-##  [8] "Karen"   "Tina"    "Jacob"
+##  [1] "Geneva"   "Mike"     "Lauren"   "Adria"    "Mushtaaq" "Benjamin"
+##  [7] "Landry"   "Mehal"    "Suyin"    "Quinlyn"
 ```
 
 Just place a `$`-sign between the data object and the variable name.
@@ -663,17 +671,17 @@ fancy_data[1]
 ```
 
 ```
-##        who
-## 1   Travis
-## 2       An
-## 3     Nely
-## 4   Shante
-## 5  Labeeba
-## 6   Billye
-## 7    April
-## 8    Karen
-## 9     Tina
-## 10   Jacob
+##         who
+## 1    Geneva
+## 2      Mike
+## 3    Lauren
+## 4     Adria
+## 5  Mushtaaq
+## 6  Benjamin
+## 7    Landry
+## 8     Mehal
+## 9     Suyin
+## 10  Quinlyn
 ```
 ]
 
@@ -686,17 +694,17 @@ fancy_data["who"]
 ```
 
 ```
-##        who
-## 1   Travis
-## 2       An
-## 3     Nely
-## 4   Shante
-## 5  Labeeba
-## 6   Billye
-## 7    April
-## 8    Karen
-## 9     Tina
-## 10   Jacob
+##         who
+## 1    Geneva
+## 2      Mike
+## 3    Lauren
+## 4     Adria
+## 5  Mushtaaq
+## 6  Benjamin
+## 7    Landry
+## 8     Mehal
+## 9     Suyin
+## 10  Quinlyn
 ```
 ]
 
@@ -831,8 +839,8 @@ There's this silly programmer joke:
 
 ## Architecture of the joke
 
-<div id="htmlwidget-983f76606b831742c765" style="width:504px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-983f76606b831742c765">{"x":{"diagram":"digraph flowchart {\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Room mate is asked to buy a bottle of milk\"]\n      tab2 [label = \"Do they have eggs?\"]\n      tab3 [label = \"Yes\", shape = diamond]\n      tab4 [label = \"No\", shape = diamond]\n      tab5 [label = \"Room mate buys 12 bottles of milk\"]\n      tab6 [label = \"Room mate buys 1 bottle of milk\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab2 -> tab4;\n      tab3 -> tab5;\n      tab4 -> tab6;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a7b29fbcbcee99384beb" style="width:504px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a7b29fbcbcee99384beb">{"x":{"diagram":"digraph flowchart {\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Room mate is asked to buy a bottle of milk\"]\n      tab2 [label = \"Do they have eggs?\"]\n      tab3 [label = \"Yes\", shape = diamond]\n      tab4 [label = \"No\", shape = diamond]\n      tab5 [label = \"Room mate buys 12 bottles of milk\"]\n      tab6 [label = \"Room mate buys 1 bottle of milk\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab2 -> tab4;\n      tab3 -> tab5;\n      tab4 -> tab6;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1093,16 +1101,16 @@ for (row_number in 1:nrow(fancy_data)) {
 ```
 
 ```
-## [1] "Travis has bought 1 bottle of milk"
-## [1] "An has bought 12 bottles of milk"
-## [1] "Nely has bought 1 bottle of milk"
-## [1] "Shante has bought 12 bottles of milk"
-## [1] "Labeeba has bought 12 bottles of milk"
-## [1] "Billye has bought 1 bottle of milk"
-## [1] "April has bought 12 bottles of milk"
-## [1] "Karen has bought 1 bottle of milk"
-## [1] "Tina has bought 1 bottle of milk"
-## [1] "Jacob has bought 12 bottles of milk"
+## [1] "Geneva has bought 1 bottle of milk"
+## [1] "Mike has bought 12 bottles of milk"
+## [1] "Lauren has bought 12 bottles of milk"
+## [1] "Adria has bought 12 bottles of milk"
+## [1] "Mushtaaq has bought 12 bottles of milk"
+## [1] "Benjamin has bought 1 bottle of milk"
+## [1] "Landry has bought 12 bottles of milk"
+## [1] "Mehal has bought 1 bottle of milk"
+## [1] "Suyin has bought 1 bottle of milk"
+## [1] "Quinlyn has bought 1 bottle of milk"
 ```
 
 ---
@@ -1206,7 +1214,7 @@ apply(fancy_data[,3:4], 2, mean)
 
 ```
 ## salary_2018 salary_2019 
-##        42.3        48.6
+##        66.4        55.1
 ```
 
 ```r
@@ -1215,7 +1223,7 @@ apply(fancy_data[,3:4], 1, mean)
 ```
 
 ```
-##  [1] 59.5 50.0 48.0 39.0 50.0 24.0 34.5 76.0 40.5 33.0
+##  [1] 56.5 74.0 73.5 88.0 30.0 81.5 63.5 69.0 26.5 45.0
 ```
 
 While there are plenty of functions for building descriptive tables already out there (e.g., `psych::describe` ), this becomes handy when you want to create them yourself.
@@ -1246,13 +1254,13 @@ class: middle
 ## [1] NA
 ## 
 ## $age
-## [1] 28.3
+## [1] 34.2
 ## 
 ## $salary_2018
-## [1] 42.3
+## [1] 66.4
 ## 
 ## $salary_2019
-## [1] 48.6
+## [1] 55.1
 ## 
 ## $eggs_available
 ## [1] 0.5
@@ -1292,10 +1300,10 @@ lapply(1:nrow(fancy_data), function (i) {
 
 ```
 ## [[1]]
-## [1] 1
+## [1] 0
 ## 
 ## [[2]]
-## [1] 1
+## [1] 0
 ## 
 ## [[3]]
 ## [1] 1
@@ -1304,13 +1312,13 @@ lapply(1:nrow(fancy_data), function (i) {
 ## [1] 1
 ## 
 ## [[5]]
-## [1] 1
+## [1] 0
 ## 
 ## [[6]]
-## [1] 0
+## [1] 1
 ## 
 ## [[7]]
-## [1] 0
+## [1] 1
 ## 
 ## [[8]]
 ## [1] 1
@@ -1349,17 +1357,17 @@ class: middle
 .tinyish[
 
 ```
-##        who age salary_2018 salary_2019 eggs_available poverty_indicator
-## 1   Travis  40          51          68          FALSE                 1
-## 2       An  22          44          56           TRUE                 1
-## 3     Nely  18          40          56          FALSE                 1
-## 4   Shante  15          16          62           TRUE                 1
-## 5  Labeeba  19          24          76           TRUE                 1
-## 6   Billye  38          21          27          FALSE                 0
-## 7    April  45          23          46           TRUE                 0
-## 8    Karen  46          94          58          FALSE                 1
-## 9     Tina  17          64          17          FALSE                 0
-## 10   Jacob  23          46          20           TRUE                 0
+##         who age salary_2018 salary_2019 eggs_available poverty_indicator
+## 1    Geneva  35          83          30          FALSE                 0
+## 2      Mike  42          99          49           TRUE                 0
+## 3    Lauren  26          62          85           TRUE                 1
+## 4     Adria  34          81          95           TRUE                 1
+## 5  Mushtaaq  21          42          18           TRUE                 0
+## 6  Benjamin  39          90          73          FALSE                 1
+## 7    Landry  42          50          77           TRUE                 1
+## 8     Mehal  44          68          70          FALSE                 1
+## 9     Suyin  44          34          19          FALSE                 0
+## 10  Quinlyn  15          55          35          FALSE                 0
 ```
 ]
 
@@ -1375,7 +1383,7 @@ tapply(fancy_data$salary_2019, fancy_data$eggs_available, mean)
 
 ```
 ## FALSE  TRUE 
-##  45.2  52.0
+##  45.4  64.8
 ```
 
 
