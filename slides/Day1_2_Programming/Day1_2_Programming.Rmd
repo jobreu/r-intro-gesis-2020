@@ -1211,6 +1211,16 @@ include_graphics("./pics/crazy_pipes.png")
 
 ---
 
+## Alternative pipe operators from `magrittr` and others
+
+- `%<>%` assignment pipe to update a value or data frame (instead of using `<-`)
+- `%$%`  'exploding' pipe when passing an individual vector
+- `%T>%` Tee pipe for intermediate returning of results within a pipe workflow (e.g., a plot)
+
+There are also other general pipe implementations, e.g., the pipe operator `%>>%` from the [`pipeR` package](https://renkun-ken.github.io/pipeR-tutorial/index.html) or `%.>%` from the [`wrapr` package](https://github.com/WinVector/wrapr). Our used `%>%` is just the most popular one. Discussions about differences may lead to rather academic disputes, as you can see in this [older](https://www.r-bloggers.com/difference-between-magrittr-and-piper/) and this [newer](https://win-vector.com/2018/04/06/magrittr-and-wrapr-pipes-in-r-an-examination/) post.
+
+---
+
 ## Some precocious notes on style
 .column-left-half[
 In some ways, writing code is similar to writing a novel; it's a craft where you set the tone of how you want to be perceived from your future-you and others.
