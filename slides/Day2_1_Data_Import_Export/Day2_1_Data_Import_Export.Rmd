@@ -83,7 +83,7 @@ knitr::include_graphics("./pics/gapminder_logo.png")
 ]
 
 .right-column[
-We will also use [data from *Gapminder* ](https://www.gapminder.org/data/). During the course and the exercises, we work with data we have downloaded from their website. There also is an `R` package that bundles some of the *Gapminder* data: `install.packages("gapminder")`.
+We will also use [data from *Gapminder*](https://www.gapminder.org/data/). During the course and the exercises, we work with data we have downloaded from their website. There also is an `R` package that bundles some of the *Gapminder* data: `install.packages("gapminder")`.
 
 This `R` package provides ["[a]n excerpt of the data available at Gapminder.org. For each of 142 countries, the package provides values for life expectancy, GDP per capita, and population, every five years, from 1952 to 2007."](https://cran.r-project.org/web/packages/gapminder/index.html)
 ]
@@ -738,7 +738,7 @@ load("../../data/fancy_data.Rdata")
 
 class: center, middle
 
-Please frist download the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://search.gesis.org/research_data/ZA5667) as .sav, .dta, and .csv file.
+Please first download the [Public Use File (PUF) of the GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany](https://search.gesis.org/research_data/ZA5667) as .sav, .dta, and .csv file.
 
 # [Exercise](https://jobreu.github.io/r-intro-gesis-2020/exercises/Day2_1_Data_Import_Export_Exercise_2_question.html) time `r ji("weight_lifting_woman")``r ji("muscle")``r ji("running_man")``r ji("biking_man")`
 

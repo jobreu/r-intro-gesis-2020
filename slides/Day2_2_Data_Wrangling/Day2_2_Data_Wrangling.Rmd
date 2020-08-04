@@ -1240,7 +1240,7 @@ gesis_panel_corona <- gesis_panel_corona %>%
     ))
 ```
 
-*Note*: If the factor should be ordered, the `.ordered` argument should be set to `TRUE`.
+*Note*: If the factor should be ordered, the `ordered` argument of the `factor()` function should be set to `TRUE`.
 
 ---
 

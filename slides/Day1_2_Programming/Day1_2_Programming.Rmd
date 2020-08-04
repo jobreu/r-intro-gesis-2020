@@ -323,7 +323,7 @@ class: middle
 ---
 
 ## tibbles
-`data.frames` tend to be pretty large, and printing them on your screen can get difficult. As part of the `tidyverse`(we will talk about what this is in the session on *Data Wrangling*), tibbles facilitate printing (and adding more metadata to the columns of a `data.frame`). Instead of using `data.frame()` for our data creation we could have been using `tibble()`. Or we convert an existing `data.frame`, which looks like that:
+`data.frames` tend to be pretty large, and printing them on your screen can get difficult. As part of the `tidyverse` (we will talk about what this is in the session on *Data Wrangling*), tibbles facilitate printing (and adding more metadata to the columns of a `data.frame`). Instead of using `data.frame()` for our data creation we could have been using `tibble()`. Or we convert an existing `data.frame`, which looks like that:
 
 ```{r as_tibbles, eval = FALSE}
 library(tibble)
@@ -633,7 +633,7 @@ if (condition) {
 
 ---
 
-## Translation of our fabalous joke into `R`
+## Translation of our fabulous joke into `R`
 We create a vector for our two scenarios (eggs available or not).
 
 ```{r}

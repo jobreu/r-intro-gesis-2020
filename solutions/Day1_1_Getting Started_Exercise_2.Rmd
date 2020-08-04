@@ -50,7 +50,7 @@ library(devtools)
 ```
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-Some packages are not on `CRAN`. Another important source of `R` packages is *GitHub* (especially for development versions). So, let's install a package from there. Install the [`emo` package](https://github.com/hadley/emo) from *GitHub*.
+Some packages are not on `CRAN`. Another important source of `R` packages is *GitHub* (especially for development versions). So, let's install a package from there. Install the [`emo` package](https://github.com/hadley/emo) from *GitHub*. **NB**: To be able to install packages from *GitHub* on *Windows* machines, you will need to install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) first.
 ```
 
 ```{block, opts.label = "clues"}

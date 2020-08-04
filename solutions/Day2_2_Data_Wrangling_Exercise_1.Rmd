@@ -29,13 +29,7 @@ That being sad, let's get wrangling...
 
 ...but before we can do that, we need to load the `tidyverse` package(s) and import the data.
 
-```{r load-data, echo = F, message = F}
-library(tidyverse)
-
-gesis_panel_corona <- read_csv2("../../../data/ZA5667_v1-1-0.csv")
-```
-
-```{r read-data, eval = F}
+```{r read-data, message = F}
 library(tidyverse)
 
 gesis_panel_corona <- read_csv2("../data/ZA5667_v1-1-0.csv")
@@ -76,14 +70,14 @@ names(gesis_panel_corona)
 We see here that most of the names are not very descriptive which is something that we might want to change.
 
 ```{block, box.title = "4", box.body = list(fill = "white"), box.icon = "fa-star"}
-Rename the variable `hzcy053a` to `employment_march` and `hzcy071a` to `children` using `base R` and then rename `hzcy044a` to `trust_doctor` and `hzcy050a` to `trust_moh` using a function from the `tidyverse` package `dplyr`. 
+First, rename the variables `hzcy053a` to `employment_march` and `hzcy071a` to `children` using `base R`. Then rename `hzcy044a` to `trust_doctor` and `hzcy050a` to `trust_moh` using a function from the `tidyverse` package `dplyr`. 
 ```
 
 ```{block, opts.label = "clues"}
 The `base R` function for this is `colnames()`, and the `dplyr` function is `rename()`.
 ```
 
-```{r fourth-exercise, solution = TRUE, eval = FALSE}
+```{r fourth-exercise, solution = TRUE}
 # Base R
 colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy053a"] <- "employment_march"
 colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy071a"] <- "children"
@@ -91,7 +85,7 @@ colnames(gesis_panel_corona)[colnames(gesis_panel_corona) == "hzcy071a"] <- "chi
 # tidyverse (dplyr)
 gesis_panel_corona <- gesis_panel_corona %>% 
   rename(trust_doctor = hzcy044a, # new_name = old_name
-         trust_mho = hzcy50a)
+         trust_mho = hzcy050a)
 ```
 
 For the remainder of this exercise, we will focus on functions from the `tidyverse`. Of course, if you want to, you can also use `base R` to solve the tasks, or, if you are extra ambitious, you can use both.
@@ -104,7 +98,7 @@ Select the following variables from the dataset and assign them to an object cal
 You need to use the `select()` function from `dplyr`.
 ```
 
-```{r fifth-exercise, solution = TRUE, eval = FALSE}
+```{r fifth-exercise, solution = TRUE}
 demo <- gesis_panel_corona %>% 
   select(sex:education_cat,
          marstat,
@@ -120,7 +114,7 @@ Filter the `demo` dataset, so that it only contains married men.
 You should probably consult the [codebook for the dataset](https://dbk.gesis.org/dbksearch/download.asp?id=67378). If you do that, you will see that the code for men is 1 and the one for married is also 1.
 ```
 
-```{r sixth-exercise, solution = TRUE, eval = FALSE}
+```{r sixth-exercise, solution = TRUE}
 married_men <- demo %>% 
   filter(sex == 1,
          marstat == 1)
@@ -134,7 +128,7 @@ Using a function from the `naniar` package, recode the values -99, -77, -88, -33
 You need to create a vector with the missing values to replace values with `NA` in all variables.
 ```
 
-```{r seventh-exercise, solution = TRUE, eval = FALSE}
+```{r seventh-exercise, solution = TRUE}
 library(naniar)
 
 missings <- c(-99, -77, -88, -33, -22, -11)
@@ -151,7 +145,7 @@ How many complete cases (without missing values for any of the variables) are th
 You can use a function from the `tidyr` package to check this. Do not overwrite the `demo` object.
 ```
 
-```{r eigth-exercise, solution = TRUE, eval = FALSE}
+```{r eigth-exercise, solution = TRUE}
 demo %>% 
   drop_na() %>% 
   nrow()
@@ -166,13 +160,13 @@ Recode the `age_cat` variable into an ordered factor with 5 levels called `age_5
 Again, consulting the [codebook for the dataset](https://dbk.gesis.org/dbksearch/download.asp?id=67378) helps you in picking the right values and labels for the new variable. The helper function `between()` will be helpful here.
 ```
 
-```{r ninth-exercise, solution = TRUE, eval = FALSE}
-demo <- demo %>% 
-  mutate(age_5_cat = case_when(
+```{r ninth-exercise, solution = TRUE}
+demo <- demo %>%
+  mutate(age_5_cat = factor(case_when(
     between(age_cat, 1, 2) ~ " <=25 years",
     between(age_cat, 3, 4) ~ "26 to 40 years",
     between(age_cat, 5, 6) ~ "41 to 50 years",
     between(age_cat, 7, 8) ~ "51 to 65 years",
-    age_cat > 8 ~ ">= 65 years",
-    .ordered = TRUE))
+    age_cat > 8 ~ ">= 65 years"),
+    ordered = TRUE))
 ```

@@ -793,6 +793,7 @@ library(correlation) # no quotation marks needed
 
 While it is the main source, not all packages for `R` are available via *CRAN*. Another important source of `R` packages, especially those that are still in early development, is [*GitHub*](https://github.com/). To be able to install packages hosted on *GitHub* you need to use functions from the [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) or the [`remotes`](https://cran.r-project.org/web/packages/remotes/index.html) package (which you need to install first as they do not come with `base R`). For example, if you want to install the [RPG dice roll package](https://github.com/Felixmil/rollR) that I mentioned before:
 
+.small[
 
 ```r
 # Option 1
@@ -803,6 +804,9 @@ install_github("Felixmil/rollR") # last part of the GitHub URL (user name + repo
 library(remotes)
 install_github("Felixmil/rollR") # last part of the GitHub URL (user name + repository name)
 ```
+]
+
+*Note*: To be able to install packages from *GitHub* on *Windows* machines, you will need to install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) first. 
 
 A source of `R` packages that is less relevant for the social and behavioral sciences is [*Bioconductor*](https://www.bioconductor.org/) that mostly provides packages for working with genomic data (however, these, e.g., include some packages for computer vision).
 
@@ -953,7 +957,7 @@ When you open or create a script in *RStudio* this will be displayed in a fourth
 
 You can write your code in an `R` script just like you do in the console. 
 
-If you want to execute a single line of code from your script in *RStudio*, you can do so by placing your cursor somewhere in that line and clicking the `Run` button in the menu or by using the keyboard shortcut &lt;kbd&gt;Ctrl + Return&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Enter&lt;/kbd&gt; (*Mac*). This also works if you select multiple lines. **NB**: The number of lines in your script may differ from the number of lines you see in the *RStudio* pane (depending on the size of the pane and the length of the lines). The numbers on the left side of the script pane show the actual line numbers.
+If you want to execute a single command from your script in *RStudio*, you can do so by placing your cursor somewhere in command (or directly after it) and clicking the `Run` button in the menu or by using the keyboard shortcut &lt;kbd&gt;Ctrl + Return&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Enter&lt;/kbd&gt; (*Mac*). This also works if you select multiple lines of code/commands.
 
 You can also run all commands in your script by selecting `Run all` from the dropdown menu next to the `Run` button or via the keyboard shortcut &lt;kbd&gt;Ctrl + Alt + R&lt;/kbd&gt; (*Windows* &amp; *Linux*)/&lt;kbd&gt;Cmd + Option + R&lt;/kbd&gt; (*Mac*).   
 

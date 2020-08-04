@@ -61,7 +61,7 @@ get_label(gp_covid[1:10])
 Unfortunately, it's all in German. Imagine you are an education researcher, and you are interested in the variable `education_cat`. So you may want to consider translating the variable into English.
 
 ```{block, box.title = "3", box.body = list(fill = "white"), box.icon = "fa-star"}
-Rename the variable label of `age_cat` from "Bildung, kategorisiert" into "Education, categorized".
+Change the variable label of `education_cat` from "Bildung, kategorisiert" to "Education, categorized".
 ```
 
 ```{block, opts.label = "clues"}
