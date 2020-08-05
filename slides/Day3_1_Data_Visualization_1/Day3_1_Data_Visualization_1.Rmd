@@ -75,6 +75,16 @@ knitr::include_graphics("./pics/halo_map.png")
 
 ---
 
+### ...yet, we'll start rather basic
+
+```{r trump, out.width = "85%", echo = FALSE}
+knitr::include_graphics("./pics/trump.jpg")
+```
+
+.footnote[https://twitter.com/katjaberlin/status/1290667772779913218]
+
+---
+
 ## Content of the visualization sessions
 .pull-left[
 **`Base R` visualization**
@@ -570,6 +580,32 @@ barplot(
 
 .pull-right[
 ```{r ref.label = "bar_more_colors", echo = FALSE}
+```
+]
+
+---
+
+## My attempt on Trump's plot
+
+.pull-left[
+```{r trump-plot, eval = FALSE}
+barplot(
+  table_age[c(2, 9:7)], 
+  col = 
+    c(
+      "#4F94CD",
+      "#FFA54F",
+      "#CD9B1D",
+      "#FF82AB"
+    ),
+  horiz = TRUE,
+  axes = FALSE
+)
+```
+]
+
+.pull-right[
+```{r ref.label = "trump-plot", echo = FALSE}
 ```
 ]
 

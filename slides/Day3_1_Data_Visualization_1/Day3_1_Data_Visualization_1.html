@@ -79,6 +79,14 @@ In general:
 
 ---
 
+### ...yet, we'll start rather basic
+
+&lt;img src="./pics/trump.jpg" width="85%" style="display: block; margin: auto;" /&gt;
+
+.footnote[https://twitter.com/katjaberlin/status/1290667772779913218]
+
+---
+
 ## Content of the visualization sessions
 .pull-left[
 **`Base R` visualization**
@@ -573,6 +581,32 @@ barplot(
 
 ---
 
+## My attempt on Trump's plot
+
+.pull-left[
+
+```r
+barplot(
+  table_age[c(2, 9:7)], 
+  col = 
+    c(
+      "#4F94CD",
+      "#FFA54F",
+      "#CD9B1D",
+      "#FF82AB"
+    ),
+  horiz = TRUE,
+  axes = FALSE
+)
+```
+]
+
+.pull-right[
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
 ## A two dimensional table
 
 
@@ -613,7 +647,7 @@ barplot(table_age_likelihood)
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -632,7 +666,7 @@ barplot(
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -716,7 +750,7 @@ plot(linear_model)
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -743,7 +777,7 @@ gp_covid %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -764,7 +798,7 @@ gp_covid %&gt;%
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -811,7 +845,7 @@ invisible(
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -853,7 +887,7 @@ fancy_pants_margins_plot(linear_models)
 ]
 
 .pull-right[
-&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day3_1_Data_Visualization_1_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
