@@ -75,7 +75,7 @@ knitr::include_graphics("./pics/halo_map.png")
 
 ---
 
-### ...yet, we'll start rather basic
+## ...yet, we'll start rather basic
 
 ```{r trump, out.width = "85%", echo = FALSE}
 knitr::include_graphics("./pics/trump.jpg")
