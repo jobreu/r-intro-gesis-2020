@@ -1011,6 +1011,16 @@ corona_survey %>%
 
 ---
 
+## "We're last, meaning we're first..."
+
+```{r trump, out.width = "85%", echo = FALSE}
+knitr::include_graphics("./pics/trump_charts.jpg")
+```
+
+.footnote[https://twitter.com/JoJoFromJerz/status/1290630319713001472]
+
+---
+
 ## Change the order of categories
 
 .pull-left[
