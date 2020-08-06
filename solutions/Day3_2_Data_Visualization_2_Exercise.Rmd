@@ -66,7 +66,7 @@ ggplot(
 Admittedly, this may not be the best approach to identify differences between the periods directly. We don't know when our periods start and when they end. Luckily, this can be done in two relatively straightforward steps. Let's start with the first one: using different colors for different periods. For this purpose, we need an indicator variable as a grouping variable to use different colors for the line at each period.
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-Create an indicator variable for the periods 1960-1969, 2002-2011 and the time in between.
+Create an indicator variable for the periods 1960-1969, 2002-2018 and the time in between.
 ```
 
 ```{block, opts.label = "clues"}
@@ -81,10 +81,15 @@ gapminder_ggplot_input <-
       ifelse(
         year >= 1960 & year <= 1969, 
         "1960-1969",
-        if_else(
-          year >= 2002 & year <= 2011, 
-          "2002-2011", 
-          "1970-2001")
+        ifelse(
+          year >= 1970 & year <= 2001, 
+          "1970-2001", 
+          ifelse(
+            year >= 2002 & year <= 2018, 
+            "2002-2018",
+            NA
+          )
+        )
       )
   )
 ```
