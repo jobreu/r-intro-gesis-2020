@@ -138,7 +138,7 @@ if (!require(summaryrtools)) install.packages("GGally")
 ```
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Print a simple table with the frequencies of the variable `education_cat`. Also include the counts for missing values.
+Print a simple table with the frequencies of the variable `age_cat`. Also include the counts for missing values.
 ```
 
 ```{block, opts.label = "clues"}

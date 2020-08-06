@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-06" />
-    <script src="Day4_2_Confirmatory_Analysis_files/header-attrs/header-attrs.js"></script>
     <link href="Day4_2_Confirmatory_Analysis_files/remark-css/default.css" rel="stylesheet" />
     <link href="Day4_2_Confirmatory_Analysis_files/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="Day4_2_Confirmatory_Analysis_files/tile-view/tile-view.css" rel="stylesheet" />
@@ -353,7 +352,7 @@ wilcox.test(
 ---
 
 ## Testing multiple groups with an ANOVA
-There are situations in which we want to test differences across multiple groups. The classic method to use is an analysis of variance (ANOVA) and its many variants (ANCOA, MANOVA, etc.). Again, you can easily do that in `R`.
+There are situations in which we want to test differences across multiple groups. The classic method to use is an analysis of variance (ANOVA) and its many variants (ANCOVA, MANOVA, etc.). Again, you can easily do that in `R`.
 
 
 ```r
@@ -905,13 +904,13 @@ anova(simple_linear_model_logistic, simple_linear_model_probit)
 ## There are easier ways
 Addon-packages, e.g., for creating tables, usually gather such information automatically, so that we don't need to apply everything by ourselves. However, we think it makes sense to at least know there are always some ways to that yourself.
 
-<div id="htmlwidget-c588c6badb6352acc459" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c588c6badb6352acc459">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2b2dfe86ab5bffe0e85d" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2b2dfe86ab5bffe0e85d">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 Later in this session, we will also learn about some `tidy` functions that make accessing results even more straightforward.
 
-<div id="htmlwidget-137bb655c27141461fdb" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-137bb655c27141461fdb">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f6b23745edcf03c72f8a" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f6b23745edcf03c72f8a">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1283,11 +1282,11 @@ broom::glance(simple_linear_model)
 ```
 
 ```
-## # A tibble: 1 x 12
+## # A tibble: 1 x 11
 ##   r.squared adj.r.squared sigma statistic  p.value    df logLik    AIC    BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1    0.0797        0.0765  1.22      24.3 8.66e-49    11 -5008. 10042. 10121.
-## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1    0.0797        0.0765  1.22      24.3 8.66e-49    12 -5008. 10042. 10121.
+## # ... with 2 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;
 ```
 ]
 
@@ -1302,21 +1301,21 @@ broom::augment(simple_linear_model)
 ```
 
 ```
-## # A tibble: 3,103 x 11
-##    .rownames likelihood_infe~ age_cat   sex political_orien~ .fitted .resid
-##    &lt;chr&gt;                &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-##  1 2                        5 7           2                5    4.11  0.891
-##  2 3                        5 8           1                5    3.85  1.15 
-##  3 4                        4 4           1                7    4.40 -0.403
-##  4 6                        3 10          1               10    3.38 -0.385
-##  5 7                        4 4           2                5    4.37 -0.366
-##  6 8                        4 7           2                6    4.11 -0.110
-##  7 10                       7 1           1                7    4.38  2.62 
-##  8 11                       4 6           2                6    4.32 -0.319
-##  9 12                       5 8           1                7    3.85  1.15 
-## 10 14                       6 6           1                6    4.35  1.65 
-## # ... with 3,093 more rows, and 4 more variables: .std.resid &lt;dbl&gt;, .hat &lt;dbl&gt;,
-## #   .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;
+## # A tibble: 3,103 x 12
+##    .rownames likelihood_infe~ age_cat   sex political_orien~ .fitted .se.fit
+##    &lt;chr&gt;                &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1 2                        5 7           2                5    4.11  0.0484
+##  2 3                        5 8           1                5    3.85  0.0695
+##  3 4                        4 4           1                7    4.40  0.0823
+##  4 6                        3 10          1               10    3.38  0.0902
+##  5 7                        4 4           2                5    4.37  0.0786
+##  6 8                        4 7           2                6    4.11  0.0515
+##  7 10                       7 1           1                7    4.38  0.149 
+##  8 11                       4 6           2                6    4.32  0.0758
+##  9 12                       5 8           1                7    3.85  0.0740
+## 10 14                       6 6           1                6    4.35  0.0749
+## # ... with 3,093 more rows, and 5 more variables: .resid &lt;dbl&gt;, .hat &lt;dbl&gt;,
+## #   .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;
 ```
 ]
 

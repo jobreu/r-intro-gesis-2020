@@ -41,7 +41,7 @@ gp_covid <-
 Now let's plot an actual variable from the dataset.
 
 ```{block, box.title = "1", box.body = list(fill = "white"), box.icon = "fa-star"}
-Create a scatter plot for the variablea `political_orientation` and `hzcy001a`.
+Create a scatter plot for the variables `political_orientation` and `hzcy001a`.
 ```
 
 ```{block, opts.label = "clues"}

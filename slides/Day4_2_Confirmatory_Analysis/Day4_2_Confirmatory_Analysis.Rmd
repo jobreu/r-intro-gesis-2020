@@ -310,7 +310,7 @@ wilcox.test(
 ---
 
 ## Testing multiple groups with an ANOVA
-There are situations in which we want to test differences across multiple groups. The classic method to use is an analysis of variance (ANOVA) and its many variants (ANCOA, MANOVA, etc.). Again, you can easily do that in `R`.
+There are situations in which we want to test differences across multiple groups. The classic method to use is an analysis of variance (ANOVA) and its many variants (ANCOVA, MANOVA, etc.). Again, you can easily do that in `R`.
 
 ```{r}
 nice_anova <- 

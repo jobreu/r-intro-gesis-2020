@@ -990,7 +990,7 @@ corona_survey %>%
 ## Row chart
 
 .pull-left[
-While we are quite used to seeing bar charts, flipping its coordinates, so that it becomes a row chart, can make it easier to read (at least for people from countries in which the reading direction is left to right, top to bottom).
+While we are quite used to seeing bar charts, flipping their coordinates, so that they become row charts, can make it easier to read them (at least for people from countries in which the reading direction is left to right, top to bottom).
 
 .small[
 ```{r bar-chart-flip, eval = F}
@@ -1033,7 +1033,8 @@ corona_survey %>%
   ggplot(aes(x = fct_rev(fct_infreq(choice_of_party)), #<<
              fill = choice_of_party)) + 
   geom_bar() +
-  xlab("Count") +
+  xlab("Party preference") +
+  ylab("Count") +
   coord_flip()
 ```
 ]
@@ -1826,7 +1827,7 @@ ggbetweenstats(data = corona_survey,
 
 ## Detecting outliers: IQR
 
-For identifying univariate outliers we can specify lower and upper cutoffs, e.g., using the formula 25th percentile - 1.5 * interquartile range (IQR) for the lower and 75 percentile + 1.5 * IQR for the upper limit. In `R` this can be done as follows:
+For identifying univariate outliers we can specify lower and upper cutoffs, e.g., using the formula 25th percentile - 1.5 * interquartile range (IQR) for the lower and 75th percentile + 1.5 * IQR for the upper limit. In `R` this can be done as follows:
 
 .small[
 ```{r iqr}
