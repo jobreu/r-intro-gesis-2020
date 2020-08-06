@@ -19,6 +19,7 @@ layout: true
 
 ```{r setup, include = FALSE}
 source("../xaringan_r_setup.R") 
+options(warn=-1)
 xaringanExtra::use_xaringan_extra(c("tile_view", "clipboard"))
 xaringanExtra::use_extra_styles(
   hover_code_line = TRUE,         #<<
@@ -694,6 +695,81 @@ predict(
 
 ---
 
+## Plotting the coefficients
+
+.pull-left[
+```{r coefplot, eval = FALSE}
+library(sjPlot)
+
+plot_model(
+  simple_linear_model,
+  type = "est"
+)
+```
+]
+
+.pull-right[
+```{r ref.label = "coefplot", echo = FALSE}
+```
+]
+
+---
+
+## ...multiple models
+
+.pull-left[
+```{r coefplots, eval = FALSE}
+library(sjPlot)
+
+plot_models(
+  simple_linear_model,
+  simple_linear_model_logistic,
+  simple_linear_model_probit
+)
+```
+]
+
+.pull-right[
+```{r ref.label = "coefplots", echo = FALSE}
+```
+]
+
+---
+
+## It's `ggplot2`-based
+
+.tinyish[
+.pull-left[
+```{r coefplotsgg, eval = FALSE}
+library(sjPlot)
+
+plot_models(
+  simple_linear_model,
+  simple_linear_model_logistic,
+  simple_linear_model_probit
+) +
+  scale_color_manual(
+    breaks = c(
+      "likelihood_infection", 
+      "likelihood_infection_dichotomous.2", 
+      "likelihood_infection_dichotomous.3"
+    ),
+    labels = c("OLS", "Logistic", "Probit"),
+    values = c("#030303", "#8C8C8C", "#BABABA")
+  ) + 
+  labs(color = "Model") +
+  theme_bw()
+```
+]
+]
+
+.pull-right[
+```{r ref.label = "coefplotsgg", echo = FALSE}
+```
+]
+
+---
+
 ## More advanced post-estimation techniques
 In an OLS context, predictions of this kind are straightforward to interpret. For non-linear models, such as in logistic regression, this is way more difficult:
 
@@ -716,7 +792,9 @@ exp(predictions) / (1 + exp(predictions))
 ## Predictions made easy
 .pull-left[
 ```{r easy_prediction, eval = FALSE}
-sjPlot::plot_model(
+library(sjPlot)
+
+plot_model(
   simple_linear_model_logistic, 
   terms = "age_cat",
   type = "pred"

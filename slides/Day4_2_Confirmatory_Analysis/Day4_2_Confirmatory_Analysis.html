@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Johannes Breuer Stefan Jünger" />
     <meta name="date" content="2020-08-06" />
+    <script src="Day4_2_Confirmatory_Analysis_files/header-attrs/header-attrs.js"></script>
     <link href="Day4_2_Confirmatory_Analysis_files/remark-css/default.css" rel="stylesheet" />
     <link href="Day4_2_Confirmatory_Analysis_files/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="Day4_2_Confirmatory_Analysis_files/tile-view/tile-view.css" rel="stylesheet" />
@@ -904,13 +905,13 @@ anova(simple_linear_model_logistic, simple_linear_model_probit)
 ## There are easier ways
 Addon-packages, e.g., for creating tables, usually gather such information automatically, so that we don't need to apply everything by ourselves. However, we think it makes sense to at least know there are always some ways to that yourself.
 
-<div id="htmlwidget-9a96440bf833ace38a75" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9a96440bf833ace38a75">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1e9b827b65ad52002c41" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1e9b827b65ad52002c41">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 Later in this session, we will also learn about some `tidy` functions that make accessing results even more straightforward.
 
-<div id="htmlwidget-f890ad95f5843ddd4813" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f890ad95f5843ddd4813">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-62f17e78b3b6e825a2b5" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-62f17e78b3b6e825a2b5">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -984,6 +985,81 @@ predict(
 
 ---
 
+## Plotting the coefficients
+
+.pull-left[
+
+```r
+library(sjPlot)
+
+plot_model(
+  simple_linear_model,
+  type = "est"
+)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## ...multiple models
+
+.pull-left[
+
+```r
+library(sjPlot)
+
+plot_models(
+  simple_linear_model,
+  simple_linear_model_logistic,
+  simple_linear_model_probit
+)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## It's `ggplot2`-based
+
+.tinyish[
+.pull-left[
+
+```r
+library(sjPlot)
+
+plot_models(
+  simple_linear_model,
+  simple_linear_model_logistic,
+  simple_linear_model_probit
+) +
+  scale_color_manual(
+    breaks = c(
+      "likelihood_infection", 
+      "likelihood_infection_dichotomous.2", 
+      "likelihood_infection_dichotomous.3"
+    ),
+    labels = c("OLS", "Logistic", "Probit"),
+    values = c("#030303", "#8C8C8C", "#BABABA")
+  ) + 
+  labs(color = "Model") +
+  theme_bw()
+```
+]
+]
+
+.pull-right[
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
 ## More advanced post-estimation techniques
 In an OLS context, predictions of this kind are straightforward to interpret. For non-linear models, such as in logistic regression, this is way more difficult:
 
@@ -1014,7 +1090,9 @@ exp(predictions) / (1 + exp(predictions))
 .pull-left[
 
 ```r
-sjPlot::plot_model(
+library(sjPlot)
+
+plot_model(
   simple_linear_model_logistic, 
   terms = "age_cat",
   type = "pred"
@@ -1023,7 +1101,7 @@ sjPlot::plot_model(
 ]
 
 .pull-right[
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 These are simple predictions by holding all other variables at their mean value. If you're an avid *Stata* user, you may be familiar with using average marginal effects. You can also use them in `R` with the `margins` package!
@@ -1037,14 +1115,6 @@ AME provides a similar interpretation for a one-unit change as in OLS models: th
 
 ```r
 margins::margins(simple_linear_model_logistic)
-```
-
-```
-## Warning: contrasts dropped from factor age_cat
-
-## Warning: contrasts dropped from factor age_cat
-
-## Warning: contrasts dropped from factor age_cat
 ```
 
 ```
@@ -1063,12 +1133,6 @@ margins::margins(simple_linear_model_logistic)
 
 ```r
 margins::margins(simple_linear_model)
-```
-
-```
-## Warning: contrasts dropped from factor age_cat
-
-## Warning: contrasts dropped from factor age_cat
 ```
 
 ```
@@ -1099,7 +1163,7 @@ simple_linear_model$coefficients
 
 ## AME are nice for predicting and plotting results as well
 
-&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1203,11 +1267,11 @@ broom::glance(simple_linear_model)
 ```
 
 ```
-## # A tibble: 1 x 11
+## # A tibble: 1 x 12
 ##   r.squared adj.r.squared sigma statistic  p.value    df logLik    AIC    BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1    0.0797        0.0765  1.22      24.3 8.66e-49    12 -5008. 10042. 10121.
-## # ... with 2 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1    0.0797        0.0765  1.22      24.3 8.66e-49    11 -5008. 10042. 10121.
+## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 ]
 
@@ -1222,21 +1286,21 @@ broom::augment(simple_linear_model)
 ```
 
 ```
-## # A tibble: 3,103 x 12
-##    .rownames likelihood_infe~ age_cat   sex political_orien~ .fitted .se.fit
-##    &lt;chr&gt;                &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-##  1 2                        5 7           2                5    4.11  0.0484
-##  2 3                        5 8           1                5    3.85  0.0695
-##  3 4                        4 4           1                7    4.40  0.0823
-##  4 6                        3 10          1               10    3.38  0.0902
-##  5 7                        4 4           2                5    4.37  0.0786
-##  6 8                        4 7           2                6    4.11  0.0515
-##  7 10                       7 1           1                7    4.38  0.149 
-##  8 11                       4 6           2                6    4.32  0.0758
-##  9 12                       5 8           1                7    3.85  0.0740
-## 10 14                       6 6           1                6    4.35  0.0749
-## # ... with 3,093 more rows, and 5 more variables: .resid &lt;dbl&gt;, .hat &lt;dbl&gt;,
-## #   .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;
+## # A tibble: 3,103 x 11
+##    .rownames likelihood_infe~ age_cat   sex political_orien~ .fitted .resid
+##    &lt;chr&gt;                &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+##  1 2                        5 7           2                5    4.11  0.891
+##  2 3                        5 8           1                5    3.85  1.15 
+##  3 4                        4 4           1                7    4.40 -0.403
+##  4 6                        3 10          1               10    3.38 -0.385
+##  5 7                        4 4           2                5    4.37 -0.366
+##  6 8                        4 7           2                6    4.11 -0.110
+##  7 10                       7 1           1                7    4.38  2.62 
+##  8 11                       4 6           2                6    4.32 -0.319
+##  9 12                       5 8           1                7    3.85  1.15 
+## 10 14                       6 6           1                6    4.35  1.65 
+## # ... with 3,093 more rows, and 4 more variables: .std.resid &lt;dbl&gt;, .hat &lt;dbl&gt;,
+## #   .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;
 ```
 ]
 
