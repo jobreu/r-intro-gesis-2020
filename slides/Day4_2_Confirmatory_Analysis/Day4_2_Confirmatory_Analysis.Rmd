@@ -895,6 +895,21 @@ I recommend checking out the `stargazer` package, but be aware that creating tab
 
 ---
 
+## Alternative: `huxtable`
+
+```{r huxtable, eval = FALSE}
+library(huxtable)
+
+huxreg(
+  simple_linear_model,
+  simple_linear_model_effect_coded,
+  simple_linear_model_logistic,
+  simple_linear_model_probit
+)
+```
+
+---
+
 ## Standardizing your results: tidy models with `broom`
 .pull-left[
 We have already entered the area of reporting statistical results. We will have a separate session on reporting on with `R Markdown`. One thing to note at this point is that more and more developers in `R` were unsatisfied with the diverse output some of the standard regression procedures provide. The outputs may be helpful to look at, but it's not great for further processing. For this purpose, we need tables.
@@ -946,19 +961,42 @@ broom::augment(simple_linear_model)
 
 ---
 
-## Create a standardized list of your results
+## Create standardized data of your results
 
 ```{r}
 my_fancy_models <-
-  list(
-    broom::tidy(simple_linear_model), 
-      broom::tidy(simple_linear_model_effect_coded),
-      broom::tidy(simple_linear_model_logistic),
-      broom::tidy(simple_linear_model_probit)
+  bind_rows(
+    broom::tidy(simple_linear_model) %>% 
+      dplyr::mutate(model = "OLS"), 
+    broom::tidy(simple_linear_model_effect_coded) %>% 
+      dplyr::mutate(model = "OLS Effect Coded"),
+    broom::tidy(simple_linear_model_logistic) %>% 
+      dplyr::mutate(model = "Logistic"),
+    broom::tidy(simple_linear_model_probit) %>% 
+      dplyr::mutate(model = "Probit")
   )
 ```
 
 This may seem like an unnecessary effort if we can use packages like `stargazer`. But believe me, the more you fiddle in `R`, the more you will face situations where using such procedures does not work anymore (I think this might be true for *Stata* or *SPSS* as well). Or think about possible reviewers who want to have something added. With packages like `broom` you can also create a standardized output of other types of models, such as Latent Class Analysis (LCA) (with the package [`poLCA`](https://cran.r-project.org/web/packages/poLCA/index.html)). 
+
+---
+
+## Example: Coefficients Plot from tidy results
+
+The [`dotwhisker`](https://cran.r-project.org/web/packages/dotwhisker/vignettes/dotwhisker-vignette.html) package is another alternative to create a coefficient plot for multiple models from a tidy results data frame.
+
+.pull-left[
+```{r dotwhisker, eval = FALSE}
+library(dotwhisker)
+
+dwplot(my_fancy_models)
+```
+]
+
+.pull-right[
+```{r ref.label = "dotwhisker", echo = FALSE}
+```
+]
 
 ---
 

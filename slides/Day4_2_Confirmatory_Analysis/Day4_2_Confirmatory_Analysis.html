@@ -905,13 +905,13 @@ anova(simple_linear_model_logistic, simple_linear_model_probit)
 ## There are easier ways
 Addon-packages, e.g., for creating tables, usually gather such information automatically, so that we don't need to apply everything by ourselves. However, we think it makes sense to at least know there are always some ways to that yourself.
 
-<div id="htmlwidget-1e9b827b65ad52002c41" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1e9b827b65ad52002c41">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c588c6badb6352acc459" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c588c6badb6352acc459">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2 [style = invis];\n      tab2 -> tab3 [style = invis];\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 Later in this session, we will also learn about some `tidy` functions that make accessing results even more straightforward.
 
-<div id="htmlwidget-62f17e78b3b6e825a2b5" style="width:504px;height:100px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-62f17e78b3b6e825a2b5">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-137bb655c27141461fdb" style="width:504px;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-137bb655c27141461fdb">{"x":{"diagram":"digraph flowchart {\n      rankdir = \"LR\";\n      # node definitions with substituted label text\n      node [fontname = Helvetica, shape = rectangle]        \n      tab1 [label = \"Estimated Model\"]\n      tab2 [label = \"Tidy Data Frame with Model Information\"]\n      tab3 [label = \"Table or Figure\"]\n\n      # edge definitions with the node IDs\n      tab1 -> tab2;\n      tab2 -> tab3;\n      tab1 -> tab3;\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1210,6 +1210,22 @@ I recommend checking out the `stargazer` package, but be aware that creating tab
 
 ---
 
+## Alternative: `huxtable`
+
+
+```r
+library(huxtable)
+
+huxreg(
+  simple_linear_model,
+  simple_linear_model_effect_coded,
+  simple_linear_model_logistic,
+  simple_linear_model_probit
+)
+```
+
+---
+
 ## Standardizing your results: tidy models with `broom`
 .pull-left[
 We have already entered the area of reporting statistical results. We will have a separate session on reporting on with `R Markdown`. One thing to note at this point is that more and more developers in `R` were unsatisfied with the diverse output some of the standard regression procedures provide. The outputs may be helpful to look at, but it's not great for further processing. For this purpose, we need tables.
@@ -1306,20 +1322,43 @@ broom::augment(simple_linear_model)
 
 ---
 
-## Create a standardized list of your results
+## Create standardized data of your results
 
 
 ```r
 my_fancy_models &lt;-
-  list(
-    broom::tidy(simple_linear_model), 
-      broom::tidy(simple_linear_model_effect_coded),
-      broom::tidy(simple_linear_model_logistic),
-      broom::tidy(simple_linear_model_probit)
+  bind_rows(
+    broom::tidy(simple_linear_model) %&gt;% 
+      dplyr::mutate(model = "OLS"), 
+    broom::tidy(simple_linear_model_effect_coded) %&gt;% 
+      dplyr::mutate(model = "OLS Effect Coded"),
+    broom::tidy(simple_linear_model_logistic) %&gt;% 
+      dplyr::mutate(model = "Logistic"),
+    broom::tidy(simple_linear_model_probit) %&gt;% 
+      dplyr::mutate(model = "Probit")
   )
 ```
 
 This may seem like an unnecessary effort if we can use packages like `stargazer`. But believe me, the more you fiddle in `R`, the more you will face situations where using such procedures does not work anymore (I think this might be true for *Stata* or *SPSS* as well). Or think about possible reviewers who want to have something added. With packages like `broom` you can also create a standardized output of other types of models, such as Latent Class Analysis (LCA) (with the package [`poLCA`](https://cran.r-project.org/web/packages/poLCA/index.html)). 
+
+---
+
+## Example: Coefficients Plot from tidy results
+
+The [`dotwhisker`](https://cran.r-project.org/web/packages/dotwhisker/vignettes/dotwhisker-vignette.html) package is another alternative to create a coefficient plot for multiple models from a tidy results data frame.
+
+.pull-left[
+
+```r
+library(dotwhisker)
+
+dwplot(my_fancy_models)
+```
+]
+
+.pull-right[
+&lt;img src="Day4_2_Confirmatory_Analysis_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 
