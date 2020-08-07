@@ -70,7 +70,7 @@ packages("rmarkdown", "knitr", "tidyverse", "visdat", "janitor", "pander", "patc
 Feel free to play around a bit with the `explore_gapminder.Rmd` and its output (you can also change parts of the `YAML` header to see how that influences the output).
 
 ```{block, box.title = "2", box.body = list(fill = "white"), box.icon = "fa-star"}
-The big task we have for you for this exercise is to create a similar `R Markdown` document for the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* data. Using the `explore_gapminder.Rmd` as a template, we want you to do the following in this document:
+The big task we have for you for this exercise is to create a similar `R Markdown` document for the *GESIS Panel Special Survey on the Coronavirus SARS-CoV-2 Outbreak in Germany* data. Using the `explore_gapminder.Rmd` as a starting point and guidance, we want you to do the following in this document:
 
 1. Load and wrangle the data the same way as before to create the `corona_survey` subset, but with one difference: Also include the variable `hzcy026a`, rename it to `obey_curfew` and code the value 4 for it as `NA`
 
