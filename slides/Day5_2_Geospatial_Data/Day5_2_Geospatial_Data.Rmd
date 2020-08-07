@@ -62,15 +62,15 @@ knitr::include_graphics("./pics/geometries.png")
 
 ---
 
+## Geospatial data formats
+We usually differentiate between vector and raster data formats. Vector data provide accuracy to the point when you pick one point, say randomly on a map. Usually, points, lines, and polygons are represented in vector data format. Raster data are basically a table where one general set of metadata defines the extent and resolution of raster cells. Grids are usually defined as raster data, although you could also convert them to the vector format.
+
+---
+
 ## Geospatial data can be layered
 ```{r echo = FALSE, out.width = "70%"}
 knitr::include_graphics("./pics/layers.png")
 ```
-
----
-
-## Traditional data format
-We usually differentiate between vector and raster data formats. Vector data provide accuracy to the point when you pick one point, say randomly on a map. Usually, points, lines, and polygons are represented in vector data format. Raster data are basically a table where one general set of metadata defines the extent and resolution of raster cells. Grids are usually defined as raster data, although you could also convert them to the vector format.
 
 ---
 
@@ -160,6 +160,26 @@ municipalities <-
 
 ---
 
+## It's a `tibble`
+
+.tinyish[
+```{r}
+municipalities
+```
+]
+
+---
+
+## The `geometry` column
+
+.tinyish[
+```{r message = TRUE}
+municipalities$geometry
+```
+]
+
+---
+
 ## Want to have a first look? Let's plot the shape of Cologne
 
 .tinyish[
@@ -187,6 +207,16 @@ This is a raster dataset, things are a little bit different here. I have already
 soil_sealing <- 
   raster::raster("./session_specific_data/S40RG_2015_100m.tif")
 ```
+
+---
+
+## The `raster` format
+
+.tinyish[
+```{r}
+soil_sealing
+```
+]
 
 ---
 
