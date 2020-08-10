@@ -21,7 +21,7 @@ knitr::opts_template$set(
 klippy::klippy()
 ```
 
-The structure of this final exercise for the course is a bit different. We want you to create and work with `R Markdown` documents (creating `HTML` output) to go through some of the things we covered and did in the previous sessions. There are no coding taks in this document.
+The structure of this final exercise for the course is a bit different. We want you to create and work with `R Markdown` documents (creating `HTML` output) to go through some of the things we covered and did in the previous sessions. There are no coding tasks in this document.
 
 We have created an `R Markdown` document (which we have also already knitted to create an `HTML` output file) that demonstrates some of the things you can do/create with `R Markdown` and repeats a few of the topics and steps we went through in the sessions before this one.
 
@@ -51,9 +51,9 @@ theme: flatly -> The *Bootswatch* them *flatly* is used to style the document
 
 highlight: tango -> The document uses the *Pandoc* code highlighting style *tango*
 
-code_download: true -> The document incudes a button allowing you to download the full code
+code_download: true -> The document includes a button allowing you to download the full code
 
-df_print: paged -> When dataframes are printed in the document they are printed in paged tables
+df_print: paged -> When data frames are printed in the document they are printed in paged tables
 
 **NB**: To knit the document you need to have the packages it uses installed. These are the following ones:
 `rmarkdown`, `knitr`, `tidyverse`, `visdat`, `janitor`, `pander`, `patchwork`, `correlation`, `GGally`, `broom`, `sjPlot`, `scales`.
